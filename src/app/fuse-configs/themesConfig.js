@@ -13,6 +13,12 @@ const darkText = {
   disabled: 'rgb(156, 163, 175)',
 };
 
+const accessedText = {
+  primary: 'rgb(17, 24, 39)',
+  secondary: 'rgb(107, 114, 128)',
+  disabled: 'rgb(149, 156, 169)',
+};
+
 const themesConfig = {
   default: {
     palette: {
@@ -41,7 +47,7 @@ const themesConfig = {
   defaultDark: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: fuseDark,
       secondary: {
         light: skyBlue[100],
@@ -386,7 +392,7 @@ const themesConfig = {
   dark1: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#C2C2C3',
         main: '#323338',
@@ -411,7 +417,7 @@ const themesConfig = {
   dark2: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#C9CACE',
         main: '#4B4F5A',
@@ -440,7 +446,7 @@ const themesConfig = {
   dark3: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#C2C8D2',
         main: '#354968',
@@ -465,7 +471,7 @@ const themesConfig = {
   dark4: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#CECADF',
         main: '#5A4E93',
@@ -490,7 +496,7 @@ const themesConfig = {
   dark5: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#CCD7E2',
         main: '#56789D',
@@ -515,7 +521,7 @@ const themesConfig = {
   dark6: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#FFC7CE',
         main: '#FF445D',
@@ -540,7 +546,7 @@ const themesConfig = {
   dark7: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: 'FFECC5',
         main: '#FEBE3E',
@@ -565,7 +571,7 @@ const themesConfig = {
   dark8: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#BEBFC8',
         main: '#252949',
@@ -590,7 +596,7 @@ const themesConfig = {
   dark9: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#BCC8CD',
         main: '#204657',
@@ -615,7 +621,7 @@ const themesConfig = {
   dark10: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#C3C2D2',
         main: '#36336A',
@@ -640,7 +646,7 @@ const themesConfig = {
   dark11: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#BFB7BF',
         main: '#2A0F29',
@@ -665,7 +671,7 @@ const themesConfig = {
   dark12: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: '#CCC3C8',
         main: '#543847',
@@ -690,7 +696,7 @@ const themesConfig = {
   greyDark: {
     palette: {
       mode: 'dark',
-      text: darkText,
+      text: accessedText,
       primary: {
         light: fuseDark[200],
         main: fuseDark[700],

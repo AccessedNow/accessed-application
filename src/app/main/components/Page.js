@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import CssBaseline from '@mui/material/CssBaseline';
-import getTheme from 'theme';
+import { selectMainTheme } from 'app/store/fuse/settingsSlice';
+// import getTheme from 'theme';
 import AOS from 'aos';
+
 
 export const useDarkMode = () => {
   const [themeMode, setTheme] = useState('light');
   const [mountedComponent, setMountedComponent] = useState(false);
+
+
 
   const setMode = (mode) => {
     try {
@@ -37,6 +42,10 @@ export const useDarkMode = () => {
 };
 
 export default function Page({ children }) {
+
+  // const mainTheme = getTheme(themeMode, themeToggler);
+  const mainTheme = useSelector(selectMainTheme);
+
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -59,7 +68,7 @@ export default function Page({ children }) {
   }, [mountedComponent, themeMode]);
 
   return (
-    <ThemeProvider theme={getTheme(themeMode, themeToggler)}>
+    <ThemeProvider theme={mainTheme}>
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
       <CssBaseline />
       <Paper elevation={0}>{children}</Paper>

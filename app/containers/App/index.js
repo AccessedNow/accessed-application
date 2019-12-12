@@ -19,32 +19,41 @@ import Footer from 'components/Footer';
 
 import GlobalStyle from '../../global-styles';
 
+
+
+import '../../assets/arenafont.css';
+import '../../assets/vendor.css';
+import '../../assets/styles.scss';
+import '../../assets/themes.scss';
+import '../../assets/bc_wl_cp_style.scss';
+import '../../assets/change_color.scss';
+
+
+
 const AppWrapper = styled.div`
-  max-width: calc(768px + 16px * 2);
   margin: 0 auto;
   display: flex;
   min-height: 100%;
-  padding: 0 16px;
   flex-direction: column;
 `;
 
 export default function App() {
   return (
-    <AppWrapper>
-      <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
-      >
-        <meta name="description" content="A React.js Boilerplate application" />
-      </Helmet>
-      <Header />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/features" component={FeaturePage} />
-        <Route path="" component={NotFoundPage} />
-      </Switch>
-      <Footer />
-      <GlobalStyle />
-    </AppWrapper>
+      <AppWrapper>
+          <Helmet
+              titleTemplate="%s - Hiring"
+              defaultTitle="Accessed - World Connect"
+          >
+              <meta name="description" content="World Connection" />
+          </Helmet>
+          <Header />
+          <Switch>
+              <Route exact path="/" component={HomePage} />
+              <Route path="/features" component={FeaturePage} />
+              <Route path="" component={NotFoundPage} />
+          </Switch>
+          <Footer />
+          <GlobalStyle />
+      </AppWrapper>
   );
 }

@@ -138,8 +138,8 @@ $main-color:                  #006db3;
 $main-color-text:             #ffffff;
 $bg-header-color:       #ffffff;
 $text-header-color:       #666666;
-$bg-number-icon:        #006db3;
-$text-number-icon:        #666666;
+$bg-number-icon:        #000;
+$text-number-icon:        #ffffff;
 
 /* Navigation */
 $nav-font-size:                 14px;
@@ -1383,6 +1383,7 @@ body {
     animation-duration: .5s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
+    @include box-shadow(0 0 10px #333);
     @media (max-width: 991px) {
       padding: 15px 0 !important;
       margin: 0 auto;

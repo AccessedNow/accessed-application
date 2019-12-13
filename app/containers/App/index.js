@@ -20,6 +20,7 @@ import Footer from 'components/Footer';
 import GlobalStyle from '../../global-styles';
 
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../../assets/arenafont.css';
 import '../../assets/vendor.css';

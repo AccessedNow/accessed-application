@@ -22,18 +22,24 @@ class Header extends Component {
   constructor(props) {
     super(props);
 
+      this.state = {isLoggedIn: false};
+
   }
 
   componentDidMount() {}
 
   render() {
+
+    const isLoggedIn = this.state.isLoggedIn;
+
     return (
 
         <header className="header-content" data-stick="true" data-stickymobile="true">
 
-            <div className="header-container layout-boxed style-5" data-style="5">
-                
-                <div className="header-main">
+            <div className={isLoggedIn ? 'header-container layout-boxed style-5' : 'header-container layout-boxed style-8'} data-style="5">
+
+                {isLoggedIn ? (
+                    <div className="header-main">
                     <div className="container">
                         <div className="table-row">
 
@@ -153,6 +159,47 @@ class Header extends Component {
                         </div>
                     </div>
                 </div>
+                ) : (
+                    <div className="header-main">
+                        <div className="container">
+                            <div className="table-row">
+
+
+                                <div className="header-logo">
+                                    <a href="/" title="Accessed" className="logo-site waiting lazyloaded">
+                                        <img className=" lazyloaded" data-srcset="//cdn.shopify.com/s/files/1/0083/9912/6625/files/logo_250x_0abc450a-76b5-4ae7-91ad-42e2178b9936_125x.png?v=1553139801 1x, //cdn.shopify.com/s/files/1/0083/9912/6625/files/logo_250x_0abc450a-76b5-4ae7-91ad-42e2178b9936_250x.png?v=1553139801 2x" alt="Accessed" srcSet={logo} />
+                                    </a>
+
+
+                                </div>
+
+
+
+                                <div className="header-icons d-none d-lg-block">
+
+
+                                    <ul className="list-inline">
+                                        <li className="currency_icon flag-3" data-target="#language-popup" data-toggle="modal">
+                                            <a href="/account" title="My Account">
+                                                <span>Join Now</span>
+                                            </a>
+                                        </li>
+                                        <li className="customer-account">
+                                            <a href="/account" title="My Account" className="btn btn-white">
+                                                <span>Sign In</span>
+                                            </a>
+                                        </li>
+
+
+
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 <div className="mobile-version d-lg-none">
                     <div className="menu-mobile navbar">
 
@@ -295,7 +342,6 @@ class Header extends Component {
 
                     </div>
                 </div>
-
             </div>
 
 

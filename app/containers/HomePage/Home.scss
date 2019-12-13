@@ -1,0 +1,259 @@
+section {
+  padding: 80px 0 75px 0;
+  background: #ffffff;
+}
+
+
+.company-brand {
+    background: rgba(78, 93, 111, 0.7);
+    margin-top: 50px;
+    display: table;
+    padding: 2em 0;
+    width: 100%;
+    position: absolute;
+
+  &.freelancer {
+    position: relative;
+    margin-top: 0;
+    padding: 40px 0;
+    background: #f2f7fb;
+  }
+}
+
+.main-heading {
+  text-align: center;
+  margin-bottom: 2em;
+
+  p {
+    font-size: 16px;
+    color: #006db3;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    color: #35434e;
+    position: relative;
+    font-weight: 600;
+    margin-top: 0px;
+    margin-bottom: 10px;
+
+    &>span {
+      color: #006db3;
+    }
+  }
+}
+
+
+.working-process {
+  text-align: center;
+  position: relative;
+  margin-top: 30px;
+
+  h4 {
+    margin: 10px 0;
+  }
+
+  p {
+    padding: 2px 15px;
+    line-height: 1.9;
+  }
+
+  span.process-img {
+    width: 80px;
+    height: 80px;
+    margin: 15px auto 0;
+    position: relative;
+    display: inline-block;
+
+    .process-num {
+      position: absolute;
+      font-size: 60px;
+      font-weight: 600;
+      color: #bbc7e1;
+      left: -30px;
+      top: -10px;
+      opacity: 0.2;
+    }
+
+    img {
+      z-index: 1;
+    }
+  }
+}
+
+
+
+.download-app {
+  background-size: cover;
+  background-blend-mode: overlay;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  background: url(../../assets/geometric-bg.jpg),linear-gradient(135deg,#11b719 0%,#11b719 100%)!important;
+
+  .app-content {
+    position: relative;
+  }
+
+  h2 {
+    margin-bottom: 5px;
+    font-size: 50px;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-top: 20px;
+  }
+
+  a.btn.call-btn {
+    border-radius: 4px;
+    padding: 0.6em 1.4em;
+    margin-right: 20px;
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    transition: all ease-in-out 0.4s;
+    font-family: 'Josefin Slab', serif;
+    color: #35434e;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  a.btn.call-btn.gps {
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    color: #11b719;
+  }
+}
+
+
+.extra-mrg {
+  padding: 0;
+  margin-left: -15px;
+  margin-right: -15px;
+
+  .job-instructor-layout {
+    background: #ffffff;
+    position: relative;
+    display: block;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-top: 30px;
+    box-shadow: 0 0 10px 0 rgba(62,28,131,0.1);
+
+
+    .freelanc {
+      background: rgba(38, 169, 225,0.1);
+      color: #26a9e1;
+    }
+
+    .full-time {
+      background: rgba(3, 165, 4,0.1);
+      color: #03a504;
+    }
+
+    .part-time {
+      background: rgba(246, 147, 30,0.1);
+      color: #f6931e;
+    }
+
+    .enternship {
+      background: rgba(210, 0, 1,0.1);
+      color: #d20001;
+    }
+
+
+    .tg-featuretag:before {
+      top: 0;
+      left: 100%;
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      border-left: 10px solid #ff526c;
+    }
+    .tg-featuretag:after {
+      top: 100%;
+      left: 0;
+      border-top: 5px solid #eb344f;
+      border-left: 5px solid transparent;
+    }
+
+    .tg-themetag {
+      top: 30px;
+      left: -5px;
+      z-index: 2;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 10px;
+      position: absolute;
+      background: #ff526c;
+      padding: 5px 3px 3px 10px;
+      text-transform: uppercase;
+    }
+
+    .brows-job-type span {
+      position: absolute;
+      padding: 4px 15px;
+      top: 30px;
+      right: 10px;
+      line-height: 1.4;
+      font-size: 12px;
+      border-radius: 2px 0 0 2px;
+    }
+
+    .job-instructor-thumb {
+      display: table;
+      width: 100%;
+      padding: 5em 0em 1em;
+      margin: 0 auto;
+      border-radius: 8px;
+
+      img {
+        display: table;
+        margin: 0 auto;
+        max-width: 80px;
+        max-height: 80px;
+      }
+    }
+
+    .job-instructor-content {
+      position: relative;
+      padding: 2px 20px 15px;
+      display: table;
+      text-align: center;
+      width: 100%;
+
+      .instructor-title {
+        line-height: 1.5;
+      }
+    }
+  }
+
+  .job-instructor-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+
+    .instructor-students {
+      flex: 1;
+
+      .instructor-scount {
+        margin: 0;
+        color: #ff8b00;
+      }
+    }
+
+    .instructor-corses span {
+      display: inline-block;
+      padding: 4px 14px;
+      background: #f1f4fb;
+      border-radius: 50px;
+      color: #8b91a0;
+      font-size: 14px;
+    }
+  }
+}

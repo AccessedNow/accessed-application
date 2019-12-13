@@ -81,7 +81,7 @@ function Footer() {
 
                                           <div className="text">
                                               <span>Contact info</span>
-                                              <span>17 Princess Road, London, Greater London NW1 8JR, UK</span>
+                                              <span>100 Princess Road, San Jose, US</span>
                                           </div>
                                       </div>
 

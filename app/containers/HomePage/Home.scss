@@ -3,7 +3,6 @@ section {
   background: #ffffff;
 }
 
-
 .company-brand {
     background: rgba(78, 93, 111, 0.7);
     margin-top: 50px;
@@ -82,7 +81,42 @@ section {
   }
 }
 
+.explore-the-opportunities {
+  background: #ffffff;
+}
 
+.browse-jobs-by-catogery {
+  background: #ffffff;
+  .border-bottom {
+    border-bottom: 1px solid #F4F5F6 ;
+  }
+
+  .border-left-right {
+    border-left: 1px solid #F4F5F6 ;
+    border-right: 1px solid #F4F5F6 ;
+
+  }
+}
+
+.transfer-wise {
+  padding: 0 !important;
+  background: #fafafa;
+  color: #ACB1D8;
+  .row {
+    height: 400px;
+    .left-side {
+      .quote {
+        font-size: 18px;
+      }
+    } 
+  }
+  .list-content {
+    width: 100%;
+    background: #FFFFFF;
+    height: 70px;
+    color: #000000;
+  }
+}
 
 .download-app {
   background-size: cover;

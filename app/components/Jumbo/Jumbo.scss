@@ -46,6 +46,23 @@
         line-height: 1.2;
         margin-bottom: 10px;
       }
+      a {
+        color: #006db3;
+      }
+      
+      a:hover {
+        text-decoration: none;
+      }
+
+      .company-logo {
+        opacity: 0.5;
+        ul li {
+          padding: 0 20px;
+          img {
+            width: 65%;
+          }
+        }
+      }
     }
 
 

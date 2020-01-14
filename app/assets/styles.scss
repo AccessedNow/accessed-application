@@ -184,12 +184,18 @@ $breadcrumb-height:     230px;
 $breadcrumb-bg-color:       #ffffff;
 
 /* Footer */
-$footer-background-color:  #f8f8f8;
+// $footer-background-color:  #f8f8f8;
+$footer-background-color:  #32344E;
 $footer-static-text-color: #333e48;
-$footer-link-color:        #333e48;
-$footer-hover-color:       #df3737;
-$footer-copyright-bg:       #eaeaea;
-$footer-copyright-color:    #333e48;
+// $footer-link-color:        #333e48;
+$footer-link-color:        #5E6384;
+$footer-title-color:        #FFFFFF;
+// $footer-hover-color:       #df3737;
+$footer-hover-color:       #FFFFFF;
+// $footer-copyright-bg:       #eaeaea;
+$footer-copyright-bg:       #32344E;
+// $footer-copyright-color:    #333e48;
+$footer-copyright-color:    #5E6384;
 
 $button-btn1:         #fed700;
 $button-btn1-txt:     #333e48;
@@ -13359,7 +13365,8 @@ iframe#preview-bar-iframe {
   }
 }
 #footer-content {
-  padding: 50px 0 0;
+  // padding: 50px 0 0;
+  padding: 0 !important;
   #widget-newsletter {
     .widget-newsletter {
       background: $main-color;
@@ -13517,6 +13524,7 @@ iframe#preview-bar-iframe {
     color: $footer-copyright-color;
   }
 }
+
 .footer-logo {
   .logo-site {
     img {
@@ -13613,7 +13621,7 @@ iframe#preview-bar-iframe {
     margin: 0 0 20px;
   }
   > h6 {
-    color: $footer-link-color;
+    color: $footer-title-color;
     font-size: $size-h5;
     position: relative;
     &:before {
@@ -13672,16 +13680,24 @@ iframe#preview-bar-iframe {
       @include border-radius(7px, 7px, 7px, 7px);
     }
   }
-}
-.footer-inner {
-    margin: 0 auto;
-    padding-top: 58px;
-    padding-bottom: 32px;
-    @media (max-width: 767px) {
-      padding-top: 40px;
-      padding-bottom: 15px;
+  .footer-siteControl {
+    color: #FFFFFF;
+    span {
+      width: 185px;
     }
   }
+}
+
+.footer-inner {
+  margin: 0 auto;
+  padding-top: 58px;
+  // padding-bottom: 32px;
+  @media (max-width: 767px) {
+    padding-top: 40px;
+    padding-bottom: 15px;
+  }
+}
+
   .footer-widget {
     background: $footer-background-color;
   }
@@ -13723,7 +13739,8 @@ iframe#preview-bar-iframe {
       ul {
         li {
           margin: 0;
-          padding: 0 !important;
+          padding: 0 5px !important;
+          color: $footer-copyright-color;
           i {
             font-size: $font-small-icon;
           }

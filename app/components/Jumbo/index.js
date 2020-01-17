@@ -5,8 +5,8 @@ import Wrapper from './Wrapper';
 
 import './Jumbo.scss';
 
-import bannerImg from '../../assets/gtrr.jpg';
-
+import bannerImg from '../../assets/hero.jpg';
+import shape from '../../assets/shapes.png';
 import google from '../../assets/icons/google.png';
 import microsoft from '../../assets/icons/microsoft.png';
 import amazon from '../../assets/icons/amazon.png';
@@ -23,6 +23,7 @@ function Jumbo(props) {
         <div className="row">
           <div className="col col-md-6 col-sm-8">
             <div className="content">
+              <img className="shape" src={shape} alt="shape" />
               <h2>Your Passion Begins<br />Here !</h2>
               <p>Join over 2 Million Others in The Future Of Work, <br /> The easiest way to get your new job.</p>
               <form className="banner-form" data-animation="animated fadeInUp">

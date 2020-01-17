@@ -21,13 +21,11 @@ function Footer() {
               <div className="row">
                 <div className="footer-block  col-lg-6 col-md-6 col-sm-12 col-12">
                   <h6>Put your creative to visual workspace</h6>
-                  <p className="desc">fieldrnagic is a modem visual workspace designed io maximize productivity— Now,<br /> you can focus on the things that really matter</p>
+                  <p className="desc mt-3">fieldrnagic is a modem visual workspace designed io maximize productivity— Now,<br /> you can focus on the things that really matter</p>
                 </div>
-                <div className="col-lg-6 col-md-6 col-sm-12 col-12">
-                  <ul class="list-inline">
-                    <li class="customer-account"><a href="/account" title="Sign Up Free" class="btn btn-white"><span>SIGN UP FREE</span></a></li>
-                    <li class="customer-account"><a href="/watch/video" title="Watch video" class="btn btn-white"><span>Watch Video</span></a></li>
-                  </ul>                  
+                <div className="footer-block col-lg-6 col-md-6 col-sm-12 col-12">
+                  <a href="/account" title="Sign Up Free" className="ml-3 btn btn-blue">SIGN UP FREE</a>
+                  <a href="/account" title="Watch video" className="ml-3 btn btn-white">Watch Video</a>
                 </div>
               </div>
               <div className="row">
@@ -35,32 +33,40 @@ function Footer() {
                   <div className="footer-block footer-menu">
                     <h6>Browse Top Category<span className="icon"></span></h6>
                     <ul className="f-list">
-                      <li><a href="/collections/accessories"><span>Account </span></a></li>
-                      <li><a href="/collections/gaming"><span>Gaming </span></a></li>
-                      <li><a href="/collections/mac-computers"><span>Mac Computers </span></a></li>
-                      <li><a href="/collections/pc-computers"><span>PC Computers </span></a></li>
-                      <li><a href="/collections/ultrabooks"><span>Ultrabooks</span></a></li>
+                      <li><a href="/collections/accessories"><span>Accounting/Finance (269) </span></a></li>
+                      <li><a href="/collections/gaming"><span>Bank/ Non-Bank Fin. Institufion (37) </span></a></li>
+                      <li><a href="/collections/mac-computers"><span>Commercial/Supply Chain (128) </span></a></li>
+                      <li><a href="/collections/pc-computers"><span>Education/Training (273) </span></a></li>
+                      <li><a href="/collections/ultrabooks"><span>Engineer/Architects (297)</span></a></li>
+                      <li><a href="/collections/ultrabooks"><span>Gamnents/Textile (427)</span></a></li>
+                      <li><a href="/collections/ultrabooks"><span>HR/Org. Development (121)</span></a></li>
+                      <li><a href="/collections/ultrabooks"><span>Gen Mgt/Admin (184)</span></a></li>
+                      <li><a href="/collections/ultrabooks"><span>Design/Creative (84)</span></a></li>
+                      <li><a href="/collections/ultrabooks"><span>Production/Operation (103)</span></a></li>
+                      <li><a href="/collections/ultrabooks"><span>Hospitality/ Travel/ Tourism (88)</span></a></li>
+                      <li><a href="/collections/ultrabooks"><span>Beauty Care/ Health &amp; Fitness (8)</span></a></li>
+                      <li><a href="/collections/ultrabooks"><span>Electrician/ Construction/ Repair (34)</span></a></li>
                     </ul>
-                    <div class="widget-social">
-                      <ul class="widget-social-icons list-inline">
+                    <div className="widget-social">
+                      <ul className="widget-social-icons list-inline">
                         <li>
                           <a target="_blank" rel="noopener" href="https://www.facebook.com/shopify/" title="Facebook">
-                          <i class="demo-icon icon-facebook"></i>
+                          <i className="demo-icon icon-facebook"></i>
                           </a>
                         </li>
                         <li>
                           <a target="_blank" rel="noopener" href="https://www.twitter.com/shopify/" title="Twitter">
-                          <i class="demo-icon icon-twitter"></i>
+                          <i className="demo-icon icon-twitter"></i>
                           </a>
                         </li>
                         <li>
                           <a target="_blank" rel="noopener" href="https://www.instagram.com/shopify/" title="Instagram">
-                          <i class="demo-icon icon-instagram"></i>
+                          <i className="demo-icon icon-instagram"></i>
                           </a>
                         </li>
                         <li>
                           <a target="_blank" rel="noopener" href="https://www.pinterest.com/shopify/" title="Pinterest">
-                          <i class="demo-icon icon-pinterest-circled"></i>
+                          <i className="demo-icon icon-pinterest-circled"></i>
                           </a>
                         </li>
                       </ul>
@@ -80,12 +86,20 @@ function Footer() {
                 <div className="col-lg-4 col-md-4 col-sm-3 col-12">
                   <div className="footer-block footer-menu">
                     <ul className="f-list">
-                      <li><a href="/pages/about-us"><span> About Us </span></a></li>
-                      <li><a href="/pages/contact-us"><span> Contact Us </span></a></li>
-                      <li><a href="/collections"><span> All Collections </span></a></li>
-                      <li><a href="/pages/terms-conditions"><span> Privacy policy </span></a></li>
-                      <li><a href="/pages/terms-conditions"><span>Terms &amp; Conditions </span></a>
-                      </li>
+                      <li><a href="/pages/about-us"><span>H &amp; Telecommunication (365) </span></a></li>
+                      <li><a href="/pages/contact-us"><span>Marketing/Sales (605)</span></a></li>
+                      <li><a href="/collections"><span> Customer Support/Call Centre (78) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span> Media/Ad./Event Mgt. (41) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span>Medical/Pharma (155) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span>Agro (Plant/Animal/Fisheries) (42) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span>NGO/Development (301) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span>Research/Consultancy (16) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span>Secretary/Receptionist(76) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span>Data Entry/Operator/BP0 (51) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span>Driving/Motor Technician (33) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span>Security/Support Service (70) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span>Law/Legal (17) </span></a></li>
+                      <li><a href="/pages/terms-conditions"><span>Others (29)</span></a></li>                    
                     </ul>
                   </div>
                 </div>
@@ -93,14 +107,15 @@ function Footer() {
                   <div className="footer-block footer-menu">
                     <h6>Top Company<span className="icon"></span></h6>
                     <ul className="f-list">
-                      <li><a href="/account"><span> My Account </span></a></li>
-                      <li><a href="/apps/wishlist"><span>Wishlist</span></a></li>
-                      <li><a href="/cart"><span> Shopping Cart </span></a></li>
-                      <li><a
-                        href="/pages/terms-conditions"><span> Terms &amp; Conditions </span></a>
-                      </li>
-                      <li><a href="/apps/help-center"><span> FAQs </span></a></li>
-                      <li><a href="/pages/about-us"><span> About Us </span></a></li>
+                      <li><a href="/account"><span> Xero </span></a></li>
+                      <li><a href="/apps/wishlist"><span>Reckon</span></a></li>
+                      <li><a href="/cart"><span> Flexidocs </span></a></li>
+                      <li><a href="/apps/help-center"><span> Microsoft Exchange </span></a></li>
+                      <li><a href="/pages/about-us"><span> Mailchimp </span></a></li>
+                      <li><a href="/pages/about-us"><span> mvoa </span></a></li>
+                      <li><a href="/pages/about-us"><span> Quickbooks </span></a></li>
+                      <li><a href="/pages/about-us"><span> Dropbox </span></a></li>
+                      <li><a href="/pages/about-us"><span> TrustSphere </span></a></li>
                     </ul>
                   </div>
                 </div>

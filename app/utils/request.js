@@ -43,17 +43,17 @@ function checkStatus(response) {
 //     .then(parseJSON);
 // }
 
-export default function request(url, method, data) {
-  console.log('test')
+export default function request(option) {
+  console.log('test', option)
   const parameters = {
-    method: method,
+    method: option.method,
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(option.payload)
   };
 
-  return fetch(url, parameters)
+  return fetch(option.requestURL, parameters)
     .then(checkStatus)
     .then(parseJSON);
 }

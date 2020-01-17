@@ -83,6 +83,31 @@ section {
 
 .explore-the-opportunities {
   background: #ffffff;
+
+  .opportunities {
+    padding: 20px 50px;
+    box-shadow: 0 10px 20px rgba(140, 140, 140, 0.19), 0 6px 6px rgba(140, 140, 140, 0.23);
+  }
+
+  img {
+    width: 25%;
+    z-index: 1;
+  }
+
+  h4 {
+    margin: 10px 0;
+  }
+
+  p {
+    line-height: 1.9;
+    padding: 0 !important;
+    margin: 0 !important ;
+    font-weight: bold;
+    span {
+      color: gray;
+    }
+  }
+
 }
 
 .browse-jobs-by-catogery {
@@ -96,6 +121,75 @@ section {
     border-right: 1px solid #F4F5F6 ;
 
   }
+}
+
+.latest-job {
+
+  ul.job-search-type li {
+    padding: 0 10px;
+  }
+
+  ul.job-search-type li.active {
+    color: blue;
+  }
+
+  img.company {
+    width: 5%;
+  }
+
+  .table {
+    td, th {
+      vertical-align: inherit;
+    }
+
+    .comapny-job-desc {
+      text-align: left;
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .table-footer {
+    p {
+      span {
+        color: blue;
+      }
+    }
+  }
+}
+
+.over-top-company {
+
+  img.shape {
+    width: 15%;
+  }
+
+  h2 {
+    margin: 15px 0;
+  }
+
+  a.btn-white {
+    background: white;
+    border: 1px solid white;
+    color: #006db3;
+    font-weight: normal;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px 25px;
+  }
+
+  a.btn-blue {
+    background: #006db3;
+    border: 1px solid #006db3;
+    color: white;
+    font-weight: normal;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px 25px;
+  }
+
+
 }
 
 .transfer-wise {

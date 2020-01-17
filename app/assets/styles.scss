@@ -13642,6 +13642,31 @@ iframe#preview-bar-iframe {
       }
     }
   }
+
+  p.desc {
+    color: $footer-link-color;
+  }
+
+  a.btn-white {
+    background: white;
+    border: 1px solid white;
+    color: #006db3;
+    font-weight: normal;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px 25px;
+  }
+
+  a.btn-blue {
+    background: #006db3;
+    border: 1px solid #006db3;
+    color: white;
+    font-weight: normal;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px 25px;
+  }
+
   ul.f-list {
     margin: 28px 0 0;
     @media (max-width: 767px) {

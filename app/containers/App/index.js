@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
-import RegistrationPage from 'containers/RegistrationPage/Loadable';
+import AccountPage from 'containers/AccountPage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
@@ -52,7 +52,7 @@ export default function App() {
           <Switch>
               <Route exact path="/" component={HomePage} />
               <Route path="/features" component={FeaturePage} />
-              <Route path="/account" component={RegistrationPage} />
+              <Route path="/account" component={AccountPage} />
               <Route path="" component={NotFoundPage} />
           </Switch>
           <Footer />

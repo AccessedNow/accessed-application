@@ -83,8 +83,9 @@ function Footer() {
                     </div>
                   </div>
                 </div>
-                <div className="col-lg-4 col-md-4 col-sm-3 col-12">
+                <div className="col-lg-4 col-md-4 col-sm-3 col-12">                
                   <div className="footer-block footer-menu">
+                    <h6 className="hide-title">Top Company<span className="icon"></span></h6>
                     <ul className="f-list">
                       <li><a href="/pages/about-us"><span>H &amp; Telecommunication (365) </span></a></li>
                       <li><a href="/pages/contact-us"><span>Marketing/Sales (605)</span></a></li>

@@ -20,7 +20,7 @@ export function* registerSaga(action) {
   try {
     const response = yield call(request, option); //, action.payload.userData
     yield put(registerSuccess(response))
-  } catch(error) {
+  } catch (error) {
     yield put(registerFailure(error))
   }
 }
@@ -38,7 +38,7 @@ export function* loginSaga(action) {
   try {
     const response = yield call(request, option); //, action.payload.userData
     yield put(loginSuccess(response))
-  } catch(error) {
+  } catch (error) {
     yield put(loginFailure(error))
   }
 }
@@ -50,5 +50,4 @@ export default function* accountWatch() {
   console.log('watch')
   yield takeEvery("LOGIN_USER", loginSaga);
   yield takeEvery("REGISTER_USER", registerSaga);
-
 }

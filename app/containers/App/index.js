@@ -15,9 +15,9 @@ import HomePage from 'containers/HomePage/Loadable';
 import AccountPage from 'containers/AccountPage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import PostPage from 'containers/Postpage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-
 import GlobalStyle from '../../global-styles';
 
 
@@ -40,23 +40,24 @@ const AppWrapper = styled.div`
 `;
 
 export default function App() {
-  return (
-      <AppWrapper>
-          <Helmet
-              titleTemplate="%s - Hiring"
-              defaultTitle="Accessed - World Connect"
-          >
-              <meta name="description" content="World Connection" />
-          </Helmet>
-          <Header />
-          <Switch>
-              <Route exact path="/" component={HomePage} />
-              <Route path="/features" component={FeaturePage} />
-              <Route path="/account" component={AccountPage} />
-              <Route path="" component={NotFoundPage} />
-          </Switch>
-          <Footer />
-          <GlobalStyle />
-      </AppWrapper>
-  );
+    return (
+        <AppWrapper>
+            <Helmet
+                titleTemplate="%s - Hiring"
+                defaultTitle="Accessed - World Connect"
+            >
+                <meta name="description" content="World Connection" />
+            </Helmet>
+            <Header />
+            <Switch>
+                <Route exact path="/" component={HomePage} />
+                <Route path="/features" component={FeaturePage} />
+                <Route path="/account" component={AccountPage} />
+                <Route path="/post" component={PostPage} />
+                <Route path="" component={NotFoundPage} />
+            </Switch>
+            <Footer />
+            <GlobalStyle />
+        </AppWrapper>
+    );
 }

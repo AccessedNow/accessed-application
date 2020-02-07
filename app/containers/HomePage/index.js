@@ -31,7 +31,7 @@ export function HomePage() {
       </Helmet>
       <div id="body-content">
         <div id="main-content">
-          <Jumbo/>
+          <Jumbo />
           {/* explore-the-opportunities */}
           <section className="explore-the-opportunities">
             <div className="container">
@@ -84,7 +84,7 @@ export function HomePage() {
                     <p>$1,240 <span>of Hiring reward</span></p>
                     <p>9 San Francisco</p>
                   </div>
-                </div>            
+                </div>
                 <div className="col-md-4 col-sm-4">
                   <div className="opportunities">
                     <img src={step1} className="img-responsive" alt="" />
@@ -98,7 +98,7 @@ export function HomePage() {
           </section>
 
           {/* browse-jobs-by-catogery */}
-           <section className='browse-jobs-by-catogery'>
+          <section className='browse-jobs-by-catogery'>
             <div className="container">
               <div className="row" data-aos="fade-up">
                 <div className="col-md-12">
@@ -112,7 +112,7 @@ export function HomePage() {
                 <div className="col-md-4 col-sm-4">
                   <div className="working-process">
                     <span className="process-img">
-                    <img src={step1} className="img-responsive" alt="" />
+                      <img src={step1} className="img-responsive" alt="" />
                     </span>
                     <h4>Accounting/Finance</h4>
                     <p>193 Open Position</p>
@@ -121,7 +121,7 @@ export function HomePage() {
                 <div className="col-md-4 col-sm-4 border-left-right">
                   <div className="working-process">
                     <span className="process-img">
-                    <img src={step2} className="img-responsive" alt="" />
+                      <img src={step2} className="img-responsive" alt="" />
                     </span>
                     <h4>Design/Creative</h4>
                     <p>193 Open Position</p>
@@ -130,7 +130,7 @@ export function HomePage() {
                 <div className="col-md-4 col-sm-4">
                   <div className="working-process">
                     <span className="process-img">
-                    <img src={step3} className="img-responsive" alt="" />
+                      <img src={step3} className="img-responsive" alt="" />
                     </span>
                     <h4>IT &amp; Telecommunication</h4>
                     <p>193 Open Position</p>
@@ -141,7 +141,7 @@ export function HomePage() {
                 <div className="col-md-4 col-sm-4">
                   <div className="working-process">
                     <span className="process-img">
-                    <img src={step1} className="img-responsive" alt="" />
+                      <img src={step1} className="img-responsive" alt="" />
                     </span>
                     <h4>Accounting/Finance</h4>
                     <p>193 Open Position</p>
@@ -150,7 +150,7 @@ export function HomePage() {
                 <div className="col-md-4 col-sm-4 border-left-right">
                   <div className="working-process">
                     <span className="process-img">
-                    <img src={step2} className="img-responsive" alt="" />
+                      <img src={step2} className="img-responsive" alt="" />
                     </span>
                     <h4>Design/Creative</h4>
                     <p>193 Open Position</p>
@@ -159,7 +159,7 @@ export function HomePage() {
                 <div className="col-md-4 col-sm-4">
                   <div className="working-process">
                     <span className="process-img">
-                    <img src={step3} className="img-responsive" alt="" />
+                      <img src={step3} className="img-responsive" alt="" />
                     </span>
                     <h4>IT &amp; Telecommunication</h4>
                     <p>193 Open Position</p>
@@ -191,7 +191,7 @@ export function HomePage() {
                       <tr>
                         <td>
                           <div className="d-flex comapny-job-desc">
-                            <img className='company' src={companyLogo} alt='company logo'/>
+                            <img className='company' src={companyLogo} alt='company logo' />
                             <div className='ml-4'>
                               <h5>Collective Press</h5>
                               <span>Webdesign Redesign</span>
@@ -204,7 +204,7 @@ export function HomePage() {
                       <tr>
                         <td>
                           <div className="d-flex comapny-job-desc">
-                            <img className='company' src={companyLogo} alt='company logo'/>
+                            <img className='company' src={companyLogo} alt='company logo' />
                             <div className='ml-4'>
                               <h5>Collective Press</h5>
                               <span>Webdesign Redesign</span>
@@ -217,7 +217,7 @@ export function HomePage() {
                       <tr>
                         <td>
                           <div className="d-flex comapny-job-desc">
-                            <img className='company' src={companyLogo} alt='company logo'/>
+                            <img className='company' src={companyLogo} alt='company logo' />
                             <div className='ml-4'>
                               <h5>Collective Press</h5>
                               <span>Webdesign Redesign</span>
@@ -230,7 +230,7 @@ export function HomePage() {
                       <tr>
                         <td>
                           <div className="d-flex comapny-job-desc">
-                            <img className='company' src={companyLogo} alt='company logo'/>
+                            <img className='company' src={companyLogo} alt='company logo' />
                             <div className='ml-4'>
                               <h5>Collective Press</h5>
                               <span>Webdesign Redesign</span>
@@ -243,7 +243,7 @@ export function HomePage() {
                       <tr>
                         <td>
                           <div className="d-flex comapny-job-desc">
-                            <img className='company' src={companyLogo} alt='company logo'/>
+                            <img className='company' src={companyLogo} alt='company logo' />
                             <div className='ml-4'>
                               <h5>Collective Press</h5>
                               <span>Webdesign Redesign</span>
@@ -256,7 +256,7 @@ export function HomePage() {
                       <tr>
                         <td>
                           <div className="d-flex comapny-job-desc">
-                            <img className='company' src={companyLogo} alt='company logo'/>
+                            <img className='company' src={companyLogo} alt='company logo' />
                             <div className='ml-4'>
                               <h5>Collective Press</h5>
                               <span>Webdesign Redesign</span>
@@ -269,7 +269,7 @@ export function HomePage() {
                       <tr>
                         <td>
                           <div className="d-flex comapny-job-desc">
-                            <img className='company' src={companyLogo} alt='company logo'/>
+                            <img className='company' src={companyLogo} alt='company logo' />
                             <div className='ml-4'>
                               <h5>Collective Press</h5>
                               <span>Webdesign Redesign</span>
@@ -282,7 +282,7 @@ export function HomePage() {
                       <tr>
                         <td>
                           <div className="d-flex comapny-job-desc">
-                            <img className='company' src={companyLogo} alt='company logo'/>
+                            <img className='company' src={companyLogo} alt='company logo' />
                             <div className='ml-4'>
                               <h5>Collective Press</h5>
                               <span>Webdesign Redesign</span>
@@ -295,7 +295,7 @@ export function HomePage() {
                       <tr>
                         <td>
                           <div className="d-flex comapny-job-desc">
-                            <img className='company' src={companyLogo} alt='company logo'/>
+                            <img className='company' src={companyLogo} alt='company logo' />
                             <div className='ml-4'>
                               <h5>Collective Press</h5>
                               <span>Webdesign Redesign</span>
@@ -308,7 +308,7 @@ export function HomePage() {
                       <tr>
                         <td>
                           <div className="d-flex comapny-job-desc">
-                            <img className='company' src={companyLogo} alt='company logo'/>
+                            <img className='company' src={companyLogo} alt='company logo' />
                             <div className='ml-4'>
                               <h5>Collective Press</h5>
                               <span>Webdesign Redesign</span>
@@ -317,7 +317,7 @@ export function HomePage() {
                         </td>
                         <td>Full Time</td>
                         <td>San Francisco, CA</td>
-                      </tr>                      
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -348,16 +348,16 @@ export function HomePage() {
                   <img className="shape" src={shape} alt="shape" />
                   <h2>Over 10,000 top <br />Companies join with us</h2>
                   <p>postingnow includes out of the box integration with major <br />
-                  CRM &amp; accounting and ERP platforms, as well as an open <br />
-                  API that allows you to seamlessly integrate with your busi-<br />
-                  ness systems.</p>
-                  <div>                    
+                    CRM &amp; accounting and ERP platforms, as well as an open <br />
+                    API that allows you to seamlessly integrate with your busi-<br />
+                    ness systems.</p>
+                  <div>
                     <a href="/account" title="Sign Up Free" className="ml-3 btn btn-blue">SIGN UP FREE</a>
                     <a href="/account" title="Watch video" className="ml-3 btn btn-white">Watch Video</a>
                   </div>
                 </div>
                 <div className="pt-5 left-side col-lg-6 col-md-6 col-sm-12 col-12">
-                  <img src={techcom} alt="teamimage" />                  
+                  <img src={techcom} alt="teamimage" />
                 </div>
               </div>
             </div>
@@ -366,27 +366,27 @@ export function HomePage() {
           {/* transferwise */}
           <section className="transfer-wise">
             {/* <div className="container"> */}
-              <div className="row">
-                <div className="right-side d-flex justify-content-center align-items-center col-lg-6 col-md-6 col-sm-12 col-12">
-                  <img src={techcom} alt="teamimage" />
-                </div>
-                <div className="pt-5 left-side d-flex justify-content-between flex-column col-lg-6 col-md-6 col-sm-12 col-12">
-                  <h3 className="mt-4">TransferWise</h3>
-                  <p className="mt-4 quote">"Working with Checkout com on cards processing,<br />
+            <div className="row">
+              <div className="right-side d-flex justify-content-center align-items-center col-lg-6 col-md-6 col-sm-12 col-12">
+                <img src={techcom} alt="teamimage" />
+              </div>
+              <div className="pt-5 left-side d-flex justify-content-between flex-column col-lg-6 col-md-6 col-sm-12 col-12">
+                <h3 className="mt-4">TransferWise</h3>
+                <p className="mt-4 quote">"Working with Checkout com on cards processing,<br />
                   they've proven to be flexible, responsive, and delivered <br />
                   excellent customer service."</p>
-                  <div className="author">
-                    <h6>Ilya Leyrikh</h6>
-                    <p className="pt-3">Head of Product</p>
-                  </div>
-                  <div className="list-content d-flex justify-content-around align-items-center">
-                    <span>TransferWise</span> 
-                    <span>AnyVan</span> 
-                    <span>Flyin.com</span> 
-                    <span>iBooldng.com</span>                       
-                  </div>
+                <div className="author">
+                  <h6>Ilya Leyrikh</h6>
+                  <p className="pt-3">Head of Product</p>
+                </div>
+                <div className="list-content d-flex justify-content-around align-items-center">
+                  <span>TransferWise</span>
+                  <span>AnyVan</span>
+                  <span>Flyin.com</span>
+                  <span>iBooldng.com</span>
                 </div>
               </div>
+            </div>
             {/* </div> */}
           </section>
         </div>

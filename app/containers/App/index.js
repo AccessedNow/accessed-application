@@ -14,6 +14,7 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import CompanyPage from 'containers/CompanyPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
@@ -40,21 +41,22 @@ const AppWrapper = styled.div`
 
 export default function App() {
   return (
-      <AppWrapper>
-          <Helmet
-              titleTemplate="%s - Hiring"
-              defaultTitle="Accessed - World Connect"
-          >
-              <meta name="description" content="World Connection" />
-          </Helmet>
-          <Header />
-          <Switch>
-              <Route exact path="/" component={HomePage} />
-              <Route path="/features" component={FeaturePage} />
-              <Route path="" component={NotFoundPage} />
-          </Switch>
-          <Footer />
-          <GlobalStyle />
-      </AppWrapper>
+    <AppWrapper>
+      <Helmet
+        titleTemplate="%s - Hiring"
+        defaultTitle="Accessed - World Connect"
+      >
+        <meta name="description" content="World Connection" />
+      </Helmet>
+      <Header />
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/features" component={FeaturePage} />
+        <Route path="/company" component={CompanyPage} />
+        <Route path="" component={NotFoundPage} />
+      </Switch>
+      <Footer />
+      <GlobalStyle />
+    </AppWrapper>
   );
 }

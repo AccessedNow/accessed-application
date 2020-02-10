@@ -19,8 +19,7 @@ export const initState = {
   companyListError: '',
   paginate: {
     current: 0,
-    total: 0,
-    limit: 10
+    total: 0
   }
 };
 
@@ -29,9 +28,6 @@ const companyReducer = (state = initState, action) =>
     switch (action.type) {
       case FETCH_COMPANY_LIST_SUCCESS:
         draft.companyList = action.payload;
-        draft.paginate.total = action.payload.data.totalPages;
-        draft.paginate.current = action.payload.data.number;
-        draft.paginate.limit = action.payload.data.size;
         break;
       case FETCH_COMPANY_LIST_ERROR:
         draft.companyListError = action.payload

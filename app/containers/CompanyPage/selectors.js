@@ -10,13 +10,13 @@ const selectCompany = state => state.company || initState;
 const companies = () =>
   createSelector(
     selectCompany,
-    companyState => companyState.companyList.data.content,
+    companyState => companyState.companyList.data
   );
 
 const paginate = () =>
   createSelector(
     selectCompany,
-    companyState => companyState.paginate,
+    companyState => companyState.paginate
   );
 
 export { selectCompany, companies, paginate };

@@ -38,7 +38,6 @@ function checkStatus(response) {
  * @return {object}           The response data
  */
 export default function request(option) {
-  console.log('test', option)
   const parameters = {
     method: option.method,
     headers: {

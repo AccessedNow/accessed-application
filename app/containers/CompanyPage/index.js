@@ -4,7 +4,7 @@
  * This page will display companies lsit on our App, at the '/company' route
  */
 
-import React, { useEffect, memo } from 'react';
+import React, { useEffect, memo, useState } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
@@ -15,23 +15,49 @@ import { useInjectSaga } from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
 import { companies, paginate } from './selectors';
-
-import ComapnyCard from '../../components/ComapnyCard';
+import SideBar from '../../components/SideBar';
+import ToolBar from '../../components/ToolBar';
+import CompanyCard from '../../components/ComapnyCard';
 import Paginate from '../../components/Paginate';
 
 const key = 'company';
 
 export function CompanyPage({
-  onLoadCompanies, companies, paginate
+  onLoadCompanies, companies, paginate, onApplyFilter
 }) {
 
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
+
+  const [params, setParams] = useState({
+    page: 0,
+    limit: 10,
+    sortBy: 'ASC'
+  });
+
   useEffect(() => {
-    onLoadCompanies()
+    onLoadCompanies(params);
   }, []);
 
-  console.log(paginate)
+  const menus = [
+    { name: 'All', path: '#' },
+    { name: 'Jobs', path: '#' },
+    { name: 'Company', path: '#' },
+    { name: 'Salary', path: '#' }
+  ];
+
+  useEffect(() => {
+    onApplyFilter(params);
+  }, [params]);
+
+  const onSortSelect = (type) => {
+    setParams({ ...params, sortBy: type });
+  };
+
+  const onPageClick = (pageNum) => {
+    setParams({ ...params, page: pageNum });
+  }
+
   return (
     <article>
       <Helmet>
@@ -39,62 +65,92 @@ export function CompanyPage({
       </Helmet>
       <div id="body-content">
         <div id="main-content">
-          <div className="main-content" id="account-content">
-            <div className="wrap-breadcrumb bw-color">
-              <div id="breadcrumb" className="breadcrumb-holder container">
-                <ul className="breadcrumb">
-                  <li itemScope="" itemType="http://data-vocabulary.org/Breadcrumb">
-                    <a itemProp="url" href="/">
-                      <span itemProp="title" className="d-none">Arena Electro</span>Home
+          <div id="main-content">
+            <div id="shopify-section-collection-template" className="shopify-section">
+              <div className="wrap-breadcrumb bw-color">
+
+                {/* Breadcrumb Start */}
+                <div id="breadcrumb" className="breadcrumb-holder container">
+                  <ul className="breadcrumb">
+                    <li itemScope="" itemType="http://data-vocabulary.org/Breadcrumb">
+                      <a itemProp="url" href="/">
+                        <span itemProp="title" className="d-none">Arena Electro</span>Home
                     </a>
-                  </li>
-                  <li className="active">Companies</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12 col-md-12">
-                <div className="wrap-cata-title">
-                  <h2>Companies</h2>
+                    </li>
+                    <li itemScope="" itemType="http://data-vocabulary.org/Breadcrumb" className="d-none">
+                      <a href="/collections/all" itemProp="url">
+                        <span itemProp="title">Companies</span>
+                      </a>
+                    </li>
+                    <li className="active">Companies</li>
+                  </ul>
                 </div>
+                {/* Breadcrumb End */}
+              </div>
 
-                <div id="col-main">
-                  <div className="cata-product cp-grid">
-                    {companies.map((item) => (
-                      <ComapnyCard
-                        key={item.id}
-                        title={item.groupName}
-                        category={item.partyType.name}
-                        rating={item.rating}
-                        city={item.city}
-                        country={item.country}
-                        companySize={item.companySize}
-                        id={item.id}
-                        logo={item.logoImageUrl}
-                      />
-                    ))}
+              {/* Main Container Start */}
+              <div className="page-cata active-sidebar" data-logic="true">
+                <div className="container">
+                  <div className="row">
+                    {/* Side Bar */}
+                    <SideBar title={'Categories'} menus={menus} />
+
+
+                    <div className="col-lg-9 col-md-12">
+                      {/* Heading Start */}
+                      <div className="wrap-cata-title">
+                        <h2>Companies</h2>
+                      </div>
+                      {/* Heading End */}
+
+                      <ToolBar onSortSelect={onSortSelect} totalElements={companies.totalElements} number={companies.number} numberOfElements={companies.numberOfElements} />
+
+                      <div id="col-main">
+                        <div className="cata-product cp-grid">
+                          {/* Card View Start*/}
+                          {companies.content.map((item) => (
+                            <CompanyCard
+                              key={item.id}
+                              title={item.groupName}
+                              category={item.partyType.name}
+                              rating={item.rating}
+                              city={item.city}
+                              country={item.country}
+                              companySize={item.companySize}
+                              id={item.id}
+                              logo={item.logoImageUrl}
+                            />
+                          ))}
+                          {/* Card View End */}
+                        </div>
+                        {/* Paginate Start*/}
+
+                        <Paginate
+                          current={companies.number}
+                          total={companies.totalPages}
+                          onPageClick={onPageClick}
+                        />
+                        {/* Paginate End*/}
+                      </div>
+
+                    </div>
+
                   </div>
                 </div>
-                <Paginate
-                  current={paginate.current}
-                  total={paginate.total}
-                />
               </div>
+              {/* Main Container End */}
+
             </div>
           </div>
-
         </div>
       </div>
-    </article>
+    </article >
   );
 }
 
 CompanyPage.propTypes = {
   onLoadCompanies: PropTypes.func,
-  companies: PropTypes.array.isRequired
+  companies: PropTypes.object.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -104,8 +160,11 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLoadCompanies: () => {
-      dispatch({ type: 'COMPANY_LIST' });
+    onLoadCompanies: (params) => {
+      dispatch({ type: 'COMPANY_LIST', params });
+    },
+    onApplyFilter: (params) => {
+      dispatch({ type: 'COMPANY_LIST_FILTER', params });
     }
   };
 };

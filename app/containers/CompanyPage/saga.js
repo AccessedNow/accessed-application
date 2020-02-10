@@ -3,9 +3,9 @@ import { companyListSuccess, companyListError } from './actions';
 import request from "../../utils/request";
 
 
-export function* fetchCompanyListSaga() {
+export function* fetchCompanyListSaga(params) {
   let option = {
-    requestURL: `http://accessed.us-west-2.elasticbeanstalk.com/api/search/all?searchType=COMPANY&page=0&size=10&sortBy=groupName&direction=DESC`,
+    requestURL: `http://accessed.us-west-2.elasticbeanstalk.com/api/search/all?searchType=COMPANY&page=${params.page}&size=${params.limit}&sortBy=groupName&direction=${params.sortBy}`,
     method: 'GET',
   };
 
@@ -17,7 +17,14 @@ export function* fetchCompanyListSaga() {
   }
 }
 
+
+export function* applyFilter(parameter) {
+  yield fetchCompanyListSaga(parameter.params);
+}
+
+
 // Watcher Saga
 export default function* companyWatch() {
   yield takeEvery('COMPANY_LIST', fetchCompanyListSaga);
+  yield takeEvery('COMPANY_LIST_FILTER', applyFilter);
 }

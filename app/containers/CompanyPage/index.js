@@ -72,6 +72,8 @@ export function CompanyPage({
                         city={item.city}
                         country={item.country}
                         companySize={item.companySize}
+                        id={item.id}
+                        logo={item.logoImageUrl}
                       />
                     ))}
                   </div>

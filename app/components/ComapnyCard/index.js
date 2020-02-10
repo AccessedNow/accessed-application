@@ -5,8 +5,10 @@
  */
 
 import React from 'react';
+import Config from '../../Config';
 
-const CompanyCard = ({ title, category, rating, city, country, companySize }) => {
+const CompanyCard = ({ title, category, rating, city, country, companySize, id, logo }) => {
+  let logoUrl = `${Config.S3}company/${id}/images/${logo}`;
   return (
     <div className="product-grid-item mode-view-item">
       <div className="product-wrapper effect-none  ">
@@ -36,15 +38,15 @@ const CompanyCard = ({ title, category, rating, city, country, companySize }) =>
                 <img
                   className="featured-image front"
                   alt="Black Fashion Example"
-                  src="//cdn.shopify.com/s/files/1/0013/8815/0848/products/GamePad_03d118f5-327b-4b34-873e-9973f418bd08_420x.jpg?v=1573390508"
-                  style={{ position: 'unset' }}
+                  src={logoUrl}
+                  style={{ position: 'unset', height: 150, width: 350 }}
                 />
 
                 <span className="img-back d-none d-lg-block">
-                  <img style={{ position: 'unset' }}
+                  <img style={{ position: 'unset', height: 150, width: 350 }}
                     className="back"
                     alt="Black Fashion Example"
-                    src="//cdn.shopify.com/s/files/1/0013/8815/0848/products/GamePad2_f4a92d9b-379a-447c-890b-2715adadcd11_300x.jpg?v=1573390508" />
+                    src={logoUrl} />
                 </span>
               </a>
             </div>

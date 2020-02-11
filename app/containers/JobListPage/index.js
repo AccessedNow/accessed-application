@@ -1,7 +1,7 @@
 /*
- * CompanyPage
+ * JobListPage
  *
- * This page will display companies lsit on our App, at the '/company' route
+ * This page will display jobs list on our App, at the '/jobs' route
  */
 
 import React, { useEffect, memo, useState } from 'react';
@@ -14,17 +14,17 @@ import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { companies, paginate } from './selectors';
+import { jobs } from './selectors';
 import SideBar from '../../components/SideBar';
 import ToolBar from '../../components/ToolBar';
-import CompanyCard from '../../components/CompanyCard';
+import JobCard from '../../components/JobCard';
 import Paginate from '../../components/Paginate';
 import CompanyFilter from '../../components/CompanyFilter';
 
-const key = 'company';
+const key = 'job';
 
-export function CompanyPage({
-  onLoadCompanies, companies, paginate, onApplyFilter
+export function JobListPage({
+  jobs, onApplyFilter
 }) {
 
   useInjectReducer({ key, reducer });
@@ -58,7 +58,7 @@ export function CompanyPage({
   return (
     <article>
       <Helmet>
-        <title>Companies</title>
+        <title>Jobs</title>
       </Helmet>
       <div id="body-content">
         <div id="main-content">
@@ -71,15 +71,15 @@ export function CompanyPage({
                   <ul className="breadcrumb">
                     <li itemScope="" itemType="http://data-vocabulary.org/Breadcrumb">
                       <a itemProp="url" href="/">
-                        <span itemProp="title" className="d-none">Arena Electro</span>Home
+                        <span itemProp="title" className="d-none">Amazed</span>Home
                     </a>
                     </li>
                     <li itemScope="" itemType="http://data-vocabulary.org/Breadcrumb" className="d-none">
                       <a href="/collections/all" itemProp="url">
-                        <span itemProp="title">Companies</span>
+                        <span itemProp="title">Jobs</span>
                       </a>
                     </li>
-                    <li className="active">Companies</li>
+                    <li className="active">Jobs</li>
                   </ul>
                 </div>
                 {/* Breadcrumb End */}
@@ -100,26 +100,19 @@ export function CompanyPage({
                     <div className="col-lg-9 col-md-12">
                       {/* Heading Start */}
                       <div className="wrap-cata-title">
-                        <h2>Companies</h2>
+                        <h2>Jobs</h2>
                       </div>
                       {/* Heading End */}
 
-                      <ToolBar onSortSelect={onSortSelect} totalElements={companies.totalElements} number={companies.number} numberOfElements={companies.numberOfElements} />
+                      <ToolBar onSortSelect={onSortSelect} totalElements={jobs.totalElements} number={jobs.number} numberOfElements={jobs.numberOfElements} />
 
                       <div id="col-main">
                         <div className="cata-product cp-grid">
                           {/* Card View Start*/}
-                          {companies.content.map((item) => (
-                            <CompanyCard
+                          {jobs.content.map((item) => (
+                            <JobCard
                               key={item.id}
-                              title={item.groupName}
-                              category={item.partyType.name}
-                              rating={item.rating}
-                              city={item.city}
-                              country={item.country}
-                              companySize={item.companySize}
-                              id={item.id}
-                              logo={item.logoImageUrl}
+                              jobData={item}
                             />
                           ))}
                           {/* Card View End */}
@@ -127,8 +120,8 @@ export function CompanyPage({
 
                         {/* Paginate Start*/}
                         <Paginate
-                          current={companies.number}
-                          total={companies.totalPages}
+                          current={jobs.number}
+                          total={jobs.totalPages}
                           onPageClick={onPageClick}
                         />
                         {/* Paginate End*/}
@@ -149,23 +142,21 @@ export function CompanyPage({
   );
 }
 
-CompanyPage.propTypes = {
-  onLoadCompanies: PropTypes.func,
-  companies: PropTypes.object.isRequired
+JobListPage.propTypes = {
+  jobs: PropTypes.object.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
-  companies: companies(),
-  paginate: paginate(),
+  jobs: jobs()
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLoadCompanies: (params) => {
-      dispatch({ type: 'COMPANY_LIST', params });
+    onLoadJobs: (params) => {
+      dispatch({ type: 'JOB_LIST', params });
     },
     onApplyFilter: (params) => {
-      dispatch({ type: 'COMPANY_LIST_FILTER', params });
+      dispatch({ type: 'JOB_LIST_FILTER', params });
     }
   };
 };
@@ -175,4 +166,4 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps);
 export default compose(
   withConnect,
   memo,
-)(CompanyPage);
+)(JobListPage);

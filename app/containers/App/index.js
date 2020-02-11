@@ -15,6 +15,7 @@ import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import CompanyPage from 'containers/CompanyPage/Loadable';
+import JobListPage from 'containers/JobListPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
@@ -29,6 +30,7 @@ import '../../assets/styles.scss';
 import '../../assets/themes.scss';
 import '../../assets/bc_wl_cp_style.scss';
 import '../../assets/change_color.scss';
+
 
 
 
@@ -53,6 +55,7 @@ export default function App() {
         <Route exact path="/" component={HomePage} />
         <Route path="/features" component={FeaturePage} />
         <Route path="/company" component={CompanyPage} />
+        <Route path="/jobs" component={JobListPage} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />

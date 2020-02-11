@@ -7,6 +7,9 @@
 import React from 'react';
 import Config from '../../Config';
 
+import './CompanyCard.scss';
+
+
 const CompanyCard = ({ title, category, rating, city, country, companySize, id, logo }) => {
   let logoUrl = `${Config.S3}company/${id}/images/${logo}`;
   return (

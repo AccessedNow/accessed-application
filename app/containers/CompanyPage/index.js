@@ -17,7 +17,7 @@ import saga from './saga';
 import { companies, paginate } from './selectors';
 import SideBar from '../../components/SideBar';
 import ToolBar from '../../components/ToolBar';
-import CompanyCard from '../../components/ComapnyCard';
+import CompanyCard from '../../components/CompanyCard';
 import Paginate from '../../components/Paginate';
 
 const key = 'company';

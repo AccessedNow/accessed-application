@@ -92,7 +92,7 @@ function Footer() {
 
                                               <li>
                                                   <a target="_blank" rel="noopener"
-                                                     href="https://www.facebook.com/shopify/" title="Facebook">
+                                                     href="https://www.facebook.com/accessed/" title="Facebook">
 
                                                       <i className="demo-icon icon-facebook"></i>
 
@@ -102,7 +102,7 @@ function Footer() {
 
                                               <li>
                                                   <a target="_blank" rel="noopener"
-                                                     href="https://www.twitter.com/shopify/" title="Twitter">
+                                                     href="https://www.twitter.com/accessed/" title="Twitter">
 
                                                       <i className="demo-icon icon-twitter-bird"></i>
 
@@ -112,7 +112,7 @@ function Footer() {
 
                                               <li>
                                                   <a target="_blank" rel="noopener"
-                                                     href="https://www.instagram.com/shopify/" title="Instagram">
+                                                     href="https://www.instagram.com/accessed/" title="Instagram">
 
                                                       <i className="demo-icon icon-instagram-1"></i>
 
@@ -122,7 +122,7 @@ function Footer() {
 
                                               <li>
                                                   <a target="_blank" rel="noopener"
-                                                     href="https://www.pinterest.com/shopify/" title="Pinterest">
+                                                     href="https://www.pinterest.com/accessed/" title="Pinterest">
 
                                                       <i className="demo-icon icon-pinterest-circled"></i>
 
@@ -182,19 +182,16 @@ function Footer() {
 
                                       <ul className="f-list">
 
-                                          <li><a href="/collections/accessories"><span>Accessories </span></a></li>
+                                          <li><a href="/company"><span>Company </span></a></li>
 
-                                          <li><a href="/collections/gaming"><span>Gaming </span></a></li>
+                                          <li><a href="/jobs"><span>Jobs </span></a></li>
 
                                           <li><a
-                                              href="/collections/laptops-computer"><span>Laptops &amp; Computer </span></a>
+                                              href="/News"><span>News </span></a>
                                           </li>
 
-                                          <li><a href="/collections/mac-computers"><span>Mac Computers </span></a></li>
+                                          <li><a href="/people"><span>People </span></a></li>
 
-                                          <li><a href="/collections/pc-computers"><span>PC Computers </span></a></li>
-
-                                          <li><a href="/collections/ultrabooks"><span>Ultrabooks</span></a></li>
 
                                       </ul>
 
@@ -237,9 +234,7 @@ function Footer() {
 
                                           <li><a href="/account"><span> My Account </span></a></li>
 
-                                          <li><a href="/apps/wishlist"><span>Wishlist</span></a></li>
-
-                                          <li><a href="/cart"><span> Shopping Cart </span></a></li>
+                                          <li><a href="/apps/favorite"><span>Favorite</span></a></li>
 
                                           <li><a
                                               href="/pages/terms-conditions"><span> Terms &amp; Conditions </span></a>
@@ -261,23 +256,7 @@ function Footer() {
 
                                       <h6>In the Spotlight<span className="icon"></span></h6>
 
-                                      <ul className="f-list">
 
-                                          <li><a href="/collections/cameras"><span>Electronics</span></a></li>
-
-                                          <li><a href="/collections/watches"><span>Toys</span></a></li>
-
-                                          <li><a href="/collections/eyewear"><span>Video Games</span></a></li>
-
-                                          <li><a href="/collections/headphone"><span>Home Products</span></a></li>
-
-                                          <li><a href="/collections/keyboard"><span>Clothing</span></a></li>
-
-                                          <li><a
-                                              href="/collections/mac-computers"><span>Sports &amp; Outdoors</span></a>
-                                          </li>
-
-                                      </ul>
 
                                   </div>
                               </div>

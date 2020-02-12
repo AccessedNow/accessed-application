@@ -6,7 +6,7 @@ import Config from "../../Config";
 
 export function* fetchJobListSaga(params) {
   let option = {
-    requestURL: `http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search?query=&page=${params.page}&size=${params.limit}&sortBy=createdDate&direction=${params.sortBy}&country=US`,
+    requestURL: `http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search?query=&page=${params.page}&size=${params.limit}&sortBy=createdDate&direction=${params.sortBy}&country=VN`,
     method: 'GET',
   };
 

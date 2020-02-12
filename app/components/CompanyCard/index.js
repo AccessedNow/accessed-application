@@ -8,21 +8,12 @@ import React from 'react';
 import Config from '../../Config';
 
 import './CompanyCard.scss';
+import { numberFormat } from '../../utils/helper';
 
 
 const CompanyCard = ({ title, category, rating, city, country, companySize, id, logo }) => {
   let logoUrl = `${Config.S3}company/${id}/images/${logo}`;
-  var units = ["k", "M", "B", "T"];
 
-  function numberFormat(number) {
-    if (number <= 999) {
-      return number;
-    }
-    var order = Math.floor(Math.log(number) / Math.log(1000));
-    var unitname = units[(order - 1)];
-    var num = number / 1000 ** order;
-    return num.toFixed(1) + unitname
-  }
   let employeesCount = numberFormat(companySize);
   return (
     <div className="product-grid-item mode-view-item">

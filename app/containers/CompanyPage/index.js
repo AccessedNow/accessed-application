@@ -37,10 +37,10 @@ export function CompanyPage({
   });
 
   const menus = [
-    { name: 'All', path: '#' },
-    { name: 'Jobs', path: '#' },
-    { name: 'Company', path: '#' },
-    { name: 'Salary', path: '#' }
+    { name: 'All', path: '/all' },
+    { name: 'Jobs', path: '/jobs' },
+    { name: 'Company', path: '/company' },
+    { name: 'Salary', path: '/salary' }
   ];
 
   useEffect(() => {

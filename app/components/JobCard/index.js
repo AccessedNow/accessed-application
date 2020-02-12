@@ -8,29 +8,23 @@ import React from 'react';
 import Config from '../../Config';
 
 import './JobCard.scss';
+import { numberFormat, dayFormatter } from '../../utils/helper';
+import UserConnections from '../UserConnections';
+import { NavLink } from 'react-router-dom';
 
 
 const JobCard = ({ jobData }) => {
   let logoUrl = `${Config.S3}company/${jobData.company.id}/images/${jobData.company.logoImageUrl}`;
-  var units = ["k", "M", "B", "T"];
-
-  function numberFormat(number) {
-    if (number <= 999) {
-      return number;
-    }
-    var order = Math.floor(Math.log(number) / Math.log(1000));
-    var unitname = units[(order - 1)];
-    var num = number / 1000 ** order;
-    return num.toFixed(1) + unitname
-  }
   let connectionCount = numberFormat(jobData.connection.noConnection);
+  let postedDate = dayFormatter(jobData.createdDate);
+  
   return (
     <div className="product-grid-item mode-view-item">
       <div className="product-wrapper effect-none  ">
         <div className="product-head">
           <div className="product-image">
             <div className="product-group-vendor-name">
-              <h5 className="product-name"><a href="#">{jobData.title}</a></h5>
+              <h5 className="product-name"><NavLink to={'job/' + jobData.id}>{jobData.title}</NavLink></h5>
               <div className="product-vendor">{jobData.company.groupName}</div>
               <div className="product-vendor">{jobData.city}, {jobData.country}</div>
               <div className="product-review">
@@ -71,13 +65,17 @@ const JobCard = ({ jobData }) => {
           <div className="pc-inner">
             <div className="price-cart-wrapper">
               <div className="product-price">
-                <div className="company">
-                  <span className="location">{connectionCount} Connections</span>
-                </div>
+                <ul className="pro-user-avtar">
+                  {jobData.connection.list.map((item) => (
+                    <UserConnections connections={item} key={item.id} />
+                  ))}
+                </ul>
+                <span className="connectionCount">{connectionCount} Connections</span>
+
               </div>
               <div className="product-add-cart">
                 <div className="company">
-                  <span className="employees">2 w</span>
+                  <span className="employees">{postedDate}</span>
                 </div>
               </div>
             </div>

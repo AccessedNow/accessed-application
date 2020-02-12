@@ -3,12 +3,13 @@
 */
 
 import React from 'react';
+import { NavLink } from "react-router-dom";
 
 const SideBarItem = ({ name, path }) => {
   return (
     <li className="">
-      <a href={path}>{name}</a>
-    </li >
+      <NavLink to={path}>{name}</NavLink>
+    </li>
   );
 }
 

@@ -1,0 +1,159 @@
+.alert-box {
+  padding: 25px;
+  border-radius: 0px !important; 
+  p {
+    font-size: 12px;
+    padding: 5px;
+    font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+  }
+  input{
+    height: 45px;
+  }
+}
+
+.btn-alert{
+  border-radius: 0px;
+  background: #006db3;
+  color: white;
+  border: 1px solid #006db3;
+  width: 100%;
+}
+
+.left-side-filters {
+  .sbf-title{
+    span{
+      font-size: 16px;
+    }
+  }
+  .advanced-filter {
+    a {
+      cursor: pointer;
+      width: 100%;
+      span{
+        float: right;
+      }
+    }
+  }
+}
+
+.toolbar-options{
+  width: 40%;
+  float: right;
+}
+
+.toolbar-options-views{
+  float: right;
+}
+
+.toolbar-options-sortBy{
+  float: left;
+}
+
+.toolbar-views{
+  margin-left: 10px;
+}
+
+.bc-toggle{
+  margin-left: 50%;
+}
+
+.cata-toolbar {
+    padding: 7px 0px 0;
+    background: transparent;
+    border-bottom: 1px solid #dddddd;
+    border-radius: 0px;
+}
+
+.filter-icon-order{
+  font-weight: 600;
+}
+
+.slide-main-sec{
+
+    background: #fff;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+    border: 1px solid #d8d8d8;
+        padding: 10px;
+
+
+  .slide-main-top{
+    display: flex;
+    width: 100%;
+
+    .slide-left-img{
+        width: 30%;
+        display: inline-block;
+
+      span{
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            display: inline-block;
+            overflow: hidden;
+
+        img{
+          width: 100%;
+        }
+      }
+    }
+
+    .slide-right-content{
+       width: 70%;
+       display: inline-block;
+    }
+
+  }
+
+  ul{
+    li{
+        display: inline-block;
+        
+
+    }
+  }
+
+  .res-line-seniar{
+    padding: 15px 0;
+    width: 100%;
+
+    li{
+      width: 33%;
+
+      &:last-child{
+        color: #006db3;
+      }
+    }
+
+    
+  }
+
+  .res-line-tags{
+     li{
+        display: inline-block;
+        padding: 8px 12px;
+        background: #f4f4f4;
+        border-radius: 25px;
+        margin-right: 4px;
+        color: #333;
+        margin-bottom: 5px;
+     }
+  }
+
+
+  .res-line-bottom{
+      padding: 15px 0 10px;
+      border-top: 1px solid #f4f4f4;
+      margin: 20px 10px 10px;
+  }
+
+  .res-line-icon{
+        display: inline-block;
+        float: right;
+    .demo-icon{
+            padding: 0 5px;  
+    }
+  }
+
+}

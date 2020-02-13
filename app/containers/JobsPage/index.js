@@ -4,29 +4,28 @@
  * This page will display jobs list on our App, at the '/jobs' route
  */
 
-import React, { useEffect, memo, useState, useRef } from 'react';
-import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import { compose } from 'redux';
 import PropTypes from 'prop-types';
+import React, { memo, useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
+import CreateJobAlert from '../../components/JobPage/CreateJobAlert';
+import PopularJobCarousel from '../../components/JobPage/PopularJobCarousel';
+import './JobsPage.scss';
 import reducer from './reducer';
 import saga from './saga';
 import { jobs } from './selectors';
-import SideBar from '../../components/SideBar';
-import ToolBar from '../../components/ToolBar';
-import JobCard from '../../components/JobCard';
-import Paginate from '../../components/Paginate';
-import CompanyFilter from '../../components/CompanyFilter';
-import './JobsPage.scss';
 import OwlCarousel from 'react-owl-carousel2';
+import PopularJobCard from '../../components/JobPage/PopularJobCard';
+import MatchesCarousel from '../../components/JobPage/MatchesCarousel';
 
 const key = 'job';
 
 const options = {
-  items: 3,
+  items: 1,
   nav: true,
   rewind: true,
   margin: 20,
@@ -43,8 +42,8 @@ export function JobsPage({
   jobs, onApplyFilter
 }) {
 
-  //useInjectReducer({ key, reducer });
-  //useInjectSaga({ key, saga });
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
   const jobsSlider = useRef(null);
   const [params, setParams] = useState({
     page: 0,
@@ -60,6 +59,7 @@ export function JobsPage({
   ];
 
   useEffect(() => {
+    console.log(jobs);
     onApplyFilter(params);
   }, [params]);
 
@@ -99,16 +99,7 @@ export function JobsPage({
                     <div id="sidebar" className="left-column-container col-lg-3">
                       <div className="sb-widget d-none d-lg-block">
                         {/* Alert Box Start */}
-                        <div className="sb-menu alert-box ">
-                          <div className="location-search">
-                            <h4>Create Job Alert</h4>
-                            <p>Make sure you don't miss out on any potential job opportunities</p>
-                            <input placeholder="Enter Job Keyword" />
-                            <div className="form-actions">
-                              <button type="submit" className="btn btn-1 btn-alert">Create Job Alert</button>
-                            </div>
-                          </div>
-                        </div>
+                        <CreateJobAlert />
                         {/* Alert Box End */}
                       </div>
 
@@ -159,7 +150,7 @@ export function JobsPage({
                                     <i className="demo-icon icon-down-dir"></i>
                                   </button>
                                 </div>
-                                <ul id="sort_by_box" class="bc-dropdown">
+                                <ul id="sort_by_box" className="bc-dropdown">
                                   <li className="sort-action title-ascending" data-sort="title-ascending"><a href="javascript:;">Name, A-Z</a></li>
                                 </ul>
                               </div>
@@ -181,220 +172,12 @@ export function JobsPage({
                       </div>
                       {/* ToolBar End */}
 
-                      <div className="wrap-cata-title">
-                        <p>
-                          Popular Jobs
-                        </p>
-
-                        <div className="res-job-button">
-                          {/* <i class="demo-icon icon-electro-grid-view"></i> */}
-                          {/* <i class="demo-icon icon-electro-grid-view"></i> */}
-                          <span onClick={onPreviousClick} className="prev">&lt;</span>
-                          <span onClick={onNextClick} className="next">&gt;</span>
-                        </div>
-                      </div>
-
-                      <OwlCarousel ref={jobsSlider} margin={10} options={options} events={events} >
-                        <div className="slide-main-sec">
-                          <div className="slide-main-top">
-                            <div className="slide-left-img">
-                              <span>
-                                <img src="http://accessed.s3-us-west-2.amazonaws.com/company/2/images/amazon.png" />
-                              </span>
-                            </div>
-                            <div className="slide-right-content">
-                              <h4> <a href="#" className="slide-right-head">Senior Product</a> </h4>
-                              <span>Designer - Growth</span><br />
-                              <a className="link-apple">Apple</a><br />
-                              <p>Cupertino, US</p>
-                            </div>
-                          </div>
-
-                          <ul className="res-line-seniar">
-                            <li>Mid-Senior</li>
-                            <li>Full Time</li>
-                            <li>$115K PA</li>
-                          </ul>
-
-                          {/* <p className="res-deatil">
-                            If you live and breathe the user expreience, Love solving problem and thrive on variety, Atlassian has a great opportunity for you.
-                          </p> */}
-
-                          <ul className="res-line-tags">
-                            <li><a href="#" className="slide-right-head">design</a></li>
-                            <li><a href="#" className="slide-right-head">User Experiance</a></li>
-                            <li><a href="#" className="slide-right-head">design</a></li>
-                          </ul>
-
-                          <div className="res-line-bottom">
-                            <span>
-                              May 14, 2019
-                              </span>
-                            <div className="res-line-icon">
-                              <span className="demo-icon icon-electro-add-to-cart-icon"></span>
-                              <span className="demo-icon icon-electro-add-to-cart-icon"></span>
-                            </div>
-
-                          </div>
-
-                          <div className="acces-top-hover">
-                            <span>PROMOTED</span>
-                          </div>
-
-                        </div>
-
-                        <div className="slide-main-sec">
-                          <div className="slide-main-top">
-                            <div className="slide-left-img">
-                              <span>
-                                <img src="http://accessed.s3-us-west-2.amazonaws.com/company/2/images/amazon.png" />
-                              </span>
-                            </div>
-                            <div className="slide-right-content">
-                              <h4> <a href="#" className="slide-right-head">Senior Product</a> </h4>
-                              <span>Designer - Growth</span><br />
-                              <a className="link-apple">Apple</a><br />
-                              <p>Cupertino, US</p>
-                            </div>
-                          </div>
-
-                          <ul className="res-line-seniar">
-                            <li>Mid-Senior</li>
-                            <li>Full Time</li>
-                            <li>$115K PA</li>
-                          </ul>
-
-                          {/* <p className="res-deatil">
-                            If you live and breathe the user expreience, Love solving problem and thrive on variety, Atlassian has a great opportunity for you.
-                          </p> */}
-
-                          <ul className="res-line-tags">
-                            <li><a href="#" className="slide-right-head">design</a></li>
-                            <li><a href="#" className="slide-right-head">User Experiance</a></li>
-                            <li><a href="#" className="slide-right-head">design</a></li>
-                          </ul>
-
-                          <div className="res-line-bottom">
-                            <span>
-                              May 14, 2019
-                              </span>
-                            <div className="res-line-icon">
-                              <span className="demo-icon icon-electro-add-to-cart-icon"></span>
-                              <span className="demo-icon icon-electro-add-to-cart-icon"></span>
-                            </div>
-
-                          </div>
-
-                          <div className="acces-top-hover">
-                            <span>PROMOTED</span>
-                          </div>
-
-                        </div>
+                      <PopularJobCarousel />
 
 
-                        <div className="slide-main-sec">
-                          <div className="slide-main-top">
-                            <div className="slide-left-img">
-                              <span>
-                                <img src="http://accessed.s3-us-west-2.amazonaws.com/company/2/images/amazon.png" />
-                              </span>
-                            </div>
-                            <div className="slide-right-content">
-                              <h4> <a href="#" className="slide-right-head">Senior Product</a> </h4>
-                              <span>Designer - Growth</span><br />
-                              <a className="link-apple">Apple</a><br />
-                              <p>Cupertino, US</p>
-                            </div>
-                          </div>
+                      <MatchesCarousel />
 
-                          <ul className="res-line-seniar">
-                            <li>Mid-Senior</li>
-                            <li>Full Time</li>
-                            <li>$115K PA</li>
-                          </ul>
-
-                          {/* <p className="res-deatil">
-                            If you live and breathe the user expreience, Love solving problem and thrive on variety, Atlassian has a great opportunity for you.
-                          </p> */}
-
-                          <ul className="res-line-tags">
-                            <li><a href="#" className="slide-right-head">design</a></li>
-                            <li><a href="#" className="slide-right-head">User Experiance</a></li>
-                            <li><a href="#" className="slide-right-head">design</a></li>
-                          </ul>
-
-                          <div className="res-line-bottom">
-                            <span>
-                              May 14, 2019
-                              </span>
-                            <div className="res-line-icon">
-                              <span className="demo-icon icon-electro-add-to-cart-icon"></span>
-                              <span className="demo-icon icon-electro-add-to-cart-icon"></span>
-                            </div>
-
-                          </div>
-
-                          <div className="acces-top-hover">
-                            <span>PROMOTED</span>
-                          </div>
-
-                        </div>
-
-
-                        <div className="slide-main-sec">
-                          <div className="slide-main-top">
-                            <div className="slide-left-img">
-                              <span>
-                                <img src="http://accessed.s3-us-west-2.amazonaws.com/company/2/images/amazon.png" />
-                              </span>
-                            </div>
-                            <div className="slide-right-content">
-                              <h4> <a href="#" className="slide-right-head">Senior Product</a> </h4>
-                              <span>Designer - Growth</span><br />
-                              <a className="link-apple">Apple</a><br />
-                              <p>Cupertino, US</p>
-                            </div>
-                          </div>
-
-                          <ul className="res-line-seniar">
-                            <li>Mid-Senior</li>
-                            <li>Full Time</li>
-                            <li>$115K PA</li>
-                          </ul>
-
-                          {/* <p className="res-deatil">
-                            If you live and breathe the user expreience, Love solving problem and thrive on variety, Atlassian has a great opportunity for you.
-                          </p> */}
-
-                          <ul className="res-line-tags">
-                            <li><a href="#" className="slide-right-head">design</a></li>
-                            <li><a href="#" className="slide-right-head">User Experiance</a></li>
-                            <li><a href="#" className="slide-right-head">design</a></li>
-                          </ul>
-
-                          <div className="res-line-bottom">
-                            <span>
-                              May 14, 2019
-                              </span>
-                            <div className="res-line-icon">
-                              <span className="demo-icon icon-electro-add-to-cart-icon"></span>
-                              <span className="demo-icon icon-electro-add-to-cart-icon"></span>
-                            </div>
-
-                          </div>
-
-                          <div className="acces-top-hover">
-                            <span>PROMOTED</span>
-                          </div>
-
-                        </div>
-
-
-
-
-                      </OwlCarousel>
                     </div>
-
                   </div>
                 </div>
               </div>

@@ -12,4 +12,5 @@
 export const FETCH_JOB_LIST = 'boilerplate/Job/FETCH_JOB_LIST';
 export const FETCH_JOB_LIST_SUCCESS = 'boilerplate/Job/FETCH_JOB_LIST_SUCCESS';
 export const FETCH_JOB_LIST_ERROR = 'boilerplate/Job/FETCH_JOB_LIST_ERROR';
-export const FETCH_POPULAR_JOBS = 'boilerplate/Job/FETCH_POPULAR_JOBS';
+export const FETCH_POPULAR_JOBS_SUCCESS = 'boilerplate/Job/FETCH_POPULAR_JOBS_SUCCESS';
+export const FETCH_POPULAR_JOBS_ERROR = 'boilerplate/Job/FETCH_POPULAR_JOBS_ERROR';

@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { jobListSuccess, jobListError } from './actions';
+import { jobListSuccess, jobListError, popularJobListSuccess } from './actions';
 import request from "../../utils/request";
 import Config from "../../Config";
 
@@ -18,17 +18,18 @@ export function* fetchJobListSaga(params) {
   }
 }
 
-export function* fetchPopularJobs(params) {
-  const url = `${Config.apiURL}/api/jobs/search?query=&page=${param.page}&size=${params.limit}&sortBy=createdDate&direction=${params.sortBy}&country=US`;
-  let options = {
+export function* fetchPopularJobs(parameters) {
+  const params = parameters.params;
+  const url = `${Config.jobApiURL}api/jobs/search?query=&page=${params.page}&size=${params.size}&sortBy=createdDate&direction=${params.sortBy}&country=${params.country}`;
+  let option = {
     requestURL: url,
     method: 'GET'
   };
-
   try {
-    console.log(options);
+    const response = yield call(request, option);
+    yield put(popularJobListSuccess(response));
   } catch (error) {
-    console.log(error);
+    yield put(popularJobListError(response));
   }
 }
 
@@ -42,4 +43,5 @@ export function* applyFilter(parameter) {
 export default function* companyWatch() {
   yield takeEvery('JOB_LIST', fetchJobListSaga);
   yield takeEvery('JOB_LIST_FILTER', applyFilter);
+  yield takeEvery('POPULAR_JOBS', fetchPopularJobs);
 }

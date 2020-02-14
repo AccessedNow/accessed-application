@@ -1,4 +1,4 @@
-import React, { useRef, Fragment } from 'react'
+import React, { useRef, Fragment, useEffect, useState } from 'react'
 import PopularJobCard from '../../components/JobPage/PopularJobCard';
 import OwlCarousel from 'react-owl-carousel2';
 
@@ -12,11 +12,11 @@ const options = {
 };
 
 const events = {
-  onDragged: function (event) { console.log(event) },
-  onChanged: function (event) { console.log(event) }
+  onDragged: function (event) { },
+  onChanged: function (event) { }
 };
 
-export default function PopularJobCarousel() {
+export default function PopularJobCarousel(props) {
   const jobsSlider = useRef(null);
 
   const onPreviousClick = () => {
@@ -37,11 +37,9 @@ export default function PopularJobCarousel() {
         </div>
       </div>
       <OwlCarousel ref={jobsSlider} margin={10} options={options} events={events} >
-        <PopularJobCard />
-        <PopularJobCard />
-        <PopularJobCard />
-        <PopularJobCard />
-        <PopularJobCard />
+        {props.jobs.map(item => (
+          <PopularJobCard key={item._id} cardData={item} />
+        ))}
       </OwlCarousel>
     </Fragment>
   )

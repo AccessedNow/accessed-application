@@ -1,31 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { dayFormatter, numberFormat } from '../../utils/helper';
+import Config from '../../Config';
 
-export default function PopularJobCard() {
+export default function PopularJobCard(props) {
+  const [details, setDetails] = useState(props.cardData);
   return (
     <div className="slide-main-sec">
       <div className="slide-main-top">
         <div className="slide-left-img">
           <span>
-            <img src="http://accessed.s3-us-west-2.amazonaws.com/company/2/images/amazon.png" />
+            <img src={`${Config.S3}company/${details.company.id}/images/${details.company.logoImageUrl}`} />
           </span>
         </div>
         <div className="slide-right-content">
-          <h4> <a href="#" className="slide-right-head">Senior Product</a> </h4>
-          <span>Designer - Growth</span><br />
-          <a className="link-apple">Apple</a><br />
-          <p>Cupertino, US</p>
+          <h4> <a href="#" className="slide-right-head">{details.title}</a> </h4>
+          {/* <span>Designer - Growth</span><br /> */}
+          <a className="link-apple">{details.company.groupName}</a><br />
+          <p>{details.company.address.city}, {details.company.address.country}</p>
         </div>
       </div>
 
       <ul className="res-line-seniar">
         <li>Mid-Senior</li>
-        <li>Full Time</li>
-        <li>$115K PA</li>
+        <li>{details.employmentType}</li>
+        <li>{numberFormat(details.salaryRangeHigh)} PA</li>
       </ul>
-
-      {/* <p className="res-deatil">
-                            If you live and breathe the user expreience, Love solving problem and thrive on variety, Atlassian has a great opportunity for you.
-                          </p> */}
 
       <ul className="res-line-tags">
         <li><a href="#" className="slide-right-head">design</a></li>
@@ -34,7 +33,7 @@ export default function PopularJobCard() {
       </ul>
 
       <div className="res-line-bottom">
-        <span> May 14, 2019 </span>
+        <span> {dayFormatter(details.createdDate)} </span>
         <div className="res-line-icon">
           <span className="demo-icon icon-electro-add-to-cart-icon"></span>
           <span className="demo-icon icon-electro-add-to-cart-icon"></span>

@@ -15,7 +15,7 @@
  *    }
  */
 
-import { FETCH_JOB_LIST, FETCH_JOB_LIST_SUCCESS, FETCH_JOB_LIST_ERROR } from './constants';
+import { FETCH_JOB_LIST, FETCH_JOB_LIST_SUCCESS, FETCH_JOB_LIST_ERROR, FETCH_POPULAR_JOBS_ERROR, FETCH_POPULAR_JOBS_SUCCESS } from './constants';
 
 export function getJobList(list) {
   return {
@@ -36,4 +36,18 @@ export function jobListError(error) {
     type: FETCH_JOB_LIST_ERROR,
     payload: error
   };
+}
+
+export function popularJobListSuccess(response) {
+  return {
+    type: FETCH_POPULAR_JOBS_SUCCESS,
+    payload: response
+  };
+}
+
+export function popularJobListError(response) {
+  return {
+    type: FETCH_POPULAR_JOBS_ERROR,
+    payload: response
+  }
 }

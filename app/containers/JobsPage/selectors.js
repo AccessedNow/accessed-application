@@ -13,4 +13,11 @@ const jobs = () =>
     jobState => jobState.jobList.data
   );
 
-export { selectJob, jobs };
+const popularJob = () => {
+  return createSelector(
+    selectJob,
+    jobState => jobState.popularJobs
+  );
+};
+
+export { selectJob, jobs, popularJob };

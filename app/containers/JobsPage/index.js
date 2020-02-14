@@ -15,6 +15,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import CreateJobAlert from '../../components/JobPage/CreateJobAlert';
 import MatchesCarousel from '../../components/JobPage/MatchesCarousel';
 import PopularJobCarousel from '../../components/JobPage/PopularJobCarousel';
+import { popularJob } from "./selectors";
 import './JobsPage.scss';
 import reducer from './reducer';
 import saga from './saga';
@@ -37,9 +38,8 @@ const events = {
 };
 
 export function JobsPage({
-  jobs, onApplyFilter
+  onApplyFilter, getPopularJobs, popularJobs
 }) {
-
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
@@ -47,45 +47,13 @@ export function JobsPage({
     page: 0,
     size: 10,
     sortBy: null,
-    country: null,
+    country: 'US',
     city: null
   });
 
-  const [params, setParams] = useState({
-    page: 0,
-    limit: 10,
-    sortBy: 'ASC'
-  });
-
-  const menus = [
-    { name: 'All', path: '#' },
-    { name: 'Jobs', path: '#' },
-    { name: 'Company', path: '#' },
-    { name: 'Salary', path: '#' }
-  ];
-
   useEffect(() => {
-    console.log(jobs);
-    onApplyFilter(params);
-  }, [params]);
-
-  const onSortSelect = (type) => {
-    setParams({ ...params, sortBy: type });
-  };
-
-  const onPageClick = (pageNum) => {
-    setParams({ ...params, page: pageNum });
-  }
-
-  const onPreviousClick = () => {
-    console.log(jobsSlider);
-    jobsSlider.current.prev();
-  };
-
-  const onNextClick = () => {
-    console.log(jobsSlider);
-    jobsSlider.current.next();
-  };
+    getPopularJobs(popularJobParams);
+  }, []);
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -120,78 +88,78 @@ export function JobsPage({
                               <div className="sb-filter price left-side-filters" id="filter-1">
 
                                 <div className="sbf-title">
-                                  <div class="filter_checkbox">
+                                  <div className="filter_checkbox">
                                     <span>
                                       <p>Type of employment </p>
-                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
-                                      <label for="te2"></label>
+                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} />
+                                      <label htmlFor="te2"></label>
                                     </span>
                                   </div>
                                 </div>
 
                                 <ul className="advanced-filters">
                                   <li className="advanced-filter rt" data-group="Price">
-                                    <div class="filter_checkbox">
+                                    <div className="filter_checkbox">
                                       <span>
-                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
-                                        <label for="te2">Permanent Full-Time</label>
+                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} />
+                                        <label htmlFor="te2">Permanent Full-Time</label>
                                       </span>
                                     </div>
                                   </li>
                                   <li className="advanced-filter rt" data-group="Price">
-                                    <div class="filter_checkbox">
+                                    <div className="filter_checkbox">
                                       <span>
-                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
-                                        <label for="te2">Part-Time</label>
+                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} />
+                                        <label htmlFor="te2">Part-Time</label>
                                       </span>
                                     </div>
                                   </li>
                                   <li className="advanced-filter rt" data-group="Price">
-                                    <div class="filter_checkbox">
+                                    <div className="filter_checkbox">
                                       <span>
-                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
-                                        <label for="te2">Casual/Vacation</label>
+                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} />
+                                        <label htmlFor="te2">Casual/Vacation</label>
                                       </span>
                                     </div>
                                   </li>
                                   <li className="advanced-filter rt" data-group="Price">
-                                    <div class="filter_checkbox">
+                                    <div className="filter_checkbox">
                                       <span>
-                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
-                                        <label for="te2">Contract</label>
+                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} />
+                                        <label htmlFor="te2">Contract</label>
                                       </span>
                                     </div>
                                   </li>
                                   <li className="advanced-filter rt" data-group="Price">
-                                    <div class="filter_checkbox">
+                                    <div className="filter_checkbox">
                                       <span>
-                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
-                                        <label for="te2">Internship/Trainee</label>
+                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} />
+                                        <label htmlFor="te2">Internship/Trainee</label>
                                       </span>
                                     </div>
                                   </li>
                                 </ul>
 
                                 <div className="sbf-title">
-                                  <div class="filter_checkbox">
+                                  <div className="filter_checkbox">
                                     <span>
                                       <p>Seniority Level</p>
-                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
-                                      <label for="te2"></label>
+                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} />
+                                      <label htmlFor="te2"></label>
                                     </span>
                                   </div>
-                                  <div class="filter_checkbox">
+                                  <div className="filter_checkbox">
                                     <span>
                                       <p>Location</p>
-                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
-                                      <label for="te2"></label>
+                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} />
+                                      <label htmlFor="te2"></label>
                                     </span>
                                   </div>
-                                  <div class="filter_checkbox">
+                                  <div className="filter_checkbox">
                                     <span>
                                       <p>Salary Range</p>
-                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
-                                      <label for="te2"></label>
+                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} />
+                                      <label htmlFor="te2"></label>
                                     </span>
                                   </div>
                                 </div>
@@ -245,7 +213,12 @@ export function JobsPage({
                       {/* ToolBar End */}
 
                       {/* Popular Job Section Start */}
-                      <PopularJobCarousel />
+                      {(() => {
+                        if (popularJobs && popularJobs.data) {
+                          return <PopularJobCarousel jobs={popularJobs.data.content} />
+                        }
+                      })()}
+                      {/* <PopularJobCarousel jobs={popularJobs.data} /> */}
                       {/* Popular Job Section End */}
 
                       {/* Matches Section Start */}
@@ -266,17 +239,17 @@ export function JobsPage({
 }
 
 JobsPage.propTypes = {
-  jobs: PropTypes.object.isRequired
+  // popularJobs: PropTypes.object.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
-  jobs: jobs()
+  popularJobs: popularJob()
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getPopularJobs: (params) => {
-      console.log(params)
+      dispatch({ type: 'POPULAR_JOBS', params });
     },
     onLoadJobs: (params) => {
       dispatch({ type: 'JOB_LIST', params });

@@ -31,12 +31,12 @@ export default function MatchesCard() {
                               </div>
                               <div className="product-content">
                                 <div className="pc-inner">
-                                  <h4><span class="demo-icon icon-electro-add-to-cart-icon"></span> Be An Early Applicant</h4>
-                                  <div class="res-line-bottom">
-                                    <span> <b> 1D </b> Easy Apply </span>
-                                      <div class="res-line-icon">
-                                      <span class="demo-icon icon-electro-add-to-cart-icon"></span>
-                                      <span class="demo-icon icon-electro-add-to-cart-icon"></span>
+                                  <h4><span className="demo-icon icon-electro-add-to-cart-icon"></span> Be An Early Applicant</h4>
+                                        <div className="res-line-bottom">
+                                          <span> <b> 1D </b> Easy Apply </span>
+                                      <div className="res-line-icon">
+                                        <span className="demo-icon icon-electro-add-to-cart-icon"></span>
+                                        <span className="demo-icon icon-electro-add-to-cart-icon"></span>
                                       </div>
                                   </div>
                                        </div>

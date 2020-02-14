@@ -20,7 +20,8 @@ export const initState = {
   paginate: {
     current: 0,
     total: 0
-  }
+  },
+  popularJobs: {}
 };
 
 const jobReducer = (state = initState, action) =>

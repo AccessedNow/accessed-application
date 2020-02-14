@@ -18,6 +18,20 @@ export function* fetchJobListSaga(params) {
   }
 }
 
+export function* fetchPopularJobs(params) {
+  const url = `${Config.apiURL}/api/jobs/search?query=&page=${param.page}&size=${params.limit}&sortBy=createdDate&direction=${params.sortBy}&country=US`;
+  let options = {
+    requestURL: url,
+    method: 'GET'
+  };
+
+  try {
+    console.log(options);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 export function* applyFilter(parameter) {
   yield fetchJobListSaga(parameter.params);

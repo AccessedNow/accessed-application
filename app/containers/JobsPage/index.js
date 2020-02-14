@@ -5,7 +5,7 @@
  */
 
 import PropTypes from 'prop-types';
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -13,14 +13,12 @@ import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import CreateJobAlert from '../../components/JobPage/CreateJobAlert';
+import MatchesCarousel from '../../components/JobPage/MatchesCarousel';
 import PopularJobCarousel from '../../components/JobPage/PopularJobCarousel';
 import './JobsPage.scss';
 import reducer from './reducer';
 import saga from './saga';
 import { jobs } from './selectors';
-import OwlCarousel from 'react-owl-carousel2';
-import PopularJobCard from '../../components/JobPage/PopularJobCard';
-import MatchesCarousel from '../../components/JobPage/MatchesCarousel';
 
 const key = 'job';
 
@@ -44,7 +42,15 @@ export function JobsPage({
 
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
-  const jobsSlider = useRef(null);
+
+  const [popularJobParams, setPopularJobParams] = useState({
+    page: 0,
+    size: 10,
+    sortBy: null,
+    country: null,
+    city: null
+  });
+
   const [params, setParams] = useState({
     page: 0,
     limit: 10,
@@ -81,6 +87,8 @@ export function JobsPage({
     jobsSlider.current.next();
   };
 
+  const [isChecked, setIsChecked] = useState(false);
+
   return (
     <article>
       <Helmet>
@@ -110,24 +118,88 @@ export function JobsPage({
                           <div className="sbw-filter">
                             <div className="grid-uniform">
                               <div className="sb-filter price left-side-filters" id="filter-1">
+
                                 <div className="sbf-title">
-                                  <span>Type of employment</span>
-                                  <a href="#" className="clear-filter hidden" id="clear-filter-3" style={{ float: 'right' }}>Clear</a>
+                                  <div class="filter_checkbox">
+                                    <span>
+                                      <p>Type of employment </p>
+                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
+                                      <label for="te2"></label>
+                                    </span>
+                                  </div>
                                 </div>
+
                                 <ul className="advanced-filters">
                                   <li className="advanced-filter rt" data-group="Price">
-                                    <a>Permanent Full-Time <span>356</span></a>
+                                    <div class="filter_checkbox">
+                                      <span>
+                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
+                                        <label for="te2">Permanent Full-Time</label>
+                                      </span>
+                                    </div>
                                   </li>
                                   <li className="advanced-filter rt" data-group="Price">
-                                    <a >Part Time <span>356</span></a>
+                                    <div class="filter_checkbox">
+                                      <span>
+                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
+                                        <label for="te2">Part-Time</label>
+                                      </span>
+                                    </div>
+                                  </li>
+                                  <li className="advanced-filter rt" data-group="Price">
+                                    <div class="filter_checkbox">
+                                      <span>
+                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
+                                        <label for="te2">Casual/Vacation</label>
+                                      </span>
+                                    </div>
+                                  </li>
+                                  <li className="advanced-filter rt" data-group="Price">
+                                    <div class="filter_checkbox">
+                                      <span>
+                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
+                                        <label for="te2">Contract</label>
+                                      </span>
+                                    </div>
+                                  </li>
+                                  <li className="advanced-filter rt" data-group="Price">
+                                    <div class="filter_checkbox">
+                                      <span>
+                                        <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
+                                        <label for="te2">Internship/Trainee</label>
+                                      </span>
+                                    </div>
                                   </li>
                                 </ul>
+
+                                <div className="sbf-title">
+                                  <div class="filter_checkbox">
+                                    <span>
+                                      <p>Seniority Level</p>
+                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
+                                      <label for="te2"></label>
+                                    </span>
+                                  </div>
+                                  <div class="filter_checkbox">
+                                    <span>
+                                      <p>Location</p>
+                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
+                                      <label for="te2"></label>
+                                    </span>
+                                  </div>
+                                  <div class="filter_checkbox">
+                                    <span>
+                                      <p>Salary Range</p>
+                                      <input type="checkbox" id="te2" onClick={(e) => { setIsChecked(e.target.checked) }} checked={isChecked} />
+                                      <label for="te2"></label>
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-
                     </div>
 
 
@@ -172,11 +244,13 @@ export function JobsPage({
                       </div>
                       {/* ToolBar End */}
 
+                      {/* Popular Job Section Start */}
                       <PopularJobCarousel />
+                      {/* Popular Job Section End */}
 
-
+                      {/* Matches Section Start */}
                       <MatchesCarousel />
-
+                      {/* Matches Section End */}
                     </div>
                   </div>
                 </div>
@@ -201,6 +275,9 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getPopularJobs: (params) => {
+      console.log(params)
+    },
     onLoadJobs: (params) => {
       dispatch({ type: 'JOB_LIST', params });
     },

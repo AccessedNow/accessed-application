@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { dayFormatter, numberFormat } from '../../utils/helper';
 import Config from '../../Config';
 
 export default function PopularJobCard(props) {
-  const [details, setDetails] = useState(props.cardData);
+  const [details] = useState(props.cardData);
+  if (!details || Object.keys(details) === 0) {
+    return null;
+  }
   return (
     <div className="slide-main-sec">
       <div className="slide-main-top">
@@ -27,9 +30,9 @@ export default function PopularJobCard(props) {
       </ul>
 
       <ul className="res-line-tags">
-        <li><a href="#" className="slide-right-head">design</a></li>
-        <li><a href="#" className="slide-right-head">User Experiance</a></li>
-        <li><a href="#" className="slide-right-head">design</a></li>
+        {details.skills.map(skill => (
+          <li key={skill.id}><a href="#" className="slide-right-head">{skill.name}</a></li>
+        ))}
       </ul>
 
       <div className="res-line-bottom">

@@ -15,7 +15,7 @@
  *    }
  */
 
-import { FETCH_JOB_LIST, FETCH_JOB_LIST_SUCCESS, FETCH_JOB_LIST_ERROR, FETCH_POPULAR_JOBS_ERROR, FETCH_POPULAR_JOBS_SUCCESS } from './constants';
+import { FETCH_JOB_LIST, FETCH_JOB_LIST_SUCCESS, FETCH_JOB_LIST_ERROR, FETCH_POPULAR_JOBS_ERROR, FETCH_POPULAR_JOBS_SUCCESS, FETCH_MATCHES_JOBS_SUCCESS, FETCH_MATCHES_JOBS_ERROR } from './constants';
 
 export function getJobList(list) {
   return {
@@ -49,5 +49,19 @@ export function popularJobListError(response) {
   return {
     type: FETCH_POPULAR_JOBS_ERROR,
     payload: response
-  }
+  };
+}
+
+export function matchesJobListSuccess(response) {
+  return {
+    type: FETCH_MATCHES_JOBS_SUCCESS,
+    payload: response
+  };
+}
+
+export function matchesJobListError(response) {
+  return {
+    type: FETCH_MATCHES_JOBS_ERROR,
+    payload: response
+  };
 }

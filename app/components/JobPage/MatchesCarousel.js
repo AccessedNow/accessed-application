@@ -12,20 +12,21 @@ const options = {
 };
 
 const events = {
-  onDragged: function (event) { console.log(event) },
-  onChanged: function (event) { console.log(event) }
+  onDragged: function (event) { },
+  onChanged: function (event) { }
 };
 
-export default function MatchesCarousel() {
-
+export default function MatchesCarousel(props) {
   const matchesSlider = useRef(null);
 
   const onPreviousClick = () => {
     matchesSlider.current.prev();
+    props.previous();
   };
 
   const onNextClick = () => {
     matchesSlider.current.next();
+    props.next();
   };
 
   return (
@@ -39,21 +40,13 @@ export default function MatchesCarousel() {
       </div>
       <OwlCarousel ref={matchesSlider} margin={10} options={options} events={events} >
         <div className="cata-product cp-grid match-grid-card">
-          <MatchesCard />
-          <MatchesCard />
-          <MatchesCard />
-          <MatchesCard />
-          <MatchesCard />
-          <MatchesCard />
-          <MatchesCard />
-          <MatchesCard />
-          <MatchesCard />
-          <MatchesCard />
-          <MatchesCard />
-          <MatchesCard />
-        </div>
-        <div className="cata-product cp-grid match-grid-card">
-          <MatchesCard />
+          <div className="row">
+            {props.jobs.map(item => (
+              <div className="col-lg-3 col-md-4 col-12">
+                <MatchesCard key={item._id} cardData={item} />
+              </div>
+            ))}
+          </div>
         </div>
       </OwlCarousel>
     </div>

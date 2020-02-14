@@ -8,7 +8,8 @@ const options = {
   rewind: true,
   margin: 20,
   autoplay: false,
-  dots: false
+  dots: false,
+
 };
 
 const events = {

@@ -2,7 +2,7 @@
  * Common Functions
 */
 // number helper class to show K,M,B, Roundup
-var units = ["k", "M", "B", "T"];
+var units = ["K", "M", "B", "T"];
 export function numberFormat(number) {
   if (number <= 999) {
     return number;

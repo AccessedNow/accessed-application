@@ -8,7 +8,7 @@
  */
 
 import produce from 'immer';
-import { FETCH_JOB_LIST_SUCCESS, FETCH_JOB_LIST_ERROR, FETCH_POPULAR_JOBS_SUCCESS, FETCH_POPULAR_JOBS_ERROR } from './constants';
+import { FETCH_JOB_LIST_SUCCESS, FETCH_JOB_LIST_ERROR, FETCH_POPULAR_JOBS_SUCCESS, FETCH_POPULAR_JOBS_ERROR, FETCH_MATCHES_JOBS_SUCCESS } from './constants';
 
 export const initState = {
   jobList: {
@@ -21,7 +21,8 @@ export const initState = {
     current: 0,
     total: 0
   },
-  popularList: {}
+  popularList: {},
+  matchesList: {}
 };
 
 const jobReducer = (state = initState, action) =>
@@ -39,6 +40,12 @@ const jobReducer = (state = initState, action) =>
       case FETCH_POPULAR_JOBS_ERROR:
         draft.popularJobs = action.payload
         break;
+      case FETCH_MATCHES_JOBS_SUCCESS:
+        draft.matchesList = action.payload
+        break;
+      case FETCH_POPULAR_JOBS_ERROR:
+        draft.matchesList = action.payload
+        break
     }
   })
 

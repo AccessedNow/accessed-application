@@ -20,4 +20,11 @@ const popularJob = () => {
   );
 };
 
-export { selectJob, jobs, popularJob };
+const matchesJob = () => {
+  return createSelector(
+    selectJob,
+    jobState => jobState.matchesList
+  );
+};
+
+export { selectJob, jobs, popularJob, matchesJob };

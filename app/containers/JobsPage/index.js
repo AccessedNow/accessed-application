@@ -15,11 +15,10 @@ import { useInjectSaga } from 'utils/injectSaga';
 import CreateJobAlert from '../../components/JobPage/CreateJobAlert';
 import MatchesCarousel from '../../components/JobPage/MatchesCarousel';
 import PopularJobCarousel from '../../components/JobPage/PopularJobCarousel';
-import { popularJob } from "./selectors";
+import { popularJob, matchesJob } from "./selectors";
 import './JobsPage.scss';
 import reducer from './reducer';
 import saga from './saga';
-import { jobs } from './selectors';
 
 const key = 'job';
 
@@ -38,24 +37,69 @@ const events = {
 };
 
 export function JobsPage({
-  onApplyFilter, getPopularJobs, popularJobs
+  getPopularJobs, popularJobs, getMatchesJobs, matchesJob
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
+  const [sortText, setSortText] = useState('Job Title, A-Z');
+
   const [popularJobParams, setPopularJobParams] = useState({
+    query: '',
     page: 0,
-    size: 10,
-    sortBy: null,
+    size: 20,
+    sortBy: 'createdDate&direction=ASC',
     country: 'US',
-    city: null
+    state: null,
+    city: null,
+    level: null,
+    jobFunction: null,
+    employmentType: null,
+    company: null
+  });
+
+  const [matchesJobParams, setMatchesJobParams] = useState({
+    query: '',
+    page: 0,
+    size: 12,
+    sortBy: 'title&direction=ASC',
+    country: 'US',
+    state: null,
+    city: null,
+    level: null,
+    jobFunction: null,
+    employmentType: null,
+    company: null
   });
 
   useEffect(() => {
     getPopularJobs(popularJobParams);
+    getMatchesJobs(matchesJobParams);
   }, []);
 
-  const [isChecked, setIsChecked] = useState(false);
+  useEffect(() => {
+    getMatchesJobs(matchesJobParams);
+  }, [matchesJobParams]);
+
+  const onMatchesNextClick = () => {
+    const page = matchesJobParams.page + 1;
+    console.log(matchesJob.data.totalPages);
+    if (matchesJob.data.totalPages !== page) {
+      setMatchesJobParams({ ...matchesJobParams, page });
+    }
+  };
+
+  const onMatchesPrevClick = () => {
+    const page = matchesJobParams.page - 1;
+    if (!(page < 0)) {
+      setMatchesJobParams({ ...matchesJobParams, page });
+    }
+  };
+
+  const onSortingApply = (column, order) => {
+    setMatchesJobParams({ ...matchesJobParams, sortBy: `${column}&direction=${order}` });
+    setSortText(order === 'ASC' ? 'Job Title, A-Z' : 'Job Title, Z-A');
+  };
 
   return (
     <article>
@@ -186,12 +230,13 @@ export function JobsPage({
                                 <label className="d-none d-md-block">Sort by</label>
                                 <div id="cata_sort_by">
                                   <button id="sort_by_button">
-                                    <span className="name"><a href="javascript:;">Best Selling</a></span>
+                                    <span className="name"><a href="javascript:;">{sortText}</a></span>
                                     <i className="demo-icon icon-down-dir"></i>
                                   </button>
                                 </div>
                                 <ul id="sort_by_box" className="bc-dropdown">
-                                  <li className="sort-action title-ascending" data-sort="title-ascending"><a href="javascript:;">Name, A-Z</a></li>
+                                  <li className="sort-action title-ascending" onClick={() => onSortingApply('title', 'ASC')} > <a href="javascript:;">Job Title, A-Z</a></li>
+                                  <li className="sort-action title-ascending" onClick={() => onSortingApply('title', 'DESC')}><a href="javascript:;">Job Title, Z-A</a></li>
                                 </ul>
                               </div>
                             </div>
@@ -222,7 +267,15 @@ export function JobsPage({
                       {/* Popular Job Section End */}
 
                       {/* Matches Section Start */}
-                      <MatchesCarousel />
+                      {(() => {
+                        if (matchesJob && matchesJob.data) {
+                          return <MatchesCarousel
+                            jobs={matchesJob.data.content}
+                            next={onMatchesNextClick}
+                            previous={onMatchesPrevClick}
+                          />
+                        }
+                      })()}
                       {/* Matches Section End */}
                     </div>
                   </div>
@@ -234,7 +287,7 @@ export function JobsPage({
           </div>
         </div>
       </div>
-    </article >
+    </article>
   );
 }
 
@@ -243,7 +296,8 @@ JobsPage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  popularJobs: popularJob()
+  popularJobs: popularJob(),
+  matchesJob: matchesJob()
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -251,11 +305,8 @@ const mapDispatchToProps = (dispatch) => {
     getPopularJobs: (params) => {
       dispatch({ type: 'POPULAR_JOBS', params });
     },
-    onLoadJobs: (params) => {
-      dispatch({ type: 'JOB_LIST', params });
-    },
-    onApplyFilter: (params) => {
-      dispatch({ type: 'JOB_LIST_FILTER', params });
+    getMatchesJobs: (params) => {
+      dispatch({ type: 'MATCHES_JOBS', params })
     }
   };
 };

@@ -16,6 +16,10 @@ import reducer from './reducer';
 import saga from './saga';
 import { jobs } from './selectors';
 import SideBar from '../../components/SideBar';
+import CategoryToolbar from '../../components/CategoryToolbar';
+import JobListItem from '../../components/JobListItem';
+
+
 import ToolBar from '../../components/ToolBar';
 import JobCard from '../../components/JobCard';
 import Paginate from '../../components/Paginate';
@@ -94,6 +98,25 @@ export function JobListPage({
                       <SideBar title={'Categories'} menus={menus} />
 
                       <CompanyFilter />
+                    </div>
+
+                    <div className="main-cata-page col-lg-9 col-md-12 col-sm-12 col-12">
+
+                        <div className="wrap-cata-title">
+                            <h2>Cameras</h2>
+                        </div>
+
+                        <CategoryToolbar />
+
+                        <div id="col-main">
+                          <div className="cata-product cp-grid">
+                            {jobs.content.map((job) => (
+                                <JobListItem key={job.id} job={job} />
+                            ))}
+                          </div>
+
+                        </div>
+
                     </div>
 
 

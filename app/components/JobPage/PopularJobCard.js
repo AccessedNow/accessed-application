@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { dayFormatter, numberFormat } from '../../utils/helper';
-import Config from '../../Config';
+import Config from '../../config/Config';
 
 export default function PopularJobCard(props) {
   const [details] = useState(props.cardData);

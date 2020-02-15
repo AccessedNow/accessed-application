@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Wrapper from './Wrapper';
 
 import './Jumbo.scss';
-import bannerImg from '../../assets/gtrr.jpg';
+import bannerImg from '../../assets/v4/gtrr.jpg';
 
 function Jumbo(props) {
 

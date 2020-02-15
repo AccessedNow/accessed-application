@@ -1,32 +1,16 @@
 import { createGlobalStyle } from 'styled-components';
 
-const GlobalStyle = createGlobalStyle`
-  html,
-  body {
-    height: 100%;
-    width: 100%;
-    line-height: 1.5;
-  }
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-  body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  }
+import './assets/v4/arenafont.css';
+import './assets/v4/vendor.css';
+import './assets/v4/styles.scss';
+import './assets/v4/themes.scss';
+import './assets/v4/bc_wl_cp_style.scss';
+import './assets/v4/change_color.scss';
 
-  body.fontLoaded {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  }
 
-  #app {
-    background-color: #fafafa;
-    min-height: 100%;
-    min-width: 100%;
-  }
 
-  p,
-  label {
-    font-family: Georgia, Times, 'Times New Roman', serif;
-    line-height: 1.5em;
-  }
-`;
+const GlobalStyle = createGlobalStyle;
 
 export default GlobalStyle;

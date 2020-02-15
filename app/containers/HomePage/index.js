@@ -37,24 +37,24 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 const key = 'home';
 
 import './Home.scss';
-import step1 from '../../assets/step-1.png';
-import step2 from '../../assets/step-2.png';
-import step3 from '../../assets/step-3.png';
+import step1 from '../../assets/images/step-1.png';
+import step2 from '../../assets/images/step-2.png';
+import step3 from '../../assets/images/step-3.png';
 
-import microsoft from '../../assets/microsoft-home-dark.png';
-import imgDark from '../../assets/img-home-dark.png';
-import paypal from '../../assets/paypal-home-dark.png';
-import servcorp from '../../assets/serv-home-dark.png';
-import xerox from '../../assets/xerox-home-dark.png';
-import yahoo from '../../assets/yahoo-home-dark.png';
+import microsoft from '../../assets/images/microsoft-home-dark.png';
+import imgDark from '../../assets/images/img-home-dark.png';
+import paypal from '../../assets/images/paypal-home-dark.png';
+import servcorp from '../../assets/images/serv-home-dark.png';
+import xerox from '../../assets/images/xerox-home-dark.png';
+import yahoo from '../../assets/images/yahoo-home-dark.png';
 
-import com1 from '../../assets/com-1.jpg';
-import com2 from '../../assets/com-2.jpg';
-import com3 from '../../assets/com-3.jpg';
-import com4 from '../../assets/com-4.jpg';
-import com5 from '../../assets/com-5.jpg';
-import com6 from '../../assets/com-6.jpg';
-import com7 from '../../assets/com-7.jpg';
+import com1 from '../../assets/images/com-1.jpg';
+import com2 from '../../assets/images/com-2.jpg';
+import com3 from '../../assets/images/com-3.jpg';
+import com4 from '../../assets/images/com-4.jpg';
+import com5 from '../../assets/images/com-5.jpg';
+import com6 from '../../assets/images/com-6.jpg';
+import com7 from '../../assets/images/com-7.jpg';
 
 
 

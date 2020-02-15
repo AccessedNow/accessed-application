@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import Config from '../../Config';
+import Config from '../../config/Config';
 
 import './JobCard.scss';
 import { numberFormat, dayFormatter } from '../../utils/helper';
@@ -14,10 +14,10 @@ import { NavLink } from 'react-router-dom';
 
 
 const JobCard = ({ jobData }) => {
-  let logoUrl = `${Config.S3}company/${jobData.company.id}/images/${jobData.company.logoImageUrl}`;
+  let logoUrl = `${Config.CDN}/company/${jobData.company.id}/images/${jobData.company.logoImageUrl}`;
   let connectionCount = numberFormat(jobData.connection.noConnection);
   let postedDate = dayFormatter(jobData.createdDate);
-  
+
   return (
     <div className="product-grid-item mode-view-item">
       <div className="product-wrapper effect-none  ">

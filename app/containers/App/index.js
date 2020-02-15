@@ -20,17 +20,11 @@ import JobsPage from 'containers/JobsPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
+
+
 import GlobalStyle from '../../global-styles';
 
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import '../../assets/arenafont.css';
-import '../../assets/vendor.css';
-import '../../assets/styles.scss';
-import '../../assets/themes.scss';
-import '../../assets/bc_wl_cp_style.scss';
-import '../../assets/change_color.scss';
 
 
 

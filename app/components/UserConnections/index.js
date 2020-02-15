@@ -4,7 +4,7 @@
 
 import React from 'react';
 import Img from '../Img';
-import Config from '../../Config';
+import Config from '../../config/Config';
 
 const UserConnections = ({ connections }) => {
   let connectionImage = `${Config.S3}user/${connections.id}/images/${connections.imageUrl}`;

@@ -1,0 +1,58 @@
+.cata-grid-1 {
+  .cata-product {
+    .product-grid-item {
+      @media (max-width: 767px) {
+
+      }
+      .product-wrapper {
+
+        .product-head {
+          @media (min-width: 768px) {
+          }
+          @media (max-width: 767px) {
+          }
+        }
+        .featured-img {
+          img {position: relative;}
+
+          @media (min-width: 992px) {
+            width: 15%;
+          }
+          @media (max-width: 991px) and (min-width: 768px) {
+            width: 15%;
+          }
+          @media (max-width: 767px) and (min-width: 576px) {
+            width: 15%;
+          }
+          @media (max-width: 575px) {
+            width: 15%;
+          }
+        }
+
+        .product-image {
+
+          @media (max-width: 767px) {
+          }
+          .product-group-vendor-name,
+          .product-des-list {
+            @media (min-width: 992px) {
+              width: 85%;
+            }
+            @media (max-width: 991px) and (min-width: 768px) {
+              width: 85%;
+            }
+            @media (max-width: 767px) and (min-width: 576px) {
+              width: 85%;
+            }
+            @media (max-width: 575px) {
+              width: 85%;
+            }
+          }
+
+        }
+
+
+      }
+    }
+  }
+}

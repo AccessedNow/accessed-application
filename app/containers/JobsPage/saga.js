@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import { jobListSuccess, jobListError, popularJobListSuccess, matchesJobListSuccess, matchesJobListError, popularJobListError } from './actions';
 import request from "../../utils/request";
-import Config from "../../Config";
+import Config from "../../config/Config";
 
 
 export function* fetchJobListSaga(params) {

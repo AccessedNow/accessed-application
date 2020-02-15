@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import Config from '../../Config';
+import Config from '../../config/Config';
 
 import './CompanyCard.scss';
 import { numberFormat } from '../../utils/helper';

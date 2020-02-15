@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Config from '../../Config';
+import Config from '../../config/Config';
 import { dayFormatter } from '../../utils/helper';
 
 export default function MatchesCard(props) {

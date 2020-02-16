@@ -75,15 +75,15 @@ export function JobListPage({
                   <ul className="breadcrumb">
                     <li itemScope="" itemType="http://data-vocabulary.org/Breadcrumb">
                       <a itemProp="url" href="/">
-                        <span itemProp="title" className="d-none">Amazed</span>Home
+                        <span itemProp="title" className="d-none">Accessed</span>Home
                     </a>
                     </li>
                     <li itemScope="" itemType="http://data-vocabulary.org/Breadcrumb" className="d-none">
                       <a href="/collections/all" itemProp="url">
-                        <span itemProp="title">Jobs</span>
+                        <span itemProp="title">Search Jobs</span>
                       </a>
                     </li>
-                    <li className="active">Jobs</li>
+                    <li className="active">Search Jobs</li>
                   </ul>
                 </div>
                 {/* Breadcrumb End */}
@@ -97,13 +97,13 @@ export function JobListPage({
                     <div id="sidebar" className="left-column-container col-lg-3">
                       <SideBar title={'Categories'} menus={menus} />
 
-                      <CompanyFilter />
+                      <CompanyFilter {...jobs} />
                     </div>
 
                     <div className="main-cata-page col-lg-9 col-md-12 col-sm-12 col-12">
 
                         <div className="wrap-cata-title">
-                            <h2>Cameras</h2>
+                            <h2>Search Jobs</h2>
                         </div>
 
                         <CategoryToolbar />
@@ -119,38 +119,6 @@ export function JobListPage({
 
                     </div>
 
-
-                    <div className="col-lg-9 col-md-12">
-                      {/* Heading Start */}
-                      <div className="wrap-cata-title">
-                        <h2>Jobs</h2>
-                      </div>
-                      {/* Heading End */}
-
-                      <ToolBar onSortSelect={onSortSelect} totalElements={jobs.totalElements} number={jobs.number} numberOfElements={jobs.numberOfElements} />
-
-                      <div id="col-main">
-                        <div className="cata-product cp-grid">
-                          {/* Card View Start*/}
-                          {jobs.content.map((item) => (
-                            <JobCard
-                              key={item.id}
-                              jobData={item}
-                            />
-                          ))}
-                          {/* Card View End */}
-                        </div>
-
-                        {/* Paginate Start*/}
-                        <Paginate
-                          current={jobs.number}
-                          total={jobs.totalPages}
-                          onPageClick={onPageClick}
-                        />
-                        {/* Paginate End*/}
-                      </div>
-
-                    </div>
 
                   </div>
                 </div>

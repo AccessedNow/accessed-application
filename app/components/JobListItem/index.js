@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '../../components/Button';
+import TagButton from '../../components/TagButton';
 import Wrapper from './Wrapper';
 import {buildCompanyImageUrl} from "../../helper/urlHelper";
 
@@ -11,7 +12,6 @@ import GroupIcon from "../GroupIcon";
 function JobListItem({job}) {
 
   let company = job.company;
-  console.log('company', company)
 
   return (
         <div className="product-grid-item mode-view-item">
@@ -32,15 +32,15 @@ function JobListItem({job}) {
 
                         <div className="product-des-list">
                             <ul>
-                                <li><span className="a-list-item">Easy management</span></li>
-                                <li><span className="a-list-item">Fast printing. Strong protection.</span>
-                                </li>
-                                <li><span className="a-list-item">Easy management. Efficient printing.</span>
-                                </li>
-                                <li><span className="a-list-item">The 2-line LCD display is simple to read and operate.</span>
-                                </li>
-                                <li><span className="a-list-item">Stay connected with easy mobile printing options</span>
-                                </li>
+
+                                {job.skills.map((item) => (
+                                    <li>
+                                        <TagButton className="badge-light">
+                                            <span>{item.name}</span>
+                                        </TagButton>
+                                    </li>
+                                ))}
+                                {/* Card View End */}
                             </ul>
                         </div>
                     </div>
@@ -49,30 +49,17 @@ function JobListItem({job}) {
                     <div className="pc-inner">
                         <div className="price-cart-wrapper">
                             <div className="product-price">
-                                <span className="price-sale"><span className="money" data-currency-usd="$110.00">$110.00</span></span>
-                                <span className="price-compare"><span className="money" data-currency-usd="$199.00">$199.00</span></span>
-                            </div>
-
-                            <div className="product-add-cart">
-                                <a href="/collections/accessories/products/faxtex-product-sample" className="btn-add-cart select-options" title="Select options"><span className="demo-icon icon-electro-add-to-cart-icon"></span></a>
-                                <select className="d-none" name="id">
-                                    <option value="12668995174464">M / Blue</option>
-                                    <option value="12668995207232">L / Blue</option>
-                                    <option value="12668995240000">X / Blue</option>
-                                    <option value="12668995305536">XL / Blue</option>
-                                </select>
+                                Be an early applicant
                             </div>
                         </div>
 
                         <div className="product-button">
-                            <div data-target="#quick-shop-popup" className="quick_shop" data-handle="faxtex-product-sample" data-toggle="modal" title="Quick View">
-                                <i className="demo-icon icon-eye-1"></i>Quick View
+                            <div className="createdDate">
+                                <span>1D - Easy Apply</span>
                             </div>
-                            <div className="product-wishlist">
-                                <Button href="http://www.ebay.com" {...job}>
-                                    <span>Save</span>
-                                </Button>
-                            </div>
+                                <div className="product-wishlist">
+                                    <i className="demo-icon icon-electro-wishlist-icon"></i>
+                                </div>
                         </div>
 
                     </div>

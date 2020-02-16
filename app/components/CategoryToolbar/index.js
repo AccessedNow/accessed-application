@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import JobListItem from "../JobListItem";
 
 class CategoryToolbar extends Component {
   constructor(props) {
     super(props);
-
+console.log('tool', props)
   }
 
   componentDidMount() {}
@@ -56,7 +57,7 @@ class CategoryToolbar extends Component {
                 </div>
 
                 <div className="pagination-showing">
-                    <div className="showing">Showing all 9 Items</div>
+                    <div className="showing">Showing all  Items</div>
                 </div>
 
             </div>
@@ -68,5 +69,9 @@ class CategoryToolbar extends Component {
     );
   }
 }
+
+CategoryToolbar.propTypes = {
+    data: PropTypes.any,
+};
 
 export default CategoryToolbar;

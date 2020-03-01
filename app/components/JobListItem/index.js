@@ -7,7 +7,7 @@ import Wrapper from './Wrapper';
 import {buildCompanyImageUrl} from "../../helper/urlHelper";
 
 import './JobListItem.scss';
-import GroupIcon from "../GroupIcon";
+import GroupIconAndRating from "../GroupIconAndRating";
 
 function JobListItem({job}) {
 
@@ -20,21 +20,19 @@ function JobListItem({job}) {
                     <div className="product-image">
 
                         <div className="product-group-vendor-name">
-                            <h5 className="product-name balance-true"><a href="/collections/cameras/products/faxtex-product-sample">{job.title}</a></h5>
+                            <h5 className="product-name balance-true"><a href={"/jobs/view/" + job.jobId}>{job.title}</a></h5>
                             <div className="product-vendor"><a href="/collections/vendors?q=Bulgari" title="Bulgari">{job.company.groupName}</a></div>
 
                         </div>
-
                         <div className="featured-img waiting">
-
-                            <GroupIcon src={buildCompanyImageUrl(company.id, company.logoImageUrl)}/>
+                            <GroupIconAndRating group={job.company} src={buildCompanyImageUrl(company.id, company.logoImageUrl)}/>
                         </div>
 
                         <div className="product-des-list">
                             <ul>
 
                                 {job.skills.map((item) => (
-                                    <li>
+                                    <li key={item.name}>
                                         <TagButton className="badge-light">
                                             <span>{item.name}</span>
                                         </TagButton>

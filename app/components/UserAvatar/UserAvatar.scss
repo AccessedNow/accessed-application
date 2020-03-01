@@ -1,8 +1,8 @@
-.group-icon {
+.user-icon {
   margin: 0 auto;
   max-width: 100px;
   border: 1px solid #eee;
-  border-radius: 4px;
+  border-radius: 50%;
   a {
     margin: 0 auto;
 
@@ -12,14 +12,11 @@
       max-width: 100%;
       height: auto;
       border: 0;
+      border-radius: 50%;
       backface-visibility: hidden;
       transform: translateZ(0);
       vertical-align: middle;
     }
-  }
-
-  .product-review {
-    margin-top: 10px;
   }
 
   @media (min-width: 992px) {

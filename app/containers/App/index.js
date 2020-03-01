@@ -17,6 +17,7 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import CompanyPage from 'containers/CompanyPage/Loadable';
 import JobListPage from 'containers/JobListPage/Loadable';
 import JobsPage from 'containers/JobsPage/Loadable';
+import JobDetailPage from 'containers/JobDetailPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
@@ -50,7 +51,9 @@ export default function App() {
         <Route exact path="/" component={HomePage} />
         <Route path="/features" component={FeaturePage} />
         <Route path="/company" component={CompanyPage} />
+        <Route path="/jobs/view/:id" component={JobDetailPage} />
         <Route path="/jobs" component={JobListPage} />
+
         <Route path="/jobs-page" component={JobsPage} />
         <Route path="" component={NotFoundPage} />
       </Switch>

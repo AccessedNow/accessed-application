@@ -7,7 +7,6 @@ import JobListItem from "../JobListItem";
 class CategoryToolbar extends Component {
   constructor(props) {
     super(props);
-console.log('tool', props)
   }
 
   componentDidMount() {}

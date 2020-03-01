@@ -1,0 +1,54 @@
+.group-item {
+
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+
+  .group-image{
+    max-width: 110px;
+  }
+
+  .group-content{
+    padding-left: 5px;
+
+    .group-inner{
+      a{
+        display: block;
+        font-weight: 700;
+        color: #0062bd;
+        margin: 0 0 15px;
+      }
+
+      .group-industry {
+        font-size: 15px;
+        color: #343f49;
+      }
+
+      .group-location{
+        font-size: 15px;
+        color: #343f49;
+      }
+
+      .group-follower {
+        font-size: 15px;
+        color: #343f49;
+      }
+
+    }
+  }
+
+  @media (min-width: 992px) {
+
+
+  }
+  @media (max-width: 991px) and (min-width: 768px) {
+  }
+  @media (max-width: 767px) and (min-width: 576px) {
+  }
+  @media (max-width: 575px) {
+  }
+}
+
+
+

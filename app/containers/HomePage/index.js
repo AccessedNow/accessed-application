@@ -63,11 +63,12 @@ export function HomePage({
     loading,
     error,
     repos,
-    onSubmitForm,
-    onChangeUsername,
+    loadRepos
 }) {
     useInjectReducer({ key, reducer });
     useInjectSaga({ key, saga });
+
+    loadRepos();
 
     useEffect(() => {
         // When initial state username is not null, submit the form to load repos
@@ -430,7 +431,7 @@ HomePage.propTypes = {
     repos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
     onSubmitForm: PropTypes.func,
     username: PropTypes.string,
-    onChangeUsername: PropTypes.func,
+    loadRepos: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -442,11 +443,8 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
     return {
-        onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
-        onSubmitForm: evt => {
-            if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-            dispatch(loadRepos());
-        },
+        loadRepos: evt => dispatch(loadRepos())
+
     };
 }
 

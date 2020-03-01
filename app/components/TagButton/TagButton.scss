@@ -1,11 +1,17 @@
 @import '../../assets/v4/variables';
 
+
+
 .tag-list {
   list-style: none;
   li{
     display: inline-block;
     padding-right: 10px;
   }
+}
+
+.btn-tag {
+  border: 1px solid #ddd;
 }
 
 .badge{

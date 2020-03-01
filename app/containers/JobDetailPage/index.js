@@ -25,9 +25,12 @@ import {
 } from 'containers/App/selectors';
 
 import CoverBanner from "../../components/CoverBanner";
+import Button from "../../components/Button";
 import TagButton from "../../components/TagButton";
 import GroupItem from "../../components/GroupItem";
 import ListUserItem from "../../components/ListUserItem";
+import ListJobItem from '../../components/ListJobItem';
+
 
 import './JobDetailPage.scss';
 
@@ -45,11 +48,12 @@ export function JobDetail({
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
+  let similarJobs = [];
   //let { id } = useParams();
   loadJob(100000);
 
 
-  console.log('job', job);
+
   if(!job){
     job={
         jobId : 100000, title : "VP, Business Technology",
@@ -154,8 +158,87 @@ export function JobDetail({
             "Effectively influence, negotiate and lead the evaluations and implementation of technology solutions. Working knowledge in Agile development environment with strong engineering principles.",
             "Strong customer service orientation and ability to work well with diverse internal and external constituents in a team-oriented environment."
         ]
-    }
+    };
+
+    similarJobs = [
+        {
+            jobId : 100001, title : "VP, Business Technology",
+            hasSaved : false, isExternal : false, externalUrl : "", noApplied: 12, noOfResources : 1, employmentType : "Full Time", expirationDate : 1580545602,
+            requiredOnDate : 1581755202, salaryRangeLow : 65000, salaryRangeHigh : 80000, salaryFixed : null, jobFunction : "TECH",
+            level : "EXECUTIVE", city : "Quan 1", state : "Ho Chi Minh", country : "VN",
+
+            skills: [
+                {
+                    _id: "5e4e849271e3f344564e540e",
+                    skillTypeId: 2,
+                    name: "Java",
+                    parent: "1",
+                    sequence: 0
+                },
+                {
+                    _id: "5e4e849271e3f344564e5410",
+                    skillTypeId: 3,
+                    name: "Python",
+                    parent: "1",
+                    sequence: 0
+                },
+                {
+                    _id: "5e4e849271e3f344564e5411",
+                    skillTypeId: 4,
+                    name: "NodeJS",
+                    parent: "1",
+                    sequence: 0
+                },
+                {
+                    _id: "5e4e849271e3f344564e5412",
+                    skillTypeId: 5,
+                    name: "ReactJS",
+                    parent: "1",
+                    sequence: 0
+                },
+                {
+                    _id: "5e4e849271e3f344564e5417",
+                    skillTypeId: 6,
+                    name: "AngularJS",
+                    parent: "1",
+                    sequence: 0
+                },
+                {
+                    _id: "5e4e849271e3f344564e5413",
+                    skillTypeId: 7,
+                    name: "IOS",
+                    parent: "1",
+                    sequence: 0
+                },
+                {
+                    _id: "5e4e849271e3f344564e5414",
+                    skillTypeId: 8,
+                    name: "Android",
+                    parent: "1",
+                    sequence: 0
+                },
+                {
+                    _id: "5e4e849271e3f344564e5415",
+                    skillTypeId: 9,
+                    name: "Oracle DB",
+                    parent: "1",
+                    sequence: 0
+                }
+            ],
+            promotion : { id : 1, type : "HOT", createdDate : 1578887589, hasExpired : true },
+            company : {
+                id : 2, groupName : "Amazon", type : "COMPANY", imageUrl : "logo.png", rating : 4.2, hasFollowed : true, noFollowers : 215000,
+                address : { id : 1, city : "San Francisco", state : "CA", country : "US"},
+                companyImages : [ "amazon.jpg", "amazon2.jpg", "amazon3.jpg", "amazon4.jpg", "amazon5.jpg" ],
+                benefits : [ { id : 1, name : "Dental Insurance" }, { id : 2, name : "Medical Insurance" }, { id : 3, name : "Vision Insurance" }, { id : 4, name : "401(K) Match" } ]
+            }
+
+        }
+        ];
+
+
   }
+
 
   return (
     <article>
@@ -191,163 +274,118 @@ export function JobDetail({
               <div className="container">
 
                   <div className="row">
-                      <div className="col-lg-9 col-md-12 col-sm-12 col-12">
-                          <div className="banner-item text-box-overlay center-center">
-                              <CoverBanner item={job.company}/>
+                      <CoverBanner item={job.company}/>
+                  </div>
 
-                              <div className="text"></div>
-                          </div>
+                  <div className="row">
+                      <div className="col-lg-9 col-md-12 col-sm-12 col-12">
+
+
                           <div id="col-main" className="page-product page-job-detail layout-normal">
                               <div className="product">
                                   <div className="product-content-wrapper">
                                       <div className="row">
-                                          <div className="col-lg-12">
 
-                                              <div id="product-info" className="product-info">
+                                          <div id="product-info" className="product-info">
 
-                                                  <div className="product-info-inner">
-                                                      <div className="row section">
-                                                          <div className="col-lg-9 col-md-9 col-sm-9 col-9">
+                                              <div className="product-info-inner">
+                                                  <div className="row section">
+                                                      <div className="">
 
-                                                              <div className="product-vendor"><a href="/collections/vendors?q=Givenchy" title="Givenchy">{job.company.groupName}</a></div>
-                                                              <h1 itemProp="name" content="Dentoex Product Sample" className="page-heading">{job.title}</h1>
-                                                              <div className="rating-links">
-                                                              <span className="spr-badge" id="spr_badge_1394248056896" data-rating="5.0">
-                                                                  <span className="spr-starrating spr-badge-starrating">
-                                                                      <i className="spr-icon spr-icon-star"></i>
-                                                                      <i className="spr-icon spr-icon-star"></i>
-                                                                      <i className="spr-icon spr-icon-star"></i>
-                                                                      <i className="spr-icon spr-icon-star"></i>
-                                                                      <i className="spr-icon spr-icon-star"></i>
-                                                                  </span>
-                                                                  <span className="spr-badge-caption">1 review</span>
-                                                              </span>
-                                                              <a href="#tab_review">Add Your Review</a>
-                                                          </div>
 
-                                                              <div className="share-links social-sharing" data-permalink="https://arena-electro.myshopify.com/products/consectetur-nibh-eget">
-                                                                  <ul className="list-inline">
-                                                                      <li>
-                                                                          <a className="facebook" target="_blank" rel="noopener" href="//www.facebook.com/sharer.php?u=https://arena-electro.myshopify.com/products/consectetur-nibh-eget" title="Facebook">
-                                                                              <i className="demo-icon icon-facebook"></i><span>Share</span>
-                                                                          </a>
-                                                                      </li>
-                                                                      <li>
-                                                                          <a className="twitter" target="_blank" rel="noopener" href="//twitter.com/share?url=https://arena-electro.myshopify.com/products/consectetur-nibh-eget&amp;text=consectetur-nibh-eget" title="Twitter">
-                                                                              <i className="demo-icon icon-twitter"></i><span>Tweet</span>
-                                                                          </a>
-                                                                      </li>
-                                                                      <li>
-                                                                          <a className="google" target="_blank" rel="noopener" href="//plus.google.com/share?url=https://arena-electro.myshopify.com/products/consectetur-nibh-eget" title="Google">
-                                                                              <i className="demo-icon icon-google"></i><span>Google+</span>
-                                                                          </a>
-                                                                      </li>
-                                                                  </ul>
-                                                              </div>
-
-                                                              <div id="">
-                                                                  <span>Posted 1 week ago - </span>
-                                                                  <span className="stock">{job.noApplied} Applicants</span>
-                                                              </div>
-                                                          </div>
-                                                          <div className="col-lg-3 col-md-3 col-sm-3 col-3">
-                                                              <div className="group-cw clearfix">
-                                                                  <div className="action-button">
-                                                                      <button id="add-to-cart" className="sold-out btn btn-1" type="button"><span className="demo-icon icon-electro-add-to-cart-icon"></span>Saved</button>
-                                                                  </div>
-
-                                                                  <div className="pre-order">
-                                                                      <a href="#pre-order-popup" className="btn-pre-order btn btn-1">Apply</a>
-                                                                  </div>
-
-                                                              </div>
+                                                          <h1 itemProp="name" content="Dentoex Product Sample" className="page-heading">{job.title}</h1>
+                                                          <div className="product-vendor"><a href="/collections/vendors?q=Givenchy" title="Givenchy">{job.company.groupName}</a></div>
+                                                          <div id="">
+                                                              <span>Posted 1 week ago - </span>
+                                                              <span className="stock">{job.noApplied} Applicants</span>
                                                           </div>
                                                       </div>
 
-                                                      <div className="row section">
-                                                          <h2 className="subcategory">Required Skills</h2>
-                                                          <div className="required-skills">
-                                                              <ul className="tag-list">
-                                                              {job.skills.map((item) => (
+                                                  </div>
+
+                                                  <div className="row section">
+                                                      <h2 className="subcategory">Required Skills</h2>
+                                                      <div className="required-skills">
+                                                          <ul className="tag-list">
+                                                          {job.skills.map((item) => (
+                                                              <li key={item.name}>
+                                                                  <TagButton className="btn-sm badge-light" onClick={onTagClick} >
+                                                                      <span>{item.name}</span>
+                                                                  </TagButton>
+                                                              </li>
+                                                          ))}
+                                                          </ul>
+                                                      </div>
+                                                  </div>
+
+                                                  <div className="row section">
+                                                      <h2 className="section subcategory">Feature Benefits</h2>
+                                                      <div className="benefits">
+                                                          <ul className="tag-list">
+                                                              {job.company.benefits.map((item) => (
                                                                   <li key={item.name}>
                                                                       <TagButton className="btn-sm badge-light" onClick={onTagClick} >
                                                                           <span>{item.name}</span>
                                                                       </TagButton>
                                                                   </li>
                                                               ))}
-                                                              </ul>
-                                                          </div>
-                                                      </div>
-
-                                                      <div className="row section">
-                                                          <h2 className="section subcategory">Feature Benefits</h2>
-                                                          <div className="benefits">
-                                                              <ul className="tag-list">
-                                                                  {job.company.benefits.map((item) => (
-                                                                      <li key={item.name}>
-                                                                          <TagButton className="btn-sm badge-light" onClick={onTagClick} >
-                                                                              <span>{item.name}</span>
-                                                                          </TagButton>
-                                                                      </li>
-                                                                  ))}
-                                                              </ul>
-                                                          </div>
-                                                      </div>
-
-                                                      <div className="row section">
-                                                          <h2 className="subcategory">Role Overview</h2>
-                                                          <div className="role-overview">
-                                                              <p>{job.description}</p>
-                                                          </div>
-                                                      </div>
-
-                                                      <div className="row section">
-                                                          <h2 className="subcategory">Duties and Responsiblitites</h2>
-                                                          <div className="section responsibility">
-                                                              <ul className="list">
-                                                                  {job.responsibilities.map((text) => (
-                                                                      <li key={text}>
-                                                                          <span>{text}</span>
-                                                                      </li>
-                                                                  ))}
-                                                              </ul>
-                                                          </div>
-                                                      </div>
-
-
-                                                      <div className="row section">
-                                                          <h2 className="subcategory">Learn More About {job.company.groupName}</h2>
-                                                          <div className="section item">
-                                                              <GroupItem group={job.company}/>
-                                                          </div>
-                                                          <div className="row wrap-slider">
-                                                              <div className="item col-md-4 col-sm-12">
-                                                                  <div className="image">
-                                                                      <img src="//cdn.shopify.com/s/files/1/0013/8815/0848/files/3column1_500x.jpg?v=1542272396" alt="Image" />
-                                                                  </div>
-                                                              </div>
-
-                                                              <div className="item col-md-4 col-sm-12">
-                                                                  <div className="image">
-                                                                      <img src="//cdn.shopify.com/s/files/1/0013/8815/0848/files/3column2_500x.jpg?v=1542272396" alt="Image" />
-                                                                  </div>
-                                                              </div>
-                                                              <div className="item col-md-4 col-sm-12">
-                                                                  <div className="image">
-                                                                      <img src="//cdn.shopify.com/s/files/1/0013/8815/0848/files/3column3_500x.jpg?v=1542272396" alt="Image" />
-                                                                  </div>
-
-                                                              </div>
-
-
-
-                                                          </div>
+                                                          </ul>
                                                       </div>
                                                   </div>
 
+                                                  <div className="row section">
+                                                      <h2 className="subcategory">Role Overview</h2>
+                                                      <div className="role-overview">
+                                                          <p>{job.description}</p>
+                                                      </div>
+                                                  </div>
+
+                                                  <div className="row section">
+                                                      <h2 className="subcategory">Duties and Responsiblitites</h2>
+                                                      <div className="section responsibility">
+                                                          <ul className="list">
+                                                              {job.responsibilities.map((text) => (
+                                                                  <li key={text}>
+                                                                      <span>{text}</span>
+                                                                  </li>
+                                                              ))}
+                                                          </ul>
+                                                      </div>
+                                                  </div>
+
+
+                                                  <div className="row section">
+                                                      <h2 className="subcategory">Learn More About {job.company.groupName}</h2>
+                                                      <div className="section item">
+                                                          <GroupItem group={job.company}/>
+                                                      </div>
+                                                      <div className="row wrap-slider">
+                                                          <div className="item col-md-4 col-sm-12">
+                                                              <div className="image">
+                                                                  <img src="//cdn.shopify.com/s/files/1/0013/8815/0848/files/3column1_500x.jpg?v=1542272396" alt="Image" />
+                                                              </div>
+                                                          </div>
+
+                                                          <div className="item col-md-4 col-sm-12">
+                                                              <div className="image">
+                                                                  <img src="//cdn.shopify.com/s/files/1/0013/8815/0848/files/3column2_500x.jpg?v=1542272396" alt="Image" />
+                                                              </div>
+                                                          </div>
+                                                          <div className="item col-md-4 col-sm-12">
+                                                              <div className="image">
+                                                                  <img src="//cdn.shopify.com/s/files/1/0013/8815/0848/files/3column3_500x.jpg?v=1542272396" alt="Image" />
+                                                              </div>
+
+                                                          </div>
+
+
+
+                                                      </div>
+                                                  </div>
                                               </div>
 
                                           </div>
+
                                       </div>
                                   </div>
 
@@ -355,7 +393,7 @@ export function JobDetail({
                           </div>
                       </div>
 
-                      <div id="sidebar-blog" className="sidebar col-lg-3 col-md-12 col-sm-12 col-12">
+                      <div id="sidebar" className="sidebar col-lg-3 col-md-12 col-sm-12 col-12">
 
                           <div className="sb-widget">
                               <div className="sb-blog-posts">
@@ -364,7 +402,7 @@ export function JobDetail({
 
                                       <ul className="user-list">
                                           {job.connection.list.map((user) => (
-                                              <li><ListUserItem user={user} /></li>
+                                              <li key={user.id}><ListUserItem user={user} /></li>
                                           ))}
                                       </ul>
 
@@ -374,6 +412,23 @@ export function JobDetail({
 
                               </div>
                           </div>
+
+                          {similarJobs ? (
+                              <div className="sb-widget">
+                                  <div className="sb-blog-posts">
+                                      <h5 className="sb-title">{job.company.groupName} Jobs</h5>
+                                      <div className="cata-grid-1">
+                                          <div className="cata-product cp-grid">
+
+                                              {similarJobs.map((job) => (
+                                                  <ListJobItem job={job}/>
+                                              ))}
+                                          </div>
+
+                                      </div>
+                                  </div>
+                              </div>
+                          ) : (<span></span>)}
                       </div>
                   </div>
 

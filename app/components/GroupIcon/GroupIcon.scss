@@ -1,8 +1,9 @@
 .group-icon {
   margin: 0 auto;
-  max-width: 100px;
+  max-width: 80px;
   border: 1px solid #eee;
-  border-radius: 4px;
+  border-radius: 8px;
+  overflow: hidden;
   a {
     margin: 0 auto;
 
@@ -29,10 +30,9 @@
   @media (max-width: 991px) and (min-width: 768px) {
   }
   @media (max-width: 767px) and (min-width: 576px) {
-    width: 15%;
   }
   @media (max-width: 575px) {
-    width: 15%;
+    max-width: 60px;
   }
 }
 

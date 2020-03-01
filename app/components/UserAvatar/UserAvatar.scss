@@ -26,10 +26,9 @@
   @media (max-width: 991px) and (min-width: 768px) {
   }
   @media (max-width: 767px) and (min-width: 576px) {
-    width: 15%;
   }
   @media (max-width: 575px) {
-    width: 15%;
+    max-width: 70px;
   }
 }
 

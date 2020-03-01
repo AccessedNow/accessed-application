@@ -15,7 +15,7 @@ import './TagButton.scss';
 function TagButton(props) {
   // Render an anchor tag
   let button = (
-      <button type="button" className={"btn " + props.className} onClick={props.onTagclick}>
+      <button type="button" className={"btn btn-tag " + props.className} onClick={props.onTagclick}>
           {Children.toArray(props.children)}
       </button>
 
@@ -24,7 +24,7 @@ function TagButton(props) {
   // If the Button has a handleRoute prop, we want to render a button
   if (props.href) {
     button = (
-        <a href={props.href} onClick={props.onTagclick} className={"btn " + props.className}>
+        <a href={props.href} onClick={props.onTagclick} className={"btn btn-tag " + props.className}>
             {Children.toArray(props.children)}
         </a>
     );

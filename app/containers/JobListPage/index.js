@@ -17,7 +17,7 @@ import saga from './saga';
 import { jobs } from './selectors';
 import SideBar from '../../components/SideBar';
 import CategoryToolbar from '../../components/CategoryToolbar';
-import JobListItem from '../../components/JobListItem';
+import ListJobItem from '../../components/ListJobItem';
 
 
 import ToolBar from '../../components/ToolBar';
@@ -109,9 +109,9 @@ export function JobListPage({
                         <CategoryToolbar />
 
                         <div id="col-main">
-                          <div className="cata-product cp-grid">
+                          <div className="cata-product cata-list cp-grid">
                             {jobs.content.map((job) => (
-                                <JobListItem key={job.id} job={job} />
+                                <ListJobItem key={job.id} job={job} />
                             ))}
                           </div>
 

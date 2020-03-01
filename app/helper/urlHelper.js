@@ -10,7 +10,7 @@ export function buildCoverImageUrl(item) {
 };
 
 
-export function buildCompanyImageUrl(group) {
+export function buildGroupImageUrl(group) {
     let type = group.type.toLowerCase();
     return `${config.CDN}/${type}/${group.id}/images/${group.imageUrl}`;
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import './GroupIcon.scss';
-import {buildCompanyImageUrl} from "../../helper/urlHelper";
+import {buildGroupImageUrl} from "../../helper/urlHelper";
 
 function GroupIcon({group}) {
 
@@ -11,7 +11,7 @@ function GroupIcon({group}) {
 
         <div className="group-icon">
             <a className="" href={groupUrl}>
-                <img style={{position: 'relative'}} className="featured-image front lazyload" alt={group.groupName} data-src={buildCompanyImageUrl(group)} />
+                <img style={{position: 'relative'}} className="featured-image front lazyload" alt={group.groupName} data-src={buildGroupImageUrl(group)} />
             </a>
         </div>
 

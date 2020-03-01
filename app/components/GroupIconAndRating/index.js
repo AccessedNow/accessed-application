@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import GroupIcon from "../GroupIcon";
 
 import './GroupIconAndRating.scss';
-import {buildCompanyImageUrl} from "../../helper/urlHelper";
+import {b} from "../../helper/urlHelper";
 
 function GroupIconAndRating({group}) {
     return (
 
         <div>
             <GroupIcon group={group}/>
-            <div className="company-review">
+            <div className="item-review">
                 <span className="spr-badge" id="spr_badge_1394248253504" data-rating="5.0">
                     <span className="spr-starrating spr-badge-starrating">
                         <i className="spr-icon spr-icon-star" style={{color: "#fed700"}}></i>

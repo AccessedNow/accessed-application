@@ -6,7 +6,6 @@
 
 		ul, ol {
 			margin-top: 15px;
-			margin-bopadding-leftttom: 15px;
 			padding-left: 20px;
 			line-height: 20px;
 			list-style: disc outside none;
@@ -17,12 +16,12 @@
 	}
 	.subcategory {
 		width: 100%;
-		font-size: 1em;
-		font-weight: 500;
-		margin: 0 0 10px;
-		padding-bottom: 13px;
+		font-size: 1.2em;
+		font-weight: 700;
+		margin: 10px 0 0 0;
+		padding: 13px 0;
 		line-height: 32px;
-		border-bottom: 1px solid #ddd;
+		border-top: 1px solid #ddd;
 		position: relative;
 	}
 

@@ -24,11 +24,13 @@ import {
     makeSelectError,
 } from 'containers/App/selectors';
 
+import {buildPartyUrl} from "../../helper/urlHelper";
 import CoverBanner from "../../components/CoverBanner";
 import Button from "../../components/Button";
 import TagButton from "../../components/TagButton";
 import GroupItem from "../../components/GroupItem";
 import ListUserItem from "../../components/ListUserItem";
+import ListItem from '../../components/ListItem';
 import ListJobItem from '../../components/ListJobItem';
 
 
@@ -54,7 +56,10 @@ export function JobDetail({
 
 
 
+
   if(!job){
+
+      /*
     job={
         jobId : 100000, title : "VP, Business Technology",
         hasSaved : false, isExternal : false, externalUrl : "", noApplied: 12, noOfResources : 1, employmentType : "Full Time", expirationDate : 1580545602,
@@ -121,7 +126,7 @@ export function JobDetail({
         ],
         promotion : { id : 1, type : "HOT", createdDate : 1578887589, hasExpired : true },
         company : {
-            id : 2, groupName : "Amazon", type : "COMPANY", imageUrl : "logo.png", rating : 4.2, hasFollowed : true, noFollowers : 215000,
+            id : 2, groupName : "Amazon", partyType : "COMPANY", imageUrl : "logo.png", rating : 4.2, hasFollowed : true, noFollowers : 215000,
             address : { id : 1, city : "San Francisco", state : "CA", country : "US"},
             companyImages : [ "amazon.jpg", "amazon2.jpg", "amazon3.jpg", "amazon4.jpg", "amazon5.jpg" ],
             benefits : [ { id : 1, name : "Dental Insurance" }, { id : 2, name : "Medical Insurance" }, { id : 3, name : "Vision Insurance" }, { id : 4, name : "401(K) Match" } ]
@@ -159,10 +164,11 @@ export function JobDetail({
             "Strong customer service orientation and ability to work well with diverse internal and external constituents in a team-oriented environment."
         ]
     };
+*/
 
     similarJobs = [
         {
-            jobId : 100001, title : "VP, Business Technology",
+            jobId : 100001, title : "VP, Business Technology", createdDate : 1583136282000,
             hasSaved : false, isExternal : false, externalUrl : "", noApplied: 12, noOfResources : 1, employmentType : "Full Time", expirationDate : 1580545602,
             requiredOnDate : 1581755202, salaryRangeLow : 65000, salaryRangeHigh : 80000, salaryFixed : null, jobFunction : "TECH",
             level : "EXECUTIVE", city : "Quan 1", state : "Ho Chi Minh", country : "VN",
@@ -249,33 +255,11 @@ export function JobDetail({
         <div id="main-content">
           <div id="main-content">
             <div id="shopify-section-collection-template" className="shopify-section">
-              <div className="wrap-breadcrumb bw-color">
-
-                {/* Breadcrumb Start */}
-                <div id="breadcrumb" className="breadcrumb-holder container">
-                  <ul className="breadcrumb">
-                    <li itemScope="" itemType="http://data-vocabulary.org/Breadcrumb">
-                      <a itemProp="url" href="/">
-                        <span itemProp="title" className="d-none">Accessed</span>Home
-                    </a>
-                    </li>
-                    <li itemScope="" itemType="http://data-vocabulary.org/Breadcrumb" className="d-none">
-                      <a href="/collections/all" itemProp="url">
-                        <span itemProp="title">Jobs Detail</span>
-                      </a>
-                    </li>
-                    <li className="active">{job.title}</li>
-                  </ul>
-                </div>
-                {/* Breadcrumb End */}
-              </div>
 
               {/* Main Container Start */}
+                {job && (
               <div className="container">
-
-                  <div className="row">
-                      <CoverBanner item={job.company}/>
-                  </div>
+                  <CoverBanner item={job.company}/>
 
                   <div className="row">
                       <div className="col-lg-9 col-md-12 col-sm-12 col-12">
@@ -289,12 +273,12 @@ export function JobDetail({
                                           <div id="product-info" className="product-info">
 
                                               <div className="product-info-inner">
-                                                  <div className="row section">
+                                                  <div className="section">
                                                       <div className="">
 
 
                                                           <h1 itemProp="name" content="Dentoex Product Sample" className="page-heading">{job.title}</h1>
-                                                          <div className="product-vendor"><a href="/collections/vendors?q=Givenchy" title="Givenchy">{job.company.groupName}</a></div>
+                                                          <div className="product-vendor"><a href={buildPartyUrl(job.company)} title="Givenchy">{job.company.groupName}</a></div>
                                                           <div id="">
                                                               <span>Posted 1 week ago - </span>
                                                               <span className="stock">{job.noApplied} Applicants</span>
@@ -303,7 +287,7 @@ export function JobDetail({
 
                                                   </div>
 
-                                                  <div className="row section">
+                                                  <div className="section">
                                                       <h2 className="subcategory">Required Skills</h2>
                                                       <div className="required-skills">
                                                           <ul className="tag-list">
@@ -318,7 +302,7 @@ export function JobDetail({
                                                       </div>
                                                   </div>
 
-                                                  <div className="row section">
+                                                  <div className="section">
                                                       <h2 className="section subcategory">Feature Benefits</h2>
                                                       <div className="benefits">
                                                           <ul className="tag-list">
@@ -333,14 +317,14 @@ export function JobDetail({
                                                       </div>
                                                   </div>
 
-                                                  <div className="row section">
+                                                  <div className="section">
                                                       <h2 className="subcategory">Role Overview</h2>
                                                       <div className="role-overview">
                                                           <p>{job.description}</p>
                                                       </div>
                                                   </div>
 
-                                                  <div className="row section">
+                                                  <div className="section">
                                                       <h2 className="subcategory">Duties and Responsiblitites</h2>
                                                       <div className="section responsibility">
                                                           <ul className="list">
@@ -354,12 +338,13 @@ export function JobDetail({
                                                   </div>
 
 
-                                                  <div className="row section">
+                                                  <div className="section">
                                                       <h2 className="subcategory">Learn More About {job.company.groupName}</h2>
                                                       <div className="section item">
                                                           <GroupItem group={job.company}/>
                                                       </div>
-                                                      <div className="row wrap-slider">
+                                                      <div className="container image-text">
+                                                        <div className="row">
                                                           <div className="item col-md-4 col-sm-12">
                                                               <div className="image">
                                                                   <img src="//cdn.shopify.com/s/files/1/0013/8815/0848/files/3column1_500x.jpg?v=1542272396" alt="Image" />
@@ -377,11 +362,23 @@ export function JobDetail({
                                                               </div>
 
                                                           </div>
-
-
-
+                                                      </div>
                                                       </div>
                                                   </div>
+
+                                                  {similarJobs ? (
+
+                                                      <div id="col-main">
+                                                          <div className="cata-product cata-list cp-grid">
+                                                              {similarJobs.map((job) => (
+                                                                  <ListJobItem key={job.id} job={job} />
+                                                              ))}
+                                                          </div>
+
+                                                      </div>
+
+                                                  ) : (<span></span>)}
+
                                               </div>
 
                                           </div>
@@ -421,7 +418,7 @@ export function JobDetail({
                                           <div className="cata-product cp-grid">
 
                                               {similarJobs.map((job) => (
-                                                  <ListJobItem job={job}/>
+                                                  <ListItem key={job.id} job={job}/>
                                               ))}
                                           </div>
 
@@ -431,8 +428,9 @@ export function JobDetail({
                           ) : (<span></span>)}
                       </div>
                   </div>
-
               </div>
+
+                )}
               {/* Main Container End */}
 
             </div>

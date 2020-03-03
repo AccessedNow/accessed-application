@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'arenafont';
-  src: url('arenafont.eot?53252936');
-  src: url('arenafont.eot?53252936#iefix') format('embedded-opentype'),
-       url('arenafont.woff2?53252936') format('woff2'),
-       url('arenafont.woff?53252936') format('woff'),
-       url('arenafont.ttf?53252936') format('truetype'),
-       url('arenafont.svg?53252936#arenafont') format('svg');
+  src: url('../font/arenafont.eot');
+  src: url('../font/arenafont.eot') format('embedded-opentype'),
+       url('../font/arenafont.woff2') format('woff2'),
+       url('../font/arenafont.woff') format('woff'),
+       url('../font/arenafont.ttf') format('truetype'),
+       url('../font/arenafont.svg') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -29,18 +29,20 @@
   display: inline-block;
   text-decoration: inherit;
   width: 1em;
-  text-align: center; 
+  margin-right: .2em;
+  text-align: center;
   /* opacity: .8; */
  
   /* For safety - reset parent styles, that can break glyph codes*/
   font-variant: normal;
-  text-transform: none; 
+  text-transform: none;
  
   /* fix buttons height, for twitter bootstrap */
   line-height: 1em;
  
   /* Animation center compensation - margins should be symmetric */
   /* remove if not needed */
+  margin-left: .2em;
  
   /* you can be more comfortable with increased icons size */
   /* font-size: 120%; */

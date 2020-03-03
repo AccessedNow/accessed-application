@@ -7,54 +7,36 @@
 import React from 'react';
 import Config from '../../config/Config';
 
+
 import './CompanyCard.scss';
+import {buildPartyUrl} from '../../helper/urlHelper';
 import { numberFormat } from '../../utils/helper';
+import GroupIcon from "../GroupIcon";
 
 
-const CompanyCard = ({ title, category, rating, city, country, companySize, id, logo }) => {
-  let logoUrl = `${Config.S3}company/${id}/images/${logo}`;
+const CompanyCard = ({ company }) => {
+  console.log(company.groupName, company.id)
+  let companyUrl = buildPartyUrl(company);
 
-  let employeesCount = numberFormat(companySize);
+  let employeesCount = numberFormat(company.size);
   return (
     <div className="product-grid-item mode-view-item">
       <div className="product-wrapper effect-none  ">
         <div className="product-head">
           <div className="product-image">
             <div className="product-group-vendor-name">
-              <h5 className="product-name"><a href="#">{title}</a></h5>
-              <div className="product-vendor"><a href="#" title={category}>{category}</a></div>
+              <h5 className="product-name"><a href={companyUrl}>{company.groupName}</a></h5>
+              <div className="product-vendor"><a href={companyUrl} title={company.groupName}>{company.groupName}</a></div>
               <div className="product-review">
                 <span className="spr-badge">
                   <span className="spr-starrating spr-badge-starrating">
                     <i className="spr-icon spr-icon-star" style={{ color: '#fed700' }}></i>
-                    <span style={{ color: '#fed700' }}> {rating} </span>
+                    <span style={{ color: '#fed700' }}> {company.rating} </span>
                   </span>
                 </span>
               </div>
             </div>
-            <div className="featured-img waiting lazyloaded"  >
-              <a href="/collections/all/products/black-fashion-zapda-shoes">
-                <img
-                  className="featured-image front lazyloaded"
-                  alt={title}
-                  src={logoUrl}
-                  style={{ position: 'relative' }}
-                />
-                <span className="img-back d-none d-lg-block">
-                  <img
-                    className="back lazyloaded"
-                    alt={title}
-                    src={logoUrl}
-                    style={{ position: 'relative' }}
-                  />
-                </span>
-                {/* <span className="product-label">
-                  <span className="label-sale">
-                    <span className="sale-text">Sale</span>
-                  </span>
-                </span> */}
-              </a>
-            </div>
+            <GroupIcon group={company}/>
           </div>
         </div>
         <div className="product-content">
@@ -62,7 +44,7 @@ const CompanyCard = ({ title, category, rating, city, country, companySize, id, 
             <div className="price-cart-wrapper">
               <div className="product-price">
                 <div className="company">
-                  <span className="location">{city}, {country}</span>
+                  <span className="location">{company.city}, {company.country}</span>
                 </div>
               </div>
               <div className="product-add-cart">

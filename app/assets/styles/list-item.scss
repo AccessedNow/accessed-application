@@ -1,4 +1,4 @@
-@import '../v4/variables';
+@import './variables';
 
 //list-item overriding styling for all grid
 
@@ -172,7 +172,7 @@
           margin: 0;
           padding: 0 15px;
           @media (min-width: 992px)  {
-            width: 43.7%;
+            width: 20%;
           }
           @media (max-width: 991px) and (min-width: 768px) {
             width: 50%;
@@ -207,7 +207,7 @@
             float: right;
             padding-left: 15px;
             @media (min-width: 992px) {
-              width: 56.3%;
+              width: 80%;
             }
             @media (max-width: 991px) and (min-width: 768px) {
               width: 50%;
@@ -235,10 +235,9 @@
               }
             }
             ul, ol {
-              padding-left: 18px;
               li {
-                margin: 0 0 3px;
-                white-space: normal;
+                display:inline-block;
+                margin: 8px 8px 0 0;
               }
             }
           }
@@ -553,10 +552,13 @@
       font-size: $body-font-size - 1px;
       color: $body-light-color;
       line-height: 18px;
-      margin: 23px 0 0 0;
-      white-space: nowrap;
+
       text-overflow: ellipsis;
+      /*
+      margin: 23px 0 0 0;
       overflow: hidden;
+      white-space: nowrap;
+      */
       display: none;
     }
   }

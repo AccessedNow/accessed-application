@@ -110,17 +110,7 @@ export function CompanyPage({
                         <div className="cata-product cp-grid">
                           {/* Card View Start*/}
                           {companies.content.map((item) => (
-                            <CompanyCard
-                              key={item.id}
-                              title={item.groupName}
-                              category={item.partyType.name}
-                              rating={item.rating}
-                              city={item.city}
-                              country={item.country}
-                              companySize={item.companySize}
-                              id={item.id}
-                              logo={item.logoImageUrl}
-                            />
+                            <CompanyCard key={item.id} company={item} />
                           ))}
                           {/* Card View End */}
                         </div>

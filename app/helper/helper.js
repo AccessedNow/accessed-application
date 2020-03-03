@@ -13,6 +13,5 @@ export function dateDifference(timestamp) {
     let currentDate = new Date();
     let diffTime = Math.abs(currentDate - date);
     let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    console.log(timestamp, diffDays);
     return diffDays;
 };

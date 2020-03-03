@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import './GroupIcon.scss';
-import {buildGroupImageUrl} from "../../helper/urlHelper";
+import {buildPartyUrl, buildGroupImageUrl} from "../../helper/urlHelper";
 
 function GroupIcon({group}) {
 
-    let groupUrl = '/'+ group.type.toLowerCase() + '/' + group.id;
+    let groupUrl = buildPartyUrl(group);
     return (
 
         <div className="group-icon">

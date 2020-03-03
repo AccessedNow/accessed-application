@@ -1,22 +1,30 @@
 import config from '../config/config';
 
 
-export function buildCoverImageUrl(item) {
-    let type = item.type.toLowerCase();
-    let coverImageUrl = (item.coverImageUrl)? item.coverImageUrl:"cover1.png";
+export function buildPartyUrl(party) {
+    let partyType = party.partyType;
+    let type = partyType=="PERSON"? "USER" : partyType=="ORGANIZATION"? "COMPANY" : "GROUP";
+    return `/${type.toLowerCase()}/${party.id}`;
+};
 
-    let path = (item.coverImageUrl)? (type + "/" + group.id + "/images") : "covers";
+
+export function buildCoverImageUrl(party) {
+    let type = party.partyType=='ORGANIZATION'?'COMPANY':'COMPANY';
+    let coverImageUrl = (party.coverImageUrl)? party.coverImageUrl:"cover1.png";
+
+    let path = (party.coverImageUrl)? (type.toLowerCase() + "/" + party.id + "/images") : "covers";
     return `${config.CDN}/${path}/${coverImageUrl}`;
 };
 
 
 export function buildGroupImageUrl(group) {
-    let type = group.type.toLowerCase();
-    return `${config.CDN}/${type}/${group.id}/images/${group.imageUrl}`;
+    let type = group.partyType=='ORGANIZATION'?'COMPANY':'COMPANY';
+    return `${config.CDN}/${type.toLowerCase()}/${group.id}/images/${group.imageUrl}`;
 };
 
+
 export function buildUserImageUrl(user) {
-    let type = user.type=='PERSON'?'USER':'USER';
+    let type = user.partyType=='PERSON'?'USER':'USER';
     return `${config.CDN}/${type.toLowerCase()}/${user.id}/images/${user.imageUrl}`;
 };
 

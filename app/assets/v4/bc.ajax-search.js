@@ -3,8 +3,6 @@ var AT_AjaxSearch = {
     var search_url  = '/search'
         ,result     = new Array()
         ,_keyword   = input_element.val();
-    
-    console.log(search_url);
 
     jQuery.ajax({
         type: 'GET',
@@ -47,13 +45,13 @@ var AT_AjaxSearch = {
                  },300); 
             }
             
-            if($('.result-ajax-search .search-results li').length){
-              $('.result-ajax-search').show();
-              currenciesCallbackSpecial('.result-ajax-search span.money');
+            if($('#result-ajax-search .search-results li').length){
+              $('#result-ajax-search').show();
+              currenciesCallbackSpecial('#result-ajax-search span.money');
             }
           }else{
             result_element.html('<li class="result-item"><p>No result found for your search.</p></li>');
-             $('.result-ajax-search').show();
+             $('#result-ajax-search').show();
           }
        }     
     });
@@ -65,8 +63,8 @@ var AT_AjaxSearch = {
     var     ajax_timeout
     		,ajax_lost_focus
             ,ajax_search        = this
-            ,search_input_id    = bc_search_config.search_input.length   > 0   ? bc_search_config.search_input    : '.bc-product-search'
-            ,wrapper_id         = bc_search_config.result_wrapper.length > 0   ? bc_search_config.result_wrapper  : '.result-ajax-search'
+            ,search_input_id    = bc_search_config.search_input.length   > 0   ? bc_search_config.search_input    : '#bc-product-search'
+            ,wrapper_id         = bc_search_config.result_wrapper.length > 0   ? bc_search_config.result_wrapper  : '#result-ajax-search'
             ,result_id          = bc_search_config.result_element.length > 0   ? bc_search_config.result_element  : '.search-results'
             ;
 
@@ -84,7 +82,7 @@ var AT_AjaxSearch = {
       //wait 300 mili seconds to avoid request too much search
       ajax_timeout = setTimeout(function() {
         if( _keyword.length < 1 ){
-          $('.result-ajax-search').hide();
+          $('#result-ajax-search').hide();
         }
         
         else if( _keyword.length >= 2 ){
@@ -93,7 +91,7 @@ var AT_AjaxSearch = {
             ajax_search.ajaxProductItems( search_element ,result_wrapper, result_element );
         }else{
             jQuery(this).removeClass('error warning valid').addClass('error');
-          	$('.result-ajax-search').show();
+          	$('#result-ajax-search').show();
             result_element.html('<li><p>You must enter at least 2 characters.</p></li>');
         } 
       },300);      
@@ -108,8 +106,8 @@ var AT_AjaxSearch = {
 
       //wait 300 mili seconds to avoid request too much search
       ajax_lost_focus = setTimeout(function() {
-		jQuery('.result-ajax-search').hide();
-      },200);       
+		jQuery('#result-ajax-search').hide();
+      },1500);       
     });
 
 
@@ -124,8 +122,8 @@ var AT_AjaxSearch = {
 jQuery(document).ready(function($) {
 
   AT_AjaxSearch.init({
-      "search_input"      :   ".bc-product-search"
-      ,"result_wrapper"   :   ".result-ajax-search"
+      "search_input"      :   "#bc-product-search"
+      ,"result_wrapper"   :   "#result-ajax-search"
       ,"result_element"   :   ".search-results"
       ,"strictly_mode"    :   0
   });

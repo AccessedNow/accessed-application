@@ -1,5 +1,4 @@
-@import 'variables';
-
+@import '../styles/variables';
 /* header ----------------*/
 html .cart-opened,
 html.search-opened,
@@ -401,17 +400,6 @@ body {
           padding-right: 15px;
         }
       }
-
-      &.style-5 {
-        .header-main {
-          @include box-shadow(0 0 10px #333);
-        }
-      }
-      &.style-8{
-        .header-main {
-          background: $main-color;
-        }
-      }
     }
     /*stick menu*/
     &.header-fixed {
@@ -474,7 +462,6 @@ body {
           min-height: 104px;
           .header-main {
             background: $main-color;
-            @include box-shadow(0 0 10px #333);
           }
         }
       }
@@ -489,16 +476,6 @@ body {
       &.style-7 {
         @media (min-width: 992px) {
           min-height: 121px;
-        }
-      }
-      &.style-8 {
-        @media (min-width: 992px) {
-          min-height: 115px;
-          .header-main {
-            background: #fff;
-            @include box-shadow(0 0 10px #666);
-            padding: 20px 0;
-          }
         }
       }
     }
@@ -521,7 +498,7 @@ body {
   .header-main {
     position: relative;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 32px 0;
     -webkit-animation-duration: .5s;
     animation-duration: .5s;
     -webkit-animation-fill-mode: both;
@@ -803,6 +780,7 @@ body {
         background-color: transparent !important;
       }
       img {
+        width: 100%;
       }
     }
   }
@@ -4611,8 +4589,7 @@ iframe#preview-bar-iframe {
     background: $main_color;
 }
 .spr-icon-star {
-    /*color: $main_color;*/
-  color: #FEC105
+    color: $main_color;
 }
 
 /* Sidebar -------------------------------*/
@@ -6189,7 +6166,7 @@ iframe#preview-bar-iframe {
 }
 .product-wishlist {
     a {
-      /*color: $body-light-color;*/
+      color: $body-light-color;
       font-size: $body-font-size - 1px;
       line-height: 28px;
       i {
@@ -12642,7 +12619,9 @@ iframe#preview-bar-iframe {
 .footer-logo {
   .logo-site {
     img {
+      width: 100%;
       &.lazyloaded {
+        width: 100%;
       }
     }
     &.waiting {

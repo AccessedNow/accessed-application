@@ -35,7 +35,7 @@ function ListJobItem({job}) {
 
                                 {job.skills.map((item) => (
                                     <li key={item.name}>
-                                        <TagButton className="badge-light">
+                                        <TagButton className="btn-sm badge-light">
                                             <span>{item.name}</span>
                                         </TagButton>
                                     </li>

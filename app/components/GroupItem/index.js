@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import GroupIcon from "../GroupIcon";
-import {buildCompanyImageUrl} from "../../helper/urlHelper";
+import {buildPartyUrl, buildCompanyImageUrl} from "../../helper/urlHelper";
 
 import './GroupItem.scss';
 
 
 function GroupItem({group}) {
 
-    let groupUrl = '/'+ group.type.toLowerCase() + '/' + group.id;
+
     return (
 
         <div className="group-item">
@@ -20,7 +20,7 @@ function GroupItem({group}) {
             <div className="group-content col-md-7 col-sm-7 col-6">
                 <div className="group-inner">
 
-                    <a href={"/" + group.type.toLowerCase() + "/" + group.id}>{group.groupName}</a>
+                    <a href={buildPartyUrl(group)}>{group.groupName}</a>
                     <div className="group-industry">
                         <span>{group.industry}</span>
                     </div>

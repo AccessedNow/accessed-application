@@ -17,8 +17,6 @@ export function* fetchJobDetail(id) {
 
   try {
     const response = yield call(request, option);
-
-    console.log('response', response)
     yield put(getJobDetailSuccess(response));
   } catch (error) {
     yield put(getJobDetailError(error));

@@ -106,6 +106,7 @@ var AT_Filter = window.AT_Filter || {};
             }
             else
               param = href;
+              console.log(param)
               return param;
 		},
 
@@ -133,23 +134,20 @@ var AT_Filter = window.AT_Filter || {};
                    jQuery('.filter-sidebar.position-body.toggle').slideToggle("slow");
                    jQuery('html,body').removeClass('sidebar-opened');
                    var product_list = _obj.find(".cata-product");
+                   var filter_list = _obj.find(".sb-filter");
+                   var filter_list_active = _obj.find(".sb-filter .active-filter");
 
                    $("#col-main").empty().append(_obj.find("#col-main").children());
                    $(".pagination-showing").empty().append(_obj.find(".pagination-showing").children());
                    $(".pagination-holder").empty().append(_obj.find(".pagination-holder").children());
                  
-                   AT_Filter.filterElem.each(function(){
-                     var sel = ".sb-filter." + $(this).data('prefix')
-                     ,filter_list = _obj.find(sel);
-                     $(this).empty().append(filter_list);
-                   })
-
+                   AT_Filter.filterElem.empty().append(filter_list); 
                    AT_Main.filterCatalog();
                    AT_Main.fixButton();
                    AT_Main.fixTitle();
                    AT_Main.handleReviews();
+                   AT_Main.switchImgProduct();
                    AT_Main.handleGridList();
-                 
                    Currency.convertAll('USD', Currency.currentCurrency);
                  
 			   },

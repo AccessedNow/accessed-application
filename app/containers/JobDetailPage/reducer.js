@@ -15,7 +15,7 @@ import { FETCH_JOB_DETAIL, FETCH_JOB_DETAIL_SUCCESS, FETCH_JOB_DETAIL_ERROR } fr
 export const initialState = {
     loading: false,
     error: false,
-    jobData: false,
+    job: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -25,11 +25,12 @@ const jobReducer = (state = initialState, action) =>
             case FETCH_JOB_DETAIL:
                 draft.loading = true;
                 draft.error = false;
-                draft.jobData = false;
+                draft.job = false;
                 break;
 
             case FETCH_JOB_DETAIL_SUCCESS:
-                draft.jobData = action.data;
+                console.log('FETCH_JOB_DETAIL_SUCCESS', action.payload)
+                draft.job = action.payload;
                 draft.loading = false;
                 break;
 

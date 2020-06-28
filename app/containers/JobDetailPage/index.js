@@ -32,14 +32,17 @@ import GroupItem from "../../components/GroupItem";
 import ListUserItem from "../../components/ListUserItem";
 import ListItem from '../../components/ListItem';
 import ListJobItem from '../../components/ListJobItem';
-
+import SideBar from '../../components/SideBar';
+import CategoryToolbar from '../../components/CategoryToolbar';
+import CompanyFilter from '../../components/CompanyFilter';
 
 import './JobDetailPage.scss';
 
 
-const key = 'jobdetail';
+const key = 'job';
 
 export function JobDetail({
+  match,
   loading,
   error,
   job,
@@ -50,12 +53,33 @@ export function JobDetail({
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
+  useEffect(() => {
+    loadJob(params.id);
+  }, []);
+
+  let jobs = [];
+
   let similarJobs = [];
-  //let { id } = useParams();
-  loadJob(100000);
+  // let { id } = useParams();
 
+  // const { params } = this.props.match.params
+  // loadJob(params.id);
 
+  const [params, setParams] = useState({
+    id: match.params.id,
+    page: 0,
+    limit: 10,
+    sortBy: 'ASC'
+  });
 
+  const menus = [
+    { name: 'All', path: '#' },
+    { name: 'Jobs', path: '#' },
+    { name: 'Company', path: '#' },
+    { name: 'Salary', path: '#' }
+  ];
+
+  console.log('job', job)
 
   if(!job){
 
@@ -259,12 +283,18 @@ export function JobDetail({
               {/* Main Container Start */}
                 {job && (
               <div className="container">
-                  <CoverBanner item={job.company}/>
+
 
                   <div className="row">
-                      <div className="col-lg-9 col-md-12 col-sm-12 col-12">
+                      {/* Side Bar */}
+                      <div id="sidebar" className="left-column-container col-lg-3">
+                        <SideBar title={'Categories'} menus={menus} />
 
+                        <CompanyFilter {...jobs} />
+                      </div>
+                      <div className="col-lg-6 col-md-12 col-sm-12 col-12">
 
+                          <CoverBanner item={job.company}/>
                           <div id="col-main" className="page-product page-job-detail layout-normal">
                               <div className="product">
                                   <div className="product-content-wrapper">
@@ -458,7 +488,6 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => {
   return {
     loadJob: (id) => {
-
       dispatch(getJobDetail(id));
     },
     onTagclick: () => {

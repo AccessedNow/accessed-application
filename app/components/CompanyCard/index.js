@@ -15,7 +15,7 @@ import GroupIcon from "../GroupIcon";
 
 
 const CompanyCard = ({ company }) => {
-  console.log(company.groupName, company.id)
+  console.log(company.name, company.id)
   let companyUrl = buildPartyUrl(company);
 
   let employeesCount = numberFormat(company.size);
@@ -25,8 +25,8 @@ const CompanyCard = ({ company }) => {
         <div className="product-head">
           <div className="product-image">
             <div className="product-group-vendor-name">
-              <h5 className="product-name"><a href={companyUrl}>{company.groupName}</a></h5>
-              <div className="product-vendor"><a href={companyUrl} title={company.groupName}>{company.groupName}</a></div>
+              <h5 className="product-name"><a href={companyUrl}>{company.name}</a></h5>
+              <div className="product-vendor"><a href={companyUrl} title={company.name}>{company.name}</a></div>
               <div className="product-review">
                 <span className="spr-badge">
                   <span className="spr-starrating spr-badge-starrating">

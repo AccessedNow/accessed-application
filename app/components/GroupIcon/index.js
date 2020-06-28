@@ -11,7 +11,7 @@ function GroupIcon({group}) {
 
         <div className="group-icon">
             <a className="" href={groupUrl}>
-                <img style={{position: 'relative'}} className="featured-image front lazyload" alt={group.groupName} data-src={buildGroupImageUrl(group)} />
+                <img style={{position: 'relative'}} className="featured-image front lazyload" alt={group.name} data-src={buildGroupImageUrl(group)} />
             </a>
         </div>
 

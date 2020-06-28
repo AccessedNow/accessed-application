@@ -18,7 +18,6 @@
 import { FETCH_JOB_DETAIL, FETCH_JOB_DETAIL_SUCCESS, FETCH_JOB_DETAIL_ERROR } from './constants';
 
 export function getJobDetail(id) {
-  console.log('getJobDetail', id)
   return {
     type: FETCH_JOB_DETAIL,
     id
@@ -26,7 +25,6 @@ export function getJobDetail(id) {
 }
 
 export function getJobDetailSuccess(response) {
-  console.log('getJobDetailSuccess', response);
   return {
     type: FETCH_JOB_DETAIL_SUCCESS,
     payload: response

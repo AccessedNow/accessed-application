@@ -1,5 +1,5 @@
 /*
- * CompanyPage
+ * CompanySearch
  *
  * This page will display companies lsit on our App, at the '/company' route
  */
@@ -15,15 +15,15 @@ import { useInjectSaga } from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
 import { companies, paginate } from './selectors';
-import SideBar from '../../components/SideBar';
-import ToolBar from '../../components/ToolBar';
-import CompanyCard from '../../components/CompanyCard';
-import Paginate from '../../components/Paginate';
-import CompanyFilter from '../../components/CompanyFilter';
+import SideBar from '../../../components/SideBar/index';
+import ToolBar from '../../../components/ToolBar/index';
+import CompanyCard from '../../../components/CompanyCard/index';
+import Paginate from '../../../components/Paginate/index';
+import CompanyFilter from '../../../components/CompanyFilter/index';
 
-const key = 'company';
+const key = 'companies';
 
-export function CompanyPage({
+export function CompanySearch({
   onLoadCompanies, companies, paginate, onApplyFilter
 }) {
 
@@ -31,9 +31,11 @@ export function CompanyPage({
   useInjectSaga({ key, saga });
 
   const [params, setParams] = useState({
+    type: 'COMPANY',
     page: 0,
-    limit: 10,
-    sortBy: 'ASC'
+    size: 10,
+    sortBy: 'name',
+    direction: 'DESC'
   });
 
   const menus = [
@@ -139,7 +141,7 @@ export function CompanyPage({
   );
 }
 
-CompanyPage.propTypes = {
+CompanySearch.propTypes = {
   onLoadCompanies: PropTypes.func,
   companies: PropTypes.object.isRequired
 };
@@ -165,4 +167,4 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps);
 export default compose(
   withConnect,
   memo,
-)(CompanyPage);
+)(CompanySearch);

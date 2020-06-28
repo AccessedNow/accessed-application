@@ -14,7 +14,8 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
-import CompanyPage from 'containers/CompanyPage/Loadable';
+import CompanySearch from 'containers/Company/CompanySearch/Loadable';
+import CompanyDetail from 'containers/Company/CompanyDetail/Loadable';
 import JobListPage from 'containers/JobListPage/Loadable';
 import JobsPage from 'containers/JobsPage/Loadable';
 import JobDetailPage from 'containers/JobDetailPage/Loadable';
@@ -50,7 +51,8 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/features" component={FeaturePage} />
-        <Route path="/company" component={CompanyPage} />
+        <Route path="/company/search" component={CompanySearch} />
+        <Route path="/company/:id" component={CompanyDetail} />
         <Route path="/jobs/view/:id" component={JobDetailPage} />
         <Route path="/jobs" component={JobListPage} />
 

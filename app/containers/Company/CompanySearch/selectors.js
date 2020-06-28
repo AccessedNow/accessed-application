@@ -5,7 +5,7 @@
 import { createSelector } from 'reselect';
 import { initState } from './reducer';
 
-const selectCompany = state => state.company || initState;
+const selectCompany = state => state.companies || initState;
 
 const companies = () =>
   createSelector(

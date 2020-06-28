@@ -6,7 +6,7 @@ import TagButton from '../../components/TagButton';
 import Wrapper from './Wrapper';
 
 import {dateDifference} from "../../helper/helper";
-import {buildCompanyImageUrl} from "../../helper/urlHelper";
+import {buildCompanyImageUrl, buildPartyUrl} from "../../helper/urlHelper";
 
 import './ListJobItem.scss';
 import GroupIconAndRating from "../GroupIconAndRating";
@@ -14,7 +14,7 @@ import GroupIconAndRating from "../GroupIconAndRating";
 function ListJobItem({job}) {
 
   let company = job.company;
-  let companyUrl = "/"+ company.type.toLowerCase() + "/" + company.id;
+  let companyUrl = buildPartyUrl(job.company);
   return (
         <div className="product-grid-item list-item mode-view-item">
             <div className="product-wrapper item-wrapper effect-none">

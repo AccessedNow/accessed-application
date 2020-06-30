@@ -5,11 +5,16 @@ export function buildPartyUrl(party) {
     return `/${party.partyType.toLowerCase()}/${party.id}`;
 };
 
+export function buildPartyAvatarUrl(party) {
+  return `${config.CDN}/${party.partyType.toLowerCase()}/${party.id}/images/${party.avatar}`;
+};
+
+
 
 export function buildCoverImageUrl(party) {
-    let coverImageUrl = (party.partyType.cover)? party.cover:"cover1.png";
+    let coverImageUrl = (party.cover)? party.cover:"cover1.png";
 
-    let path = (party.coverImage)? (type.toLowerCase() + "/" + party.id + "/covers") : "covers";
+    let path = (party && party.cover)? (party.partyType.toLowerCase() + "/" + party.id + "/covers") : "covers";
     return `${config.CDN}/${path}/${coverImageUrl}`;
 };
 

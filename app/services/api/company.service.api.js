@@ -2,7 +2,7 @@ const ApiClient = require('../apiManager');
 const qs = require('qs');
 
 // let client = new ApiClient('http://localhost:90/api');
-let client = new ApiClient('accessed-feed-service.us-west-2.elasticbeanstalk.com/api');
+let client = new ApiClient('http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api');
 
 module.exports = {
 

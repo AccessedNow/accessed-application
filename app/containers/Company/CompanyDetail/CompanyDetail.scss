@@ -1,0 +1,318 @@
+.party-header {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px 10px 10px 10px;
+  padding: 10px;
+}
+
+
+@media (min-width: 1440px) {
+  #company-header {
+    max-width: 1440px;
+  }
+}
+
+.flex-1 {
+  flex: 1 1;
+}
+.justify-center {
+  justify-content: center;
+}
+.items-center {
+  align-items: center;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex {
+  display: flex;
+}
+
+
+
+
+.jss754 {
+  color: #fff;
+  height: 120px;
+  display: flex;
+  background: linear-gradient(to right, #122230 0%, #192d3e 100%);
+  min-height: 120px;
+  background-size: cover;
+  background-color: #122230;
+}
+
+.jss750 {
+  height: 320px;
+  min-height: 320px;
+}
+
+
+.MuiAvatar-root-767 {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  font-size: 2rem;
+  align-items: center;
+  flex-shrink: 0;
+  font-family: Muli,Roboto,"Helvetica",Arial,sans-serif;
+  line-height: 1;
+  user-select: none;
+  border-radius: 50%;
+  justify-content: center;
+}
+
+.MuiAvatar-img-772 {
+  color: transparent;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  text-align: center;
+  text-indent: 10000px;
+}
+
+
+.p-24 {
+  padding: 2.4rem;
+}
+
+.w-96 {
+  width: 9.6rem;
+}
+.h-96 {
+  height: 9.6rem;
+}
+
+
+@media (min-width: 960px) {
+  .md\:mx-24 {
+    margin-left: 2.4rem;
+    margin-right: 2.4rem;
+  }
+}
+.MuiTypography-colorInherit-796 {
+  color: inherit;
+}
+.MuiTypography-h4-782 {
+  font-size: 3.4rem;
+  font-family: Muli,Roboto,"Helvetica",Arial,sans-serif;
+  font-weight: 400;
+  line-height: 1.235;
+}
+.MuiTypography-root-774 {
+  margin: 0;
+}
+.MuiTypography-h4-709 {
+  font-size: 3.4rem;
+  font-family: Muli,Roboto,"Helvetica",Arial,sans-serif;
+  font-weight: 400;
+  line-height: 1.235;
+}
+
+@media (min-width: 960px) {
+  .md\:items-end {
+    align-items: flex-end;
+  }
+}
+
+@media (min-width: 960px) {
+  .md\:flex-row {
+    flex-direction: row;
+  }
+}
+
+
+
+@media (min-width: 960px){
+  .md\:justify-start {
+    justify-content: flex-start;
+  }
+}
+
+
+
+@media (min-width: 960px){
+  .md\:items-center {
+    align-items: center;
+  }
+}
+
+
+
+
+.jss684 {
+  height: 64px;
+  display: flex;
+  min-height: 64px;
+  align-items: center;
+}
+
+.px-16 {
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
+}
+
+@media (min-width: 600px) {
+  .sm\:px-24 {
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+  }
+}
+
+
+.MuiTabs-root {
+  display: flex;
+  overflow: hidden;
+  min-height: 48px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.border-b-1 {
+  border-bottom-width: 1px;
+}
+
+.h-64 {
+  height: 6.4rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+
+.MuiTabs-scroller {
+  flex: 1 1 auto;
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+}
+
+.MuiTabs-scrollable {
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+
+.MuiTabs-flexContainer {
+  display: flex;
+}
+
+
+.MuiTab-textColorPrimary {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.MuiButtonBase-root {
+  color: inherit;
+  border: 0;
+  cursor: pointer;
+  margin: 0;
+  display: inline-flex;
+  outline: 0;
+  padding: 0;
+  position: relative;
+  align-items: center;
+  user-select: none;
+  border-radius: 0;
+  vertical-align: middle;
+  -moz-appearance: none;
+  justify-content: center;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.MuiTab-root {
+  padding: 6px 12px;
+  overflow: hidden;
+  position: relative;
+  font-size: 1.4rem;
+  max-width: 264px;
+  min-width: 72px;
+  box-sizing: border-box;
+  min-height: 48px;
+  text-align: center;
+  flex-shrink: 0;
+  font-family: Muli,Roboto,"Helvetica",Arial,sans-serif;
+  font-weight: 600;
+  line-height: 1.75;
+  white-space: normal;
+  text-transform: uppercase;
+}
+
+.MuiTab-textColorPrimary.Mui-selected {
+  color: #192d3e;
+}
+
+.MuiTab-wrapper {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.MuiTouchRipple-root {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+@media (min-width: 600px) {
+  .MuiTab-root {
+    min-width: 160px;
+  }
+}
+
+.jss759 {
+  width: 100%;
+  bottom: 0;
+  height: 2px;
+  position: absolute;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+
+.jss760 {
+  background-color: #192d3e;
+}
+
+
+.makeStyles-content-1866 {
+  flex: 1 0 auto;
+}
+
+
+.p-16 {
+  padding: 1.6rem;
+}
+
+@media (min-width: 600px) {
+  .sm\:p-24 {
+    padding: 2.4rem;
+  }
+}
+
+.max-w-2xl {
+  max-width: 112rem;
+}
+
+@media (min-width: 960px) {
+  .md\:flex {
+    display: flex;
+  }
+}
+
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+

@@ -6,10 +6,6 @@ import {searchCompany} from "../../../services/api/company.service.api"
 
 
 export function* fetchCompanyListSaga(params) {
-  let option = {
-    requestURL: `http://localhost:90/api/search/all?type=COMPANY&page=${params.page}&size=${params.limit}&sortBy=groupName&direction=${params.sortBy}`,
-    method: 'POST',
-  };
 
   try {
     // const response = yield call(request, option);

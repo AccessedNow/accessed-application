@@ -11,7 +11,7 @@ import produce from 'immer';
 import { FETCH_COMPANY_DETAIL_SUCCESS, FETCH_COMPANY_DETAIL_ERROR } from './constants';
 
 export const initState = {
-  company: {},
+  company: false,
   companyError: ''
 };
 

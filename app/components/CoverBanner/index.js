@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import './CoverBanner.scss';
-import GroupIcon from "../../components/GroupIcon";
+import Avatar from "../../components/Avatar";
 
 import {buildCoverImageUrl} from "../../helper/urlHelper";
 
 function CoverBanner({item}) {
-
+  console.log('item', item)
     let style = {};
     return (
 
@@ -19,7 +19,8 @@ function CoverBanner({item}) {
             </div>
 
             <div className="text">
-                <GroupIcon group={item}/>
+              <Avatar party={item}/>
+              <h4 className="MuiTypography-root-774 md:mx-24 MuiTypography-h4-782 MuiTypography-colorInherit-796">{item.name}</h4>
             </div>
 
 

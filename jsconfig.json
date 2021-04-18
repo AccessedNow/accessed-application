@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "baseUrl": "src",
+        "moduleResolution": "node",
+        "allowJs": true,
+        "esModuleInterop": true,
+        "module": "commonjs"
+    },
+    "include": [
+        "src",
+        "node_module/material-survey"
+    ]
+}

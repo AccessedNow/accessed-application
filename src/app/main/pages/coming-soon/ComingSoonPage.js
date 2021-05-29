@@ -41,7 +41,7 @@ function ComingSoonPage() {
 				<FuseAnimate animation="transition.expandIn">
 					<Card className="w-full max-w-384 rounded-8">
 						<CardContent className="flex flex-col items-center justify-center p-32 text-center">
-							<img className="w-128 m-32" src="assets/images/logos/fuse.svg" alt="logo" />
+							<img className="w-128 m-32" src="assets/images/logos/accessed.svg" alt="logo" />
 
 							<Typography variant="subtitle1" className="mb-16">
 								Hey! Thank you for checking out our app.
@@ -51,7 +51,7 @@ function ComingSoonPage() {
 								It’s not quite ready yet, but we are working hard and it will be ready in approximately:
 							</Typography>
 
-							<FuseCountdown endDate="2023-07-28" className="my-48" />
+							<FuseCountdown endDate="2021-07-23" className="my-48" />
 
 							<Divider className="w-48" />
 

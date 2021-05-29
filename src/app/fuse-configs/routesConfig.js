@@ -8,6 +8,9 @@ import LogoutConfig from 'app/main/logout/LogoutConfig';
 import pagesConfigs from 'app/main/pages/pagesConfigs';
 import RegisterConfig from 'app/main/register/RegisterConfig';
 import UserInterfaceConfig from 'app/main/user-interface/UserInterfaceConfig';
+
+import HomeConfig from 'app/main/home/HomeConfig';
+
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
@@ -15,6 +18,7 @@ const routeConfigs = [
 	...appsConfigs,
 	...pagesConfigs,
 	...authRoleExamplesConfigs,
+  HomeConfig,
 	UserInterfaceConfig,
 	DocumentationConfig,
 	LogoutConfig,
@@ -32,7 +36,7 @@ const routes = [
 	{
 		path: '/',
 		exact: true,
-		component: () => <Redirect to="/talent/dashboard" />
+		component: () => <Redirect to="../home" />
 	},
 	{
 		component: () => <Redirect to="/pages/errors/error-404" />

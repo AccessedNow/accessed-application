@@ -1,17 +1,17 @@
-import React from 'react';
+import { lazy } from 'react';
 
 const ModernInvoicePageConfig = {
-	settings: {
-		layout: {
-			config: {}
-		}
-	},
-	routes: [
-		{
-			path: '/pages/invoices/modern',
-			component: React.lazy(() => import('./ModernInvoicePage'))
-		}
-	]
+  settings: {
+    layout: {
+      config: {},
+    },
+  },
+  routes: [
+    {
+      path: '/pages/invoices/modern',
+      component: lazy(() => import('./ModernInvoicePage')),
+    },
+  ],
 };
 
 export default ModernInvoicePageConfig;

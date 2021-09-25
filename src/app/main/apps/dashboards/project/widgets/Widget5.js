@@ -1,100 +1,101 @@
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import { useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Paper from '@mui/material/Paper';
+import { useTheme } from '@mui/material/styles';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
 import _ from '@lodash';
-import React, { useState } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { memo, useState, useEffect } from 'react';
+import ReactApexChart from 'react-apexcharts';
+import Box from '@mui/material/Box';
 
 function Widget5(props) {
-	const [currentRange, setCurrentRange] = useState('TW');
-	const theme = useTheme();
+  const theme = useTheme();
+  const [awaitRender, setAwaitRender] = useState(true);
+  const [tabValue, setTabValue] = useState(0);
+  const widget = _.merge({}, props.widget);
+  const currentRange = Object.keys(widget.ranges)[tabValue];
 
-	const widget = _.merge({}, props.widget);
+  _.setWith(widget, 'mainChart.options.colors', [
+    theme.palette.primary.main,
+    theme.palette.secondary.main,
+  ]);
 
-	_.setWith(widget, 'widget.mainChart.options.scales.xAxes[0].ticks.fontColor', theme.palette.text.secondary);
-	_.setWith(widget, 'widget.mainChart.options.scales.yAxes[0].ticks.fontColor', theme.palette.text.secondary);
+  useEffect(() => {
+    setAwaitRender(false);
+  }, []);
 
-	function handleChangeRange(range) {
-		setCurrentRange(range);
-	}
-
-	return (
-		<Paper className="w-full rounded-8 shadow-1">
-			<div className="flex items-center justify-between px-16 py-16 border-b-1">
-				<Typography className="text-16">{widget.title}</Typography>
-				<div className="items-center">
-					{Object.entries(widget.ranges).map(([key, n]) => {
-						return (
-							<Button
-								key={key}
-								className="normal-case shadow-none px-16"
-								onClick={() => handleChangeRange(key)}
-								color={currentRange === key ? 'secondary' : 'default'}
-								variant={currentRange === key ? 'contained' : 'text'}
-							>
-								{n}
-							</Button>
-						);
-					})}
-				</div>
-			</div>
-			<div className="flex flex-row flex-wrap">
-				<div className="w-full md:w-1/2 p-8 min-h-420 h-420">
-					<Bar
-						data={{
-							labels: widget.mainChart[currentRange].labels,
-							datasets: widget.mainChart[currentRange].datasets.map((obj, index) => {
-								const palette = theme.palette[index === 0 ? 'primary' : 'secondary'];
-								return {
-									...obj,
-									borderColor: palette.main,
-									backgroundColor: palette.main,
-									pointBackgroundColor: palette.dark,
-									pointHoverBackgroundColor: palette.main,
-									pointBorderColor: palette.contrastText,
-									pointHoverBorderColor: palette.contrastText
-								};
-							})
-						}}
-						options={widget.mainChart.options}
-					/>
-				</div>
-				<div className="flex w-full md:w-1/2 flex-wrap p-8">
-					{Object.entries(widget.supporting).map(([key, item]) => {
-						return (
-							<div key={key} className="w-full sm:w-1/2 p-12">
-								<Typography className="text-15 whitespace-no-wrap" color="textSecondary">
-									{item.label}
-								</Typography>
-								<Typography className="text-32">{item.count[currentRange]}</Typography>
-								<div className="h-64 w-full">
-									<Line
-										data={{
-											labels: item.chart[currentRange].labels,
-											datasets: item.chart[currentRange].datasets.map((obj, index) => {
-												const palette = theme.palette.secondary;
-												return {
-													...obj,
-													borderColor: palette.main,
-													backgroundColor: palette.main,
-													pointBackgroundColor: palette.dark,
-													pointHoverBackgroundColor: palette.main,
-													pointBorderColor: palette.contrastText,
-													pointHoverBorderColor: palette.contrastText
-												};
-											})
-										}}
-										options={item.chart.options}
-									/>
-								</div>
-							</div>
-						);
-					})}
-				</div>
-			</div>
-		</Paper>
-	);
+  if (awaitRender) {
+    return null;
+  }
+  return (
+    <Paper className="w-full rounded-20 shadow">
+      <div className="flex items-center justify-between p-20">
+        <Typography className="text-16 font-medium">{widget.title}</Typography>
+        <Tabs
+          value={tabValue}
+          onChange={(ev, value) => setTabValue(value)}
+          indicatorColor="secondary"
+          textColor="inherit"
+          variant="scrollable"
+          scrollButtons={false}
+          className="-mx-4 min-h-40"
+          classes={{ indicator: 'flex justify-center bg-transparent w-full h-full' }}
+          TabIndicatorProps={{
+            children: (
+              <Box
+                sx={{ bgcolor: 'text.disabled' }}
+                className="w-full h-full rounded-full opacity-20"
+              />
+            ),
+          }}
+        >
+          {Object.entries(widget.ranges).map(([key, n]) => (
+            <Tab
+              className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
+              disableRipple
+              key={key}
+              label={n}
+            />
+          ))}
+        </Tabs>
+      </div>
+      <div className="flex flex-row flex-wrap">
+        <div className="w-full md:w-1/2 p-16 min-h-420 h-420">
+          <ReactApexChart
+            options={widget.mainChart.options}
+            series={widget.mainChart[currentRange].series}
+            type={widget.mainChart.options.chart.type}
+            height={widget.mainChart.options.chart.height}
+          />
+        </div>
+        <div className="flex w-full md:w-1/2 flex-wrap p-8">
+          {Object.entries(widget.supporting).map(([key, item]) => {
+            return (
+              <div key={key} className="w-full sm:w-1/2 p-12">
+                <Typography
+                  className="text-12 font-semibold whitespace-nowrap"
+                  color="textSecondary"
+                >
+                  {item.name}
+                </Typography>
+                <Typography className="text-32 font-semibold tracking-tighter">
+                  {item.count[currentRange]}
+                </Typography>
+                <div className="h-64 w-full overflow-hidden">
+                  <ReactApexChart
+                    options={{ ...item.chart.options, colors: [theme.palette.secondary.main] }}
+                    series={item.chart[currentRange].series}
+                    type={item.chart.options.chart.type}
+                    height={item.chart.options.chart.height}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </Paper>
+  );
 }
 
-export default React.memo(Widget5);
+export default memo(Widget5);

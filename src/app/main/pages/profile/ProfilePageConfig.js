@@ -1,17 +1,17 @@
-import React from 'react';
+import { lazy } from 'react';
 
 const ProfilePageConfig = {
-	settings: {
-		layout: {
-			config: {}
-		}
-	},
-	routes: [
-		{
-			path: '/user/:id',
-			component: React.lazy(() => import('./ProfilePage'))
-		}
-	]
+  settings: {
+    layout: {
+      config: {},
+    },
+  },
+  routes: [
+    {
+      path: '/pages/profile',
+      component: lazy(() => import('./ProfilePage')),
+    },
+  ],
 };
 
 export default ProfilePageConfig;

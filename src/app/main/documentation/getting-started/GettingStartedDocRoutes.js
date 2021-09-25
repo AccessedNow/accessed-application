@@ -1,18 +1,18 @@
-import React from 'react';
+import { lazy } from 'react';
 
 const GettingStartedDocRoutes = [
-	{
-		path: '/documentation/getting-started/introduction',
-		component: React.lazy(() => import('./introduction/IntroductionDoc'))
-	},
-	{
-		path: '/documentation/getting-started/installation',
-		component: React.lazy(() => import('./installation/InstallationDoc'))
-	},
-	{
-		path: '/documentation/getting-started/git-repository',
-		component: React.lazy(() => import('./git-repository/GitRepositoryDoc'))
-	}
+  {
+    path: '/documentation/getting-started/introduction',
+    component: lazy(() => import('./introduction/IntroductionDoc')),
+  },
+  {
+    path: '/documentation/getting-started/installation',
+    component: lazy(() => import('./installation/InstallationDoc')),
+  },
+  {
+    path: '/documentation/getting-started/git-repository',
+    component: lazy(() => import('./git-repository/GitRepositoryDoc')),
+  },
 ];
 
 export default GettingStartedDocRoutes;

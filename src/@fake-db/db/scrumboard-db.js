@@ -1,7 +1,10 @@
 import _ from '@lodash';
+import sub from 'date-fns/sub';
+import getUnixTime from 'date-fns/getUnixTime';
+import add from 'date-fns/add';
 import mock from '../mock';
 
-export const scrumboardDB = {
+const scrumboardDB = {
 	boards: [
 		{
 			id: '32gfhaf2',
@@ -15,9 +18,7 @@ export const scrumboardDB = {
 			lists: [
 				{
 					id: '56027cf5a2ca3839a5d36103',
-					name: 'Applied',
-					status:'APPLIED',
-					sequence:2,
+					name: 'Design',
 					idCards: [
 						'5603a2a3cab0c8300f6096b3',
 						'44d1.2b51ea6cc2b5d.21f4a3412e857.8ffa2d8b44ad9.ac87215ed53a1.67d4921ad8f8d.9f318bcb2'
@@ -25,9 +26,7 @@ export const scrumboardDB = {
 				},
 				{
 					id: '56127cf2a2ca3539g7d36103',
-					name: 'Phone Screen',
-					status:'PHONE_SCREEN',
-					sequence:1,
+					name: 'Development',
 					idCards: [
 						'2837273da9b93dd84243s0f9',
 						'5787b7e4740c57bf0dffd5b6',
@@ -37,8 +36,7 @@ export const scrumboardDB = {
 				},
 				{
 					id: 'faf244627326f1249525763d',
-					name: 'Test',
-					sequence:3,
+					name: 'Upcoming Features',
 					idCards: [
 						'd9005a4b89ed2aadca48a6ad',
 						'f6b9d7a9247e5d794a081927',
@@ -49,30 +47,17 @@ export const scrumboardDB = {
 				},
 				{
 					id: 'ad7d.9fffac5dff412.c83bca6853767.8fd7549b2b1ca.ceda8a01774c4.a5cf3976e87e4.ce79eeeea',
-					name: 'Interview',
+					name: 'Known Bugs',
 					idCards: [
 						'acc6.9c673cd2f5e35.521e91d8d5991.4b2a95e0539d1.027930c0743c5.7ad1ea7bea476.e8fbe6347',
 						'3279.3d69b40cc0b75.690252b6bea08.1e1789b0b7c2e.2f264b8661ce2.84d5f56910e23.429be5e8a',
 						'ba01.8e1a43f92a03a.0022bd5cbb9ba.275c64d911d8c.880e0846a3966.f75ff43e53ad.48ad612e7'
 					]
-				},
-        {
-          id: 'ad7d.9fffac5dff412.c83bca6853767.8fd7549b2b1ca.ceda8a01774c4.a5cf3976e87e4.ce79e3der',
-          name: 'Offered',
-          idCards: [
-          ]
-        }
+				}
 			],
 			cards: [
 				{
 					id: '2837273da9b93dd84243s0f9',
-          user: {
-            id: 32,
-            firstName: 'Velazquez',
-            lastName: 'Carles',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/Velazquez.jpg'
-          },
 					name: 'Update generators',
 					description: "Current generator doesn't support Node.js 6 and above.",
 					idAttachmentCover: '',
@@ -87,20 +72,13 @@ export const scrumboardDB = {
 							type: 'comment',
 							idMember: '36027j1930450d8bf7b10158',
 							message: 'AngularCLI could be a nice alternative.',
-							time: 'now'
+							time: getUnixTime(sub(new Date(), { minutes: 10 }))
 						}
 					],
 					due: null
 				},
 				{
 					id: '5603a2a3cab0c8300f6096b3',
-					user: {
-						id: 32,
-						firstName: 'James',
-						lastName: 'Wonder',
-            title: 'Senior IOS Developer',
-						avatar: 'assets/images/avatars/james.jpg'
-					},
 					name: 'Change background colors',
 					description: '',
 					idAttachmentCover: '67027cahbe3b52ecf2dc631c',
@@ -111,14 +89,14 @@ export const scrumboardDB = {
 							id: '67027cahbe3b52ecf2dc631c',
 							name: 'mail.jpg',
 							src: 'assets/images/scrumboard/mail.jpg',
-							time: 'Added Nov 3 at 15:22AM',
+							time: getUnixTime(sub(new Date(), { minutes: 12 })),
 							type: 'image'
 						},
 						{
 							id: '56027cfcbe1b72ecf1fc452a',
 							name: 'calendar.jpg',
 							src: 'assets/images/scrumboard/calendar.jpg',
-							time: 'Added Nov 1 at 12:34PM',
+							time: getUnixTime(sub(new Date(), { minutes: 22 })),
 							type: 'image'
 						}
 					],
@@ -145,7 +123,7 @@ export const scrumboardDB = {
 								},
 								{
 									id: 4,
-									name: 'Use moment.js',
+									name: 'Use date-fns',
 									checked: false
 								}
 							]
@@ -166,7 +144,7 @@ export const scrumboardDB = {
 								},
 								{
 									id: 3,
-									name: 'Use moment.js',
+									name: 'Use date-fns',
 									checked: false
 								}
 							]
@@ -177,35 +155,28 @@ export const scrumboardDB = {
 							id: 1,
 							type: 'comment',
 							idMember: '56027c1930450d8bf7b10758',
-							message: 'We should be able to add moment.js without any problems',
-							time: '12 mins. ago'
+							message: 'We should be able to add date-fns without any problems',
+							time: getUnixTime(sub(new Date(), { minutes: 10 }))
 						},
 						{
 							id: 2,
 							type: 'comment',
 							idMember: '36027j1930450d8bf7b10158',
 							message: 'I added a link for a page that might help us deciding the colors',
-							time: '30 mins. ago'
+							time:getUnixTime(sub(new Date(), { minutes: 20 }))
 						},
 						{
 							id: 3,
 							type: 'attachment',
 							idMember: '36027j1930450d8bf7b10158',
 							message: 'attached a link',
-							time: '45 mins. ago'
+							time: getUnixTime(sub(new Date(), { minutes: 45 }))
 						}
 					],
-					due: '2017-08-29T10:16:34.000Z'
+					due: getUnixTime(sub(new Date(), { days: 10 }))
 				},
 				{
 					id: '5637273da9b93bb84743a0f9',
-          user: {
-            id: 32,
-            firstName: 'Carlos',
-            lastName: 'Anthony',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/garry.jpg'
-          },
 					name: 'Fix splash screen bugs',
 					description: '',
 					idAttachmentCover: '',
@@ -219,13 +190,6 @@ export const scrumboardDB = {
 				},
 				{
 					id: 'd9005a4b89ed2aadca48a6ad',
-          user: {
-            id: 32,
-            firstName: 'Danielle',
-            lastName: 'Zagnacky',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/danielle.jpg'
-          },
 					name: 'Add alternative authentication pages',
 					description: '',
 					idAttachmentCover: '',
@@ -271,13 +235,6 @@ export const scrumboardDB = {
 				},
 				{
 					id: '5787b7e4740c57bf0dffd5b6',
-          user: {
-            id: 32,
-            firstName: 'Blair',
-            lastName: 'Liken',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/Blair.jpg'
-          },
 					name: 'Fix the console',
 					description: 'We need to fix the console asap!',
 					idAttachmentCover: '',
@@ -292,20 +249,13 @@ export const scrumboardDB = {
 							type: 'comment',
 							idMember: '36027j1930450d8bf7b10158',
 							message: "I'm on it!",
-							time: 'now'
+							time: getUnixTime(sub(new Date(), { minutes: 10 }))
 						}
 					],
-					due: '2020-09-07T12:00:00.000Z'
+					due: getUnixTime(add(new Date(), { days: 10 }))
 				},
 				{
 					id: 'f6b9d7a9247e5d794a081927',
-          user: {
-            id: 32,
-            firstName: 'Helen',
-            lastName: 'Doe',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/Helen.jpg'
-          },
 					name: 'New media player',
 					description: '',
 					idAttachmentCover: '',
@@ -319,13 +269,6 @@ export const scrumboardDB = {
 				},
 				{
 					id: 'acc6.9c673cd2f5e35.521e91d8d5991.4b2a95e0539d1.027930c0743c5.7ad1ea7bea476.e8fbe6347',
-          user: {
-            id: 32,
-            firstName: 'Mai',
-            lastName: 'Nguyen',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/Mai.jpg'
-          },
 					name: 'Memory Leak',
 					description: '',
 					idAttachmentCover: '',
@@ -339,13 +282,6 @@ export const scrumboardDB = {
 				},
 				{
 					id: '3279.3d69b40cc0b75.690252b6bea08.1e1789b0b7c2e.2f264b8661ce2.84d5f56910e23.429be5e8a',
-          user: {
-            id: 32,
-            firstName: 'Joyce',
-            lastName: 'Potzer',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/joyce.jpg'
-          },
 					name: 'Broken toolbar on profile page',
 					description: '',
 					idAttachmentCover: '',
@@ -360,20 +296,13 @@ export const scrumboardDB = {
 							type: 'comment',
 							idMember: '36027j1930450d8bf7b10158',
 							message: "This should be a medium priority bug, shouldn't it?",
-							time: 'now'
+							time: getUnixTime(sub(new Date(), { minutes: 1 }))
 						}
 					],
 					due: null
 				},
 				{
 					id: 'ba01.8e1a43f92a03a.0022bd5cbb9ba.275c64d911d8c.880e0846a3966.f75ff43e53ad.48ad612e7',
-          user: {
-            id: 32,
-            firstName: 'Katherine',
-            lastName: 'Johnson',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/katherine.jpg'
-          },
 					name: 'Button hover style',
 					description:
 						'If there are 3 or more buttons in certain page, weird flashing happens when you hover over the red ones.',
@@ -384,17 +313,10 @@ export const scrumboardDB = {
 					subscribed: true,
 					checklists: [],
 					activities: [],
-					due: '2017-03-08T09:00:00.000Z'
+					due: getUnixTime(add(new Date(), { days: 3 }))
 				},
 				{
 					id: '80ed.24ad3b18e2668.f28fbbceeeff9.5a834620a42f1.5909be19a2bf2.6c4a54947ce2d.da356b0c1',
-          user: {
-            id: 32,
-            firstName: 'Lily',
-            lastName: 'Yagger',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/Lily.jpg'
-          },
 					name: 'New header designs',
 					description: '',
 					idAttachmentCover: '12027cafbe3b52ecf2ef632c',
@@ -405,14 +327,14 @@ export const scrumboardDB = {
 							id: '12027cafbe3b52ecf2ef632c',
 							name: 'header-.jpg',
 							src: 'assets/images/scrumboard/header-1.jpg',
-							time: 'Added Nov 3 at 15:22AM',
+							time: getUnixTime(sub(new Date(), { days: 10 })),
 							type: 'image'
 						},
 						{
 							id: '55027ced1e1a12ecf1fced2a',
 							name: 'header-2.jpg',
 							src: 'assets/images/scrumboard/header-2.jpg',
-							time: 'Added Nov 1 at 12:34PM',
+							time: getUnixTime(sub(new Date(), { days: 20 })),
 							type: 'image'
 						}
 					],
@@ -424,20 +346,13 @@ export const scrumboardDB = {
 							type: 'comment',
 							idMember: '36027j1930450d8bf7b10158',
 							message: 'Currently we have two new designs ready to ship.',
-							time: 'now'
+							time: getUnixTime(sub(new Date(), { minutes: 1 }))
 						}
 					],
 					due: null
 				},
 				{
 					id: '0ad2.7862f947bc456.f42b446df54cb.d1dd9e93601a1.9deb1406d1404.0b3c278fc7001.733341b42',
-          user: {
-            id: 32,
-            firstName: 'Nnora',
-            lastName: 'Jones',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/Nora.jpg'
-          },
 					name: 'Fixed footer',
 					description: '',
 					idAttachmentCover: '',
@@ -451,13 +366,6 @@ export const scrumboardDB = {
 				},
 				{
 					id: 'bad3.51be8ad33acaf.9540ecb37f7e8.6bee596cfe7d3.44c68bee289c4.b96ed0b9f0af7.e14846035',
-          user: {
-            id: 32,
-            firstName: 'John',
-            lastName: 'Doe',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/alice.jpg'
-          },
 					name: 'Collapsable navigation',
 					description: '',
 					idAttachmentCover: '',
@@ -473,20 +381,13 @@ export const scrumboardDB = {
 							idMember: '36027j1930450d8bf7b10158',
 							message:
 								"I'm not sure why we re-doing the navigation. The current collapsable navigation works flawlessly.",
-							time: 'now'
+							time: getUnixTime(new Date())
 						}
 					],
 					due: null
 				},
 				{
 					id: '44d1.2b51ea6cc2b5d.21f4a3412e857.8ffa2d8b44ad9.ac87215ed53a1.67d4921ad8f8d.9f318bcb2',
-          user: {
-            id: 32,
-            firstName: 'John',
-            lastName: 'Doe',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/alice.jpg'
-          },
 					name: 'Mail app new layout',
 					description: 'Current layout has lots of flaws in mobile. Outlook view should help with that.',
 					idAttachmentCover: '',
@@ -505,13 +406,6 @@ export const scrumboardDB = {
 				},
 				{
 					id: '7987.9740ba532b0d4.f9d12243f7362.507c0738dc561.87fba0a03df6e.75e6508cacf10.7a9835b54',
-          user: {
-            id: 32,
-            firstName: 'John',
-            lastName: 'Doe',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/alice.jpg'
-          },
 					name: 'API recover and monitoring',
 					description: 'We need a service to monitor and recover failed APIs.',
 					idAttachmentCover: '',
@@ -543,13 +437,6 @@ export const scrumboardDB = {
 						},
 						{
 							id: '7c22.5261c7924387f.248e8b1d32205.003f7a9f501d1.1d48dcdbe8b23.8099dcc5f75a7.29a966196',
-              user: {
-                id: 32,
-                firstName: 'John',
-                lastName: 'Doe',
-            title: 'Senior IOS Developer',
-                avatar: 'assets/images/avatars/alice.jpg'
-              },
 							name: 'API Recovery',
 							checkItems: [
 								{
@@ -571,7 +458,7 @@ export const scrumboardDB = {
 						}
 					],
 					activities: [],
-					due: '2017-02-02T11:20:34.000Z'
+					due: getUnixTime(sub(new Date(), { days: 12 }))
 				}
 			],
 			members: [
@@ -643,13 +530,6 @@ export const scrumboardDB = {
 			cards: [
 				{
 					id: '5603a2a3cab0c8300f6096b3',
-          user: {
-            id: 32,
-            firstName: 'Manuel',
-            lastName: 'Hernandez',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/Velazquez.jpg'
-          },
 					name: 'Calendar App Design',
 					description: '',
 					idAttachmentCover: '56027cfcbe1b72ecf1fc452a',
@@ -660,13 +540,13 @@ export const scrumboardDB = {
 							id: '56027cfcbe1b72ecf1fc452a',
 							name: 'calendar-app-design.jpg',
 							src: 'assets/images/scrumboard/calendar.jpg',
-							time: 'Added Nov 1 at 12:34PM',
+							time: getUnixTime(sub(new Date(), { minutes: 20 })),
 							type: 'image'
 						},
 						{
 							id: '67027cahbe3b52ecf2dc631c',
 							url: 'assets/images/scrumboard/calendar.jpg',
-							time: 'Added Nov 3 at 15:22AM',
+							time: getUnixTime(sub(new Date(), { minutes: 10 })),
 							type: 'link'
 						}
 					],
@@ -693,7 +573,7 @@ export const scrumboardDB = {
 								},
 								{
 									id: 4,
-									name: 'Use moment.js',
+									name: 'Use date-fns',
 									checked: false
 								}
 							]
@@ -714,7 +594,7 @@ export const scrumboardDB = {
 								},
 								{
 									id: 3,
-									name: 'Use moment.js',
+									name: 'Use date-fns',
 									checked: false
 								}
 							]
@@ -725,35 +605,28 @@ export const scrumboardDB = {
 							id: 1,
 							type: 'comment',
 							idMember: '56027c1930450d8bf7b10758',
-							message: 'We should be able to add moment.js without any problems',
-							time: '12 mins. ago'
+							message: 'We should be able to add date-fns without any problems',
+							time: getUnixTime(sub(new Date(), { minutes: 20 }))
 						},
 						{
 							id: 2,
 							type: 'comment',
 							idMember: '36027j1930450d8bf7b10158',
 							message: 'I added a link for a page that might help us deciding the colors',
-							time: '30 mins. ago'
+							time: getUnixTime(sub(new Date(), { minutes: 30 }))
 						},
 						{
 							id: 3,
 							type: 'attachment',
 							idMember: '36027j1930450d8bf7b10158',
 							message: 'attached a link',
-							time: '45 mins. ago'
+							time: getUnixTime(sub(new Date(), { minutes: 45 }))
 						}
 					],
 					due: null
 				},
 				{
 					id: '5637273da9b93bb84743a0f9',
-          user: {
-            id: 32,
-            firstName: 'John',
-            lastName: 'Doe',
-            title: 'Senior IOS Developer',
-            avatar: 'assets/images/avatars/alice.jpg'
-          },
 					name: 'Fix Splash Screen bugs',
 					description: '',
 					idAttachmentCover: '5603a2ae2bbd55bb2db57478',
@@ -764,7 +637,7 @@ export const scrumboardDB = {
 							id: '5603a2ae2bbd55bb2db57478',
 							name: 'mail-app-design.jpg',
 							src: 'assets/images/scrumboard/mail.jpg',
-							time: 'Added Nov 1 at 12:34PM',
+							time: getUnixTime(sub(new Date(), { minutes: 20 })),
 							type: 'image'
 						}
 					],
@@ -940,5 +813,3 @@ mock.onPost('/api/scrumboard-app/list/order').reply(request => {
 	_.assign(board, { lists });
 	return [200, lists];
 });
-
- export default scrumboardDB;

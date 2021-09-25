@@ -1,25 +1,28 @@
-import FuseChipSelect from '@fuse/core/FuseChipSelect';
-import { useDebounce, useForm, useUpdateEffect } from '@fuse/hooks';
+import { useDebounce } from '@fuse/hooks';
 import _ from '@lodash';
-import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import List from '@material-ui/core/List';
-import TextField from '@material-ui/core/TextField';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import LabelModel from 'app/main/apps/scrumboard/model/LabelModel';
-import moment from 'moment';
-import React, { useCallback } from 'react';
+import { DateTimePicker } from '@mui/lab';
+import clsx from 'clsx';
+import AppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import List from '@mui/material/List';
+import TextField from '@mui/material/TextField';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { Autocomplete } from '@mui/material';
+import fromUnixTime from 'date-fns/fromUnixTime';
+import getUnixTime from 'date-fns/getUnixTime';
+import format from 'date-fns/format';
+import { Controller, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addLabel } from '../../../store/boardSlice';
 import { closeCardDialog, removeCard, updateCard } from '../../../store/cardSlice';
-
 import CardActivity from './activity/CardActivity';
 import CardAttachment from './attachment/CardAttachment';
 import CardChecklist from './checklist/CardChecklist';
@@ -31,348 +34,369 @@ import MembersMenu from './toolbar/MembersMenu';
 import OptionsMenu from './toolbar/OptionsMenu';
 
 function BoardCardForm(props) {
-	const dispatch = useDispatch();
-	const card = useSelector(({ scrumboardApp }) => scrumboardApp.card.data);
-	const board = useSelector(({ scrumboardApp }) => scrumboardApp.board);
+  const dispatch = useDispatch();
+  const card = useSelector(({ scrumboardApp }) => scrumboardApp.card.data);
+  const board = useSelector(({ scrumboardApp }) => scrumboardApp.board);
+  const { register, watch, control, setValue } = useForm({ mode: 'onChange', defaultValues: card });
+  const cardForm = watch();
 
-	const { form: cardForm, handleChange, setForm, setInForm } = useForm(card);
-	const updateCardData = useDebounce((boardId, newCard) => {
-		dispatch(updateCard({ boardId, card: { ...newCard } }));
-	}, 600);
-	const dueDate = cardForm && cardForm.due ? moment(cardForm.due).format(moment.HTML5_FMT.DATE) : '';
+  const updateCardData = useDebounce((boardId, newCard) => {
+    dispatch(updateCard({ boardId, card: { ...newCard } }));
+  }, 600);
 
-	useUpdateEffect(() => {
-		updateCardData(board.id, cardForm);
-	}, [dispatch, board.id, cardForm, updateCardData]);
+  const list = card ? _.find(board.lists, (_list) => _list.idCards.includes(card.id)) : null;
 
-	function removeDue() {
-		setInForm('due', null);
-	}
+  useEffect(() => {
+    if (!card) {
+      return;
+    }
+    if (!_.isEqual(card, cardForm)) {
+      updateCardData(board.id, cardForm);
+    }
+  }, [board.id, card, cardForm, updateCardData]);
 
-	function toggleLabel(labelId) {
-		setInForm('idLabels', _.xor(cardForm.idLabels, [labelId]));
-	}
+  useEffect(() => {
+    register('idAttachmentCover');
+  }, [register]);
 
-	function toggleMember(memberId) {
-		setInForm('idMembers', _.xor(cardForm.idMembers, [memberId]));
-	}
+  if (!card) {
+    return null;
+  }
 
-	function addCheckList(newList) {
-		setInForm('checklists', [...cardForm.checklists, newList]);
-	}
+  return (
+    <>
+      <DialogTitle component="div" className="p-0">
+        <AppBar position="static" elevation={0}>
+          <Toolbar className="flex w-full overflow-x-auto px-8 sm:px-16">
+            <div className="flex flex-1">
+              <Controller
+                name="due"
+                control={control}
+                defaultValue={null}
+                render={({ field: { onChange, value } }) => (
+                  <DueMenu onDueChange={onChange} onRemoveDue={() => onChange(null)} due={value} />
+                )}
+              />
 
-	function chipChange(name, value) {
-		setInForm(
-			name,
-			value.map(item => item.value)
-		);
-	}
+              <Controller
+                name="idLabels"
+                control={control}
+                defaultValue={[]}
+                render={({ field: { onChange, value } }) => (
+                  <LabelsMenu
+                    onToggleLabel={(labelId) => onChange(_.xor(value, [labelId]))}
+                    labels={board.labels}
+                    idLabels={value}
+                  />
+                )}
+              />
 
-	function addNewChip(name, value) {
-		setInForm(name, [...cardForm[name], value]);
-	}
+              <Controller
+                name="idMembers"
+                control={control}
+                defaultValue={[]}
+                render={({ field: { onChange, value } }) => (
+                  <MembersMenu
+                    onToggleMember={(memberId) => onChange(_.xor(value, [memberId]))}
+                    members={board.members}
+                    idMembers={value}
+                  />
+                )}
+              />
 
-	function makeCover(attachmentId) {
-		setInForm('idAttachmentCover', attachmentId);
-	}
+              <Controller
+                name="attachments"
+                control={control}
+                defaultValue={[]}
+                render={({ field: { onChange, value } }) => (
+                  <IconButton color="inherit" size="large">
+                    <Icon>attachment</Icon>
+                  </IconButton>
+                )}
+              />
 
-	function removeCover() {
-		setInForm('idAttachmentCover', '');
-	}
+              <Controller
+                name="checklists"
+                control={control}
+                defaultValue={[]}
+                render={({ field: { onChange, value } }) => (
+                  <CheckListMenu
+                    onAddCheckList={(newList) => onChange([...cardForm.checklists, newList])}
+                  />
+                )}
+              />
 
-	function removeAttachment(attachmentId) {
-		setForm({
-			...cardForm,
-			attachments: _.reject(cardForm.attachments, { id: attachmentId }),
-			idAttachmentCover: cardForm.idAttachmentCover === attachmentId ? '' : cardForm.idAttachmentCover
-		});
-	}
+              <OptionsMenu
+                onRemoveCard={() =>
+                  dispatch(removeCard({ boardId: board.id, cardId: cardForm.id }))
+                }
+              />
+            </div>
+            <IconButton color="inherit" onClick={(ev) => dispatch(closeCardDialog())} size="large">
+              <Icon>close</Icon>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </DialogTitle>
 
-	const handleCheckListChange = useCallback(
-		(item, index) => {
-			setInForm(`checklists[${index}]`, item);
-		},
-		[setInForm]
-	);
+      <DialogContent className="p-16 sm:p-24">
+        <div className="flex flex-col sm:flex-row sm:justify-between justify-center items-center my-24">
+          <div className="mb-16 sm:mb-0 flex items-center">
+            <Typography>{board.name}</Typography>
 
-	function removeCheckList(id) {
-		setInForm('checklists', _.reject(cardForm.checklists, { id }));
-	}
+            <Icon className="text-20" color="inherit">
+              chevron_right
+            </Icon>
 
-	function commentAdd(comment) {
-		return setInForm('activities', [comment, ...cardForm.activities]);
-	}
+            <Typography>{list && list.name}</Typography>
+          </div>
+          {cardForm.due && (
+            <DateTimePicker
+              value={format(fromUnixTime(cardForm.due), 'Pp')}
+              inputFormat="Pp"
+              onChange={(val) => setValue('due', getUnixTime(val))}
+              renderInput={(_props) => (
+                <TextField
+                  label="Due date"
+                  placeholder="Choose a due date"
+                  className="w-full sm:w-auto"
+                  {..._props}
+                />
+              )}
+            />
+          )}
+        </div>
 
-	return (
-		<>
-			<DialogTitle component="div" className="p-0">
-				<AppBar position="static" elevation={1}>
-					<Toolbar className="flex w-full overflow-x-auto px-8 sm:px-16">
-						<div className="flex flex-1">
-							<DueMenu onDueChange={handleChange} onRemoveDue={removeDue} due={dueDate} />
+        <div className="flex items-center mb-24">
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Title"
+                type="text"
+                variant="outlined"
+                fullWidth
+                required
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {card.subscribed && (
+                        <Icon className="text-20" color="action">
+                          remove_red_eye
+                        </Icon>
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            )}
+          />
+        </div>
 
-							<LabelsMenu
-								onToggleLabel={toggleLabel}
-								labels={board.labels}
-								idLabels={cardForm.idLabels}
-							/>
+        <div className="w-full mb-24">
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Description"
+                multiline
+                rows="4"
+                variant="outlined"
+                fullWidth
+              />
+            )}
+          />
+        </div>
 
-							<MembersMenu
-								onToggleMember={toggleMember}
-								members={board.members}
-								idMembers={cardForm.idMembers}
-							/>
+        <div className="flex flex-col sm:flex-row -mx-8">
+          {cardForm.idLabels && cardForm.idLabels.length > 0 && (
+            <div className="flex-1 mb-24 mx-8">
+              <div className="flex items-center mt-16 mb-12">
+                <Icon className="text-20" color="inherit">
+                  label
+                </Icon>
+                <Typography className="font-semibold text-16 mx-8">Labels</Typography>
+              </div>
+              <Autocomplete
+                className="mt-8 mb-16"
+                multiple
+                freeSolo
+                options={board.labels}
+                getOptionLabel={(label) => {
+                  return label.name;
+                }}
+                value={cardForm.idLabels.map((id) => _.find(board.labels, { id }))}
+                onChange={(event, newValue) => {
+                  setValue(
+                    'idLabels',
+                    newValue.map((item) => item.id)
+                  );
+                }}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => {
+                    return (
+                      <Chip
+                        label={option.name}
+                        {...getTagProps({ index })}
+                        className={clsx('m-3', option.class)}
+                      />
+                    );
+                  })
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Select multiple Labels"
+                    label="Labels"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            </div>
+          )}
 
-							<IconButton color="inherit">
-								<Icon>attachment</Icon>
-							</IconButton>
+          {cardForm.idMembers && cardForm.idMembers.length > 0 && (
+            <div className="flex-1 mb-24 mx-8">
+              <div className="flex items-center mt-16 mb-12">
+                <Icon className="text-20" color="inherit">
+                  supervisor_account
+                </Icon>
+                <Typography className="font-semibold text-16 mx-8">Members</Typography>
+              </div>
+              <Autocomplete
+                className="mt-8 mb-16"
+                multiple
+                freeSolo
+                options={board.members}
+                getOptionLabel={(member) => {
+                  return member.name;
+                }}
+                value={cardForm.idMembers.map((id) => _.find(board.members, { id }))}
+                onChange={(event, newValue) => {
+                  setValue(
+                    'idMembers',
+                    newValue.map((item) => item.id)
+                  );
+                }}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => {
+                    return (
+                      <Chip
+                        label={option.name}
+                        {...getTagProps({ index })}
+                        className={clsx('m-3', option.class)}
+                        avatar={
+                          <Tooltip title={option.name}>
+                            <Avatar src={option.avatar} />
+                          </Tooltip>
+                        }
+                      />
+                    );
+                  })
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Select multiple Members"
+                    label="Members"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            </div>
+          )}
+        </div>
 
-							<CheckListMenu onAddCheckList={addCheckList} />
+        {cardForm.attachments && cardForm.attachments.length > 0 && (
+          <div className="mb-24">
+            <div className="flex items-center mt-16 mb-12">
+              <Icon className="text-20" color="inherit">
+                attachment
+              </Icon>
+              <Typography className="font-semibold text-16 mx-8">Attachments</Typography>
+            </div>
+            <div className="flex flex-col sm:flex-row flex-wrap -mx-16">
+              {cardForm.attachments.map((item) => (
+                <CardAttachment
+                  item={item}
+                  card={cardForm}
+                  // makeCover={makeCover}
+                  // removeCover={removeCover}
+                  // removeAttachment={removeAttachment}
+                  key={item.id}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
-							<OptionsMenu
-								onRemoveCard={() => dispatch(removeCard({ boardId: board.id, cardId: cardForm.id }))}
-							/>
-						</div>
-						<IconButton color="inherit" onClick={ev => dispatch(closeCardDialog())}>
-							<Icon>close</Icon>
-						</IconButton>
-					</Toolbar>
-				</AppBar>
-			</DialogTitle>
+        {cardForm.checklists &&
+          cardForm.checklists.map((checklist, index) => (
+            <CardChecklist
+              key={checklist.id}
+              checklist={checklist}
+              index={index}
+              onCheckListChange={(item, itemIndex) => {
+                setValue('checklists', _.setIn(cardForm.checklists, `[${itemIndex}]`, item));
+              }}
+              onRemoveCheckList={() => {
+                setValue('checklists', _.reject(cardForm.checklists, { id: checklist.id }));
+              }}
+            />
+          ))}
 
-			<DialogContent className="p-16 sm:p-24">
-				<div className="flex flex-col sm:flex-row sm:justify-between justify-center items-center mb-24">
-					<div className="mb-16 sm:mb-0 flex items-center">
-						<Typography>{board.name}</Typography>
-						<Icon className="text-20" color="inherit">
-							chevron_right
-						</Icon>
-						{React.useMemo(() => {
-							const list = card ? _.find(board.lists, _list => _list.idCards.includes(card.id)) : null;
+        <div className="mb-24">
+          <div className="flex items-center mt-16 mb-12">
+            <Icon className="text-20" color="inherit">
+              comment
+            </Icon>
+            <Typography className="font-semibold text-16 mx-8">Comment</Typography>
+          </div>
+          <div>
+            <CardComment
+              members={board.members}
+              onCommentAdd={(comment) => setValue('activities', [comment, ...cardForm.activities])}
+            />
+          </div>
+        </div>
 
-							return <Typography>{list && list.name}</Typography>;
-						}, [board, card])}
-					</div>
-
-					{cardForm.due && (
-						<TextField
-							label="Due date"
-							type="date"
-							name="due"
-							value={dueDate}
-							onChange={handleChange}
-							placeholder=" Choose a due date"
-							className="w-full sm:w-auto"
-							InputLabelProps={{
-								shrink: true
-							}}
-							variant="outlined"
-							InputProps={{
-								endAdornment: (
-									<InputAdornment position="end">
-										<Icon color="action">today</Icon>
-									</InputAdornment>
-								)
-							}}
-						/>
-					)}
-				</div>
-
-				<div className="flex items-center mb-24">
-					<TextField
-						label="Title"
-						type="text"
-						name="name"
-						value={cardForm.name}
-						onChange={handleChange}
-						variant="outlined"
-						fullWidth
-						required
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									{cardForm.subscribed && (
-										<Icon className="text-20" color="action">
-											remove_red_eye
-										</Icon>
-									)}
-								</InputAdornment>
-							)
-						}}
-					/>
-				</div>
-
-				<div className="w-full mb-24">
-					<TextField
-						label="Description"
-						name="description"
-						multiline
-						rows="4"
-						value={cardForm.description}
-						onChange={handleChange}
-						variant="outlined"
-						fullWidth
-					/>
-				</div>
-
-				<div className="flex flex-col sm:flex-row -mx-8">
-					{cardForm.idLabels.length > 0 && (
-						<div className="flex-1 mb-24 mx-8">
-							<div className="flex items-center mt-16 mb-12">
-								<Icon className="text-20" color="inherit">
-									label
-								</Icon>
-								<Typography className="font-600 text-16 mx-8">Labels</Typography>
-							</div>
-							<FuseChipSelect
-								className=""
-								value={cardForm.idLabels.map(labelId => {
-									const label = _.find(board.labels, { id: labelId });
-									return (
-										label && {
-											value: labelId,
-											label: label.name,
-											class: label.class
-										}
-									);
-								})}
-								onChange={value => chipChange('idLabels', value)}
-								placeholder="Select multiple Labels"
-								isMulti
-								textFieldProps={{
-									variant: 'outlined'
-								}}
-								options={board.labels.map(label => ({
-									value: label.id,
-									label: label.name,
-									class: label.class
-								}))}
-								onCreateOption={name => {
-									// Create New Label
-									const newLabel = new LabelModel({ name });
-
-									// Ad new Label to board(redux store and server)
-									dispatch(addLabel(newLabel));
-
-									// Trigger handle chip change
-									addNewChip('idLabels', newLabel.id);
-
-									return newLabel.id;
-								}}
-							/>
-						</div>
-					)}
-
-					{cardForm.idMembers.length > 0 && (
-						<div className="flex-1 mb-24 mx-8">
-							<div className="flex items-center mt-16 mb-12">
-								<Icon className="text-20" color="inherit">
-									supervisor_account
-								</Icon>
-								<Typography className="font-600 text-16 mx-8">Members</Typography>
-							</div>
-							<FuseChipSelect
-								className=""
-								value={cardForm.idMembers.map(memberId => {
-									const member = _.find(board.members, { id: memberId });
-									return (
-										member && {
-											value: member.id,
-											label: (
-												<Tooltip title={member.name}>
-													<Avatar
-														className="ltr:-ml-12 rtl:-mr-12 w-32 h-32"
-														src={member.avatar}
-													/>
-												</Tooltip>
-											)
-										}
-									);
-								})}
-								onChange={value => chipChange('idMembers', value)}
-								placeholder="Select multiple Members"
-								isMulti
-								textFieldProps={{
-									variant: 'outlined'
-								}}
-								options={board.members.map(member => ({
-									value: member.id,
-									label: (
-										<span className="flex items-center">
-											<Avatar className="w-32 h-32" src={member.avatar} />
-											<span className="mx-8">{member.name}</span>
-										</span>
-									)
-								}))}
-								variant="fixed"
-							/>
-						</div>
-					)}
-				</div>
-
-				{cardForm.attachments.length > 0 && (
-					<div className="mb-24">
-						<div className="flex items-center mt-16 mb-12">
-							<Icon className="text-20" color="inherit">
-								attachment
-							</Icon>
-							<Typography className="font-600 text-16 mx-8">Attachments</Typography>
-						</div>
-						<div className="flex flex-col sm:flex-row flex-wrap -mx-16">
-							{cardForm.attachments.map(item => (
-								<CardAttachment
-									item={item}
-									card={cardForm}
-									makeCover={makeCover}
-									removeCover={removeCover}
-									removeAttachment={removeAttachment}
-									key={item.id}
-								/>
-							))}
-						</div>
-					</div>
-				)}
-
-				{cardForm.checklists.map((checklist, index) => (
-					<CardChecklist
-						key={checklist.id}
-						checklist={checklist}
-						index={index}
-						onCheckListChange={handleCheckListChange}
-						onRemoveCheckList={() => removeCheckList(checklist.id)}
-					/>
-				))}
-
-				<div className="mb-24">
-					<div className="flex items-center mt-16 mb-12">
-						<Icon className="text-20" color="inherit">
-							comment
-						</Icon>
-						<Typography className="font-600 text-16 mx-8">Comment</Typography>
-					</div>
-					<div>
-						<CardComment members={board.members} onCommentAdd={commentAdd} />
-					</div>
-				</div>
-
-				{cardForm.activities.length > 0 && (
-					<div className="mb-24">
-						<div className="flex items-center mt-16">
-							<Icon className="text-20" color="inherit">
-								list
-							</Icon>
-							<Typography className="font-600 text-16 mx-8">Activity</Typography>
-						</div>
-						<List className="">
-							{cardForm.activities.map(item => (
-								<CardActivity item={item} key={item.id} members={board.members} />
-							))}
-						</List>
-					</div>
-				)}
-			</DialogContent>
-		</>
-	);
+        <Controller
+          name="activities"
+          control={control}
+          defaultValue={[]}
+          render={({ field: { onChange, value } }) => (
+            <div>
+              {value.length > 0 && (
+                <div className="mb-24">
+                  <div className="flex items-center mt-16">
+                    <Icon className="text-20" color="inherit">
+                      list
+                    </Icon>
+                    <Typography className="font-semibold text-16 mx-8">Activity</Typography>
+                  </div>
+                  <List className="">
+                    {value.map((item) => (
+                      <CardActivity item={item} key={item.id} members={board.members} />
+                    ))}
+                  </List>
+                </div>
+              )}
+            </div>
+          )}
+        />
+      </DialogContent>
+    </>
+  );
 }
 
 export default BoardCardForm;

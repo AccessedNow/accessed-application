@@ -1,17 +1,17 @@
-import React from 'react';
+import { lazy } from 'react';
 
 const MailConfirmPageConfig = {
-	settings: {
-		layout: {
-			config: {}
-		}
-	},
-	routes: [
-		{
-			path: '/pages/auth/mail-confirm',
-			component: React.lazy(() => import('./MailConfirmPage'))
-		}
-	]
+  settings: {
+    layout: {
+      config: {},
+    },
+  },
+  routes: [
+    {
+      path: '/pages/auth/mail-confirm',
+      component: lazy(() => import('./MailConfirmPage')),
+    },
+  ],
 };
 
 export default MailConfirmPageConfig;

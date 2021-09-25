@@ -1,44 +1,44 @@
 import FuseHighlight from '@fuse/core/FuseHighlight';
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import Typography from '@mui/material/Typography';
 
 function FuseScrollbarsDoc() {
-	return (
-		<>
-			<Typography variant="h4" className="mb-24">
-				FuseScrollbars
-			</Typography>
+  return (
+    <>
+      <Typography variant="h4" className="mb-40 font-700">
+        FuseScrollbars
+      </Typography>
 
-			<Typography className="mb-16" component="p">
-				<code>FuseScrollbars</code> is a simple{' '}
-				<a
-					href="http://utatti.github.io/perfect-scrollbar/"
-					target="_blank"
-					rel="noreferrer noopener"
-				>
-					perfect-scrollbar
-				</a>{' '}
-				component for react.
-			</Typography>
+      <Typography className="mb-16" component="p">
+        <code>FuseScrollbars</code> is a simple{' '}
+        <a
+          href="http://utatti.github.io/perfect-scrollbar/"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          perfect-scrollbar
+        </a>{' '}
+        component for react.
+      </Typography>
 
-			<Typography className="mb-16" component="p">
-				It can be disabled globally by Fuse Settings (<code>app/fuse-configs/settingsConfig.js</code>).
-			</Typography>
+      <Typography className="mb-16" component="p">
+        It can be disabled globally by Fuse Settings (
+        <code>app/fuse-configs/settingsConfig.js</code>).
+      </Typography>
 
-			<FuseHighlight component="pre" className="language-jsx">
-				{`
+      <FuseHighlight component="pre" className="language-jsx">
+        {`
                                 <FuseScrollbars className={classes.content}>
                                     Content
                                 </FuseScrollbars>
                                 `}
-			</FuseHighlight>
+      </FuseHighlight>
 
-			<Typography className="mt-32 mb-8" variant="h5">
-				Props
-			</Typography>
+      <Typography className="text-20 mt-20 mb-10 font-700" variant="h5">
+        Props
+      </Typography>
 
-			<FuseHighlight component="pre" className="language-jsx">
-				{`
+      <FuseHighlight component="pre" className="language-jsx">
+        {`
                                 FuseScrollbars.defaultProps = {
                                     className               : '',
                                     enable                  : true,
@@ -60,9 +60,9 @@ function FuseScrollbarsDoc() {
                                     onXReachEnd             : undefined
                                 };
                                 `}
-			</FuseHighlight>
-		</>
-	);
+      </FuseHighlight>
+    </>
+  );
 }
 
 export default FuseScrollbarsDoc;

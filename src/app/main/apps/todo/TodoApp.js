@@ -1,9 +1,10 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import withReducer from 'app/store/withReducer';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
+import { styled } from '@mui/material/styles';
 import reducer from './store';
 import { getLabels } from './store/labelsSlice';
 import { getFilters } from './store/filtersSlice';
@@ -16,40 +17,48 @@ import TodoSidebarContent from './TodoSidebarContent';
 import TodoSidebarHeader from './TodoSidebarHeader';
 import TodoToolbar from './TodoToolbar';
 
+const Root = styled(FusePageCarded)(({ theme }) => ({
+  '& .FusePageCarded-header': {
+    minHeight: 72,
+    height: 72,
+    alignItems: 'center',
+    [theme.breakpoints.up('sm')]: {
+      minHeight: 136,
+      height: 136,
+    },
+  },
+}));
+
 function TodoApp(props) {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const pageLayout = useRef(null);
-	const routeParams = useParams();
+  const pageLayout = useRef(null);
+  const routeParams = useParams();
 
-	useEffect(() => {
-		dispatch(getFilters());
-		dispatch(getFolders());
-		dispatch(getLabels());
-	}, [dispatch]);
+  useEffect(() => {
+    dispatch(getFilters());
+    dispatch(getFolders());
+    dispatch(getLabels());
+  }, [dispatch]);
 
-	useDeepCompareEffect(() => {
-		dispatch(getTodos(routeParams));
-	}, [dispatch, routeParams]);
+  useDeepCompareEffect(() => {
+    dispatch(getTodos(routeParams));
+  }, [dispatch, routeParams]);
 
-	return (
-		<>
-			<FusePageCarded
-				classes={{
-					root: 'w-full',
-					header: 'items-center min-h-72 h-72 sm:h-136 sm:min-h-136'
-				}}
-				header={<TodoHeader pageLayout={pageLayout} />}
-				contentToolbar={<TodoToolbar />}
-				content={<TodoList />}
-				leftSidebarHeader={<TodoSidebarHeader />}
-				leftSidebarContent={<TodoSidebarContent />}
-				ref={pageLayout}
-				innerScroll
-			/>
-			<TodoDialog />
-		</>
-	);
+  return (
+    <>
+      <Root
+        header={<TodoHeader pageLayout={pageLayout} />}
+        contentToolbar={<TodoToolbar />}
+        content={<TodoList />}
+        leftSidebarHeader={<TodoSidebarHeader />}
+        leftSidebarContent={<TodoSidebarContent />}
+        ref={pageLayout}
+        innerScroll
+      />
+      <TodoDialog />
+    </>
+  );
 }
 
 export default withReducer('todoApp', reducer)(TodoApp);

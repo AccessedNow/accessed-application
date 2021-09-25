@@ -1,191 +1,149 @@
-import FuseAnimate from '@fuse/core/FuseAnimate';
-import { useForm } from '@fuse/hooks';
-import { makeStyles } from '@material-ui/core/styles';
-import { darken } from '@material-ui/core/styles/colorManipulator';
-import clsx from 'clsx';
-import React, { useState } from 'react';
+import Card from '@mui/material/Card';
+import { styled, darken } from '@mui/material/styles';
+import CardContent from '@mui/material/CardContent';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import Auth0RegisterTab from './tabs/Auth0RegisterTab';
+import FirebaseRegisterTab from './tabs/FirebaseRegisterTab';
+import JWTRegisterTab from './tabs/JWTRegisterTab';
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		background: `linear-gradient(to left, ${theme.palette.primary.dark} 0%, ${darken(
-			theme.palette.primary.dark,
-			0.5
-		)} 100%)`,
-		color: theme.palette.primary.contrastText
-	},
-	leftSection: {},
-	rightSection: {
-		background: `linear-gradient(to left, ${theme.palette.primary.dark} 0%, ${darken(
-			theme.palette.primary.dark,
-			0.5
-		)} 100%)`,
-		color: theme.palette.primary.contrastText
-	}
+const Root = styled('div')(({ theme }) => ({
+  background: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, ${darken(
+    theme.palette.primary.dark,
+    0.5
+  )} 100%)`,
+  color: theme.palette.primary.contrastText,
+
+  '& .Register-leftSection': {},
+
+  '& .Register-rightSection': {
+    background: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, ${darken(
+      theme.palette.primary.dark,
+      0.5
+    )} 100%)`,
+    color: theme.palette.primary.contrastText,
+  },
 }));
 
 function Register() {
-	const classes = useStyles();
-	const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(0);
 
-  const { form, handleChange, resetForm } = useForm({
-    name: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
-    acceptTermsConditions: false
-  });
-
-  function isFormValid() {
-    return (
-      form.email.length > 0 &&
-      form.password.length > 0 &&
-      form.password.length > 3 &&
-      form.password === form.passwordConfirm &&
-      form.acceptTermsConditions
-    );
+  function handleTabChange(event, value) {
+    setSelectedTab(value);
   }
 
-  function handleSubmit(ev) {
-    ev.preventDefault();
-    resetForm();
-  }
-
-	function handleTabChange(event, value) {
-		setSelectedTab(value);
-	}
-
-	return (
-    <div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
-      <div
-        style={{
-          backgroundImage: 'url("assets/images/banners/register.png")',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover'
-        }}
-        className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
-        <FuseAnimate animation="transition.expandIn">
-          <img className="w-128 mb-32" src="assets/images/logos/anymay.svg" alt="logo" />
-        </FuseAnimate>
-
-        <FuseAnimate animation="transition.slideUpIn" delay={300}>
-          <Typography variant="h3" color="inherit" className="font-light">
-
-          </Typography>
-        </FuseAnimate>
-
-        <FuseAnimate delay={400}>
-          <Typography variant="subtitle1" color="inherit" className="max-w-512 mt-16">
-          </Typography>
-        </FuseAnimate>
-      </div>
-
-      <FuseAnimate animation={{ translateX: [0, '100%'] }}>
-        <Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
-          <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 ">
-            <Typography variant="h6" className="md:w-full mb-32">
-              CREATE AN ACCOUNT
-            </Typography>
-
-            <form
-              name="registerForm"
-              noValidate
-              className="flex flex-col justify-center w-full"
-              onSubmit={handleSubmit}
+  return (
+    <Root className="flex flex-col flex-auto items-center justify-center flex-shrink-0 p-16 md:p-24">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="flex w-full max-w-400 md:max-w-3xl rounded-20 shadow-2xl overflow-hidden"
+      >
+        <Card
+          className="Register-leftSection flex flex-col w-full max-w-sm items-center justify-center shadow-0"
+          square
+        >
+          <CardContent className="flex flex-col items-center justify-center w-full py-96 max-w-320">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { delay: 0.2 } }}
             >
-              <TextField
-                className="mb-16"
-                label="Name"
-                autoFocus
-                type="name"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                variant="outlined"
-                required
-                fullWidth
+              <div className="flex items-center justif-center mb-32">
+                <img className="logo-icon w-48" src="assets/images/logos/fuse.svg" alt="logo" />
+                <div className="border-l-1 mr-4 w-1 h-40" />
+                <div>
+                  <Typography className="text-24 font-semibold logo-text" color="inherit">
+                    FUSE
+                  </Typography>
+                  <Typography
+                    className="text-16 tracking-widest -mt-8 font-700"
+                    color="textSecondary"
+                  >
+                    REACT
+                  </Typography>
+                </div>
+              </div>
+            </motion.div>
+
+            <Tabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              variant="fullWidth"
+              className="w-full mb-32"
+            >
+              <Tab
+                icon={
+                  <img
+                    className="h-40 p-4 bg-black rounded-12"
+                    src="assets/images/logos/jwt.svg"
+                    alt="firebase"
+                  />
+                }
+                className="min-w-0"
+                label="JWT"
               />
-
-              <TextField
-                className="mb-16"
-                label="Email"
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                variant="outlined"
-                required
-                fullWidth
+              <Tab
+                icon={
+                  <img className="h-40" src="assets/images/logos/firebase.svg" alt="firebase" />
+                }
+                className="min-w-0"
+                label="Firebase"
               />
-
-              <TextField
-                className="mb-16"
-                label="Password"
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                variant="outlined"
-                required
-                fullWidth
+              <Tab
+                icon={<img className="h-40" src="assets/images/logos/auth0.svg" alt="auth0" />}
+                className="min-w-0"
+                label="Auth0"
               />
+            </Tabs>
 
-              <TextField
-                className="mb-16"
-                label="Password (Confirm)"
-                type="password"
-                name="passwordConfirm"
-                value={form.passwordConfirm}
-                onChange={handleChange}
-                variant="outlined"
-                required
-                fullWidth
-              />
+            {selectedTab === 0 && <JWTRegisterTab />}
+            {selectedTab === 1 && <FirebaseRegisterTab />}
+            {selectedTab === 2 && <Auth0RegisterTab />}
+          </CardContent>
 
-              <FormControl className="items-center">
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="acceptTermsConditions"
-                      checked={form.acceptTermsConditions}
-                      onChange={handleChange}
-                    />
-                  }
-                  label="I read and accept terms and conditions"
-                />
-              </FormControl>
-
-              <Button
-                variant="contained"
-                color="primary"
-                className="w-full mx-auto mt-16"
-                aria-label="Register"
-                disabled={!isFormValid()}
-                type="submit"
-              >
-                CREATE AN ACCOUNT
-              </Button>
-            </form>
-
-            <div className="flex flex-col items-center justify-center pt-32 pb-24">
-              <span className="font-medium">Already have an account?</span>
-              <Link className="font-medium" to="/login">
+          <div className="flex flex-col items-center justify-center pb-32">
+            <div>
+              <span className="font-normal mr-8">Already have an account?</span>
+              <Link className="font-normal" to="/login">
                 Login
               </Link>
             </div>
-          </CardContent>
+            <Link className="font-normal mt-8" to="/">
+              Back to Dashboard
+            </Link>
+          </div>
         </Card>
-      </FuseAnimate>
-    </div>
-	);
+
+        <div className="Register-rightSection hidden md:flex flex-1 items-center justify-center p-64">
+          <div className="max-w-320">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
+            >
+              <Typography variant="h3" color="inherit" className="font-semibold leading-tight">
+                Welcome <br />
+                to the <br /> FUSE React!
+              </Typography>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { delay: 0.3 } }}
+            >
+              <Typography variant="subtitle1" color="inherit" className="mt-32">
+                Powerful and professional admin template for Web Applications, CRM, CMS, Admin
+                Panels and more.
+              </Typography>
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
+    </Root>
+  );
 }
 
 export default Register;

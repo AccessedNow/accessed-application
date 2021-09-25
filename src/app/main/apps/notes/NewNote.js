@@ -1,78 +1,69 @@
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
-import React, { useState } from 'react';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import NoteForm from './note-form/NoteForm';
 import { createNote } from './store/notesSlice';
 
-const useStyles = makeStyles({
-	button: {
-		cursor: 'text'
-	}
-});
-
 function NewNote(props) {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const classes = useStyles(props);
-	const [formOpen, setFormOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
 
-	function handleFormOpen() {
-		setFormOpen(true);
-		document.addEventListener('keydown', escFunction, false);
-	}
+  function handleFormOpen(ev) {
+    ev.stopPropagation();
+    setFormOpen(true);
+    document.addEventListener('keydown', escFunction, false);
+  }
 
-	function handleFormClose() {
-		if (!formOpen) {
-			return;
-		}
-		setFormOpen(false);
-		document.removeEventListener('keydown', escFunction, false);
-	}
+  function handleFormClose() {
+    if (!formOpen) {
+      return;
+    }
+    setFormOpen(false);
+    document.removeEventListener('keydown', escFunction, false);
+  }
 
-	function handleCreate(note) {
-		dispatch(createNote(note));
-		handleFormClose();
-	}
+  function handleCreate(note) {
+    dispatch(createNote(note));
+    handleFormClose();
+  }
 
-	function escFunction(event) {
-		if (event.keyCode === 27) {
-			handleFormClose();
-		}
-	}
+  function escFunction(event) {
+    if (event.keyCode === 27) {
+      handleFormClose();
+    }
+  }
 
-	function handleClickAway(ev) {
-		const preventCloseElements = document.querySelector('.prevent-add-close');
-		const preventClose = preventCloseElements ? preventCloseElements.contains(ev.target) : false;
-		if (preventClose) {
-			return;
-		}
-		handleFormClose();
-	}
+  function handleClickAway(ev) {
+    const preventCloseElements = document.querySelector('.prevent-add-close');
+    const preventClose = preventCloseElements ? preventCloseElements.contains(ev.target) : false;
+    if (preventClose) {
+      return;
+    }
+    handleFormClose();
+  }
 
-	return (
-		<ClickAwayListener onClickAway={handleClickAway}>
-			<Paper
-				className={clsx(classes.button, 'flex items-center w-full max-w-512 mt-8 mb-16 min-h-48 rounded-8')}
-				elevation={1}
-			>
-				{formOpen ? (
-					<NoteForm onCreate={handleCreate} variant="new" />
-				) : (
-					<Typography
-						className="w-full px-16 py-12 font-500 text-16 w-full"
-						color="textSecondary"
-						onClick={handleFormOpen}
-					>
-						Take a note..
-					</Typography>
-				)}
-			</Paper>
-		</ClickAwayListener>
-	);
+  return (
+    <Paper className="flex items-center w-full max-w-512 mt-8 mb-16 min-h-48 shadow flex-shrink-0 cursor-text">
+      {formOpen ? (
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <div className="w-full">
+            <NoteForm onCreate={handleCreate} variant="new" />
+          </div>
+        </ClickAwayListener>
+      ) : (
+        <Typography
+          className="w-full px-16 py-12 text-16 w-full"
+          color="textSecondary"
+          onClick={handleFormOpen}
+        >
+          Take a note...
+        </Typography>
+      )}
+    </Paper>
+  );
 }
 
 export default NewNote;

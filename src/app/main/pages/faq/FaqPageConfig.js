@@ -1,17 +1,17 @@
-import React from 'react';
+import { lazy } from 'react';
 
 const FaqPageConfig = {
-	settings: {
-		layout: {
-			config: {}
-		}
-	},
-	routes: [
-		{
-			path: '/pages/faq',
-			component: React.lazy(() => import('./FaqPage'))
-		}
-	]
+  settings: {
+    layout: {
+      config: {},
+    },
+  },
+  routes: [
+    {
+      path: '/pages/faq',
+      component: lazy(() => import('./FaqPage')),
+    },
+  ],
 };
 
 export default FaqPageConfig;

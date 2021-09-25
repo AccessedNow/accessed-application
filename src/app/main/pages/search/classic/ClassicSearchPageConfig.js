@@ -1,17 +1,17 @@
-import React from 'react';
+import { lazy } from 'react';
 
 const ClassicSearchPageConfig = {
-	settings: {
-		layout: {
-			config: {}
-		}
-	},
-	routes: [
-		{
-			path: '/pages/search/classic',
-			component: React.lazy(() => import('./ClassicSearchPage'))
-		}
-	]
+  settings: {
+    layout: {
+      config: {},
+    },
+  },
+  routes: [
+    {
+      path: '/pages/search/classic',
+      component: lazy(() => import('./ClassicSearchPage')),
+    },
+  ],
 };
 
 export default ClassicSearchPageConfig;

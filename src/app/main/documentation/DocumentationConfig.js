@@ -1,4 +1,4 @@
-import React from 'react';
+import { lazy } from 'react';
 import { Redirect } from 'react-router-dom';
 import AuthenticationDocRoutes from './authentication/AuthenticationDocRoutes';
 import DevelopmentDocRoutes from './development/DevelopmentDocRoutes';
@@ -10,30 +10,30 @@ import ThirdPartyComponentsRoutes from './third-party-components/ThirdPartyCompo
 import ConfigurationDocRoutes from './configuration/ConfigurationDocRoutes';
 
 const DocumentationConfig = {
-	routes: [
-		{
-			path: '/documentation',
-			component: React.lazy(() => import('./DocumentationPageLayout')),
-			routes: [
-				{
-					path: '/documentation/changelog',
-					component: React.lazy(() => import('./changelog/ChangelogDoc'))
-				},
-				...GettingStartedDocRoutes,
-				...DevelopmentDocRoutes,
-				...ThemingDocRoutes,
-				...ConfigurationDocRoutes,
-				...AuthenticationDocRoutes,
-				...FuseComponentsRoutes,
-				...MaterialUIComponentsRoutes,
-				...ThirdPartyComponentsRoutes,
-				{
-					path: '/documentation',
-					component: () => <Redirect to="/documentation/getting-started/introduction" />
-				}
-			]
-		}
-	]
+  routes: [
+    {
+      path: '/documentation',
+      component: lazy(() => import('./DocumentationPageLayout')),
+      routes: [
+        {
+          path: '/documentation/changelog',
+          component: lazy(() => import('./changelog/ChangelogDoc')),
+        },
+        ...GettingStartedDocRoutes,
+        ...DevelopmentDocRoutes,
+        ...ThemingDocRoutes,
+        ...ConfigurationDocRoutes,
+        ...AuthenticationDocRoutes,
+        ...FuseComponentsRoutes,
+        ...MaterialUIComponentsRoutes,
+        ...ThirdPartyComponentsRoutes,
+        {
+          path: '/documentation',
+          component: () => <Redirect to="/documentation/getting-started/introduction" />,
+        },
+      ],
+    },
+  ],
 };
 
 export default DocumentationConfig;

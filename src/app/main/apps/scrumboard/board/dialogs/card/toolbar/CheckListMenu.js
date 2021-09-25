@@ -1,70 +1,91 @@
-import { useForm } from '@fuse/hooks';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from 'react-hook-form';
+import Button from '@mui/material/Button';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
 import ChecklistModel from 'app/main/apps/scrumboard/model/ChecklistModel';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as yup from 'yup';
+import _ from '@lodash';
 import ToolbarMenu from './ToolbarMenu';
 
+/**
+ * Form Validation Schema
+ */
+const schema = yup.object().shape({
+  name: yup.string().required('You must enter a title'),
+});
+
 function CheckListMenu(props) {
-	const [anchorEl, setAnchorEl] = useState(null);
-	const { form, handleChange, resetForm } = useForm({
-		name: ''
-	});
+  const [anchorEl, setAnchorEl] = useState(null);
+  const { control, formState, handleSubmit, reset } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      name: props.name,
+    },
+    resolver: yupResolver(schema),
+  });
 
-	useEffect(() => {
-		if (!anchorEl) {
-			resetForm();
-		}
-	}, [anchorEl, resetForm]);
+  const { isValid, dirtyFields, errors } = formState;
 
-	function handleMenuOpen(event) {
-		setAnchorEl(event.currentTarget);
-	}
+  useEffect(() => {
+    if (!anchorEl) {
+      reset({
+        name: props.name,
+      });
+    }
+  }, [anchorEl, reset, props.name]);
 
-	function handleMenuClose() {
-		setAnchorEl(null);
-	}
+  function handleMenuOpen(event) {
+    setAnchorEl(event.currentTarget);
+  }
 
-	function isFormInvalid() {
-		return form.name === '';
-	}
+  function handleMenuClose() {
+    setAnchorEl(null);
+  }
 
-	function handleSubmit(ev) {
-		ev.preventDefault();
-		if (isFormInvalid()) {
-			return;
-		}
-		props.onAddCheckList(new ChecklistModel(form));
-		handleMenuClose();
-	}
+  function onSubmit(data) {
+    props.onAddCheckList(ChecklistModel(data));
+    handleMenuClose();
+  }
 
-	return (
-		<div>
-			<IconButton color="inherit" onClick={handleMenuOpen}>
-				<Icon>check_box</Icon>
-			</IconButton>
-			<ToolbarMenu state={anchorEl} onClose={handleMenuClose}>
-				<form onSubmit={handleSubmit} className="p-16 flex flex-col items-end">
-					<TextField
-						label="Checklist title"
-						name="name"
-						value={form.name}
-						onChange={handleChange}
-						fullWidth
-						className="mb-12"
-						variant="outlined"
-						required
-						autoFocus
-					/>
-					<Button color="secondary" type="submit" disabled={isFormInvalid()} variant="contained">
-						Add
-					</Button>
-				</form>
-			</ToolbarMenu>
-		</div>
-	);
+  return (
+    <div>
+      <IconButton color="inherit" onClick={handleMenuOpen} size="large">
+        <Icon>check_box</Icon>
+      </IconButton>
+      <ToolbarMenu state={anchorEl} onClose={handleMenuClose}>
+        <form onSubmit={handleSubmit(onSubmit)} className="p-16 flex flex-col items-end">
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Checklist title"
+                error={!!errors.name}
+                helperText={errors?.name?.message}
+                fullWidth
+                className="mb-12"
+                variant="outlined"
+                required
+                autoFocus
+              />
+            )}
+          />
+          <Button
+            color="secondary"
+            type="submit"
+            disabled={_.isEmpty(dirtyFields) || !isValid}
+            variant="contained"
+          >
+            Add
+          </Button>
+        </form>
+      </ToolbarMenu>
+    </div>
+  );
 }
 
 export default CheckListMenu;

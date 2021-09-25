@@ -1,137 +1,210 @@
-import React from 'react';
 import FuseExample from '@fuse/core/FuseExample';
 import FuseHighlight from '@fuse/core/FuseHighlight';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Icon from '@mui/material/Icon';
+import Typography from '@mui/material/Typography';
 /* eslint import/no-webpack-loader-syntax: off */
+/* eslint import/extensions: off */
 /* eslint no-unused-vars: off */
 /* eslint-disable jsx-a11y/accessible-emoji */
-const useStyles = makeStyles(theme => ({
-    layoutRoot: {
-        '& .description': {
-            marginBottom: 16
-        }
-    }
-}));
 
-function BoxDoc(props)
-{
-    const classes = useStyles();
-    return (
+function BoxDoc(props) {
+  return (
+    <>
+      <div className="flex flex-1 flex-grow-0 items-center justify-end">
+        <Button
+          className="normal-case"
+          variant="contained"
+          color="secondary"
+          component="a"
+          href="https://mui.com/components/box"
+          target="_blank"
+          role="button"
+        >
+          <Icon>link</Icon>
+          <span className="mx-4">Reference</span>
+        </Button>
+      </div>
+      <Typography className="text-40 my-16 font-700" component="h1">
+        Box
+      </Typography>
+      <Typography className="description">
+        The Box component serves as a wrapper component for most of the CSS utility needs.
+      </Typography>
 
-        <>
-            <div className="flex flex-1 flex-grow-0 items-center justify-end">
-                <Button
-                    className="normal-case"
-                    variant="outlined"
-                    component="a"
-                    href="https://material-ui.com/components/box"
-                    target="_blank"
-                    role="button"
-                >
-                    <Icon>link</Icon>
-                    <span className="mx-4">Reference</span>
-                </Button>
-            </div>
-            <Typography className="text-44 mt-32 mb-8" component="h1">Box</Typography>
-            <Typography className="description">The Box component serves as a wrapper component for most of the CSS utility needs.</Typography>
+      <Typography className="mb-40" component="div">
+        The Box component packages{' '}
+        <a href="/system/basics/#all-inclusive">all the style functions</a> that are exposed in{' '}
+        <code>@mui/system</code>.
+      </Typography>
+      <Typography className="text-32 mt-40 mb-10 font-700" component="h2">
+        Example
+      </Typography>
+      <Typography className="mb-40" component="div">
+        <a href="/system/palette/">The palette</a> style function.
+      </Typography>
+      <Typography className="text-32 mt-40 mb-10 font-700" component="h2">
+        The <code>sx</code> prop
+      </Typography>
+      <Typography className="mb-40" component="div">
+        All system properties are available via the{' '}
+        <a href="/system/basics/#the-sx-prop">
+          <code>sx</code> prop
+        </a>
+        . In addition, the <code>sx</code> prop allows you to specify any other CSS rules you may
+        need. Here&#39;s an example of how you can use it:
+      </Typography>
+      <Typography className="mb-40" component="div">
+        <FuseExample
+          className="my-24"
+          iframe={false}
+          component={
+            require('app/main/documentation/material-ui-components/components/box/BoxSx.js').default
+          }
+          raw={require('!raw-loader!app/main/documentation/material-ui-components/components/box/BoxSx.js')}
+        />
+      </Typography>
+      <Typography className="text-32 mt-40 mb-10 font-700" component="h2">
+        Overriding MUI components
+      </Typography>
+      <Typography className="mb-40" component="div">
+        The Box component wraps your component. It creates a new DOM element, a{' '}
+        <code>{`<div>`}</code> that by default can be changed with the <code>component</code> prop.
+        Let&#39;s say you want to use a <code>{`<span>`}</code> instead:
+      </Typography>
+      <Typography className="mb-40" component="div">
+        <FuseExample
+          className="my-24"
+          iframe={false}
+          component={
+            require('app/main/documentation/material-ui-components/components/box/BoxComponent.js')
+              .default
+          }
+          raw={require('!raw-loader!app/main/documentation/material-ui-components/components/box/BoxComponent.js')}
+        />
+      </Typography>
+      <Typography className="mb-40" component="div">
+        This works great when the changes can be isolated to a new DOM element. For instance, you
+        can change the margin this way.
+      </Typography>
+      <Typography className="mb-40" component="div">
+        However, sometimes you have to target the underlying DOM element. As an example, you may
+        want to change the border of the Button. The Button component defines its own styles. CSS
+        inheritance doesn&#39;t help. To workaround the problem, you can use the{' '}
+        <a href="/system/basics/#the-sx-prop">
+          <code>sx</code>
+        </a>{' '}
+        prop directly on the child if it is a MUI component.
+      </Typography>
 
-            <Typography className="mb-16" component="div">The Box component packages <a href="/system/basics/#all-inclusive">all the style functions</a> that are exposed
-                in <code>{`@material-ui/system`}</code>.
-                It&#39;s created using the <a href="/styles/api/#styled-style-function-component"><code>{`styled()`}</code></a> function of <code>{`@material-ui/core/styles`}</code>.</Typography>
-            <Typography className="text-32 mt-32 mb-8" component="h2">Example</Typography>
-            <Typography className="mb-16" component="div"><a href="/system/palette/">The palette</a> style function.</Typography>
-            <Typography className="text-32 mt-32 mb-8" component="h2">Overriding Material-UI components</Typography>
-            <Typography className="mb-16" component="div">The Box component wraps your component.
-                It creates a new DOM element, a <code>{`<div>`}</code> by default that can be changed with the <code>{`component`}</code> property.
-                Let&#39;s say you want to use a <code>{`<span>`}</code> instead:</Typography>
-
-            <FuseHighlight component="pre" className="language-jsx">
-                {` 
-<Box component="span" m={1}>
-  <Button />
-</Box>
+      <FuseHighlight component="pre" className="language-diff">
+        {` 
+-<Box sx={{ border: '1px dashed grey' }}>
+-  <Button>Save</Button>
+-</Box>
++<Button sx={{ border: '1px dashed grey' }}>Save</Button>
 `}
-            </FuseHighlight>
-            <Typography className="mb-16" component="div">This works great when the changes can be isolated to a new DOM element.
-                For instance, you can change the margin this way.</Typography>
-            <Typography className="mb-16" component="div">However, sometimes you have to target the underlying DOM element.
-                For instance, you want to change the text color of the button.
-                The Button component defines its own color. CSS inheritance doesn&#39;t help.
-                To workaround the problem, you have two options:</Typography>
-            <ol>
-                <li>Use <a href="https://reactjs.org/docs/react-api.html#cloneelement"><code>{`React.cloneElement()`}</code></a></li>
-            </ol>
-            <Typography className="mb-16" component="div">The Box component has a <code>{`clone`}</code> property to enable the usage of the clone element method of React.</Typography>
+      </FuseHighlight>
+      <Typography className="mb-40" component="div">
+        For non-MUI components, use the <code>component</code> prop.
+      </Typography>
 
-            <FuseHighlight component="pre" className="language-jsx">
-                {` 
-<Box color="text.primary" clone>
-  <Button />
-</Box>
+      <FuseHighlight component="pre" className="language-diff">
+        {` 
+-<Box sx={{ border: '1px dashed grey' }}>
+-  <button>Save</button>
+-</Box>
++<Box component="button" sx={{ border: '1px dashed grey' }}>Save</Box>
 `}
-            </FuseHighlight>
-            <ol start="2">
-                <li>Use render props</li>
-            </ol>
-            <Typography className="mb-16" component="div">The Box children accepts a render props function. You can pull out the <code>{`className`}</code>.</Typography>
+      </FuseHighlight>
+      <Typography className="text-32 mt-40 mb-10 font-700" component="h2">
+        API
+      </Typography>
 
-            <FuseHighlight component="pre" className="language-jsx">
-                {` 
-<Box color="text.primary">
-  {props => <Button {...props} />}
-</Box>
+      <FuseHighlight component="pre" className="language-jsx">
+        {` 
+import Box from '@mui/material/Box';
 `}
-            </FuseHighlight>
-            <blockquote>
-                <Typography className="mb-16" component="div">⚠️ The CSS specificity relies on the import order.
-                    If you want the guarantee that the wrapped component&#39;s style will be overridden, you need to import the Box last.</Typography>
-            </blockquote>
-            <Typography className="text-32 mt-32 mb-8" component="h2">API</Typography>
+      </FuseHighlight>
+      <table>
+        <thead>
+          <tr>
+            <th align="left">Name</th>
+            <th align="left">Type</th>
+            <th align="left">Default</th>
+            <th align="left">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td align="left">
+              <span className="prop-name">children</span>
+            </td>
+            <td align="left">
+              <span className="prop-type">
+                node
+                <br />
+              </span>
+            </td>
+            <td align="left" />
+            <td align="left">Box render function or node.</td>
+          </tr>
+          <tr>
+            <td align="left">
+              <span className="prop-name">component</span>
+            </td>
+            <td align="left">
+              <span className="prop-type">
+                union:&nbsp;string&nbsp;&#124;
+                <br />
+                &nbsp;func&nbsp;&#124;
+                <br />
+                &nbsp;object
+                <br />
+              </span>
+            </td>
+            <td align="left">
+              <span className="prop-default">&#39;div&#39;</span>
+            </td>
+            <td align="left">
+              The component used for the root node. Either a string to use a DOM element or a
+              component.
+            </td>
+          </tr>
+          <tr>
+            <td align="left">
+              <span className="prop-name">sx</span>
+            </td>
+            <td align="left">
+              <span className="prop-type">object</span>
+            </td>
+            <td align="left">
+              <span className="prop-default">{}</span>
+            </td>
+            <td align="left">
+              Accepts all system properties, as well as any valid CSS properties.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <Typography className="text-32 mt-40 mb-10 font-700" component="h2">
+        System props
+      </Typography>
+      <Typography className="mb-40" component="div">
+        As a CSS utility component, the <code>Box</code> also supports all{' '}
+        <a href="/system/properties/">
+          <code>system</code>
+        </a>{' '}
+        properties. You can use them as prop directly on the component. For instance, a margin-top:
+      </Typography>
 
-            <FuseHighlight component="pre" className="language-jsx">
-                {` 
-import Box from '@material-ui/core/Box';
+      <FuseHighlight component="pre" className="language-jsx">
+        {` 
+<Box mt={2}>
 `}
-            </FuseHighlight>
-            <table>
-                <thead>
-                    <tr>
-                        <th align="left">Name</th>
-                        <th align="left">Type</th>
-                        <th align="left">Default</th>
-                        <th align="left">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td align="left"><span className="prop-name required">children&nbsp;*</span></td>
-                        <td align="left"><span className="prop-type">union:&nbsp;node&nbsp;&#124;<br/>&nbsp;func<br/></span></td>
-                        <td align="left"></td>
-                        <td align="left">Box render function or node.</td>
-                    </tr>
-                    <tr>
-                        <td align="left"><span className="prop-name">clone</span></td>
-                        <td align="left"><span className="prop-type">bool</span></td>
-                        <td align="left"><span className="prop-default">false</span></td>
-                        <td align="left">If <code>{`true`}</code>, the box will recycle its children DOM element. It&#39;s using <code>{`React.cloneElement`}</code> internally.</td>
-                    </tr>
-                    <tr>
-                        <td align="left"><span className="prop-name">component</span></td>
-                        <td align="left"><span className="prop-type">union:&nbsp;string&nbsp;&#124;<br/>&nbsp;func&nbsp;&#124;<br/>&nbsp;object<br/></span></td>
-                        <td align="left"><span className="prop-default">&#39;div&#39;</span></td>
-                        <td align="left">The component used for the root node. Either a string to use a DOM element or a component.</td>
-                    </tr>
-                </tbody>
-            </table>
-            <Typography className="mb-16" component="div">Any other properties supplied will be used by <a href="/system/basics/#all-inclusive">the style functions</a> or spread to the root
-                element.</Typography>
-
-        </>
-
-    );
+      </FuseHighlight>
+    </>
+  );
 }
 
 export default BoxDoc;

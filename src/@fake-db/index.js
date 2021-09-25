@@ -18,21 +18,14 @@ import './db/quick-panel-db';
 import './db/scrumboard-db';
 import './db/search-db';
 import './db/todo-db';
-import './db/candidates-db';
-import './db/address-db';
-import './db/skills-db';
-import './db/industry-db';
-import './db/jobs-db';
-import './db/job-db';
-import './db/members-db';
-import './db/activity-db';
-import './db/labels-db';
-import './db/tags-db';
-import './db/department-db';
-import './db/templates-db';
-import './db/company-db';
-import './db/talent-db';
-
+import './db/notification-panel-db';
+import history from '@history';
 import mock from './mock';
 
 mock.onAny().passThrough();
+
+if (module?.hot?.status() === 'apply') {
+  const { pathname } = history.location;
+  history.push('/loading');
+  history.push({ pathname });
+}

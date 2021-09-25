@@ -1,47 +1,47 @@
 import FuseCountdown from '@fuse/core/FuseCountdown';
 import FuseHighlight from '@fuse/core/FuseHighlight';
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 
 function FuseCountdownDoc() {
-	return (
-		<>
-			<Typography variant="h4" className="mb-24">
-				FuseCountdown
-			</Typography>
+  return (
+    <>
+      <Typography variant="h4" className="mb-40 font-700">
+        FuseCountdown
+      </Typography>
 
-			<Typography className="mb-16" component="p">
-				<code>FuseCountdown</code> is a custom-built Fuse component that allows you to create countdowns.
-			</Typography>
+      <Typography className="mb-16" component="p">
+        <code>FuseCountdown</code> is a custom-built Fuse component that allows you to create
+        countdowns.
+      </Typography>
 
-			<Typography className="mt-32 mb-8" variant="h5">
-				Usage
-			</Typography>
+      <Typography className="text-20 mt-20 mb-10 font-700" variant="h5">
+        Usage
+      </Typography>
 
-			<FuseHighlight component="pre" className="language-jsx">
-				{`
+      <FuseHighlight component="pre" className="language-jsx">
+        {`
                               <FuseCountdown endDate="2020-07-28" className="my-48"/>
                             `}
-			</FuseHighlight>
+      </FuseHighlight>
 
-			<Typography className="mt-32 mb-8" variant="h5">
-				Preview
-			</Typography>
+      <Typography className="text-20 mt-20 mb-10 font-700" variant="h5">
+        Preview
+      </Typography>
 
-			<FuseCountdown endDate="2020-07-28" className="my-48" />
+      <FuseCountdown endDate="2020-07-28" className="my-48" />
 
-			<Typography className="mt-32 mb-8" variant="h5">
-				Demos
-			</Typography>
+      <Typography className="text-20 mt-20 mb-10 font-700" variant="h5">
+        Demos
+      </Typography>
 
-			<ul>
-				<li className="mb-8">
-					<Link to="/pages/coming-soon">Coming Soon</Link>
-				</li>
-			</ul>
-		</>
-	);
+      <ul>
+        <li className="mb-8">
+          <Link to="/pages/coming-soon">Coming Soon</Link>
+        </li>
+      </ul>
+    </>
+  );
 }
 
 export default FuseCountdownDoc;

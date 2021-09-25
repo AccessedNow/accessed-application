@@ -1,9 +1,9 @@
-import React from 'react';
-import MaUTable from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { useMemo } from 'react';
+import MaUTable from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import { useTable } from 'react-table';
 import sampleData from './sampleData';
 
@@ -43,7 +43,7 @@ function Table({ columns, data }) {
 }
 
 function App() {
-	const columns = React.useMemo(
+	const columns = useMemo(
 		() => [
 			{
 				Header: 'Name',
@@ -83,7 +83,7 @@ function App() {
 		[]
 	);
 
-	const data = React.useMemo(() => sampleData, []);
+	const data = useMemo(() => sampleData, []);
 
 	return <Table columns={columns} data={data} />;
 }

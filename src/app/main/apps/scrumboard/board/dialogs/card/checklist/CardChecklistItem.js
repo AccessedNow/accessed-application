@@ -1,38 +1,52 @@
-import { useForm, useUpdateEffect } from '@fuse/hooks';
-import Checkbox from '@material-ui/core/Checkbox';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import ListItem from '@material-ui/core/ListItem';
-import TextField from '@material-ui/core/TextField';
-import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import Checkbox from '@mui/material/Checkbox';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import ListItem from '@mui/material/ListItem';
+import TextField from '@mui/material/TextField';
+import _ from '@lodash';
 
 function CardChecklistItem(props) {
-	const { item, onListItemChange, index } = props;
-	const { form, handleChange } = useForm(item);
+  const { item, onListItemChange, index } = props;
+  const { control, watch } = useForm({ mode: 'onChange', defaultValues: item });
+  const form = watch();
 
-	useUpdateEffect(() => {
-		onListItemChange(form, index);
-	}, [form, index, onListItemChange]);
+  useEffect(() => {
+    if (!_.isEqual(item, form)) {
+      onListItemChange(form, index);
+    }
+  }, [form, index, onListItemChange, item]);
 
-	if (!form) {
-		return null;
-	}
+  return (
+    <ListItem className="px-0" key={item.id} dense>
+      <Controller
+        name="checked"
+        control={control}
+        defaultValue={false}
+        render={({ field: { onChange, value } }) => (
+          <Checkbox
+            tabIndex={-1}
+            checked={value}
+            onChange={(ev) => onChange(ev.target.checked)}
+            disableRipple
+          />
+        )}
+      />
 
-	return (
-		<ListItem className="px-0" key={form.id} dense>
-			<Checkbox checked={form.checked} name="checked" onChange={handleChange} tabIndex={-1} disableRipple />
-			<TextField
-				className="flex flex-1 mx-8"
-				name="name"
-				value={form.name}
-				onChange={handleChange}
-				variant="outlined"
-			/>
-			<IconButton aria-label="Delete" onClick={props.onListItemRemove}>
-				<Icon>delete</Icon>
-			</IconButton>
-		</ListItem>
-	);
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <TextField {...field} className="flex flex-1 mx-8" variant="outlined" />
+        )}
+      />
+
+      <IconButton aria-label="Delete" onClick={props.onListItemRemove} size="large">
+        <Icon>delete</Icon>
+      </IconButton>
+    </ListItem>
+  );
 }
 
 export default CardChecklistItem;

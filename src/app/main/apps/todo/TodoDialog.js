@@ -1,350 +1,381 @@
-import { useForm } from '@fuse/hooks';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { DateTimePicker } from '@mui/lab';
+import { Controller, useForm } from 'react-hook-form';
 import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
-import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import Chip from '@material-ui/core/Chip';
-import { amber, red } from '@material-ui/core/colors';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Divider from '@material-ui/core/Divider';
-import FormControl from '@material-ui/core/FormControl';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import moment from 'moment/moment';
-import React, { useCallback, useEffect, useState } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import { amber, red } from '@mui/material/colors';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Divider from '@mui/material/Divider';
+import FormControl from '@mui/material/FormControl';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import * as yup from 'yup';
 import { selectLabels } from './store/labelsSlice';
-import { removeTodo, addTodo, closeNewTodoDialog, closeEditTodoDialog, updateTodo } from './store/todosSlice';
+import {
+  removeTodo,
+  addTodo,
+  closeNewTodoDialog,
+  closeEditTodoDialog,
+  updateTodo,
+} from './store/todosSlice';
 
-const defaultFormState = {
-	id: '',
-	title: '',
-	notes: '',
-	startDate: new Date(),
-	dueDate: new Date(),
-	completed: false,
-	starred: false,
-	important: false,
-	deleted: false,
-	labels: []
+const defaultValues = {
+  id: '',
+  title: '',
+  notes: '',
+  startDate: new Date(),
+  dueDate: new Date(),
+  completed: false,
+  starred: false,
+  important: false,
+  deleted: false,
+  labels: [],
 };
 
+/**
+ * Form Validation Schema
+ */
+const schema = yup.object().shape({
+  title: yup.string().required('You must enter a title'),
+});
+
 function TodoDialog(props) {
-	const dispatch = useDispatch();
-	const todoDialog = useSelector(({ todoApp }) => todoApp.todos.todoDialog);
-	const labels = useSelector(selectLabels);
+  const dispatch = useDispatch();
+  const todoDialog = useSelector(({ todoApp }) => todoApp.todos.todoDialog);
+  const labels = useSelector(selectLabels);
 
-	const [labelMenuEl, setLabelMenuEl] = useState(null);
-	const { form, handleChange, setForm } = useForm({ ...defaultFormState });
-	const startDate = moment(form.startDate).format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS);
-	const dueDate = moment(form.dueDate).format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS);
+  const [labelMenuEl, setLabelMenuEl] = useState(null);
+  const { watch, handleSubmit, formState, reset, control, setValue } = useForm({
+    mode: 'onChange',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
 
-	const initDialog = useCallback(() => {
-		/**
-		 * Dialog type: 'edit'
-		 */
-		if (todoDialog.type === 'edit' && todoDialog.data) {
-			setForm({ ...todoDialog.data });
-		}
+  const { errors, isValid, dirtyFields } = formState;
+  const formId = watch('id');
+  const formLabels = watch('labels');
+  const dueDate = watch('deuDate');
+  const startDate = watch('startDate');
 
-		/**
-		 * Dialog type: 'new'
-		 */
-		if (todoDialog.type === 'new') {
-			setForm({
-				...defaultFormState,
-				...todoDialog.data,
-				id: FuseUtils.generateGUID()
-			});
-		}
-	}, [todoDialog.data, todoDialog.type, setForm]);
+  /**
+   * Initialize Dialog with Data
+   */
+  const initDialog = useCallback(() => {
+    /**
+     * Dialog type: 'edit'
+     */
+    if (todoDialog.type === 'edit' && todoDialog.data) {
+      reset({ ...todoDialog.data });
+    }
 
-	useEffect(() => {
-		/**
-		 * After Dialog Open
-		 */
-		if (todoDialog.props.open) {
-			initDialog();
-		}
-	}, [todoDialog.props.open, initDialog]);
+    /**
+     * Dialog type: 'new'
+     */
+    if (todoDialog.type === 'new') {
+      reset({
+        ...defaultValues,
+        ...todoDialog.data,
+      });
+    }
+  }, [todoDialog.data, todoDialog.type, reset]);
 
-	function closeTodoDialog() {
-		return todoDialog.type === 'edit' ? dispatch(closeEditTodoDialog()) : dispatch(closeNewTodoDialog());
-	}
+  /**
+   * On Dialog Open
+   */
+  useEffect(() => {
+    if (todoDialog.props.open) {
+      initDialog();
+    }
+  }, [todoDialog.props.open, initDialog]);
 
-	function handleLabelMenuOpen(event) {
-		setLabelMenuEl(event.currentTarget);
-	}
+  /**
+   * Close Dialog
+   */
+  function closeTodoDialog() {
+    return todoDialog.type === 'edit'
+      ? dispatch(closeEditTodoDialog())
+      : dispatch(closeNewTodoDialog());
+  }
 
-	function handleLabelMenuClose(event) {
-		setLabelMenuEl(null);
-	}
+  /**
+   * Form Submit
+   */
+  function onSubmit(data) {
+    if (todoDialog.type === 'new') {
+      dispatch(addTodo({ id: FuseUtils.generateGUID(), ...data }));
+    } else {
+      dispatch(updateTodo({ ...todoDialog.data, ...data }));
+    }
+    closeTodoDialog();
+  }
 
-	function handleToggleImportant() {
-		setForm({
-			...form,
-			important: !form.important
-		});
-	}
+  /**
+   * Remove Event
+   */
+  function handleRemove() {
+    dispatch(removeTodo(formId)).then(() => {
+      closeTodoDialog();
+    });
+  }
 
-	function handleToggleStarred() {
-		setForm({
-			...form,
-			starred: !form.starred
-		});
-	}
+  return (
+    <Dialog {...todoDialog.props} onClose={closeTodoDialog} fullWidth maxWidth="sm">
+      <AppBar position="static" elevation={0}>
+        <Toolbar className="flex w-full">
+          <Typography variant="subtitle1" color="inherit">
+            {todoDialog.type === 'new' ? 'New Todo' : 'Edit Todo'}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <DialogContent classes={{ root: 'p-0' }}>
+          <div className="mb-16">
+            <div className="flex items-center justify-between p-12">
+              <div className="flex">
+                <Controller
+                  name="completed"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <IconButton
+                      tabIndex={-1}
+                      disableRipple
+                      onClick={(ev) => onChange(!value)}
+                      size="large"
+                    >
+                      {value ? (
+                        <Icon color="secondary">check_circle</Icon>
+                      ) : (
+                        <Icon color="action">radio_button_unchecked</Icon>
+                      )}
+                    </IconButton>
+                  )}
+                />
+              </div>
 
-	function handleToggleLabel(event, id) {
-		event.stopPropagation();
-		setForm(
-			_.set({
-				...form,
-				labels: form.labels.includes(id) ? form.labels.filter(labelId => labelId !== id) : [...form.labels, id]
-			})
-		);
-	}
+              <div className="flex items-center justify-start">
+                <Controller
+                  name="important"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <IconButton onClick={() => onChange(!value)} size="large">
+                      {value ? (
+                        <Icon style={{ color: red[500] }}>error</Icon>
+                      ) : (
+                        <Icon>error_outline</Icon>
+                      )}
+                    </IconButton>
+                  )}
+                />
 
-	function toggleCompleted() {
-		setForm({
-			...form,
-			completed: !form.completed
-		});
-	}
+                <Controller
+                  name="starred"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <IconButton onClick={() => onChange(!value)} size="large">
+                      {value ? (
+                        <Icon style={{ color: amber[500] }}>star</Icon>
+                      ) : (
+                        <Icon>star_outline</Icon>
+                      )}
+                    </IconButton>
+                  )}
+                />
 
-	function canBeSubmitted() {
-		return form.title.length > 0;
-	}
+                <div>
+                  <IconButton
+                    aria-owns={labelMenuEl ? 'label-menu' : null}
+                    aria-haspopup="true"
+                    onClick={(ev) => setLabelMenuEl(ev.currentTarget)}
+                    size="large"
+                  >
+                    <Icon>label</Icon>
+                  </IconButton>
+                  <Controller
+                    name="labels"
+                    control={control}
+                    render={({ field: { onChange, value: formLabelsVal } }) => (
+                      <Menu
+                        id="label-menu"
+                        anchorEl={labelMenuEl}
+                        open={Boolean(labelMenuEl)}
+                        onClose={() => setLabelMenuEl(null)}
+                      >
+                        {labels.length > 0 &&
+                          labels.map((label) => (
+                            <MenuItem
+                              onClick={(ev) => onChange(_.xor(formLabelsVal, [label.id]))}
+                              key={label.id}
+                            >
+                              <ListItemIcon className="min-w-24">
+                                <Icon color="action">
+                                  {formLabelsVal.includes(label.id)
+                                    ? 'check_box'
+                                    : 'check_box_outline_blank'}
+                                </Icon>
+                              </ListItemIcon>
+                              <ListItemText
+                                className="mx-8"
+                                primary={label.title}
+                                disableTypography
+                              />
+                              <ListItemIcon className="min-w-24">
+                                <Icon style={{ color: label.color }} color="action">
+                                  label
+                                </Icon>
+                              </ListItemIcon>
+                            </MenuItem>
+                          ))}
+                      </Menu>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+            <Divider className="mx-24" />
+          </div>
 
-	return (
-		<Dialog
-			{...todoDialog.props}
-			onClose={closeTodoDialog}
-			fullWidth
-			maxWidth="sm"
-			classes={{
-				paper: 'rounded-8'
-			}}
-		>
-			<AppBar position="static" elevation={1}>
-				<Toolbar className="flex w-full">
-					<Typography variant="subtitle1" color="inherit">
-						{todoDialog.type === 'new' ? 'New Todo' : 'Edit Todo'}
-					</Typography>
-				</Toolbar>
-			</AppBar>
+          {formLabels.length > 0 && (
+            <div className="flex flex-wrap w-full px-12 sm:px-20 mb-16">
+              {formLabels.map((labelId) => {
+                const label = _.find(labels, { id: labelId });
+                return (
+                  <Chip
+                    avatar={
+                      <Avatar classes={{ colorDefault: 'bg-transparent' }}>
+                        <Icon className="text-20" style={{ color: label.color }}>
+                          label
+                        </Icon>
+                      </Avatar>
+                    }
+                    label={label.title}
+                    onDelete={(ev) =>
+                      setValue(
+                        'labels',
+                        formLabels.filter((_id) => labelId !== _id)
+                      )
+                    }
+                    className="mx-4 my-4"
+                    classes={{ label: 'px-8' }}
+                    key={labelId}
+                  />
+                );
+              })}
+            </div>
+          )}
 
-			<DialogContent classes={{ root: 'p-0' }}>
-				<div className="mb-16">
-					<div className="flex items-center justify-between p-12">
-						<div className="flex">
-							<Checkbox
-								tabIndex={-1}
-								checked={form.completed}
-								onChange={toggleCompleted}
-								onClick={ev => ev.stopPropagation()}
-							/>
-						</div>
+          <div className="px-16 sm:px-24">
+            <FormControl className="mt-8 mb-16" required fullWidth>
+              <Controller
+                name="title"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Title"
+                    autoFocus
+                    error={!!errors.title}
+                    helperText={errors?.title?.message}
+                    required
+                    variant="outlined"
+                  />
+                )}
+              />
+            </FormControl>
 
-						<div className="flex items-center justify-start" aria-label="Toggle star">
-							<IconButton onClick={handleToggleImportant}>
-								{form.important ? (
-									<Icon style={{ color: red[500] }}>error</Icon>
-								) : (
-									<Icon>error_outline</Icon>
-								)}
-							</IconButton>
+            <FormControl className="mt-8 mb-16" required fullWidth>
+              <Controller
+                name="notes"
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label="Notes" multiline rows="6" variant="outlined" />
+                )}
+              />
+            </FormControl>
 
-							<IconButton onClick={handleToggleStarred}>
-								{form.starred ? (
-									<Icon style={{ color: amber[500] }}>star</Icon>
-								) : (
-									<Icon>star_outline</Icon>
-								)}
-							</IconButton>
-							<div>
-								<IconButton
-									aria-owns={labelMenuEl ? 'label-menu' : null}
-									aria-haspopup="true"
-									onClick={handleLabelMenuOpen}
-								>
-									<Icon>label</Icon>
-								</IconButton>
-								<Menu
-									id="label-menu"
-									anchorEl={labelMenuEl}
-									open={Boolean(labelMenuEl)}
-									onClose={handleLabelMenuClose}
-								>
-									{labels.length > 0 &&
-										labels.map(label => (
-											<MenuItem onClick={ev => handleToggleLabel(ev, label.id)} key={label.id}>
-												<ListItemIcon className="min-w-24">
-													<Icon color="action">
-														{form.labels.includes(label.id)
-															? 'check_box'
-															: 'check_box_outline_blank'}
-													</Icon>
-												</ListItemIcon>
-												<ListItemText
-													className="mx-8"
-													primary={label.title}
-													disableTypography
-												/>
-												<ListItemIcon className="min-w-24">
-													<Icon style={{ color: label.color }} color="action">
-														label
-													</Icon>
-												</ListItemIcon>
-											</MenuItem>
-										))}
-								</Menu>
-							</div>
-						</div>
-					</div>
-					<Divider className="mx-24" />
-				</div>
+            <div className="flex -mx-4">
+              <Controller
+                name="startDate"
+                control={control}
+                defaultValue=""
+                render={({ field: { onChange, value } }) => (
+                  <DateTimePicker
+                    value={value}
+                    onChange={onChange}
+                    maxDate={dueDate}
+                    renderInput={(_props) => (
+                      <TextField label="Start Date" className="mt-8 mb-16 mx-4" {..._props} />
+                    )}
+                  />
+                )}
+              />
 
-				{form.labels.length > 0 && (
-					<div className="flex flex-wrap w-full px-12 sm:px-20 mb-16">
-						{form.labels.map(label => (
-							<Chip
-								avatar={
-									<Avatar classes={{ colorDefault: 'bg-transparent' }}>
-										<Icon
-											className="text-20"
-											style={{ color: _.find(labels, { id: label }).color }}
-										>
-											label
-										</Icon>
-									</Avatar>
-								}
-								label={_.find(labels, { id: label }).title}
-								onDelete={ev => handleToggleLabel(ev, label)}
-								className="mx-4 my-4"
-								classes={{ label: 'px-8' }}
-								key={label}
-							/>
-						))}
-					</div>
-				)}
+              <Controller
+                name="dueDate"
+                control={control}
+                defaultValue=""
+                render={({ field: { onChange, value } }) => (
+                  <DateTimePicker
+                    value={value}
+                    onChange={onChange}
+                    minDate={startDate}
+                    renderInput={(_props) => (
+                      <TextField label="Due Date" className="mt-8 mb-16 mx-4" {..._props} />
+                    )}
+                  />
+                )}
+              />
+            </div>
+          </div>
+        </DialogContent>
 
-				<div className="px-16 sm:px-24">
-					<FormControl className="mt-8 mb-16" required fullWidth>
-						<TextField
-							label="Title"
-							autoFocus
-							name="title"
-							value={form.title}
-							onChange={handleChange}
-							required
-							variant="outlined"
-						/>
-					</FormControl>
-
-					<FormControl className="mt-8 mb-16" required fullWidth>
-						<TextField
-							label="Notes"
-							name="notes"
-							multiline
-							rows="6"
-							value={form.notes}
-							onChange={handleChange}
-							variant="outlined"
-						/>
-					</FormControl>
-					<div className="flex -mx-4">
-						<TextField
-							name="startDate"
-							label="Start Date"
-							type="datetime-local"
-							className="mt-8 mb-16 mx-4"
-							InputLabelProps={{
-								shrink: true
-							}}
-							inputProps={{
-								max: dueDate
-							}}
-							value={startDate}
-							onChange={handleChange}
-							variant="outlined"
-						/>
-						<TextField
-							name="dueDate"
-							label="Due Date"
-							type="datetime-local"
-							className="mt-8 mb-16 mx-4"
-							InputLabelProps={{
-								shrink: true
-							}}
-							inputProps={{
-								min: startDate
-							}}
-							value={dueDate}
-							onChange={handleChange}
-							variant="outlined"
-						/>
-					</div>
-				</div>
-			</DialogContent>
-
-			{todoDialog.type === 'new' ? (
-				<DialogActions className="justify-between p-8">
-					<div className="px-16">
-						<Button
-							variant="contained"
-							color="primary"
-							onClick={() => {
-								dispatch(addTodo(form)).then(() => {
-									closeTodoDialog();
-								});
-							}}
-							disabled={!canBeSubmitted()}
-						>
-							Add
-						</Button>
-					</div>
-				</DialogActions>
-			) : (
-				<DialogActions className="justify-between p-8">
-					<div className="px-16">
-						<Button
-							variant="contained"
-							color="primary"
-							onClick={() => {
-								dispatch(updateTodo(form)).then(() => {
-									closeTodoDialog();
-								});
-							}}
-							disabled={!canBeSubmitted()}
-						>
-							Save
-						</Button>
-					</div>
-					<IconButton
-						className="min-w-auto"
-						onClick={() => {
-							dispatch(removeTodo(form.id)).then(() => {
-								closeTodoDialog();
-							});
-						}}
-					>
-						<Icon>delete</Icon>
-					</IconButton>
-				</DialogActions>
-			)}
-		</Dialog>
-	);
+        {todoDialog.type === 'new' ? (
+          <DialogActions className="justify-between px-8 py-16">
+            <div className="px-16">
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                disabled={_.isEmpty(dirtyFields) || !isValid}
+              >
+                Add
+              </Button>
+            </div>
+          </DialogActions>
+        ) : (
+          <DialogActions className="justify-between px-8 py-16">
+            <div className="px-16">
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                disabled={_.isEmpty(dirtyFields) || !isValid}
+              >
+                Save
+              </Button>
+            </div>
+            <IconButton className="min-w-auto" onClick={handleRemove} size="large">
+              <Icon>delete</Icon>
+            </IconButton>
+          </DialogActions>
+        )}
+      </form>
+    </Dialog>
+  );
 }
 
 export default TodoDialog;

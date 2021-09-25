@@ -1,184 +1,186 @@
-import { useForm } from '@fuse/hooks';
-import { TextFieldFormsy } from '@fuse/core/formsy';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Typography from '@material-ui/core/Typography';
-import Formsy from 'formsy-react';
-import React, { useEffect, useRef, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { submitLogin } from 'app/auth/store/loginSlice';
+import * as yup from 'yup';
+import _ from '@lodash';
 
-import Checkbox from '@material-ui/core/Checkbox';
-import Divider from '@material-ui/core/Divider';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Link } from 'react-router-dom';
+/**
+ * Form Validation Schema
+ */
+const schema = yup.object().shape({
+  email: yup.string().email('You must enter a valid email').required('You must enter a email'),
+  password: yup
+    .string()
+    .required('Please enter your password.')
+    .min(4, 'Password is too short - should be 4 chars minimum.'),
+});
 
+const defaultValues = {
+  email: '',
+  password: '',
+};
 
 function JWTLoginTab(props) {
-	const dispatch = useDispatch();
-	const login = useSelector(({ auth }) => auth.login);
-
-	const [isFormValid, setIsFormValid] = useState(false);
-	const [showPassword, setShowPassword] = useState(false);
-  const { form, handleChange, resetForm } = useForm({
-    email: '',
-    password: '',
-    remember: true
+  const dispatch = useDispatch();
+  const login = useSelector(({ auth }) => auth.login);
+  const { control, setValue, formState, handleSubmit, reset, trigger, setError } = useForm({
+    mode: 'onChange',
+    defaultValues,
+    resolver: yupResolver(schema),
   });
 
-	const formRef = useRef(null);
+  const { isValid, dirtyFields, errors } = formState;
 
-	useEffect(() => {
-		if (login.error && (login.error.email || login.error.password)) {
-			formRef.current.updateInputsWithError({
-				...login.error
-			});
-			disableButton();
-		}
-	}, [login.error]);
+  const [showPassword, setShowPassword] = useState(false);
 
-	function disableButton() {
-		setIsFormValid(false);
-	}
+  useEffect(() => {
+    setValue('email', 'admin@fusetheme.com', { shouldDirty: true, shouldValidate: true });
+    setValue('password', 'admin', { shouldDirty: true, shouldValidate: true });
+  }, [reset, setValue, trigger]);
 
-	function enableButton() {
-		setIsFormValid(true);
-	}
+  useEffect(() => {
+    login.errors.forEach((error) => {
+      setError(error.type, {
+        type: 'manual',
+        message: error.message,
+      });
+    });
+  }, [login.errors, setError]);
 
-	function handleSubmit(model) {
-		dispatch(submitLogin(model));
-	}
+  function onSubmit(model) {
+    dispatch(submitLogin(model));
+  }
 
-	return (
-		<div className="w-full">
-			<Formsy
-				onValidSubmit={handleSubmit}
-				onValid={enableButton}
-				onInvalid={disableButton}
-				ref={formRef}
-				className="flex flex-col justify-center w-full"
-			>
-				<TextFieldFormsy
-					className="mb-16"
-					type="text"
-					name="email"
-					label="Username/Email"
-					value="admin"
-					validations={{
-						minLength: 4
-					}}
-					validationErrors={{
-						minLength: 'Min character length is 4'
-					}}
-					InputProps={{
-						endAdornment: (
-							<InputAdornment position="end">
-								<Icon className="text-20" color="action">
-									email
-								</Icon>
-							</InputAdornment>
-						)
-					}}
-					variant="outlined"
-					required
-				/>
-
-				<TextFieldFormsy
-					className="mb-16"
-					type="password"
-					name="password"
-					label="Password"
-					value="admin"
-					validations={{
-						minLength: 4
-					}}
-					validationErrors={{
-						minLength: 'Min character length is 4'
-					}}
-					InputProps={{
-						className: 'pr-2',
-						type: showPassword ? 'text' : 'password',
-						endAdornment: (
-							<InputAdornment position="end">
-								<IconButton onClick={() => setShowPassword(!showPassword)}>
-									<Icon className="text-20" color="action">
-										{showPassword ? 'visibility' : 'visibility_off'}
-									</Icon>
-								</IconButton>
-							</InputAdornment>
-						)
-					}}
-					variant="outlined"
-					required
-				/>
-
-        <div className="flex items-center justify-between">
-          <FormControl>
-            <FormControlLabel
-              control={
-                <Checkbox name="remember" checked={form.remember} onChange={handleChange} />
-              }
-              label="Remember Me"
+  return (
+    <div className="w-full">
+      <form className="flex flex-col justify-center w-full" onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className="mb-16"
+              type="text"
+              error={!!errors.email}
+              helperText={errors?.email?.message}
+              label="Email"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Icon className="text-20" color="action">
+                      user
+                    </Icon>
+                  </InputAdornment>
+                ),
+              }}
+              variant="outlined"
             />
-          </FormControl>
+          )}
+        />
 
-          <Link className="font-medium" to="/pages/auth/forgot-password-2">
-            Forgot Password?
-          </Link>
-        </div>
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className="mb-16"
+              label="Password"
+              type="password"
+              error={!!errors.password}
+              helperText={errors?.password?.message}
+              variant="outlined"
+              InputProps={{
+                className: 'pr-2',
+                type: showPassword ? 'text' : 'password',
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)} size="large">
+                      <Icon className="text-20" color="action">
+                        {showPassword ? 'visibility' : 'visibility_off'}
+                      </Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              required
+            />
+          )}
+        />
 
-				<Button
-					type="submit"
-					variant="contained"
-					color="primary"
-					className="w-full mx-auto mt-16 normal-case"
-					aria-label="LOG IN"
-					disabled={!isFormValid}
-					value="legacy"
-				>
-					Login
-				</Button>
-			</Formsy>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className="w-full mx-auto mt-16"
+          aria-label="LOG IN"
+          disabled={_.isEmpty(dirtyFields) || !isValid}
+          value="legacy"
+        >
+          Login
+        </Button>
+      </form>
 
-      <div className="my-24 flex items-center justify-center">
-        <Divider className="w-32" />
-        <span className="mx-8 font-bold">OR</span>
-        <Divider className="w-32" />
-      </div>
-
-			{/*
-      <Button variant="contained" color="secondary" size="small" className="normal-case w-full mb-8">
-        Log in with Google
-      </Button>
-
-      <Button variant="contained" color="primary" size="small" className="normal-case w-full">
-        Log in with Facebook
-      </Button>
-
-			*/}
-      <Avatar
-        alt="facebook"
-        src="assets/images/avatars/facebook_logo.png"
-        className="mx-8"
-      />
-      <Avatar
-        alt="google"
-        src="assets/images/avatars/google_logo.jpg"
-        className="mx-8"
-      />
-
-      <div className="flex flex-col items-center justify-center pt-32 pb-24">
-        <span className="font-medium">Don't have an account?</span>
-        <Link className="font-medium" to="/register">
-          Create an account
-        </Link>
-      </div>
-		</div>
-	);
+      <table className="w-full mt-32 text-center">
+        <thead className="mb-4">
+          <tr>
+            <th>
+              <Typography className="font-semibold text-11" color="textSecondary">
+                Role
+              </Typography>
+            </th>
+            <th>
+              <Typography className="font-semibold text-11" color="textSecondary">
+                Email
+              </Typography>
+            </th>
+            <th>
+              <Typography className="font-semibold text-11" color="textSecondary">
+                Password
+              </Typography>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <Typography className="font-medium text-11" color="textSecondary">
+                Admin
+              </Typography>
+            </td>
+            <td>
+              <Typography className="text-11">admin@fusetheme.com</Typography>
+            </td>
+            <td>
+              <Typography className="text-11">admin</Typography>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Typography className="font-medium text-11" color="textSecondary">
+                Staff
+              </Typography>
+            </td>
+            <td>
+              <Typography className="text-11">staff@fusetheme.com</Typography>
+            </td>
+            <td>
+              <Typography className="text-11">staff</Typography>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default JWTLoginTab;

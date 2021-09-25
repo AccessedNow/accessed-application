@@ -1,137 +1,159 @@
-import { useForm } from '@fuse/hooks';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import * as yup from 'yup';
+import _ from '@lodash';
 import { removeList, renameList } from '../store/boardSlice';
 
+/**
+ * Form Validation Schema
+ */
+const schema = yup.object().shape({
+  title: yup.string().required('You must enter a title'),
+});
+
 function BoardListHeader(props) {
-	const dispatch = useDispatch();
-	const board = useSelector(({ scrumboardApp }) => scrumboardApp.board);
+  const dispatch = useDispatch();
+  const board = useSelector(({ scrumboardApp }) => scrumboardApp.board);
 
-	const [anchorEl, setAnchorEl] = useState(null);
-	const [formOpen, setFormOpen] = useState(false);
-	const { form, handleChange, resetForm, setForm } = useForm({
-		title: props.list.name
-	});
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [formOpen, setFormOpen] = useState(false);
 
-	useEffect(() => {
-		if (!formOpen) {
-			resetForm();
-		}
-	}, [formOpen, resetForm]);
+  const { control, formState, handleSubmit, reset } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      title: props.list.name,
+    },
+    resolver: yupResolver(schema),
+  });
 
-	useEffect(() => {
-		if (formOpen && anchorEl) {
-			setAnchorEl(null);
-		}
-	}, [anchorEl, formOpen]);
+  const { isValid, dirtyFields, errors } = formState;
 
-	useEffect(() => {
-		setForm({ title: props.list.name });
-	}, [props.list.name, setForm]);
+  useEffect(() => {
+    if (!formOpen) {
+      reset({
+        title: props.list.name,
+      });
+    }
+  }, [formOpen, reset, props.list.name]);
 
-	function handleMenuClick(event) {
-		setAnchorEl(event.currentTarget);
-	}
+  useEffect(() => {
+    if (formOpen && anchorEl) {
+      setAnchorEl(null);
+    }
+  }, [anchorEl, formOpen]);
 
-	function handleMenuClose() {
-		setAnchorEl(null);
-	}
+  function handleMenuClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
 
-	function handleOpenForm() {
-		setFormOpen(true);
-	}
+  function handleMenuClose() {
+    setAnchorEl(null);
+  }
 
-	function handleCloseForm() {
-		setFormOpen(false);
-	}
+  function handleOpenForm(ev) {
+    ev.stopPropagation();
+    setFormOpen(true);
+  }
 
-	function isFormInvalid() {
-		return form.title !== '';
-	}
+  function handleCloseForm() {
+    setFormOpen(false);
+  }
 
-	function handleSubmit(ev) {
-		ev.preventDefault();
-		if (!isFormInvalid()) {
-			return;
-		}
-		dispatch(renameList({ boardId: board.id, listId: props.list.id, listTitle: form.title }));
-		handleCloseForm();
-	}
+  function onSubmit(data) {
+    dispatch(renameList({ boardId: board.id, listId: props.list.id, listTitle: data.title }));
+    handleCloseForm();
+  }
 
-	return (
-		<div {...props.handleProps}>
-			<div className="flex items-center justify-between h-64 px-8">
-				<div className="flex items-center min-w-0 px-12">
-					{formOpen ? (
-						<ClickAwayListener onClickAway={() => handleCloseForm()}>
-							<form className="flex w-full" onSubmit={handleSubmit}>
-								<TextField
-									name="title"
-									value={form.title}
-									onChange={handleChange}
-									variant="outlined"
-									margin="none"
-									autoFocus
-									InputProps={{
-										endAdornment: (
-											<InputAdornment position="end">
-												<IconButton type="submit" disabled={!isFormInvalid()}>
-													<Icon>check</Icon>
-												</IconButton>
-											</InputAdornment>
-										)
-									}}
-								/>
-							</form>
-						</ClickAwayListener>
-					) : (
-						<Typography className="text-16 font-600 cursor-pointer" onClick={() => handleOpenForm()}>
-							{props.list.name}
-						</Typography>
-					)}
-				</div>
-				<div className="">
-					<IconButton
-						aria-owns={anchorEl ? 'actions-menu' : null}
-						aria-haspopup="true"
-						onClick={handleMenuClick}
-						variant="outlined"
-						size="small"
-					>
-						<Icon className="text-20">more_vert</Icon>
-					</IconButton>
-					<Menu id="actions-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-						<MenuItem
-							onClick={() => {
-								dispatch(removeList({ boardId: board.id, listId: props.list.id }));
-							}}
-						>
-							<ListItemIcon className="min-w-40">
-								<Icon>delete</Icon>
-							</ListItemIcon>
-							<ListItemText primary="Remove List" />
-						</MenuItem>
-						<MenuItem onClick={() => handleOpenForm()}>
-							<ListItemIcon className="min-w-40">
-								<Icon>edit</Icon>
-							</ListItemIcon>
-							<ListItemText primary="Rename List" />
-						</MenuItem>
-					</Menu>
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div {...props.handleProps}>
+      <div className="flex items-center justify-between h-48 sm:h-64 px-8">
+        <div className="flex items-center min-w-0 px-12">
+          {formOpen ? (
+            <ClickAwayListener onClickAway={handleCloseForm}>
+              <form className="flex w-full" onSubmit={handleSubmit(onSubmit)}>
+                <Controller
+                  name="title"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      variant="outlined"
+                      margin="none"
+                      autoFocus
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              type="submit"
+                              disabled={_.isEmpty(dirtyFields) || !isValid}
+                              size="large"
+                            >
+                              <Icon>check</Icon>
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+              </form>
+            </ClickAwayListener>
+          ) : (
+            <Typography className="text-16 font-medium cursor-pointer" onClick={handleOpenForm}>
+              {props.list.name}
+            </Typography>
+          )}
+        </div>
+        <div className="">
+          <IconButton
+            aria-owns={anchorEl ? 'actions-menu' : null}
+            aria-haspopup="true"
+            onClick={handleMenuClick}
+            variant="outlined"
+            size="small"
+          >
+            <Icon className="text-20">more_vert</Icon>
+          </IconButton>
+          <Menu
+            id="actions-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem
+              onClick={() => {
+                dispatch(removeList({ boardId: board.id, listId: props.list.id }));
+              }}
+            >
+              <ListItemIcon className="min-w-40">
+                <Icon>delete</Icon>
+              </ListItemIcon>
+              <ListItemText primary="Remove List" />
+            </MenuItem>
+            <MenuItem onClick={handleOpenForm}>
+              <ListItemIcon className="min-w-40">
+                <Icon>edit</Icon>
+              </ListItemIcon>
+              <ListItemText primary="Rename List" />
+            </MenuItem>
+          </Menu>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default BoardListHeader;

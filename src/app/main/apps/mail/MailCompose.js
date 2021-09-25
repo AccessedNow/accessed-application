@@ -1,167 +1,199 @@
-import { useForm } from '@fuse/hooks';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import React, { useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useForm, Controller } from 'react-hook-form';
+import * as yup from 'yup';
+import _ from '@lodash';
+import WYSIWYGEditor from 'app/shared-components/WYSIWYGEditor';
 import MailAttachment from './MailAttachment';
 
+/**
+ * Form Validation Schema
+ */
+const schema = yup.object().shape({
+  to: yup.string().required('You must enter an e-mail').email('You must enter a valid e-mail.'),
+});
+
 function MailCompose() {
-	const [openDialog, setOpenDialog] = useState(false);
-	const { form, handleChange } = useForm({
-		from: 'johndoe@creapond.com',
-		to: '',
-		cc: '',
-		bcc: '',
-		subject: '',
-		message: ''
-	});
+  const [openDialog, setOpenDialog] = useState(false);
+  const { watch, handleSubmit, formState, control } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      from: 'johndoe@creapond.com',
+      to: '',
+      cc: '',
+      bcc: '',
+      subject: '',
+      message: '',
+    },
+    resolver: yupResolver(schema),
+  });
 
-	const { t } = useTranslation('mailApp');
+  const { isValid, dirtyFields, errors } = formState;
 
-	function handleOpenDialog() {
-		setOpenDialog(true);
-	}
+  const { t } = useTranslation('mailApp');
 
-	function handleCloseDialog() {
-		setOpenDialog(false);
-	}
+  function handleOpenDialog() {
+    setOpenDialog(true);
+  }
 
-	function handleDelete() {
-		setOpenDialog(false);
-	}
+  function handleCloseDialog() {
+    setOpenDialog(false);
+  }
 
-	function handleSubmit(ev) {
-		ev.preventDefault();
-		setOpenDialog(false);
-	}
+  function handleDelete() {
+    setOpenDialog(false);
+  }
 
-	return (
-		<div className="p-24">
-			<Button variant="contained" color="primary" className="w-full" onClick={handleOpenDialog}>
-				{t('COMPOSE')}
-			</Button>
+  function onSubmit(data) {
+    console.info(data);
+    setOpenDialog(false);
+  }
 
-			<Dialog
-				open={openDialog}
-				onClose={handleCloseDialog}
-				aria-labelledby="form-dialog-title"
-				classes={{
-					paper: 'rounded-8'
-				}}
-			>
-				<AppBar position="static">
-					<Toolbar className="flex w-full">
-						<Typography variant="subtitle1" color="inherit">
-							New Message
-						</Typography>
-					</Toolbar>
-				</AppBar>
+  return (
+    <div className="p-24 pb-8">
+      <Button variant="contained" color="secondary" className="w-full" onClick={handleOpenDialog}>
+        {t('COMPOSE')}
+      </Button>
 
-				<form noValidate onSubmit={handleSubmit} className="flex flex-col">
-					<DialogContent classes={{ root: 'p-16 pb-0 sm:p-24 sm:pb-0' }}>
-						<TextField
-							className="mt-8 mb-16"
-							label="From"
-							id="from"
-							name="from"
-							value={form.from}
-							onChange={handleChange}
-							variant="outlined"
-							fullWidth
-							disabled
-						/>
+      <Dialog open={openDialog} onClose={handleCloseDialog} aria-labelledby="form-dialog-title">
+        <AppBar position="static" elevation={0}>
+          <Toolbar className="flex w-full">
+            <Typography variant="subtitle1" color="inherit">
+              New Message
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
-						<TextField
-							className="mt-8 mb-16"
-							label="To"
-							autoFocus
-							id="to"
-							name="to"
-							value={form.to}
-							onChange={handleChange}
-							variant="outlined"
-							fullWidth
-							required
-						/>
+        <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+          <DialogContent classes={{ root: 'p-16 pb-0 sm:p-24 sm:pb-0' }}>
+            <Controller
+              name="from"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  className="mt-8 mb-16"
+                  label="From"
+                  id="from"
+                  variant="outlined"
+                  fullWidth
+                  inputProps={{ readOnly: true }}
+                />
+              )}
+            />
 
-						<TextField
-							className="mt-8 mb-16"
-							label="Cc"
-							id="cc"
-							name="cc"
-							value={form.cc}
-							onChange={handleChange}
-							variant="outlined"
-							fullWidth
-						/>
+            <Controller
+              name="to"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  className="mt-8 mb-16"
+                  label="To"
+                  autoFocus
+                  id="to"
+                  error={!!errors.to}
+                  helperText={errors?.to?.message}
+                  variant="outlined"
+                  fullWidth
+                  required
+                />
+              )}
+            />
 
-						<TextField
-							className="mt-8 mb-16"
-							label="Bcc"
-							id="bcc"
-							name="bcc"
-							value={form.bcc}
-							onChange={handleChange}
-							variant="outlined"
-							fullWidth
-						/>
+            <Controller
+              name="cc"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  className="mt-8 mb-16"
+                  label="Cc"
+                  id="cc"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
+            />
 
-						<TextField
-							className="mt-8 mb-16"
-							label="Subject"
-							id="subject"
-							name="subject"
-							value={form.subject}
-							onChange={handleChange}
-							variant="outlined"
-							fullWidth
-						/>
+            <Controller
+              name="bcc"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  className="mt-8 mb-16"
+                  label="Bcc"
+                  id="bcc"
+                  name="bcc"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
+            />
 
-						<TextField
-							className="mt-8 mb-16"
-							id="message"
-							name="message"
-							onChange={handleChange}
-							value={form.message}
-							label="Message"
-							type="text"
-							multiline
-							rows={5}
-							variant="outlined"
-							fullWidth
-						/>
+            <Controller
+              name="subject"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  className="mt-8 mb-16"
+                  label="Subject"
+                  id="subject"
+                  name="subject"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
+            />
 
-						<div className="pt-8">
-							<MailAttachment fileName="attachment-2.doc" size="12 kb" />
-							<MailAttachment fileName="attachment-1.jpg" size="350 kb" />
-						</div>
-					</DialogContent>
+            <Controller
+              className="mt-8 mb-16"
+              render={({ field }) => <WYSIWYGEditor {...field} />}
+              name="message"
+              control={control}
+            />
 
-					<DialogActions className="justify-between p-8">
-						<div className="px-16">
-							<Button variant="contained" color="primary" type="submit">
-								Send
-							</Button>
-							<IconButton>
-								<Icon>attach_file</Icon>
-							</IconButton>
-						</div>
-						<IconButton onClick={handleDelete}>
-							<Icon>delete</Icon>
-						</IconButton>
-					</DialogActions>
-				</form>
-			</Dialog>
-		</div>
-	);
+            <div className="pt-8">
+              <MailAttachment fileName="attachment-2.doc" size="12 kb" />
+              <MailAttachment fileName="attachment-1.jpg" size="350 kb" />
+            </div>
+          </DialogContent>
+
+          <DialogActions className="justify-between px-8 py-16">
+            <div className="px-16">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={_.isEmpty(dirtyFields) || !isValid}
+              >
+                Send
+              </Button>
+              <IconButton size="large">
+                <Icon>attach_file</Icon>
+              </IconButton>
+            </div>
+            <IconButton onClick={handleDelete} size="large">
+              <Icon>delete</Icon>
+            </IconButton>
+          </DialogActions>
+        </form>
+      </Dialog>
+    </div>
+  );
 }
 
 export default MailCompose;

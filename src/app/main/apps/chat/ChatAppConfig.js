@@ -1,17 +1,17 @@
-import React from 'react';
+import { lazy } from 'react';
 
 const ChatAppConfig = {
-	settings: {
-		layout: {
-			config: {}
-		}
-	},
-	routes: [
-		{
-			path: '/apps/chat',
-			component: React.lazy(() => import('./ChatApp'))
-		}
-	]
+  settings: {
+    layout: {
+      config: {},
+    },
+  },
+  routes: [
+    {
+      path: '/apps/chat',
+      component: lazy(() => import('./ChatApp')),
+    },
+  ],
 };
 
 export default ChatAppConfig;

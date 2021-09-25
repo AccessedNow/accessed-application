@@ -1,26 +1,16 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Popper from '@material-ui/core/Popper';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Fade from '@material-ui/core/Fade';
-import Paper from '@material-ui/core/Paper';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 500,
-  },
-  typography: {
-    padding: theme.spacing(2),
-  },
-}));
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Popper from '@mui/material/Popper';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Fade from '@mui/material/Fade';
+import Paper from '@mui/material/Paper';
 
 export default function PositionedPopper() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [placement, setPlacement] = React.useState();
-  const classes = useStyles();
 
   const handleClick = (newPlacement) => (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,24 +19,24 @@ export default function PositionedPopper() {
   };
 
   return (
-    <div className={classes.root}>
+    <Box sx={{ width: 500 }}>
       <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <Paper>
-              <Typography className={classes.typography}>The content of the Popper.</Typography>
+              <Typography sx={{ p: 2 }}>The content of the Popper.</Typography>
             </Paper>
           </Fade>
         )}
       </Popper>
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid item>
           <Button onClick={handleClick('top-start')}>top-start</Button>
           <Button onClick={handleClick('top')}>top</Button>
           <Button onClick={handleClick('top-end')}>top-end</Button>
         </Grid>
       </Grid>
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid item xs={6}>
           <Button onClick={handleClick('left-start')}>left-start</Button>
           <br />
@@ -66,13 +56,13 @@ export default function PositionedPopper() {
           </Grid>
         </Grid>
       </Grid>
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid item>
           <Button onClick={handleClick('bottom-start')}>bottom-start</Button>
           <Button onClick={handleClick('bottom')}>bottom</Button>
           <Button onClick={handleClick('bottom-end')}>bottom-end</Button>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 }

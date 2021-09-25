@@ -1,9 +1,10 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import withReducer from 'app/store/withReducer';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
+import { styled } from '@mui/material/styles';
 import ContactDialog from './ContactDialog';
 import ContactsHeader from './ContactsHeader';
 import ContactsList from './ContactsList';
@@ -12,37 +13,60 @@ import reducer from './store';
 import { getContacts } from './store/contactsSlice';
 import { getUserData } from './store/userSlice';
 
+const Root = styled(FusePageSimple)(({ theme }) => ({
+  '& .FusePageSimple-header': {
+    minHeight: 72,
+    height: 72,
+    [theme.breakpoints.up('lg')]: {
+      minHeight: 136,
+      height: 136,
+    },
+  },
+  '& .FusePageSimple-wrapper': {
+    minHeight: 0,
+  },
+  '& .FusePageSimple-contentWrapper': {
+    padding: 0,
+    [theme.breakpoints.up('sm')]: {
+      padding: 24,
+      height: '100%',
+    },
+  },
+  '& .FusePageSimple-content': {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
+  '& .FusePageSimple-sidebar': {
+    width: 256,
+    border: 0,
+  },
+}));
+
 function ContactsApp(props) {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const pageLayout = useRef(null);
-	const routeParams = useParams();
+  const pageLayout = useRef(null);
+  const routeParams = useParams();
 
-	useDeepCompareEffect(() => {
-		dispatch(getContacts(routeParams));
-		dispatch(getUserData());
-	}, [dispatch, routeParams]);
+  useDeepCompareEffect(() => {
+    dispatch(getContacts(routeParams));
+    dispatch(getUserData());
+  }, [dispatch, routeParams]);
 
-	return (
-		<>
-			<FusePageSimple
-				classes={{
-					contentWrapper: 'p-0 sm:p-24 h-full',
-					content: 'flex flex-col h-full',
-					leftSidebar: 'w-256 border-0',
-					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
-					wrapper: 'min-h-0'
-				}}
-				header={<ContactsHeader pageLayout={pageLayout} />}
-				content={<ContactsList />}
-				leftSidebarContent={<ContactsSidebarContent />}
-				sidebarInner
-				ref={pageLayout}
-				innerScroll
-			/>
-			<ContactDialog />
-		</>
-	);
+  return (
+    <>
+      <Root
+        header={<ContactsHeader pageLayout={pageLayout} />}
+        content={<ContactsList />}
+        leftSidebarContent={<ContactsSidebarContent />}
+        sidebarInner
+        ref={pageLayout}
+        innerScroll
+      />
+      <ContactDialog />
+    </>
+  );
 }
 
 export default withReducer('contactsApp', reducer)(ContactsApp);

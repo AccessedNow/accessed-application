@@ -1,116 +1,116 @@
 import _ from '@lodash';
-import Avatar from '@material-ui/core/Avatar';
-import Checkbox from '@material-ui/core/Checkbox';
-import ListItem from '@material-ui/core/ListItem';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
-import React from 'react';
+import { styled } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
+import Checkbox from '@mui/material/Checkbox';
+import ListItem from '@mui/material/ListItem';
+import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter, useParams } from 'react-router-dom';
 import MailChip from '../MailChip';
 import { toggleInSelectedMails } from '../store/mailsSlice';
 import { selectLabelsEntities } from '../store/labelsSlice';
 
-const pathToRegexp = require('path-to-regexp');
+const StyledListItem = styled(ListItem)(({ theme, unread, selected }) => ({
+  ...(unread && {
+    background: 'rgba(0,0,0,0.03)',
+  }),
 
-const useStyles = makeStyles(theme => ({
-	mailItem: {
-		borderBottom: `1px solid  ${theme.palette.divider}`,
-
-		'&.unread': {
-			background: 'rgba(0,0,0,0.03)'
-		},
-		'&.selected': {
-			'&::after': {
-				content: '""',
-				position: 'absolute',
-				left: 0,
-				display: 'block',
-				height: '100%',
-				width: 3,
-				backgroundColor: theme.palette.primary.main
-			}
-		}
-	},
-	avatar: {
-		backgroundColor: theme.palette.primary[500]
-	}
+  ...(selected && {
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      display: 'block',
+      height: '100%',
+      width: 3,
+      backgroundColor: theme.palette.primary.main,
+    },
+  }),
 }));
 
-const MailListItem = props => {
-	const dispatch = useDispatch();
-	const selectedMailIds = useSelector(({ mailApp }) => mailApp.mails.selectedMailIds);
-	const labels = useSelector(selectLabelsEntities);
-	const routeParams = useParams();
+const pathToRegexp = require('path-to-regexp');
 
-	const classes = useStyles(props);
-	const toPath = pathToRegexp.compile(props.match.path);
-	const checked = selectedMailIds.length > 0 && selectedMailIds.find(id => id === props.mail.id) !== undefined;
+const MailListItem = (props) => {
+  const dispatch = useDispatch();
+  const selectedMailIds = useSelector(({ mailApp }) => mailApp.mails.selectedMailIds);
+  const labels = useSelector(selectLabelsEntities);
+  const routeParams = useParams();
 
-	return (
-		<ListItem
-			dense
-			button
-			onClick={() =>
-				props.history.push(
-					toPath({
-						...routeParams,
-						mailId: props.mail.id
-					})
-				)
-			}
-			className={clsx(
-				classes.mailItem,
-				checked && 'selected',
-				!props.mail.read && 'unread',
-				'py-16 px-0 md:px-8'
-			)}
-		>
-			<Checkbox
-				tabIndex={-1}
-				disableRipple
-				checked={checked}
-				onChange={() => dispatch(toggleInSelectedMails(props.mail.id))}
-				onClick={ev => ev.stopPropagation()}
-			/>
+  const toPath = pathToRegexp.compile(props.match.path);
+  const checked =
+    selectedMailIds.length > 0 && selectedMailIds.find((id) => id === props.mail.id) !== undefined;
 
-			<div className="flex flex-1 flex-col relative overflow-hidden">
-				<div className="flex items-center justify-between px-16 pb-8">
-					<div className="flex items-center">
-						{props.mail.from.avatar ? (
-							<Avatar alt={props.mail.from.name} src={props.mail.from.avatar} />
-						) : (
-							<Avatar className={classes.avatar}>{props.mail.from.name[0]}</Avatar>
-						)}
-						<Typography variant="subtitle1" className="mx-8">
-							{props.mail.from.name}
-						</Typography>
-					</div>
-					<Typography variant="subtitle1">{props.mail.time}</Typography>
-				</div>
+  return (
+    <StyledListItem
+      dense
+      button
+      onClick={() =>
+        props.history.push(
+          toPath({
+            ...routeParams,
+            mailId: props.mail.id,
+          })
+        )
+      }
+      selected={checked}
+      undread={!props.mail.read}
+      className="items-start py-20 px-0 md:px-8 relative"
+    >
+      <div className="flex flex-col sm:flex-row items-center justify-start">
+        <Checkbox
+          tabIndex={-1}
+          disableRipple
+          checked={checked}
+          onChange={() => dispatch(toggleInSelectedMails(props.mail.id))}
+          onClick={(ev) => ev.stopPropagation()}
+        />
 
-				<div className="flex flex-col px-16 py-0">
-					<Typography className="truncate">{props.mail.subject}</Typography>
-					<Typography color="textSecondary" className="truncate">
-						{_.truncate(props.mail.message.replace(/<(?:.|\n)*?>/gm, ''), { length: 180 })}
-					</Typography>
-				</div>
+        <div className="px-8 order-first sm:order-none">
+          {props.mail.from.avatar ? (
+            <Avatar alt={props.mail.from.name} src={props.mail.from.avatar} />
+          ) : (
+            <Avatar
+              sx={{
+                backgroundColor: (theme) => theme.palette.primary[500],
+              }}
+            >
+              {props.mail.from.name[0]}
+            </Avatar>
+          )}
+        </div>
+      </div>
 
-				<div className="flex justify-end px-12">
-					{!_.isEmpty(labels) &&
-						props.mail.labels.map(label => (
-							<MailChip
-								className="mx-2 mt-4"
-								title={labels[label].title}
-								color={labels[label].color}
-								key={label}
-							/>
-						))}
-				</div>
-			</div>
-		</ListItem>
-	);
+      <div className="flex flex-1 flex-col relative overflow-hidden px-8">
+        <Typography className="font-medium">{props.mail.from.name}</Typography>
+
+        <div className="flex flex-col py-4">
+          <Typography className="truncate text-14 pb-2">{props.mail.subject}</Typography>
+          <Typography color="textSecondary" className="truncate">
+            {_.truncate(props.mail.message.replace(/<(?:.|\n)*?>/gm, ''), { length: 180 })}
+          </Typography>
+        </div>
+
+        <div className="flex -mx-2">
+          {!_.isEmpty(labels) &&
+            props.mail.labels.map((label) => (
+              <MailChip
+                className="mx-2 mt-4"
+                title={labels[label].title}
+                color={labels[label].color}
+                key={label}
+              />
+            ))}
+        </div>
+      </div>
+
+      <div className="px-8">
+        <Typography className="text-12" color="textSecondary">
+          {props.mail.time}
+        </Typography>
+      </div>
+    </StyledListItem>
+  );
 };
 
 export default withRouter(MailListItem);

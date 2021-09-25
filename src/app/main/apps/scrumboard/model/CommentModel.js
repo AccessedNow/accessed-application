@@ -1,16 +1,17 @@
 import FuseUtils from '@fuse/utils';
-import moment from 'moment';
+import getUnixTime from 'date-fns/getUnixTime';
+import _ from '@lodash';
 
-class CommentModel {
-	constructor(data) {
-		const item = data || {};
+function CommentModel(data) {
+  data = data || {};
 
-		this.id = item.id || FuseUtils.generateGUID();
-		this.type = 'comment';
-		this.idMember = item.idMember || null;
-		this.message = item.message || '';
-		this.time = item.time || moment().format(moment.HTML5_FMT.DATE);
-	}
+  return _.defaults(data, {
+    id: FuseUtils.generateGUID(),
+    type: 'comment',
+    idMember: null,
+    message: '',
+    time: getUnixTime(new Date()),
+  });
 }
 
 export default CommentModel;

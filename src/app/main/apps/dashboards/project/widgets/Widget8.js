@@ -1,28 +1,31 @@
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import { Doughnut } from 'react-chartjs-2';
+import Paper from '@mui/material/Paper';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import { memo } from 'react';
+import ReactApexChart from 'react-apexcharts';
 import _ from '@lodash';
 
 function Widget8(props) {
-	const widget = _.merge({}, props.widget);
+  const widget = _.merge({}, props.widget);
+  const theme = useTheme();
 
-	return (
-		<Paper className="w-full rounded-8 shadow-1">
-			<div className="flex items-center justify-between px-16 h-64 border-b-1">
-				<Typography className="text-16">{widget.title}</Typography>
-			</div>
-			<div className="h-400 w-full p-32">
-				<Doughnut
-					data={{
-						labels: widget.mainChart.labels,
-						datasets: widget.mainChart.datasets
-					}}
-					options={widget.mainChart.options}
-				/>
-			</div>
-		</Paper>
-	);
+  _.setWith(widget, 'mainChart.options.theme.monochrome.color', theme.palette.primary.main);
+
+  return (
+    <Paper className="w-full rounded-20 shadow">
+      <div className="flex items-center justify-between p-20 h-64">
+        <Typography className="text-16 font-medium">{widget.title}</Typography>
+      </div>
+      <div className="h-400 w-full">
+        <ReactApexChart
+          options={widget.mainChart.options}
+          series={widget.mainChart.series}
+          type={widget.mainChart.options.chart.type}
+          height={widget.mainChart.options.chart.height}
+        />
+      </div>
+    </Paper>
+  );
 }
 
-export default React.memo(Widget8);
+export default memo(Widget8);

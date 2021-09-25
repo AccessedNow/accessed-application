@@ -1,185 +1,268 @@
-import { useForm } from '@fuse/hooks';
+import { yupResolver } from '@hookform/resolvers/yup';
+import formatISO from 'date-fns/formatISO';
+import { Controller, useForm } from 'react-hook-form';
 import FuseUtils from '@fuse/utils/FuseUtils';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { DateTimePicker } from '@material-ui/pickers';
-import moment from 'moment';
-import React, { useCallback, useEffect } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { DateTimePicker } from '@mui/lab';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeEvent, updateEvent, addEvent, closeNewEventDialog, closeEditEventDialog } from './store/eventsSlice';
+import * as yup from 'yup';
+import _ from '@lodash';
+import {
+  removeEvent,
+  closeNewEventDialog,
+  closeEditEventDialog,
+  updateEvent,
+  addEvent,
+} from './store/eventsSlice';
 
-const defaultFormState = {
-	id: FuseUtils.generateGUID(),
-	title: '',
-	allDay: true,
-	start: moment(new Date(), 'MM/DD/YYYY'),
-	end: moment(new Date(), 'MM/DD/YYYY'),
-	desc: ''
+const defaultValues = {
+  id: FuseUtils.generateGUID(),
+  title: '',
+  allDay: true,
+  start: formatISO(new Date()),
+  end: formatISO(new Date()),
+  extendedProps: { desc: '' },
 };
 
+/**
+ * Form Validation Schema
+ */
+const schema = yup.object().shape({
+  title: yup.string().required('You must enter a title'),
+});
+
 function EventDialog(props) {
-	const dispatch = useDispatch();
-	const eventDialog = useSelector(({ calendarApp }) => calendarApp.events.eventDialog);
-	const { form, handleChange, setForm, setInForm } = useForm(defaultFormState);
+  const dispatch = useDispatch();
+  const eventDialog = useSelector(({ calendarApp }) => calendarApp.events.eventDialog);
 
-	const initDialog = useCallback(() => {
-		/**
-		 * Dialog type: 'edit'
-		 */
-		if (eventDialog.type === 'edit' && eventDialog.data) {
-			setForm({ ...eventDialog.data });
-		}
+  const { reset, formState, watch, control, getValues } = useForm({
+    defaultValues,
+    mode: 'onChange',
+    resolver: yupResolver(schema),
+  });
 
-		/**
-		 * Dialog type: 'new'
-		 */
-		if (eventDialog.type === 'new') {
-			setForm({
-				...defaultFormState,
-				...eventDialog.data,
-				id: FuseUtils.generateGUID()
-			});
-		}
-	}, [eventDialog.data, eventDialog.type, setForm]);
+  const { isValid, dirtyFields, errors } = formState;
 
-	useEffect(() => {
-		/**
-		 * After Dialog Open
-		 */
-		if (eventDialog.props.open) {
-			initDialog();
-		}
-	}, [eventDialog.props.open, initDialog]);
+  const start = watch('start');
+  const end = watch('end');
+  const id = watch('id');
 
-	function closeComposeDialog() {
-		return eventDialog.type === 'edit' ? dispatch(closeEditEventDialog()) : dispatch(closeNewEventDialog());
-	}
+  /**
+   * Initialize Dialog with Data
+   */
+  const initDialog = useCallback(() => {
+    /**
+     * Dialog type: 'edit'
+     */
+    if (eventDialog.type === 'edit' && eventDialog.data) {
+      reset({ ...eventDialog.data });
+    }
 
-	function canBeSubmitted() {
-		return form.title.length > 0;
-	}
+    /**
+     * Dialog type: 'new'
+     */
+    if (eventDialog.type === 'new') {
+      reset({
+        ...defaultValues,
+        ...eventDialog.data,
+        id: FuseUtils.generateGUID(),
+      });
+    }
+  }, [eventDialog.data, eventDialog.type, reset]);
 
-	function handleSubmit(event) {
-		event.preventDefault();
+  /**
+   * On Dialog Open
+   */
+  useEffect(() => {
+    if (eventDialog.props.open) {
+      initDialog();
+    }
+  }, [eventDialog.props.open, initDialog]);
 
-		if (eventDialog.type === 'new') {
-			dispatch(addEvent(form));
-		} else {
-			dispatch(updateEvent(form));
-		}
-		closeComposeDialog();
-	}
+  /**
+   * Close Dialog
+   */
+  function closeComposeDialog() {
+    return eventDialog.type === 'edit'
+      ? dispatch(closeEditEventDialog())
+      : dispatch(closeNewEventDialog());
+  }
 
-	function handleRemove() {
-		dispatch(removeEvent(form.id));
-		closeComposeDialog();
-	}
+  /**
+   * Form Submit
+   */
+  function onSubmit(ev) {
+    ev.preventDefault();
+    const data = getValues();
+    if (eventDialog.type === 'new') {
+      dispatch(addEvent(data));
+    } else {
+      dispatch(updateEvent({ ...eventDialog.data, ...data }));
+    }
+    closeComposeDialog();
+  }
 
-	return (
-		<Dialog
-			{...eventDialog.props}
-			onClose={closeComposeDialog}
-			fullWidth
-			maxWidth="xs"
-			component="form"
-			classes={{
-				paper: 'rounded-8'
-			}}
-		>
-			<AppBar position="static">
-				<Toolbar className="flex w-full">
-					<Typography variant="subtitle1" color="inherit">
-						{eventDialog.type === 'new' ? 'New Event' : 'Edit Event'}
-					</Typography>
-				</Toolbar>
-			</AppBar>
+  /**
+   * Remove Event
+   */
+  function handleRemove() {
+    dispatch(removeEvent(id));
+    closeComposeDialog();
+  }
 
-			<form noValidate onSubmit={handleSubmit}>
-				<DialogContent classes={{ root: 'p-16 pb-0 sm:p-24 sm:pb-0' }}>
-					<TextField
-						id="title"
-						label="Title"
-						className="mt-8 mb-16"
-						InputLabelProps={{
-							shrink: true
-						}}
-						name="title"
-						value={form.title}
-						onChange={handleChange}
-						variant="outlined"
-						autoFocus
-						required
-						fullWidth
-					/>
+  return (
+    <Dialog
+      {...eventDialog.props}
+      onClose={closeComposeDialog}
+      fullWidth
+      maxWidth="xs"
+      component="form"
+    >
+      <AppBar position="static" elevation={0}>
+        <Toolbar className="flex w-full">
+          <Typography variant="subtitle1" color="inherit">
+            {eventDialog.type === 'new' ? 'New Event' : 'Edit Event'}
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-					<FormControlLabel
-						className="mt-8 mb-16"
-						label="All Day"
-						control={<Switch checked={form.allDay} id="allDay" name="allDay" onChange={handleChange} />}
-					/>
+      <form noValidate>
+        <DialogContent classes={{ root: 'p-16 pb-0 sm:p-24 sm:pb-0' }}>
+          <Controller
+            name="title"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="title"
+                label="Title"
+                className="mt-8 mb-16"
+                error={!!errors.title}
+                helperText={errors?.title?.message}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                autoFocus
+                required
+                fullWidth
+              />
+            )}
+          />
 
-					<DateTimePicker
-						label="Start"
-						inputVariant="outlined"
-						value={form.start}
-						onChange={date => setInForm('start', date)}
-						className="mt-8 mb-16 w-full"
-						maxDate={form.end}
-					/>
+          <Controller
+            name="allDay"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <FormControlLabel
+                className="mt-8 mb-16"
+                label="All Day"
+                control={
+                  <Switch
+                    onChange={(ev) => {
+                      onChange(ev.target.checked);
+                    }}
+                    checked={value}
+                    name="allDay"
+                  />
+                }
+              />
+            )}
+          />
 
-					<DateTimePicker
-						label="End"
-						inputVariant="outlined"
-						value={form.end}
-						onChange={date => setInForm('end', date)}
-						className="mt-8 mb-16 w-full"
-						minDate={form.start}
-					/>
+          <Controller
+            name="start"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value } }) => (
+              <DateTimePicker
+                value={value}
+                onChange={onChange}
+                renderInput={(_props) => (
+                  <TextField label="Start" className="mt-8 mb-16 w-full" {..._props} />
+                )}
+                className="mt-8 mb-16 w-full"
+                maxDate={end}
+              />
+            )}
+          />
 
-					<TextField
-						className="mt-8 mb-16"
-						id="desc"
-						label="Description"
-						type="text"
-						name="desc"
-						value={form.desc}
-						onChange={handleChange}
-						multiline
-						rows={5}
-						variant="outlined"
-						fullWidth
-					/>
-				</DialogContent>
+          <Controller
+            name="end"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value } }) => (
+              <DateTimePicker
+                value={value}
+                onChange={onChange}
+                renderInput={(_props) => (
+                  <TextField label="End" className="mt-8 mb-16 w-full" {..._props} />
+                )}
+                minDate={start}
+              />
+            )}
+          />
 
-				{eventDialog.type === 'new' ? (
-					<DialogActions className="justify-between px-8 sm:px-16">
-						<Button variant="contained" color="primary" type="submit" disabled={!canBeSubmitted()}>
-							Add
-						</Button>
-					</DialogActions>
-				) : (
-					<DialogActions className="justify-between px-8 sm:px-16">
-						<Button variant="contained" color="primary" type="submit" disabled={!canBeSubmitted()}>
-							Save
-						</Button>
-						<IconButton onClick={handleRemove}>
-							<Icon>delete</Icon>
-						</IconButton>
-					</DialogActions>
-				)}
-			</form>
-		</Dialog>
-	);
+          <Controller
+            name="extendedProps.desc"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                className="mt-8 mb-16"
+                id="desc"
+                label="Description"
+                type="text"
+                multiline
+                rows={5}
+                variant="outlined"
+                fullWidth
+              />
+            )}
+          />
+        </DialogContent>
+
+        {eventDialog.type === 'new' ? (
+          <DialogActions className="justify-between px-8 sm:px-16 pb-16">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={onSubmit}
+              disabled={_.isEmpty(dirtyFields) || !isValid}
+            >
+              Add
+            </Button>
+          </DialogActions>
+        ) : (
+          <DialogActions className="justify-between px-8 sm:px-16 pb-16">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={onSubmit}
+              disabled={_.isEmpty(dirtyFields) || !isValid}
+            >
+              Save
+            </Button>
+            <IconButton onClick={handleRemove} size="large">
+              <Icon>delete</Icon>
+            </IconButton>
+          </DialogActions>
+        )}
+      </form>
+    </Dialog>
+  );
 }
 
 export default EventDialog;

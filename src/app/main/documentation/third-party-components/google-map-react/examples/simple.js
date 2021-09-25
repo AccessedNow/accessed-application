@@ -1,8 +1,7 @@
-import Icon from '@material-ui/core/Icon';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
+import Icon from '@mui/material/Icon';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import GoogleMap from 'google-map-react';
-import React from 'react';
 
 function Marker({ text }) {
 	return (

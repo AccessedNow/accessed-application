@@ -1,115 +1,147 @@
-import { useDebounce, useForm } from '@fuse/hooks';
+import { useDebounce } from '@fuse/hooks';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from 'react-hook-form';
 import _ from '@lodash';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Typography from '@material-ui/core/Typography';
+import TextField from '@mui/material/TextField';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import InputAdornment from '@mui/material/InputAdornment';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Typography from '@mui/material/Typography';
 import LabelModel from 'app/main/apps/notes/model/LabelModel';
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import * as yup from 'yup';
 import { updateLabels } from '../../store/labelsSlice';
 
+const defaultValues = {
+  name: '',
+};
+
+/**
+ * Form Validation Schema
+ */
+const schema = yup.object().shape({
+  name: yup.string().required('You must enter a label title'),
+});
+
 function LabelsForm(props) {
-	const dispatch = useDispatch();
-	const labels = useSelector(({ notesApp }) => notesApp.labels.entities);
+  const dispatch = useDispatch();
+  const labels = useSelector(({ notesApp }) => notesApp.labels.entities);
 
-	const [labelsForm, setLabels] = useState(labels);
-	const { form: newLabelForm, handleChange, resetForm } = useForm({
-		name: ''
-	});
+  const [labelsForm, setLabels] = useState(labels);
 
-	useEffect(() => {
-		setLabels(labels);
-	}, [labels]);
+  const { control, formState, handleSubmit, reset } = useForm({
+    mode: 'onChange',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
 
-	const handleOnChange = useDebounce(_labels => {
-		dispatch(updateLabels(_labels));
-	}, 600);
+  const { isValid, dirtyFields, errors } = formState;
 
-	useEffect(() => {
-		if (labelsForm && !_.isEqual(labelsForm, labels)) {
-			handleOnChange(labelsForm);
-		}
-	}, [handleOnChange, labels, labelsForm]);
+  useEffect(() => {
+    setLabels(labels);
+  }, [labels]);
 
-	function isFormInValid() {
-		return newLabelForm.name === '';
-	}
+  const handleOnChange = useDebounce((_labels) => {
+    dispatch(updateLabels(_labels));
+  }, 300);
 
-	function handleSubmit(ev) {
-		ev.preventDefault();
-		if (isFormInValid()) {
-			return;
-		}
-		const newLabel = new LabelModel(newLabelForm);
-		setLabels(_.setIn(labelsForm, newLabel.id, newLabel));
-		resetForm();
-	}
+  useEffect(() => {
+    if (labelsForm && !_.isEqual(labelsForm, labels)) {
+      handleOnChange(labelsForm);
+    }
+  }, [handleOnChange, labels, labelsForm]);
 
-	return (
-		<>
-			<Typography className="text-16 mb-8 font-600">Edit Labels</Typography>
-			<List dense>
-				<form onSubmit={handleSubmit}>
-					<ListItem className="p-0 mb-16" dense>
-						<Icon className="list-item-icon text-16" color="action">
-							add
-						</Icon>
-						<Input
-							className={clsx('flex flex-1 mx-8')}
-							name="name"
-							value={newLabelForm.name}
-							onChange={handleChange}
-							placeholder="Create new label"
-						/>
-						<IconButton
-							className="w-32 h-32 mx-4 p-0"
-							aria-label="Delete"
-							disabled={isFormInValid()}
-							type="submit"
-						>
-							<Icon fontSize="small">check</Icon>
-						</IconButton>
-					</ListItem>
-				</form>
-				{useMemo(() => {
-					function handleOnDelete(label) {
-						setLabels(_.omit(labelsForm, [label.id]));
-					}
+  function onSubmit(data) {
+    const newLabel = LabelModel(data);
+    setLabels(_.setIn(labelsForm, newLabel.id, newLabel));
+    reset(defaultValues);
+  }
 
-					function handleLabelChange(event, label) {
-						const updatedLabel = new LabelModel(_.setIn(label, event.target.name, event.target.value));
-						setLabels(_.setIn(labelsForm, updatedLabel.id, updatedLabel));
-					}
+  return (
+    <>
+      <Typography className="text-16 mb-8 font-semibold">Edit Labels</Typography>
+      <List dense>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <ListItem className="p-0 mb-16" dense>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  className={clsx('flex flex-1')}
+                  error={!!errors.name}
+                  helperText={errors?.name?.message}
+                  placeholder="Create new label"
+                  variant="outlined"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Icon className="list-item-icon text-16" color="action">
+                          add
+                        </Icon>
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          className="w-32 h-32 p-0"
+                          aria-label="Delete"
+                          disabled={_.isEmpty(dirtyFields) || !isValid}
+                          type="submit"
+                          size="large"
+                        >
+                          <Icon fontSize="small">check</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+            />
+          </ListItem>
+        </form>
+        {useMemo(() => {
+          function handleOnDelete(label) {
+            setLabels(_.omit(labelsForm, [label.id]));
+          }
 
-					return Object.entries(labelsForm).map(([key, label]) => (
-						<ListItem className="p-0" key={label.id} dense>
-							<Icon className="list-item-icon text-16" color="action">
-								label
-							</Icon>
-							<Input
-								className={clsx('flex flex-1 mx-8')}
-								name="name"
-								value={label.name}
-								onChange={event => handleLabelChange(event, label)}
-								disableUnderline
-							/>
-							<IconButton
-								className="w-32 h-32 mx-4 p-0"
-								aria-label="Delete"
-								onClick={ev => handleOnDelete(label)}
-							>
-								<Icon fontSize="small">delete</Icon>
-							</IconButton>
-						</ListItem>
-					));
-				}, [labelsForm])}
-			</List>
-		</>
-	);
+          function handleLabelChange(event, label) {
+            const updatedLabel = LabelModel(_.setIn(label, event.target.name, event.target.value));
+            setLabels(_.setIn(labelsForm, updatedLabel.id, updatedLabel));
+          }
+
+          return Object.entries(labelsForm).map(([key, label]) => (
+            <ListItem className="p-0 mb-8" key={label.id} dense>
+              <Icon className="list-item-icon text-16" color="action">
+                label
+              </Icon>
+              <Input
+                className={clsx('flex flex-1 mx-8')}
+                name="name"
+                value={label.name}
+                onChange={(event) => handleLabelChange(event, label)}
+                disableUnderline
+              />
+              <IconButton
+                className="w-32 h-32 mx-4 p-0"
+                aria-label="Delete"
+                onClick={(ev) => handleOnDelete(label)}
+                size="large"
+              >
+                <Icon fontSize="small">delete</Icon>
+              </IconButton>
+            </ListItem>
+          ));
+        }, [labelsForm])}
+      </List>
+    </>
+  );
 }
 
 export default LabelsForm;

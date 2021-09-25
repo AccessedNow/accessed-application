@@ -1,12 +1,10 @@
 import FuseDialog from '@fuse/core/FuseDialog';
+import { styled } from '@mui/material/styles';
 import FuseMessage from '@fuse/core/FuseMessage';
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import FuseSuspense from '@fuse/core/FuseSuspense';
-import { makeStyles } from '@material-ui/core/styles';
 import AppContext from 'app/AppContext';
 import SettingsPanel from 'app/fuse-layouts/shared-components/SettingsPanel';
-import clsx from 'clsx';
-import React, { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { renderRoutes } from 'react-router-config';
 import FooterLayout1 from './components/FooterLayout1';
@@ -15,190 +13,63 @@ import NavbarWrapperLayout1 from './components/NavbarWrapperLayout1';
 import RightSideLayout1 from './components/RightSideLayout1';
 import ToolbarLayout1 from './components/ToolbarLayout1';
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		position: 'relative',
-		display: 'flex',
-		flexDirection: 'row',
-		width: '100%',
-		height: '100%',
-		overflow: 'hidden',
-		backgroundColor: theme.palette.background.default,
-		color: theme.palette.text.primary,
-		'&.boxed': {
-			maxWidth: 1280,
-			margin: '0 auto',
-			boxShadow: theme.shadows[3]
-		},
-		'&.scroll-body': {
-			'& $wrapper': {
-				height: 'auto',
-				flex: '0 0 auto',
-				overflow: 'auto'
-			},
-			'& $contentWrapper': {},
-			'& $content': {}
-		},
-		'&.scroll-content': {
-			'& $wrapper': {},
-			'& $contentWrapper': {},
-			'& $content': {}
-		},
-		'& .navigation': {
-			'& .list-subheader-text, & .list-item-text, & .item-badge, & .arrow-icon': {
-				transition: theme.transitions.create('opacity', {
-					duration: theme.transitions.duration.shortest,
-					easing: theme.transitions.easing.easeInOut
-				})
-			}
-		}
-	},
-	wrapper: {
-		display: 'flex',
-		position: 'relative',
-		width: '100%',
-		height: '100%',
-		flex: '1 1 auto'
-	},
-	contentWrapper: {
-		display: 'flex',
-		flexDirection: 'column',
-		position: 'relative',
-		zIndex: 3,
-		overflow: 'hidden',
-		flex: '1 1 auto'
-	},
-	content: {
-		position: 'relative',
-		display: 'flex',
-		overflow: 'auto',
-		flex: '1 1 auto',
-		flexDirection: 'column',
-		width: '100%',
-		'-webkit-overflow-scrolling': 'touch',
-		zIndex: 2
-	}
+const Root = styled('div')(({ theme, config }) => ({
+  ...(config.mode === 'boxed' && {
+    clipPath: 'inset(0)',
+    maxWidth: `${config.containerWidth}px`,
+    margin: '0 auto',
+    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+  }),
+  ...(config.mode === 'container' && {
+    '& .container': {
+      maxWidth: `${config.containerWidth}px`,
+      width: '100%',
+      margin: '0 auto',
+    },
+  }),
 }));
 
 function Layout1(props) {
-	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
+  const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
+  const appContext = useContext(AppContext);
+  const { routes } = appContext;
 
-	const appContext = useContext(AppContext);
-	const classes = useStyles(props);
-	const { routes } = appContext;
+  return (
+    <Root id="fuse-layout" config={config} className="w-full flex">
+      {config.leftSidePanel.display && <LeftSideLayout1 />}
 
-	// console.warn('FuseLayout:: rendered');
+      <div className="flex flex-auto min-w-0">
+        {config.navbar.display && config.navbar.position === 'left' && <NavbarWrapperLayout1 />}
 
-	switch (config.scroll) {
-		case 'body': {
-			return (
-				<div id="fuse-layout" className={clsx(classes.root, config.mode, `scroll-${config.scroll}`)}>
-					{config.leftSidePanel.display && <LeftSideLayout1 />}
+        <main id="fuse-main" className="flex flex-col flex-auto min-h-screen min-w-0 relative z-10">
+          {config.toolbar.display && (
+            <ToolbarLayout1 className={config.toolbar.style === 'fixed' && 'sticky top-0'} />
+          )}
 
-					<div className="flex flex-1 flex-col overflow-hidden relative">
-						{config.toolbar.display &&
-							config.toolbar.style === 'fixed' &&
-							config.toolbar.position === 'above' && <ToolbarLayout1 />}
+          <div className="sticky top-0 z-99">
+            <SettingsPanel />
+          </div>
 
-						<FuseScrollbars className="overflow-auto" scrollToTopOnRouteChange>
-							{config.toolbar.display &&
-								config.toolbar.style !== 'fixed' &&
-								config.toolbar.position === 'above' && <ToolbarLayout1 />}
+          <div className="flex flex-col flex-auto min-h-0 relative z-10">
+            <FuseDialog />
 
-							<div className={classes.wrapper}>
-								{config.navbar.display && config.navbar.position === 'left' && <NavbarWrapperLayout1 />}
+            <FuseSuspense>{renderRoutes(routes)}</FuseSuspense>
 
-								<div className={classes.contentWrapper}>
-									{config.toolbar.display && config.toolbar.position === 'below' && (
-										<ToolbarLayout1 />
-									)}
+            {props.children}
+          </div>
 
-									<div className={classes.content}>
-										<FuseDialog />
+          {config.footer.display && (
+            <FooterLayout1 className={config.footer.style === 'fixed' && 'sticky bottom-0'} />
+          )}
+        </main>
 
-										<FuseSuspense>{renderRoutes(routes)}</FuseSuspense>
+        {config.navbar.display && config.navbar.position === 'right' && <NavbarWrapperLayout1 />}
+      </div>
 
-										{props.children}
-									</div>
-
-									{config.footer.display && config.footer.position === 'below' && <FooterLayout1 />}
-
-									<SettingsPanel />
-								</div>
-
-								{config.navbar.display && config.navbar.position === 'right' && (
-									<NavbarWrapperLayout1 />
-								)}
-							</div>
-
-							{config.footer.display &&
-								config.footer.style !== 'fixed' &&
-								config.footer.position === 'above' && <FooterLayout1 />}
-						</FuseScrollbars>
-
-						{config.footer.display &&
-							config.footer.style === 'fixed' &&
-							config.footer.position === 'above' && <FooterLayout1 />}
-					</div>
-
-					{config.rightSidePanel.display && <RightSideLayout1 />}
-
-					<FuseMessage />
-				</div>
-			);
-		}
-		case 'content':
-		default: {
-			return (
-				<div id="fuse-layout" className={clsx(classes.root, config.mode, `scroll-${config.scroll}`)}>
-					{config.leftSidePanel.display && <LeftSideLayout1 />}
-
-					<div className="flex flex-1 flex-col overflow-hidden relative">
-						{config.toolbar.display && config.toolbar.position === 'above' && <ToolbarLayout1 />}
-
-						<div className={classes.wrapper}>
-							{config.navbar.display && config.navbar.position === 'left' && <NavbarWrapperLayout1 />}
-
-							<div className={classes.contentWrapper}>
-								{config.toolbar.display &&
-									config.toolbar.position === 'below' &&
-									config.toolbar.style === 'fixed' && <ToolbarLayout1 />}
-
-								<FuseScrollbars className={classes.content} scrollToTopOnRouteChange>
-									{config.toolbar.display &&
-										config.toolbar.position === 'below' &&
-										config.toolbar.style !== 'fixed' && <ToolbarLayout1 />}
-
-									<FuseDialog />
-
-									<FuseSuspense>{renderRoutes(routes)}</FuseSuspense>
-
-									{props.children}
-
-									{config.footer.display &&
-										config.footer.position === 'below' &&
-										config.footer.style !== 'fixed' && <FooterLayout1 />}
-								</FuseScrollbars>
-
-								{config.footer.display &&
-									config.footer.position === 'below' &&
-									config.footer.style === 'fixed' && <FooterLayout1 />}
-
-							</div>
-
-							{config.navbar.display && config.navbar.position === 'right' && <NavbarWrapperLayout1 />}
-						</div>
-
-						{config.footer.display && config.footer.position === 'above' && <FooterLayout1 />}
-					</div>
-
-					{config.rightSidePanel.display && <RightSideLayout1 />}
-
-					<FuseMessage />
-				</div>
-			);
-		}
-	}
+      {config.rightSidePanel.display && <RightSideLayout1 />}
+      <FuseMessage />
+    </Root>
+  );
 }
 
-export default React.memo(Layout1);
+export default memo(Layout1);

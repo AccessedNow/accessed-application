@@ -52,7 +52,7 @@ function ComingSoonPage() {
                 approximately:
               </Typography>
 
-              <FuseCountdown endDate="2023-07-28" className="my-48" />
+              <FuseCountdown endDate="2021-11-28" className="my-48" />
 
               <Divider className="w-48" />
 

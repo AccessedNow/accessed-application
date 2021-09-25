@@ -4,24 +4,24 @@ const config = {
     mode: 'container',
     containerWidth: 1570,
     navbar: {
-      display: true,
+      display: false,
       style: 'style-1',
       folded: true,
       position: 'left',
     },
     toolbar: {
-      display: true,
+      display: false,
       style: 'fixed',
     },
     footer: {
-      display: true,
+      display: false,
       style: 'fixed',
     },
     leftSidePanel: {
-      display: true,
+      display: false,
     },
     rightSidePanel: {
-      display: true,
+      display: false,
     },
   },
   form: {

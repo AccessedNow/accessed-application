@@ -11,6 +11,9 @@ import UserInterfaceConfig from 'app/main/user-interface/UserInterfaceConfig';
 import { Redirect } from 'react-router-dom';
 import FuseLoading from '@fuse/core/FuseLoading';
 
+import ComingSoonPage from 'app/main/pages/coming-soon/ComingSoonPage';
+
+
 const routeConfigs = [
   ...appsConfigs,
   ...pagesConfigs,
@@ -32,7 +35,7 @@ const routes = [
   {
     path: '/',
     exact: true,
-    component: () => <Redirect to="/apps/dashboards/analytics" />,
+    component: () => <ComingSoonPage />,
   },
   {
     path: '/loading',

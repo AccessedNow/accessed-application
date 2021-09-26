@@ -22,6 +22,20 @@ export const submitRegister =
       });
   };
 
+export const confirmRegistration =
+  ({ token }) =>
+    async (dispatch) => {
+      return jwtService
+        .confirmRegistration({token})
+        .then((user) => {
+          dispatch(setUserData(user));
+          return dispatch(registerSuccess());
+        })
+        .catch((errors) => {
+          return dispatch(registerError(errors));
+        });
+    };
+
 export const registerWithFirebase = (model) => async (dispatch) => {
   if (!firebaseService.auth) {
     console.warn("Firebase Service didn't initialize, check your configuration");

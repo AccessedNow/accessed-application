@@ -102,6 +102,27 @@ class JwtService extends FuseUtils.EventEmitter {
     });
   };
 
+  confirmRegistration = (data) => {
+    console.log(data)
+    return new Promise((resolve, reject) => {
+      axios
+        .get('http://localhost:8080/api/registration/confirmation?token=' + data.token)
+        .then((response) => {
+          if (response.data.user) {
+            console.log(response.data.user);
+            resolve(response.data.user);
+          } else {
+            console.log('No data')
+            reject(new Error('Failed to login with token.'));
+          }
+        })
+        .catch((error) => {
+          this.logout();
+          reject(new Error('Failed to confirm with token.'));
+        });
+    });
+  };
+
   updateUserData = (user) => {
     return axios.post('/api/auth/user/update', {
       user,

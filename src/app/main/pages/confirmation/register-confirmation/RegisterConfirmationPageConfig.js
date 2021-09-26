@@ -8,8 +8,8 @@ const RegisterConfirmationPageConfig = {
   },
   routes: [
     {
-      path: '/pages/maintenance',
-      component: lazy(() => import('./MaintenancePage')),
+      path: '/registration/confirmation',
+      component: lazy(() => import('./RegisterConfirmationPage')),
     },
   ],
 };

@@ -1,3 +1,5 @@
+import { useParams } from "react-router";
+import URLSearchParams from 'url-search-params';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grow from '@mui/material/Grow';
@@ -6,9 +8,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { confirmRegistration } from 'app/auth/store/registerSlice';
 
 
-function RegisterConfirmationPage() {
+function RegisterConfirmationPage(props) {
   const dispatch = useDispatch();
-  dispatch(confirmRegistration({token: "45435jdkf"}));
+  const params = new URLSearchParams(props.location.search);
+
+  console.log(params.get('token'))
+  dispatch(confirmRegistration({token: params.get('token')}));
 
   return (
     <div className="flex flex-col flex-auto items-center justify-center p-16 sm:p-32">

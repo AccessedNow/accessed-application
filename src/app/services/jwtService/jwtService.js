@@ -106,7 +106,7 @@ class JwtService extends FuseUtils.EventEmitter {
     console.log(data)
     return new Promise((resolve, reject) => {
       axios
-        .get('http://localhost:8080/api/registration/confirmation?token=' + data.token)
+        .get('http://accessed-auth.us-west-2.elasticbeanstalk.com/api/registration/confirmation?token=' + data.token)
         .then((response) => {
           if (response.data.user) {
             console.log(response.data.user);

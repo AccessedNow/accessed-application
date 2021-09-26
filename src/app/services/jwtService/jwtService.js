@@ -103,10 +103,9 @@ class JwtService extends FuseUtils.EventEmitter {
   };
 
   confirmRegistration = (data) => {
-    console.log(data)
     return new Promise((resolve, reject) => {
       axios
-        .get('http://api.accessed.co/api/registration/confirmation?token=' + data.token)
+        .get('https://api.accessed.co/api/registration/confirmation?token=' + data.token)
         .then((response) => {
           if (response.data.user) {
             console.log(response.data.user);

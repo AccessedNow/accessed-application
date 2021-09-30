@@ -4,6 +4,7 @@ import { amber, red } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,16 +39,16 @@ function JobListItem(props) {
           className="job-title truncate text-14 font-medium"
           color={props.job.hasApplied ? 'textSecondary' : 'inherit'}
         >
-          {props.job.title}
+          <Link href="#" className="color-">{props.job.title}</Link>
         </Typography>
 
-        <Typography color="textSecondary" className="job-notes truncate">
-          {props.job.company.name}
+        <Typography className="">
+          <Link href="#" color="secondary" underline="hover">{props.job.company.name}</Link>
         </Typography>
-        <Typography className="job-title truncate text-14 font-medium">
+        <Typography className="">
           {props.job.country}
         </Typography>
-        <Typography className="job-title truncate text-14 font-medium">
+        <Typography className="">
           {dateDiff(props.job.createdDate)}
         </Typography>
       </div>

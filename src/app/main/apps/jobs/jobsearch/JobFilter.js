@@ -74,45 +74,8 @@ function JobFilter(props) {
   }
 
   return (
-    <div className="w-full px-0 pb-48 flex flex-col md:flex-row flex-1 items-center">
+    <div className="w-full px-0 pb-48 flex flex-col md:flex-row flex-1 items-center bg-white">
       <div className="flex flex-col items-center justify-center w-full">
-        <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }}>
-          <Box component="div" sx={{ p: 2, border: '1px solid grey' }} className="w-full">
-            <form
-              name="loginForm"
-              noValidate
-              className="flex flex-col justify-center w-full"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="mb-16"
-                    label="Email"
-                    autoFocus
-                    type="email"
-                    variant="outlined"
-                    fullWidth
-                  />
-                )}
-              />
-
-              <Button
-                variant="contained"
-                color="primary"
-                className="w-full mx-auto mt-16 rounded-4"
-                aria-label="Create Job Alert"
-                type="submit"
-              >
-                Create Job Alert
-              </Button>
-            </form>
-          </Box>
-        </motion.div>
-
         <div>
           <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
             <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">

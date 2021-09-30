@@ -4,13 +4,13 @@ const config = {
     mode: 'container',
     containerWidth: 1570,
     navbar: {
-      display: false,
+      display: true,
       style: 'style-1',
       folded: true,
       position: 'left',
     },
     toolbar: {
-      display: false,
+      display: true,
       style: 'fixed',
     },
     footer: {
@@ -18,7 +18,7 @@ const config = {
       style: 'fixed',
     },
     leftSidePanel: {
-      display: false,
+      display: true,
     },
     rightSidePanel: {
       display: false,

@@ -98,8 +98,7 @@ function JobSearch(props) {
     <>
       <Root
         header={
-          <div className="flex flex-col flex-1">
-            <div className="flex items-center p-24 px-12">
+
               <Hidden lgUp>
                 <IconButton
                   onClick={(ev) => pageLayout.current.toggleLeftSidebar()}
@@ -109,8 +108,7 @@ function JobSearch(props) {
                   <Icon>menu</Icon>
                 </IconButton>
               </Hidden>
-            </div>
-          </div>
+
         }
         content={
           <Grid
@@ -120,16 +118,16 @@ function JobSearch(props) {
             justify="center"
             alignItems="flex-start"
           >
-            <Grid item xs={12} lg={5} className="border-r-1 border-solid min-h-full overflow-y">
-              <div className="flex flex-1 w-full items-center justify-between mb-10 p-12 border-b-1 border-black">
-                <Typography color="textSecondary">
+            <Grid item xs={12} lg={5} className="border-r-1 border-solid min-h-full">
+              <div className="flex flex-1 w-full items-center justify-between mb-10 p-12 border-b-1 border-grey">
+                <Typography>
                   Turn on job alerts
                 </Typography>
                 <Switch {...label} defaultChecked />
               </div>
               <JobList/>
             </Grid>
-            <Grid component={Box} item xs={7} display={{ xs: "none", lg: "block" }} className="">
+            <Grid component={Box} item xs={7} display={{ xs: "none", lg: "block" }} className="min-h-full bg-white">
               <JobDetail />
             </Grid>
           </Grid>

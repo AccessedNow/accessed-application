@@ -1,8 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 import Icon from '@mui/material/Icon';
 import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,25 +19,31 @@ import _ from '@lodash';
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-  displayName: yup.string().required('You must enter display name'),
+  firstName: yup.string().required('You must enter first name'),
+  lastName: yup.string().required('You must enter last name'),
   email: yup.string().email('You must enter a valid email').required('You must enter a email'),
   password: yup
     .string()
     .required('Please enter your password.')
     .min(8, 'Password is too short - should be 8 chars minimum.'),
-  passwordConfirm: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+  matchingPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+  acceptTermsConditions: yup.boolean().oneOf([true], 'The terms and conditions must be accepted.')
 });
 
 const defaultValues = {
-  displayName: '',
+  firstName: '',
+  lastName: '',
   email: '',
   password: '',
-  passwordConfirm: '',
+  matchingPassword: '',
+  acceptTermsConditions: false
 };
 
 function JWTRegisterTab(props) {
   const dispatch = useDispatch();
   const authRegister = useSelector(({ auth }) => auth.register);
+
+  //temporary
 
   const { control, formState, handleSubmit, reset, setError } = useForm({
     mode: 'onChange',
@@ -52,6 +63,7 @@ function JWTRegisterTab(props) {
   }, [authRegister.errors, setError]);
 
   function onSubmit(model) {
+    model.username = model.email;
     dispatch(submitRegister(model));
   }
 
@@ -59,16 +71,42 @@ function JWTRegisterTab(props) {
     <div className="w-full">
       <form className="flex flex-col justify-center w-full" onSubmit={handleSubmit(onSubmit)}>
         <Controller
-          name="displayName"
+          name="firstName"
           control={control}
           render={({ field }) => (
             <TextField
               {...field}
               className="mb-16"
               type="text"
-              label="Display name"
-              error={!!errors.displayName}
-              helperText={errors?.displayName?.message}
+              label="First name"
+              error={!!errors.firstName}
+              helperText={errors?.firstName?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Icon className="text-20" color="action">
+                      person
+                    </Icon>
+                  </InputAdornment>
+                ),
+              }}
+              variant="outlined"
+              required
+            />
+          )}
+        />
+
+        <Controller
+          name="lastName"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className="mb-16"
+              type="text"
+              label="Last name"
+              error={!!errors.lastName}
+              helperText={errors?.lastName?.message}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -137,7 +175,7 @@ function JWTRegisterTab(props) {
         />
 
         <Controller
-          name="passwordConfirm"
+          name="matchingPassword"
           control={control}
           render={({ field }) => (
             <TextField
@@ -145,8 +183,8 @@ function JWTRegisterTab(props) {
               className="mb-16"
               type="password"
               label="Confirm Password"
-              error={!!errors.passwordConfirm}
-              helperText={errors?.passwordConfirm?.message}
+              error={!!errors.matchingPassword}
+              helperText={errors?.matchingPassword?.message}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -159,6 +197,20 @@ function JWTRegisterTab(props) {
               variant="outlined"
               required
             />
+          )}
+        />
+
+        <Controller
+          name="acceptTermsConditions"
+          control={control}
+          render={({ field }) => (
+            <FormControl className="items-center" error={!!errors.acceptTermsConditions}>
+              <FormControlLabel
+                label="I read and accept terms and conditions"
+                control={<Checkbox {...field} />}
+              />
+              <FormHelperText>{errors?.acceptTermsConditions?.message}</FormHelperText>
+            </FormControl>
           )}
         />
 

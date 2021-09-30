@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import format from 'date-fns/format';
 
 const Root = styled('div')(({ theme }) => ({
-  backgroundImage: 'url("../../assets/images/backgrounds/header-bg.png")',
+  backgroundImage: 'url("../../assets/images/backgrounds/signup.png")',
   backgroundColor: '#FAFAFA',
   color: '#FFFFFF',
   backgroundSize: 'cover',

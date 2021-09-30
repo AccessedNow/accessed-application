@@ -123,38 +123,10 @@ function Courses(props) {
             label="Search for a course"
             placeholder="Enter a keyword..."
             className="flex w-full sm:w-320 mb-16 sm:mb-0 mx-16"
-            value={searchText}
-            inputProps={{
-              'aria-label': 'Search',
-            }}
-            onChange={handleSearchText}
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true,
-            }}
+
           />
           <FormControl className="flex w-full sm:w-320 mx-16" variant="outlined">
-            <InputLabel htmlFor="category-label-placeholder"> Category </InputLabel>
-            <Select
-              value={selectedCategory}
-              onChange={handleSelectedCategory}
-              input={
-                <OutlinedInput
-                  labelWidth={'category'.length * 9}
-                  name="category"
-                  id="category-label-placeholder"
-                />
-              }
-            >
-              <MenuItem value="all">
-                <em> All </em>
-              </MenuItem>
-              {categories.map((category) => (
-                <MenuItem value={category.value} key={category.id}>
-                  {category.label}
-                </MenuItem>
-              ))}
-            </Select>
+
           </FormControl>
         </div>
         {useMemo(() => {

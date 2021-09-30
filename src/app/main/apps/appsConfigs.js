@@ -1,3 +1,6 @@
+import JobConfig from './jobs/JobConfig';
+
+
 import AcademyAppConfig from './academy/AcademyAppConfig';
 import CalendarAppConfig from './calendar/CalendarAppConfig';
 import ChatAppConfig from './chat/ChatAppConfig';
@@ -12,6 +15,8 @@ import ScrumboardAppConfig from './scrumboard/ScrumboardAppConfig';
 import TodoAppConfig from './todo/TodoAppConfig';
 
 const appsConfigs = [
+  JobConfig,
+
   AnalyticsDashboardAppConfig,
   ProjectDashboardAppConfig,
   MailAppConfig,

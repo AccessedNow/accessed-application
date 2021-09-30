@@ -47,10 +47,57 @@ class JwtService extends FuseUtils.EventEmitter {
 
   createUser = (data) => {
     return new Promise((resolve, reject) => {
-      axios.post('/api/auth/register', data).then((response) => {
-        if (response.data.user) {
-          this.setSession(response.data.access_token);
-          resolve(response.data.user);
+      axios.post('http://localhost:8080/api/registration', data).then((response) => {
+        if (response.data.data.user) {
+          this.setSession(response.data.data.access_token);
+
+          let user = {
+            uuid: 'XgbuVEXBU5gtSKdbQRP1Zbbby1i1',
+            from: 'custom-db',
+            password: 'admin',
+            role: 'admin',
+            data: {
+              displayName: response.data.data.user.firstName + ' ' + response.data.data.user.lastName,
+              photoURL: 'assets/images/avatars/Abbott.jpg',
+              email: response.data.data.user.email,
+              settings: {
+                layout: {
+                  style: 'layout1',
+                  config: {
+                    scroll: 'content',
+                    navbar: {
+                      display: false,
+                      folded: true,
+                      position: 'left'
+                    },
+                    toolbar: {
+                      display: false,
+                      style: 'fixed',
+                      position: 'below'
+                    },
+                    footer: {
+                      display: false,
+                      style: 'fixed',
+                      position: 'below'
+                    },
+                    mode: 'fullwidth'
+                  }
+                },
+                customScrollbars: true,
+                theme: {
+                  main: 'defaultDark',
+                  navbar: 'defaultDark',
+                  toolbar: 'defaultDark',
+                  footer: 'defaultDark'
+                }
+              },
+              shortcuts: ['calendar', 'mail', 'contacts']
+            }
+          };
+
+
+          // resolve(response.data.data.user);
+          resolve(user);
         } else {
           reject(response.data.error);
         }
@@ -58,19 +105,65 @@ class JwtService extends FuseUtils.EventEmitter {
     });
   };
 
-  signInWithEmailAndPassword = (email, password) => {
+  signInWithEmailAndPassword = (username, password) => {
     return new Promise((resolve, reject) => {
+      console.log(username, password)
       axios
-        .get('/api/auth', {
-          data: {
-            email,
-            password,
-          },
+        .post('http://localhost:8080/api/authenticate', {
+            username: username,
+            password: password
         })
         .then((response) => {
-          if (response.data.user) {
-            this.setSession(response.data.access_token);
-            resolve(response.data.user);
+          if (response.data.data.user) {
+            console.log(response.data.data)
+            this.setSession(response.data.data.access_token);
+
+            let user = {
+              uuid: 'XgbuVEXBU5gtSKdbQRP1Zbbby1i1',
+              from: 'custom-db',
+              password: 'admin',
+              role: 'admin',
+              data: {
+                displayName: response.data.data.user.firstName + ' ' + response.data.data.user.lastName,
+                photoURL: 'assets/images/avatars/Abbott.jpg',
+                email: response.data.data.user.email,
+                settings: {
+                layout: {
+                  style: 'layout1',
+                    config: {
+                    scroll: 'content',
+                      navbar: {
+                        display: false,
+                        folded: true,
+                        position: 'left'
+                    },
+                    toolbar: {
+                        display: false,
+                        style: 'fixed',
+                        position: 'below'
+                    },
+                    footer: {
+                        display: false,
+                        style: 'fixed',
+                        position: 'below'
+                    },
+                    mode: 'fullwidth'
+                  }
+                },
+                customScrollbars: true,
+                  theme: {
+                  main: 'defaultDark',
+                    navbar: 'defaultDark',
+                    toolbar: 'defaultDark',
+                    footer: 'defaultDark'
+                }
+              },
+              shortcuts: ['calendar', 'mail', 'contacts']
+            }
+            };
+
+            // resolve(response.data.user);
+            resolve(user);
           } else {
             reject(response.data.error);
           }

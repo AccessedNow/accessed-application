@@ -106,7 +106,7 @@ function JobDetailHeader(props) {
           format(new Date(currentDate?.start || null), 'MMM')
         )}
       >
-        <div className="flex flex-1 flex-col justify-between z-10 container">
+        <div className="flex flex-1 flex-col justify-end z-10 container -my-40">
           <motion.div
             className="flex flex-end justify-center"
             initial={{ opacity: 0 }}
@@ -118,7 +118,7 @@ function JobDetailHeader(props) {
                 borderStyle: 'solid',
                 borderColor: 'background.default',
               }}
-              className="flex items-center justify-center w-60 h-60"
+              className="flex items-center justify-center w-96 h-96"
               src={props.company.avatar}
               variant="square"
             />

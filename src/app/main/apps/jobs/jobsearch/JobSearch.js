@@ -112,33 +112,25 @@ function JobSearch(props) {
             </div>
           </div>
         }
-        contentToolbar={
-          <div className="flex flex-col flex-shrink-0 items-center justify-between py-24">
-            <div className="flex w-full sm:w-320 mb-16 sm:mb-0 mx-16">
-              <Typography color="textSecondary">
-                Turn on job alerts
-              </Typography>
-            </div>
-            <div className="flex w-full sm:w-320 mx-16" variant="outlined">
-              <Switch {...label} defaultChecked />
-            </div>
-          </div>
-
-        }
         content={
           <Grid
             container
-            spacing={1}
+            spacing={0}
             direction="row"
             justify="center"
             alignItems="flex-start"
           >
-            <Grid item xs={12} lg={5} className="m:border-r-1 lg:border-r-1 sm:px-12 min-h-full">
+            <Grid item xs={12} lg={5} className="border-r-1 border-solid min-h-full overflow-y">
+              <div className="flex flex-1 w-full items-center justify-between mb-10 p-12 border-b-1 border-black">
+                <Typography color="textSecondary">
+                  Turn on job alerts
+                </Typography>
+                <Switch {...label} defaultChecked />
+              </div>
               <JobList/>
             </Grid>
-            <Grid component={Box} item xs={7} display={{ xs: "none", lg: "block" }} className="border-r-1 border-solid">
+            <Grid component={Box} item xs={7} display={{ xs: "none", lg: "block" }} className="">
               <JobDetail />
-            >
             </Grid>
           </Grid>
 

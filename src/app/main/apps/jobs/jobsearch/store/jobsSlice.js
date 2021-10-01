@@ -18,7 +18,7 @@ export const searchJobs = createAsyncThunk(
       "isPromoted": false
     }
     routeParams = routeParams || getState().jobSearch.jobs.routeParams;
-    const response = await axios.post('https://52.12.76.229:8000/job-service/api/jobs/search?size=25&page=0&sortBy=relevant&direction=ASC&query=', filters);
+    const response = await axios.post('http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search?size=25&page=0&sortBy=relevant&direction=ASC&query=', filters);
     const data = response.data.data.content;
 
     return { data, routeParams };
@@ -29,7 +29,7 @@ export const searchJobs = createAsyncThunk(
 export const saveJob = createAsyncThunk(
   'job/save',
   async (job, { dispatch, getState }) => {
-    const response = await axios.post(`https://52.12.76.229:8000/job-service/api/jobs/${job._id}/bookmark?token=612c8ce7d5d6d21536fdfb4e`, {});
+    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${job._id}/bookmark?token=612c8ce7d5d6d21536fdfb4e`, {});
     const data = await response.data;
 
     // dispatch(getTodos());

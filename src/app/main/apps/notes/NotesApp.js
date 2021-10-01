@@ -30,7 +30,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     minHeight: '100%',
   },
   '& .FusePageSimple-sidebar': {
-    width: 256,
+    width: 600,
     border: 0,
   },
 }));

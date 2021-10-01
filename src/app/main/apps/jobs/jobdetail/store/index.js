@@ -1,10 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import labels from './labelsSlice';
-import notes from './notesSlice';
+import job from './jobSlice';
+import similarJobs from './similarJobsSlice';
 
 const reducer = combineReducers({
-  notes,
-  labels,
+  job,
+  similarJobs,
 });
 
 export default reducer;

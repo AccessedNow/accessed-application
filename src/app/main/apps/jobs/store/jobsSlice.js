@@ -97,7 +97,6 @@ const jobsSlice = createSlice({
 
   },
   extraReducers: {
-    [getJob.fulfilled]: (state, action) => action.payload,
     [saveJob.fulfilled]: jobsAdapter.upsertOne,
     [searchJobs.fulfilled]: (state, action) => {
       const { data, routeParams } = action.payload;

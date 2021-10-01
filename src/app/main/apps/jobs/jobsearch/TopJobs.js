@@ -16,7 +16,7 @@ import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 
-import TodoChip from './TodoChip';
+import TodoChip from '../components/TodoChip';
 
 function TodoListItem(props) {
   const dispatch = useDispatch();

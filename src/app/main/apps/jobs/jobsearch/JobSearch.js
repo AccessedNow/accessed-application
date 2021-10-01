@@ -7,6 +7,8 @@ import Icon from '@mui/material/Icon';
 import Switch from '@mui/material/Switch';
 import { motion } from 'framer-motion';
 
+import Button from '@mui/material/Button';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -30,41 +32,52 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { styled } from '@mui/material/styles';
-import reducer from './store';
-import { searchJobs, selectJobsById } from './store/jobsSlice';
-import JobList from './JobList';
+import reducer from '../store';
+import { searchJobs, selectJobsById } from '../store/jobsSlice';
+import JobSearchList from '../components/JobSearchList';
 import JobDetail from './JobDetail';
+import JobSearchHeader from './JobSearchHeader';
+
 import JobFilter from './JobFilter';
 
 import TopJobs from './TopJobs';
 import {getFiles} from "../../file-manager/store/filesSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
+  maxWidth: 1120,
+  margin: 'auto',
+  borderRadius: 8,
+
   '& .FusePageSimple-header': {
     minHeight: 72,
     height: 72,
-    [theme.breakpoints.up('lg')]: {
-      minHeight: 136,
-      height: 136,
-    },
   },
   '& .FusePageSimple-wrapper': {
     minHeight: 0,
+    width: '100%',
+    background: 'white',
   },
   '& .FusePageSimple-contentWrapper': {
     padding: 0,
+
     [theme.breakpoints.up('sm')]: {
       padding: 0,
       height: '100%',
     },
   },
   '& .FusePageSimple-content': {
+    width: '100%',
+    margin: 'auto',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
   },
   '& .FusePageSimple-sidebar': {
     width: 360
+  },
+  '& .FusePageSimple-rightSidebar': {
+    width: 700,
+    background: 'white',
   },
 }));
 
@@ -93,51 +106,90 @@ function JobSearch(props) {
   //   dispatch(searchJobs(routeParams));
   // }, [dispatch, routeParams]);
 
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event &&
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  const list = (anchor) => (
+    <Box
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : drawerWidth }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
-    <>
+
       <Root
-        header={
-
-              <Hidden lgUp>
-                <IconButton
-                  onClick={(ev) => pageLayout.current.toggleLeftSidebar()}
-                  aria-label="open left sidebar"
-                  size="large"
-                >
-                  <Icon>menu</Icon>
-                </IconButton>
-              </Hidden>
-
-        }
+        header={<JobSearchHeader toggleDrawer={toggleDrawer} pageLayout={pageLayout} />}
         content={
-          <Grid
-            container
-            spacing={0}
-            direction="row"
-            justify="center"
-            alignItems="flex-start"
-          >
-            <Grid item xs={12} lg={5} className="border-r-1 border-solid min-h-full">
-              <div className="flex flex-1 w-full items-center justify-between mb-10 p-12 border-b-1 border-grey">
-                <Typography>
-                  Turn on job alerts
-                </Typography>
-                <Switch {...label} defaultChecked />
-              </div>
-              <JobList/>
-            </Grid>
-            <Grid component={Box} item xs={7} display={{ xs: "none", lg: "block" }} className="min-h-full bg-white">
-              <JobDetail />
-            </Grid>
-          </Grid>
+          <div className="">
+            <React.Fragment key={'right'}>
 
+              <SwipeableDrawer
+                anchor={'right'}
+                open={state['right']}
+                onClose={toggleDrawer('right', false)}
+                onOpen={toggleDrawer('right', true)}
+              >
+                {list('right')}
+              </SwipeableDrawer>
+            </React.Fragment>
+            <div className="flex flex-1 w-full items-center justify-between mb-10 p-12 border-b-1 border-grey">
+              <Typography>
+                Turn on job alerts
+              </Typography>
+              <Switch {...label} defaultChecked />
+            </div>
+            <JobSearchList/>
+          </div>
         }
-        leftSidebarContent={<JobFilter></JobFilter>}
-        innerScroll
+        // leftSidebarContent={<JobFilter></JobFilter>}
+        rightSidebarContent={
+            <JobDetail />
+        }
+
         ref={pageLayout}
+        innerScroll
       />
-    </>
   );
 }
 

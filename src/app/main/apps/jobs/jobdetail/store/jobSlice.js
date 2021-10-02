@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { showMessage } from 'app/store/fuse/messageSlice';
 
-export const getJob = createAsyncThunk('mailApp/mail/getMail', async (params) => {
+export const getJob = createAsyncThunk('job/detail', async (params) => {
   const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${params.id}` );
   const data = await response.data.data;
   return data;
@@ -10,10 +10,8 @@ export const getJob = createAsyncThunk('mailApp/mail/getMail', async (params) =>
 
 export const saveJob = createAsyncThunk(
   'job/save',
-  async (_data, { getState, dispatch }) => {
-    const { id } = getState().mailApp.mail;
-
-    const response = await axios.post('/api/job/save', { id, ..._data });
+  async (job, { getState, dispatch }) => {
+    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${job._id}/bookmark?token=612c8ce7d5d6d21536fdfb4e`, null, {headers: {userId: getState().auth.user.data.id}});
     const data = await response.data;
 
     dispatch(showMessage({ message: 'Job Saved' }));

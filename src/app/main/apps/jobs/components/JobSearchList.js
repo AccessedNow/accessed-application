@@ -6,8 +6,8 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectJobs, set } from '../store/jobsSlice';
-import JobListItem from './JobListItem';
+import { selectJobs, setSelectedItem } from '../store/jobsSlice';
+import JobListItem from '../../../components/JobListItem';
 
 function JobSearchList(props) {
   const jobs = useSelector(selectJobs);
@@ -75,7 +75,7 @@ function JobSearchList(props) {
       <motion.div variants={container} initial="hidden" animate="show">
         {filteredData.map((job) => (
           <motion.div variants={item} key={job._id}>
-            <JobListItem job={job} />
+            <JobListItem job={job} setSelectedItem={setSelectedItem} />
           </motion.div>
         ))}
       </motion.div>

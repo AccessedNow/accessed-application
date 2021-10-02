@@ -2,6 +2,8 @@ import Icon from '@mui/material/Icon';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { selectMainThemeDark } from 'app/store/fuse/settingsSlice';
@@ -12,12 +14,12 @@ import format from 'date-fns/format';
 
 const Root = styled('div')(({ theme }) => ({
   height: 75,
-  backgroundImage: 'url("../../assets/images/backgrounds/signup.png")',
-  backgroundColor: '#FAFAFA',
+  backgroundImage: 'url(\'/assets/images/calendar/winter.jpg\')',
   color: '#FFFFFF',
   backgroundSize: 'cover',
   backgroundPosition: '0 50%',
   backgroundRepeat: 'no-repeat',
+  borderRadius: '8px 8px 0 0',
   '&:before': {
     content: "''",
     position: 'absolute',
@@ -25,57 +27,8 @@ const Root = styled('div')(({ theme }) => ({
     right: 0,
     bottom: 0,
     left: 0,
-    zIndex: 1,
-    background: 'rgba(0, 0, 0, 0.45)',
-  },
-  '&.Jan': {
-    backgroundImage: "url('/assets/images/calendar/winter.jpg')",
-    backgroundPosition: '0 85%',
-  },
-  '&.Feb': {
-    backgroundImage: "url('/assets/images/calendar/winter.jpg')",
-    backgroundPosition: '0 85%',
-  },
-  '&.Mar': {
-    backgroundImage: "url('/assets/images/calendar/spring.jpg')",
-    backgroundPosition: '0 40%',
-  },
-  '&.Apr': {
-    backgroundImage: "url('/assets/images/calendar/spring.jpg')",
-    backgroundPosition: '0 40%',
-  },
-  '&.May': {
-    backgroundImage: "url('/assets/images/calendar/spring.jpg')",
-    backgroundPosition: '0 40%',
-  },
-  '&.Jun': {
-    backgroundImage: "url('/assets/images/calendar/summer.jpg')",
-    backgroundPosition: '0 80%',
-  },
-  '&.Jul': {
-    backgroundImage: "url('/assets/images/calendar/summer.jpg')",
-    backgroundPosition: '0 80%',
-  },
-  '&.Aug': {
-    backgroundImage: "url('/assets/images/calendar/summer.jpg')",
-    backgroundPosition: '0 80%',
-  },
-  '&.Sep': {
-    backgroundImage: "url('/assets/images/calendar/autumn.jpg')",
-    backgroundPosition: '0 40%',
-  },
-  '&.Oct': {
-    backgroundImage: "url('/assets/images/calendar/autumn.jpg')",
-    backgroundPosition: '0 40%',
-  },
-  '&.Nov': {
-    backgroundImage: "url('/assets/images/calendar/autumn.jpg')",
-    backgroundPosition: '0 40%',
-  },
-  '&.Dec': {
-    backgroundImage: "url('/assets/images/calendar/winter.jpg')",
-    backgroundPosition: '0 85%',
-  },
+    zIndex: 1
+  }
 }));
 
 const viewNamesObj = {
@@ -102,8 +55,7 @@ function JobDetailHeader(props) {
     <ThemeProvider theme={mainThemeDark}>
       <Root
         className={clsx(
-          'flex h-200 min-h-200 relative',
-          format(new Date(currentDate?.start || null), 'MMM')
+          'flex h-200 min-h-200 relative'
         )}
       >
         <div className="flex flex-1 flex-col justify-end z-10 container -my-40">
@@ -112,16 +64,18 @@ function JobDetailHeader(props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.3 } }}
           >
-            <Avatar
-              sx={{
-                borderWidth: 1,
-                borderStyle: 'solid',
-                borderColor: 'background.default',
-              }}
-              className="flex items-center justify-center w-80 h-80"
-              src={props.company.avatar}
-              variant="square"
-            />
+            <Link href={`/company/${props.company.id}`}>
+              <Avatar
+                sx={{
+                  borderWidth: 1,
+                  borderStyle: 'solid',
+                  borderColor: 'background.default',
+                }}
+                className="flex items-center justify-center w-80 h-80"
+                src={props.company.avatar}
+                variant="square"
+              />
+            </Link>
           </motion.div>
         </div>
       </Root>

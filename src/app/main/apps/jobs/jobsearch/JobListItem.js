@@ -14,12 +14,8 @@ import { dateDifference, dateDiff } from '../../../../utils/helper';
 
 
 const StyledListItem = styled(ListItem)(({ theme, completed }) => ({
-  ...(completed && {
-    background: 'rgba(0,0,0,0.03)',
-    '& .job-title, & .job-notes': {
-      textDecoration: 'line-through',
-    },
-  }),
+    background: 'white',
+    
 }));
 
 function JobListItem(props) {

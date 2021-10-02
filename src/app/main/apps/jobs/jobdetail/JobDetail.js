@@ -4,23 +4,25 @@ import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import ChevronRight from '@mui/icons-material/ChevronRight';
+import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import FontDownload from '@mui/icons-material/FontDownload';
 import Favorite from '@mui/icons-material/Favorite';
+import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDeepCompareEffect } from '@fuse/hooks';
@@ -30,7 +32,10 @@ import JobDetailHeader from './JobDetailHeader';
 import {getJob, saveJob, applyJob} from "./store/jobSlice";
 import reducer from './store';
 import {getSimilarJobs} from "./store/similarJobsSlice";
-import JobList from "../components/JobList";
+
+import JobGrid from "../../../components/JobGrid";
+import Ad from "../../../components/Ad";
+import MediaAd from "../../../components/MediaAd";
 
 // const Root = styled(FusePageSimple)(({ theme }) => ({
 //
@@ -137,7 +142,7 @@ function JobDetail() {
 
 
   function handleSaveJob() {
-    dispatch(saveJob(getValues()));
+    dispatch(saveJob(id));
   }
 
   function handleApplyJob() {
@@ -154,7 +159,7 @@ function JobDetail() {
               <Card
                 component={motion.div}
                 variants={item}
-                className="w-full overflow-hidden rounded-16 shadow mb-32"
+                className="w-full overflow-hidden rounded-16 shadow mb-20"
               >
                 <JobDetailHeader company={job.company}/>
                 <div className="w-full items-center justify-between px-32 py-40">
@@ -172,7 +177,12 @@ function JobDetail() {
                       <IconButton aria-label="Apply" onClick={handleApplyJob} size="large">
                         <FontDownload fontSize="inherit"/>
                       </IconButton>
-                      <IconButton aria-label="Save" onClick={handleSaveJob} size="large">
+                      <IconButton
+                        aria-label="Save"
+                        onClick={(ev) => {
+                        ev.stopPropagation();
+                        dispatch(saveJob(job));
+                      }} size="large">
                         <Favorite fontSize="inherit"/>
                       </IconButton>
                     </motion.div>
@@ -228,60 +238,60 @@ function JobDetail() {
                       {job.description}
                     </Typography>
                   </div>
-                  <Card className="rounded-16">
-                    <CardHeader
-                      action={
-                        <IconButton aria-label="Learn more">
-                          <ChevronRight />
-                        </IconButton>
-                      }
-                      title={<Typography className="text-14 font-medium">
-                        ABOUT THE COMPANY
-                      </Typography>}
-                      subheader="Learn more"
-                    />
-
-                    <CardContent className="p-32">
-                      <div className="flex justify-end z-10 container">
-                        <Avatar variant="square" className="w-72 h-72" alt={job.company.name} src={job.company.avatar} />
-                        <div className="flex flex-1 flex-col relative overflow-hidden px-8">
-                          <Typography color="textSecondary" className="text-14 font-700">
-                            {job.company.name}
-                          </Typography>
-                          <Typography className="text-14 font-medium">
-                            {job.company.primaryAddress.country}
-                          </Typography>
-                        </div>
-
-                      </div>
-                    </CardContent>
-                  </Card>
                 </div>
               </Card>
-            </div>
+              <Card className="mb-20" >
+                <CardHeader
+                  action={
+                    <IconButton aria-label="Learn more">
+                      <ChevronRight />
+                    </IconButton>
+                  }
+                  title={<Typography className="text-14 font-medium">
+                    ABOUT THE COMPANY
+                  </Typography>}
+                  subheader="Learn more"
+                />
 
-            <div className="flex flex-col md:w-320">
-              {similarJobs &&
-              <Card component={motion.div} variants={item} className="w-full rounded-16 shadow mb-32">
-                <AppBar position="static" elevation={0} className="bg-transparent">
-                  <Toolbar className="px-8">
-                    <Typography
-                      variant="subtitle1"
-                      color="primary"
-                      className="flex-1 px-12 font-medium"
-                    >
-                      Similar Jobs
-                    </Typography>
-                    <Button color="primary" size="small" className="font-medium">
-                      See All
-                    </Button>
-                  </Toolbar>
-                </AppBar>
-                <CardContent className="p-0">
-                  <JobList jobs={similarJobs}/>
+                <CardContent className="p-32">
+                  <div className="flex justify-end z-10 container">
+                    <Avatar variant="square" className="w-72 h-72" alt={job.company.name} src={job.company.avatar} />
+                    <div className="flex flex-1 flex-col relative overflow-hidden px-8">
+                      <Typography color="textSecondary" className="text-14 font-700">
+                        {job.company.name}
+                      </Typography>
+                      <Typography className="text-14 font-medium">
+                        {job.company.primaryAddress.country}
+                      </Typography>
+                    </div>
+
+                  </div>
                 </CardContent>
               </Card>
-              }
+              <div>
+                {similarJobs &&
+                  <JobGrid jobs={similarJobs}/>
+                }
+              </div>
+            </div>
+
+            <div className="flex flex-col md:w-288">
+              <div className="mb-20">
+                <Ad />
+              </div>
+              <div className="mb-20">
+                <MediaAd />
+              </div>
+              <div className="flex flex-row  items-center rounded-8 bg-white p-16 shadow-sm">
+                <Typography className="text-14">
+                  Looking for talent
+                </Typography>
+                <Button variant="contained" size="medium" className="ml-10">
+                  Post a Job
+                </Button>
+              </div>
+
+
             </div>
           </div>
         </motion.div>

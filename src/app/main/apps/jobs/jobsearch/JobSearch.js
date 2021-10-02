@@ -37,6 +37,8 @@ import { searchJobs, selectJobsById } from '../store/jobsSlice';
 import JobSearchList from '../components/JobSearchList';
 import JobDetail from './JobDetail';
 import JobSearchHeader from './JobSearchHeader';
+import ContactsHeader from './ContactsHeader';
+import SearchToolbar from './SearchToolbar';
 
 import JobFilter from './JobFilter';
 
@@ -44,22 +46,32 @@ import TopJobs from './TopJobs';
 import {getFiles} from "../../file-manager/store/filesSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
-  maxWidth: 1120,
+
   margin: 'auto',
-  borderRadius: 8,
 
   '& .FusePageSimple-header': {
     minHeight: 72,
-    height: 72,
+    // height: 72,
+    background: 'none',
+    [theme.breakpoints.up('lg')]: {
+      minHeight: 72,
+      // height: 72,
+    },
+    '.search': {
+      width: 1120,
+      padding: 12
+    }
   },
   '& .FusePageSimple-wrapper': {
+    marginTop: 20,
     minHeight: 0,
-    width: '100%',
-    background: 'white',
+    // width: '100%'
+    margin: 'auto',
+    width: 1120,
   },
   '& .FusePageSimple-contentWrapper': {
     padding: 0,
-
+    marginTop: 20,
     [theme.breakpoints.up('sm')]: {
       padding: 0,
       height: '100%',
@@ -71,13 +83,21 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+
   },
   '& .FusePageSimple-sidebar': {
-    width: 360
+    // width: 360
+  },
+  '& .FusePageSimple-sidebarContent': {
+    background: 'white'
   },
   '& .FusePageSimple-rightSidebar': {
-    width: 700,
+    width: 550,
     background: 'white',
+    marginLeft: 10,
+    marginTop: 20,
+    border: 'none',
+    background: 'white'
   },
 }));
 
@@ -159,7 +179,9 @@ function JobSearch(props) {
   return (
 
       <Root
-        header={<JobSearchHeader toggleDrawer={toggleDrawer} pageLayout={pageLayout} />}
+        // header={<JobSearchHeader toggleDrawer={toggleDrawer} pageLayout={pageLayout} />}
+        header={<ContactsHeader pageLayout={pageLayout} />}
+        contentToolbar={<SearchToolbar />}
         content={
           <div className="">
             <React.Fragment key={'right'}>
@@ -173,7 +195,7 @@ function JobSearch(props) {
                 {list('right')}
               </SwipeableDrawer>
             </React.Fragment>
-            <div className="flex flex-1 w-full items-center justify-between mb-10 p-12 border-b-1 border-grey">
+            <div className="flex flex-1 w-full items-center justify-between mb-10 p-12 bg-white">
               <Typography>
                 Turn on job alerts
               </Typography>
@@ -187,6 +209,7 @@ function JobSearch(props) {
             <JobDetail />
         }
 
+        sidebarInner
         ref={pageLayout}
         innerScroll
       />

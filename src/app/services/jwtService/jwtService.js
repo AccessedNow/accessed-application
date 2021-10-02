@@ -107,7 +107,6 @@ class JwtService extends FuseUtils.EventEmitter {
 
   signInWithEmailAndPassword = (username, password) => {
     return new Promise((resolve, reject) => {
-      console.log(username, password)
       axios
         .post('http://localhost:8080/api/authenticate', {
             username: username,

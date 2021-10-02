@@ -12,9 +12,10 @@ import JobListItem from './JobListItem';
 function JobList(props) {
 
   return (
-    <List className="p-0">
+    <List className="p-0" type={props.type}>
       {props.jobs.map((job) => (
-          <JobListItem job={job} />
+        <JobListItem job={job} setSelectedItem={props.setSelectedItem}/>
+
       ))}
     </List>
   );

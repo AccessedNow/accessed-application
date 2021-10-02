@@ -15,7 +15,7 @@ import FontDownload from '@mui/icons-material/FontDownload';
 import Favorite from '@mui/icons-material/Favorite';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
-
+import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
@@ -101,13 +101,13 @@ function JobDetail(props) {
   }
 
   return (
-    <div className="w-full pb-48 items-center">
+    <div className="w-full pb-48 items-center rounded-10">
       <JobDetailHeader company={selectedItem.company}/>
       <div className="w-full items-center justify-between px-32 py-40">
         <div className="flex flex-1 w-full items-center justify-between">
           <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
             <Typography className="text-16 sm:text-20 truncate font-semibold">
-              {selectedItem.title}
+              <Link href={`/jobs/view/${selectedItem.jobId}`} style={{textDecoration: "none"}}>{selectedItem.title}</Link>
             </Typography>
           </motion.div>
           <motion.div
@@ -175,7 +175,7 @@ function JobDetail(props) {
           </Typography>
         </div>
 
-        <Card className="rounded-16">
+        <Card className="" variant="outlined">
           <CardHeader
             action={
               <IconButton aria-label="Learn more">

@@ -2,6 +2,7 @@ import Icon from '@mui/material/Icon';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { selectMainThemeDark } from 'app/store/fuse/settingsSlice';
@@ -112,16 +113,18 @@ function JobDetailHeader(props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.3 } }}
           >
-            <Avatar
-              sx={{
-                borderWidth: 1,
-                borderStyle: 'solid',
-                borderColor: 'background.default',
-              }}
-              className="flex items-center justify-center w-80 h-80"
-              src={props.company.avatar}
-              variant="square"
-            />
+            <Link href={`/company/${props.company.id}`}>
+              <Avatar
+                sx={{
+                  borderWidth: 1,
+                  borderStyle: 'solid',
+                  borderColor: 'background.default',
+                }}
+                className="flex items-center justify-center w-80 h-80"
+                src={props.company.avatar}
+                variant="square"
+              />
+            </Link>
           </motion.div>
         </div>
       </Root>

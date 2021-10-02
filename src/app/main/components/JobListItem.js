@@ -2,27 +2,25 @@ import _ from '@lodash';
 import { styled } from '@mui/material/styles';
 import { amber, red } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveJob, setSelectedItem } from '../store/jobsSlice';
-import { dateDifference, dateDiff } from '../../../../utils/helper';
+import { dateDifference, dateDiff } from '../../utils/helper';
 
 
 
 const StyledListItem = styled(ListItem)(({ theme, completed }) => ({
-  ...(completed && {
-    background: 'rgba(0,0,0,0.03)',
-    '& .job-title, & .job-notes': {
-      textDecoration: 'line-through',
-    },
-    '& a': {
-      textDecoration: 'none!important'
-    }
-  }),
+  background: 'white',
+  borderRadius: 6,
+  marginBottom: 8,
+  '&:hover': {
+    borderWidth: '1px',
+    borderColor: theme.palette.secondary.light
+  },
 }));
 
 function JobListItem(props) {
@@ -32,12 +30,13 @@ function JobListItem(props) {
     return null;
   }
 
+  const location = props.job.city? props.job.city + ',' + props.job.country:props.job.state + ',' + props.job.country;
   return  (
     <StyledListItem
       className="py-20 px-0 sm:px-8"
       dense
       button
-      onClick={(event) => dispatch(setSelectedItem(props.job._id))}
+      onClick={(event) => dispatch(props.setSelectedItem(props.job._id))}
     >
       <Avatar className="mx-4 rounded-4" variant="square" sx={{width: 60, height: 60}} alt={props.job.company.name} src={props.job.company.avatar}/>
 
@@ -46,15 +45,18 @@ function JobListItem(props) {
           className="job-title truncate text-14 font-medium"
           color={props.job.hasApplied ? 'textSecondary' : 'inherit'}
         >
-          <Link href={`/jobs/view/${props.job.jobId}`} className="color-">{props.job.title}</Link>
+          <Link href={`/jobs/view/${props.job.jobId}`} style={{textDecoration: "none"}}>{props.job.title}</Link>
         </Typography>
 
         <Typography className="">
-          <Link href="#" color="secondary" underline="hover">{props.job.company.name}</Link>
+          <Link href="#" color="secondary" underline="hover" style={{textDecoration: "none"}}>{props.job.company.name}</Link>
         </Typography>
-        <Typography className="">
-          {props.job.country}
-        </Typography>
+        <Button size="small" aria-label={location} className="justify-start">
+          <Icon className="text-16" color="action">
+            place
+          </Icon>
+          <Typography className="mx-4">{location}</Typography>
+        </Button>
         <Typography className="">
           {dateDiff(props.job.createdDate)}
         </Typography>

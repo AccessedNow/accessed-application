@@ -36,7 +36,7 @@ function JobListItem(props) {
       className="py-20 px-0 sm:px-8"
       dense
       button
-      onClick={(event) => dispatch(props.setSelectedItem(props.job._id))}
+      onClick={(event) => dispatch(props.setSelectedItem(props.job))}
     >
       <Avatar className="mx-4 rounded-4" variant="square" sx={{width: 60, height: 60}} alt={props.job.company.name} src={props.job.company.avatar}/>
 

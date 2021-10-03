@@ -19,9 +19,9 @@ export const searchJobs = createAsyncThunk(
     }
     routeParams = routeParams || getState().jobSearch.jobs.routeParams;
     const response = await axios.post('http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search?size=25&page=0&sortBy=relevant&direction=ASC&query=', filters);
-    const data = response.data.data.content;
+    const data = await response.data.data;
 
-    return { data, routeParams };
+    return data;
   }
 );
 
@@ -49,26 +49,32 @@ export const getJob = createAsyncThunk(
   }
 );
 
-// const jobsAdapter = createEntityAdapter({});
-const jobsAdapter = createEntityAdapter({
-  selectId: function(job) {
-    return job._id
-  }
-})
+const jobsAdapter = createEntityAdapter({});
+// const jobsAdapter = createEntityAdapter({
+//   selectId: function(job) {
+//     return job._id
+//   }
+// })
 
-export const { selectAll: selectJobs, selectById: selectJobsById } = jobsAdapter.getSelectors(
-  function(state) {
-    return state.jobSearch.jobs
-  }
-);
+// export const { selectAll: selectJobs, selectById: selectJobsById } = jobsAdapter.getSelectors(
+//   function(state) {
+//     return state.jobSearch.jobs
+//   }
+// );
 
 const jobsSlice = createSlice({
   name: 'jobs/search',
   initialState: jobsAdapter.getInitialState({
-    selectedItemId: '612356b423b8b141d120d782',
+    data: null,
+    selectedItem: null,
     searchText: '',
-    orderBy: '',
-    orderDescending: false,
+    noOfElements: 0,
+    pagination: {
+      page: 0,
+      size: 20,
+      orderBy: 'createdDate',
+      orderDescending: true,
+    },
     routeParams: {},
     jobDialog: {
       type: 'new',
@@ -80,7 +86,7 @@ const jobsSlice = createSlice({
   }),
   reducers: {
     setSelectedItem: (state, action) => {
-      state.selectedItemId = action.payload;
+      state.selectedItem = action.payload;
     },
     setSearchText: {
       reducer: (state, action) => {
@@ -98,11 +104,16 @@ const jobsSlice = createSlice({
   },
   extraReducers: {
     [saveJob.fulfilled]: jobsAdapter.upsertOne,
+    // [searchJobs.fulfilled]: (state, action) => action.payload,
     [searchJobs.fulfilled]: (state, action) => {
-      const { data, routeParams } = action.payload;
-      jobsAdapter.setAll(state, data);
-      state.routeParams = routeParams;
-      state.searchText = '';
+      state.data = action.payload;
+      if(!state.selectedItem && action.payload.content){
+        state.selectedItem = action.payload.content[0]
+      }
+
+      state.page = action.payload.page;
+      state.size = action.payload.size;
+
     },
   },
 });

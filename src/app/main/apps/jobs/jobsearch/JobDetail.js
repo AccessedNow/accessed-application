@@ -68,10 +68,11 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 }));
 
 function JobDetail(props) {
-  const selectedItem = useSelector((state) =>
-    selectJobsById(state, state.jobSearch.jobs.selectedItemId)
-  );
+  // const selectedItem = useSelector((state) =>
+  //   selectJobsById(state, state.jobSearch.jobs.selectedItemId)
+  // );
 
+  const selectedItem = useSelector(({ jobSearch }) => jobSearch.jobs.selectedItem);
   if (!selectedItem) {
     return null;
   }

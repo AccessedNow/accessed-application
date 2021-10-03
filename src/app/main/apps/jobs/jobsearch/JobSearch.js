@@ -1,6 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import FusePageSimple from '@fuse/core/FusePageSimple';
+import FuseLoading from '@fuse/core/FuseLoading';
+
 import withReducer from 'app/store/withReducer';
 import Hidden from '@mui/material/Hidden';
 import Icon from '@mui/material/Icon';
@@ -26,15 +28,16 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { styled } from '@mui/material/styles';
 import reducer from '../store';
-import { searchJobs, selectJobsById } from '../store/jobsSlice';
-import JobSearchList from '../components/JobSearchList';
+import {searchJobs, setSelectedItem} from '../store/jobsSlice';
+import JobList from '../../../components/JobList';
 import JobDetail from './JobDetail';
 import JobSearchHeader from './JobSearchHeader';
 import ContactsHeader from './ContactsHeader';
@@ -43,7 +46,6 @@ import SearchToolbar from './SearchToolbar';
 import JobFilter from './JobFilter';
 
 import TopJobs from './TopJobs';
-import {getFiles} from "../../file-manager/store/filesSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
 
@@ -109,17 +111,21 @@ function JobSearch(props) {
   const pageLayout = useRef(null);
   const dispatch = useDispatch();
   const routeParams = useParams();
-
-  const selectedItem = useSelector((state) =>
-    selectJobsById(state, state.jobSearch.jobs.selectedItemId)
-  );
+  const [loading, setLoading] = useState(true);
+  const data = {};
+  // const selectedItem = useSelector((state) =>
+  //   selectJobsById(state, state.jobSearch.jobs.selectedItemId)
+  // );
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const container = window !== undefined ? () => window().document.body : undefined;
 
   useEffect(() => {
-    dispatch(searchJobs(routeParams));
+    dispatch(searchJobs(routeParams)).then(({payload}) => {
+      setLoading(false);
+
+    })
   }, [dispatch]);
 
   // useDeepCompareEffect(() => {
@@ -176,6 +182,9 @@ function JobSearch(props) {
     </Box>
   );
 
+  if(!data){
+    <FuseLoading/>
+  }
   return (
 
       <Root
@@ -201,7 +210,7 @@ function JobSearch(props) {
               </Typography>
               <Switch {...label} defaultChecked />
             </div>
-            <JobSearchList/>
+            <JobList data={data} setSelectedItem={setSelectedItem}/>
           </div>
         }
         // leftSidebarContent={<JobFilter></JobFilter>}

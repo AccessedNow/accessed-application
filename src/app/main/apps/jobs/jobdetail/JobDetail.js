@@ -238,6 +238,36 @@ function JobDetail() {
                       {job.description}
                     </Typography>
                   </div>
+                  <div className="w-full items-center justify-between" mb-40>
+                    <Typography variant="h6" className="mb-10 text-14 mb-30">
+                      Qualifications
+                    </Typography>
+                    <ul>
+                      {job.qualifications.map((q) => (
+                        <li>{q}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="w-full items-center justify-between" mb-40>
+                    <Typography variant="h6" className="mb-10 text-14 mb-30">
+                      Minimum Qualifications
+                    </Typography>
+                    <ul>
+                      {job.minimumQualifications.map((q) => (
+                        <li>{q}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="w-full items-center justify-between" mb-40>
+                    <Typography variant="h6" className="mb-10 text-14 mb-30">
+                      Responsibilities
+                    </Typography>
+                    <ul>
+                      {job.responsibilities.map((q) => (
+                        <li>{q}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </Card>
               <Card className="mb-20" >

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import FuseLoading from '@fuse/core/FuseLoading';
@@ -36,7 +37,7 @@ import { useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { styled } from '@mui/material/styles';
 import reducer from '../store';
-import {searchJobs, setSelectedItem} from '../store/jobsSlice';
+import {searchJobs, setSelectedItem, setLoading, setPagination} from '../store/jobsSlice';
 import JobList from '../../../components/JobList';
 import JobDetail from './JobDetail';
 import JobSearchHeader from './JobSearchHeader';
@@ -61,7 +62,10 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     },
     '.search': {
       width: 1120,
-      padding: 12
+      padding: 12,
+      [theme.breakpoints.up('l')]: {
+        width: '100%',
+      },
     }
   },
   '& .FusePageSimple-wrapper': {
@@ -74,6 +78,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-contentWrapper': {
     padding: 0,
     marginTop: 20,
+    marginBottom: 100,
     [theme.breakpoints.up('sm')]: {
       padding: 0,
       height: '100%',
@@ -111,12 +116,15 @@ function JobSearch(props) {
   const pageLayout = useRef(null);
   const dispatch = useDispatch();
   const routeParams = useParams();
-  const [loading, setLoading] = useState(true);
-  const data = {};
-  // const selectedItem = useSelector((state) =>
-  //   selectJobsById(state, state.jobSearch.jobs.selectedItemId)
-  // );
 
+
+  const data = useSelector(({ jobSearch }) => jobSearch.jobs.data);
+  const loading = useSelector(({ jobSearch }) => jobSearch.jobs.loading);
+
+  if(props.location.search) {
+    const query = queryString.parse(props.location.search);
+    dispatch(setPagination(query));
+  }
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const container = window !== undefined ? () => window().document.body : undefined;
@@ -124,7 +132,6 @@ function JobSearch(props) {
   useEffect(() => {
     dispatch(searchJobs(routeParams)).then(({payload}) => {
       setLoading(false);
-
     })
   }, [dispatch]);
 
@@ -182,7 +189,7 @@ function JobSearch(props) {
     </Box>
   );
 
-  if(!data){
+  if(!loading){
     <FuseLoading/>
   }
   return (
@@ -210,7 +217,10 @@ function JobSearch(props) {
               </Typography>
               <Switch {...label} defaultChecked />
             </div>
-            <JobList data={data} setSelectedItem={setSelectedItem}/>
+
+            {data &&
+              <JobList data={data} setSelectedItem={setSelectedItem}/>
+            }
           </div>
         }
         // leftSidebarContent={<JobFilter></JobFilter>}

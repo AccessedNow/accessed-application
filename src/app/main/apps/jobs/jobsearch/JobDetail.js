@@ -107,7 +107,7 @@ function JobDetail(props) {
       <div className="w-full items-center justify-between px-32 py-40">
         <div className="flex flex-1 w-full items-center justify-between">
           <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
-            <Typography className="text-16 sm:text-20 truncate font-semibold">
+            <Typography className="text-16 sm:text-20 font-semibold">
               <Link href={`/jobs/view/${selectedItem.jobId}`} style={{textDecoration: "none"}}>{selectedItem.title}</Link>
             </Typography>
           </motion.div>
@@ -125,7 +125,7 @@ function JobDetail(props) {
           </motion.div>
         </div>
         <div className="flex flex-1 w-full items-center justify-between mb-40">
-          <Typography className="truncate">
+          <Typography className="">
             {selectedItem.company.name} - {selectedItem.country}
           </Typography>
           <Typography className="truncate">

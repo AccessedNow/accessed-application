@@ -32,7 +32,8 @@ import JobDetailHeader from './JobDetailHeader';
 import {getJob, saveJob, applyJob} from "./store/jobSlice";
 import reducer from './store';
 import {getSimilarJobs} from "./store/similarJobsSlice";
-
+import {openDialog} from "../store/applicationSlice";
+import ApplyDialog from "../components/ApplyDialog";
 import JobGrid from "../../../components/JobGrid";
 import Ad from "../../../components/Ad";
 import MediaAd from "../../../components/MediaAd";
@@ -63,7 +64,9 @@ function JobDetail() {
   const routeParams = useParams();
   const job = useSelector(({ jobDetail }) => jobDetail.job);
   const similarJobs = useSelector(({ jobDetail }) => jobDetail.similarJobs);
+  const dialogOpen = useSelector(({ jobDetail }) => jobDetail.application.dialogOpen);
 
+  const [showDetails, setShowDetails] = useState(false);
   const container = {
     show: {
       transition: {
@@ -76,45 +79,6 @@ function JobDetail() {
     hidden: { opacity: 0, y: 40 },
     show: { opacity: 1, y: 0 },
   };
-
-  const activities = [
-    {
-      id: '1',
-      user: {
-        name: 'Alice Freeman',
-        avatar: 'assets/images/avatars/alice.jpg'
-      },
-      message: 'started following you.',
-      time: '13 mins. ago'
-    },
-    {
-      id: '2',
-      user: {
-        name: 'Andrew Green',
-        avatar: 'assets/images/avatars/andrew.jpg'
-      },
-      message: 'sent you a message.',
-      time: 'June 10,2015'
-    },
-    {
-      id: '3',
-      user: {
-        name: 'Garry Newman',
-        avatar: 'assets/images/avatars/garry.jpg'
-      },
-      message: 'shared a public post with your group.',
-      time: 'June 9,2015'
-    },
-    {
-      id: '4',
-      user: {
-        name: 'Carl Henderson',
-        avatar: 'assets/images/avatars/carl.jpg'
-      },
-      message: 'wants to play Fallout Shelter with you.',
-      time: 'June 8,2015'
-    }
-  ];
 
   useEffect(() => {
     dispatch(getSimilarJobs(routeParams));
@@ -140,16 +104,17 @@ function JobDetail() {
   }
 
 
-
   function handleSaveJob() {
     dispatch(saveJob(id));
   }
 
-  function handleApplyJob() {
-    dispatch(applyJob(getValues()));
+  function handleApplyJob(job) {
+    dispatch(openDialog(job));
   }
 
-
+  if(!job){
+    return null;
+  }
 
   return (
     <Root>
@@ -229,44 +194,63 @@ function JobDetail() {
                       </Typography>
                     </div>
                   </div>
+
                   <div className="w-full items-center justify-between" mb-40>
                     <Typography variant="h6" className="mb-10 text-14 mb-30">
                       Description
                     </Typography>
-
-                    <Typography className="mb-16" component="p" style={{whiteSpace: "pre-line"}}>
-                      {job.description}
-                    </Typography>
-                  </div>
-                  <div className="w-full items-center justify-between" mb-40>
-                    <Typography variant="h6" className="mb-10 text-14 mb-30">
-                      Qualifications
-                    </Typography>
-                    <ul>
-                      {job.qualifications.map((q) => (
-                        <li>{q}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="w-full items-center justify-between" mb-40>
-                    <Typography variant="h6" className="mb-10 text-14 mb-30">
-                      Minimum Qualifications
-                    </Typography>
-                    <ul>
-                      {job.minimumQualifications.map((q) => (
-                        <li>{q}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="w-full items-center justify-between" mb-40>
-                    <Typography variant="h6" className="mb-10 text-14 mb-30">
-                      Responsibilities
-                    </Typography>
-                    <ul>
-                      {job.responsibilities.map((q) => (
-                        <li>{q}</li>
-                      ))}
-                    </ul>
+                    {!showDetails ?
+                      <div>
+                        <Typography className="mb-16" component="p" style={{whiteSpace: "pre-line", overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', 'webkitLineClamp': '5', 'webkitBoxOrient': 'vertical'}}>
+                          {job.description}
+                        </Typography>
+                        <Typography
+                          color="primary"
+                          className="cursor-pointer underline mb-8"
+                          onClick={() => {
+                            setShowDetails(!showDetails);
+                          }}
+                        >
+                          {showDetails ? <span>Hide</span> : <span>Show More</span>}
+                        </Typography>
+                      </div>
+                      :
+                      <div>
+                        <Typography className="mb-16" component="p" style={{whiteSpace: "pre-line"}}>
+                          {job.description}
+                        </Typography>
+                        <div className="w-full items-center justify-between" mb-40>
+                          <Typography variant="h6" className="mb-10 text-14 mb-30">
+                            Qualifications
+                          </Typography>
+                          <ul>
+                            {job.qualifications.map((q) => (
+                              <li>{q}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="w-full items-center justify-between" mb-40>
+                          <Typography variant="h6" className="mb-10 text-14 mb-30">
+                            Minimum Qualifications
+                          </Typography>
+                          <ul>
+                            {job.minimumQualifications.map((q) => (
+                              <li>{q}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="w-full items-center justify-between" mb-40>
+                          <Typography variant="h6" className="mb-10 text-14 mb-30">
+                            Responsibilities
+                          </Typography>
+                          <ul>
+                            {job.responsibilities.map((q) => (
+                              <li>{q}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    }
                   </div>
                 </div>
               </Card>
@@ -325,7 +309,7 @@ function JobDetail() {
             </div>
           </div>
         </motion.div>
-
+        <ApplyDialog job={job} dialogOpen={dialogOpen}/>
     </Root>
   );
 }

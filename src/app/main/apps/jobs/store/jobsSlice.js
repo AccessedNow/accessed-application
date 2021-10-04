@@ -1,24 +1,17 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
+import queryString from 'query-string';
+import _ from 'lodash';
 
 export const searchJobs = createAsyncThunk(
   'jobs/search',
   async (routeParams, { getState }) => {
-    let filters = {
-      "createdDate": "",
-      "level": [],
-      "city": [],
-      "state": [],
-      "country": [],
-      "company": [],
-      "employmentType": [],
-      // "industry": [],
-      "tags": [],
-      "workFromHome": "REMOTE",
-      "isPromoted": false
-    }
     routeParams = routeParams || getState().jobSearch.jobs.routeParams;
-    const response = await axios.post('http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search?size=25&page=0&sortBy=relevant&direction=ASC&query=', filters);
+    let filter = getState().jobSearch.jobs.filter;
+    let query = _.cloneDeep(getState().jobSearch.jobs.pagination.query);
+    query.page--;
+    query = new URLSearchParams(query);
+    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search?${query}`, filter);
     const data = await response.data.data;
 
     return data;
@@ -49,6 +42,15 @@ export const getJob = createAsyncThunk(
   }
 );
 
+export const getTitleSuggestion = createAsyncThunk(
+  'job/titleSuggestion',
+  async (query) => {
+    const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search/suggestions?query=${query}`, null);
+    const data = await response.data.data;
+    return data;
+  }
+);
+
 const jobsAdapter = createEntityAdapter({});
 // const jobsAdapter = createEntityAdapter({
 //   selectId: function(job) {
@@ -65,15 +67,31 @@ const jobsAdapter = createEntityAdapter({});
 const jobsSlice = createSlice({
   name: 'jobs/search',
   initialState: jobsAdapter.getInitialState({
-    data: null,
+    data: [],
+    loading: true,
     selectedItem: null,
     searchText: '',
     noOfElements: 0,
+    filter: {
+      "createdDate": "",
+      "level": [],
+      "city": [],
+      "state": [],
+      "country": [],
+      "company": [],
+      "employmentType": [],
+      // "industry": [],
+      "tags": [],
+      "workFromHome": "REMOTE",
+      "isPromoted": false
+    },
     pagination: {
-      page: 0,
-      size: 20,
-      orderBy: 'createdDate',
-      orderDescending: true,
+      query: {
+        page: 0,
+        size: 20,
+        sortyBy: 'createdDate',
+        direction: 'DESC'
+      }
     },
     routeParams: {},
     jobDialog: {
@@ -85,6 +103,17 @@ const jobsSlice = createSlice({
     },
   }),
   reducers: {
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+    setPagination: (state, action) => {
+      state.pagination.query = {
+        page: action.payload.page?parseInt(action.payload.page):0,
+        size: action.payload.size?parseInt(action.payload.size):20,
+        sortyBy: action.payload.sortBy?action.payload.orderBy:'createdDate',
+        direction: action.payload.direction?action.payload.direction:'DESC',
+      };
+    },
     setSelectedItem: (state, action) => {
       state.selectedItem = action.payload;
     },
@@ -100,29 +129,35 @@ const jobsSlice = createSlice({
     changeOrder: (state, action) => {
       state.orderBy = action.payload;
     },
-
+    updatePage: (state, action) => {
+      state.pagination.query.page = action.payload;
+    },
   },
   extraReducers: {
     [saveJob.fulfilled]: jobsAdapter.upsertOne,
     // [searchJobs.fulfilled]: (state, action) => action.payload,
     [searchJobs.fulfilled]: (state, action) => {
-      state.data = action.payload;
-      if(!state.selectedItem && action.payload.content){
+
+      if(action.payload.content){
         state.selectedItem = action.payload.content[0]
       }
 
-      state.page = action.payload.page;
-      state.size = action.payload.size;
+      state.data = action.payload.content;
+      state.pagination.totalPages = action.payload.totalPages;
+      state.pagination.totalElements = action.payload.totalElements;
 
     },
   },
 });
 
 export const {
+  setLoading,
+  setPagination,
   setSelectedItem,
   setSearchText,
   toggleOrderDescending,
-  changeOrder
+  changeOrder,
+  updatePage
 } = jobsSlice.actions;
 
 export default jobsSlice.reducer;

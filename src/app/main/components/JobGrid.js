@@ -12,7 +12,7 @@ function JobList(props) {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={3}>
         {props.jobs.map((job) => (
-          <Grid item xs={4} md={4}>
+          <Grid key={job._id} item xs={4} md={4}>
             <JobCardItem job={job}/>
           </Grid>
 

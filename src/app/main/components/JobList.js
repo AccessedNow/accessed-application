@@ -49,7 +49,7 @@ function JobList(props) {
     <div>
       <List className="p-0" type={props.type}>
         {data.map((job) => (
-          <JobListItem job={job} setSelectedItem={props.setSelectedItem}/>
+          <JobListItem key={job._id} job={job} setSelectedItem={props.setSelectedItem}/>
 
         ))}
       </List>

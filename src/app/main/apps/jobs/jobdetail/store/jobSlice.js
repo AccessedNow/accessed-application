@@ -1,6 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
+
 import axios from 'axios';
 import { showMessage } from 'app/store/fuse/messageSlice';
+import {getTodos} from "../../../todo/store/todosSlice";
 
 export const getJob = createAsyncThunk('job/detail', async (params) => {
   const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${params.id}` );
@@ -23,10 +25,9 @@ export const saveJob = createAsyncThunk(
 
 export const applyJob = createAsyncThunk(
   'job/apply',
-  async (_data, { getState, dispatch }) => {
-    const { id } = getState().mailApp.mail;
+  async (form, { getState, dispatch }) => {
 
-    const response = await axios.post('/api/job/apply', { id, ..._data });
+    const response = await axios.post('http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${form.id}/apply', {...form});
     const data = await response.data;
 
     dispatch(showMessage({ message: 'Job Applied' }));
@@ -46,12 +47,49 @@ export const getSimilarJobs = createAsyncThunk(
 );
 
 
+export const addTodo = createAsyncThunk(
+  'todoApp/todos/addTodo',
+  async (todo, { dispatch, getState }) => {
+    const response = await axios.post('/api/todo-app/new-todo', todo);
+    const data = await response.data;
+
+    dispatch(getTodos());
+
+    return data;
+  }
+);
+
+const jobAdapter = createEntityAdapter({});
+
+
 const jobSlice = createSlice({
   name: 'job/detail',
-  initialState: null,
-  reducers: {},
+  initialState: {
+    detail: null,
+    applicationDialog: {
+      activeStep: 1,
+      data: null,
+      dialogOpen: false
+    },
+  },
+  reducers: {
+    openDialog: (state, action) => {
+      state.applicationDialog.dialogOpen = true;
+      state.data = action.payload;
+    },
+    closeDialog: (state, action) => {
+      state.applicationDialog.dialogOpen = false;
+      state.data = null;
+    },
+    updateStep: (state, action) => {
+      state.applicationDialog.activeStep = action.payload;
+      // state.data = null;
+    },
+  },
   extraReducers: {
-    [getJob.fulfilled]: (state, action) => action.payload,
+    [getJob.fulfilled]: (state, action) => {
+      state.detail = action.payload;
+    },
     [saveJob.fulfilled]: (state, action) => ({
       ...state,
       ...action.payload,
@@ -59,8 +97,11 @@ const jobSlice = createSlice({
     [applyJob.fulfilled]: (state, action) => ({
       ...state,
       ...action.payload,
-    })
+    }),
+    [addTodo.fulfilled]: jobAdapter.addOne,
   },
 });
+
+export const { updateStep, openDialog, closeDialog } = jobSlice.actions;
 
 export default jobSlice.reducer;

@@ -29,11 +29,12 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { withRouter, useParams } from 'react-router-dom';
 import JobDetailHeader from './JobDetailHeader';
 
-import {getJob, saveJob, applyJob} from "./store/jobSlice";
+import {getJob, saveJob, applyJob, openDialog, closeDialog, updateStep, addTodo} from "./store/jobSlice";
 import reducer from './store';
 import {getSimilarJobs} from "./store/similarJobsSlice";
-import {openDialog} from "../store/applicationSlice";
-import ApplyDialog from "../components/ApplyDialog";
+import ApplyDialog from "../components/dialogs/ApplyDialog";
+import TodoDialog from "../components/dialogs/TodoDialog";
+
 import JobGrid from "../../../components/JobGrid";
 import Ad from "../../../components/Ad";
 import MediaAd from "../../../components/MediaAd";
@@ -62,9 +63,9 @@ const Root = styled('div')({
 function JobDetail() {
   const dispatch = useDispatch();
   const routeParams = useParams();
-  const job = useSelector(({ jobDetail }) => jobDetail.job);
+  const job = useSelector(({ jobDetail }) => jobDetail.job.detail);
   const similarJobs = useSelector(({ jobDetail }) => jobDetail.similarJobs);
-  const dialogOpen = useSelector(({ jobDetail }) => jobDetail.application.dialogOpen);
+  const applicationDialog = useSelector(({ jobDetail }) => jobDetail.job.applicationDialog);
 
   const [showDetails, setShowDetails] = useState(false);
   const container = {
@@ -201,7 +202,7 @@ function JobDetail() {
                     </Typography>
                     {!showDetails ?
                       <div>
-                        <Typography className="mb-16" component="p" style={{whiteSpace: "pre-line", overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', 'webkitLineClamp': '5', 'webkitBoxOrient': 'vertical'}}>
+                        <Typography className="mb-16" component="p" style={{whiteSpace: "pre-line", overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', 'WebkitLineClamp': '5', 'WebkitBoxOrient': 'vertical'}}>
                           {job.description}
                         </Typography>
                         <Typography
@@ -309,7 +310,8 @@ function JobDetail() {
             </div>
           </div>
         </motion.div>
-        <ApplyDialog job={job} dialogOpen={dialogOpen}/>
+        {/*<ApplyDialog job={job} updateStep={updateStep} openDialog={openDialog} closedialog={closeDialog} applicationDialog={applicationDialog}/>*/}
+        <TodoDialog job={job} addTodo={addTodo} apply={applyJob} openDialog={openDialog} closeDialog={closeDialog}  applicationDialog={applicationDialog}/>
     </Root>
   );
 }

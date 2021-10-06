@@ -1,4 +1,5 @@
 import _ from '@lodash';
+import history from '@history';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -39,8 +40,15 @@ function JobCardItem(props) {
     return null;
   }
 
+  const handleClick = (event) => {
+    history.push({
+      pathname: `/jobs/view/${props.job.jobId}`,
+      state: { fromDashboard: true }
+    });
+  };
+
   return  (
-    <Card sx={{ maxWidth: 345 }}>
+    <StyledCardItem variant="outlined" sx={{ maxWidth: 345 }} className="rounded-8" onClick={handleClick}>
       <CardHeader
         avatar={
           <Avatar
@@ -63,11 +71,9 @@ function JobCardItem(props) {
         subheader=""
       />
       <CardContent>
-        <Link href={`/jobs/view/${props.job.jobId}`}>
-          <Typography variant="body">
-            {props.job.title}
-          </Typography>
-        </Link>
+        <Typography variant="body">
+          {props.job.title}
+        </Typography>
         <Typography variant="body2" color="text.secondary">
           {props.job.company.name}, {props.job.country}
         </Typography>
@@ -84,7 +90,7 @@ function JobCardItem(props) {
         </IconButton>
       </CardActions>
 
-    </Card>
+    </StyledCardItem>
   );
 }
 

@@ -26,8 +26,9 @@ export const saveJob = createAsyncThunk(
 export const applyJob = createAsyncThunk(
   'job/apply',
   async (form, { getState, dispatch }) => {
-
-    const response = await axios.post('http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${form.id}/apply', {...form});
+    let {id} = form;
+    delete form.id;
+    const response = await axios.post(`http://localhost:8080/api/jobs/${id}/apply`, {...form}, {headers: {userId: getState().auth.user.data.id}});
     const data = await response.data;
 
     dispatch(showMessage({ message: 'Job Applied' }));

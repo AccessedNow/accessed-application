@@ -36,59 +36,57 @@ function AboutTab() {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show">
-      <div>
-        <div className="">
-          <Card component={motion.div} variants={item} className="w-full mb-32">
-            <CardContent>
-              <div className="mb-24">
-                <Typography className="font-semibold mb-4 text-15">About</Typography>
-                <Typography>{company.about}</Typography>
-              </div>
-            </CardContent>
-          </Card>
+      <div className="">
+        <Card component={motion.div} variant="outlined" className="w-full mb-32 rounded-8">
+          <CardContent>
+            <div className="mb-24">
+              <Typography className="font-semibold mb-4 text-15">About</Typography>
+              <Typography>{company.about}</Typography>
+            </div>
+          </CardContent>
+        </Card>
 
 
-          <Card component={motion.div} variants={item} className="w-full mb-32">
-            <CardContent>
-              <div className="mb-24">
-                <Typography className="font-semibold mb-4 text-15">Address</Typography>
-                {/*<Typography>{company.primaryAddress}</Typography>*/}
-              </div>
+        <Card component={motion.div} variant="outlined" className="w-full mb-32 rounded-8">
+          <CardContent>
+            <div className="mb-24">
+              <Typography className="font-semibold mb-4 text-15">Address</Typography>
+              {/*<Typography>{company.primaryAddress}</Typography>*/}
+            </div>
 
-              <div className="mb-24">
-                <Typography className="font-semibold mb-4 text-15">Tel.</Typography>
+            <div className="mb-24">
+              <Typography className="font-semibold mb-4 text-15">Tel.</Typography>
 
-                {/*{company.contacts.map((tel) => (*/}
-                  {/*<div className="flex items-center" key={tel}>*/}
-                    {/*<Typography>{tel}</Typography>*/}
-                  {/*</div>*/}
-                {/*))}*/}
-              </div>
+              {/*{company.contacts.map((tel) => (*/}
+                {/*<div className="flex items-center" key={tel}>*/}
+                  {/*<Typography>{tel}</Typography>*/}
+                {/*</div>*/}
+              {/*))}*/}
+            </div>
 
-              <div className="mb-24">
-                <Typography className="font-semibold mb-4 text-15">Website</Typography>
+            <div className="mb-24">
+              <Typography className="font-semibold mb-4 text-15">Website</Typography>
 
-                {/*{company.website.map((website) => (*/}
-                  {/*<div className="flex items-center" key={website}>*/}
-                    {/*<Typography>{website}</Typography>*/}
-                  {/*</div>*/}
-                {/*))}*/}
-              </div>
+              {/*{company.website.map((website) => (*/}
+                {/*<div className="flex items-center" key={website}>*/}
+                  {/*<Typography>{website}</Typography>*/}
+                {/*</div>*/}
+              {/*))}*/}
+            </div>
 
-              <div className="mb-24">
-                <Typography className="font-semibold mb-4 text-15">Emails</Typography>
+            <div className="mb-24">
+              <Typography className="font-semibold mb-4 text-15">Emails</Typography>
 
-                {/*{contact.emails.map((email) => (*/}
-                  {/*<div className="flex items-center" key={email}>*/}
-                    {/*<Typography>{email}</Typography>*/}
-                  {/*</div>*/}
-                {/*))}*/}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
+              {/*{contact.emails.map((email) => (*/}
+                {/*<div className="flex items-center" key={email}>*/}
+                  {/*<Typography>{email}</Typography>*/}
+                {/*</div>*/}
+              {/*))}*/}
+            </div>
+          </CardContent>
+        </Card>
       </div>
+
     </motion.div>
   );
 }

@@ -2,21 +2,26 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { showMessage } from 'app/store/fuse/messageSlice';
 
-export const getCompany = createAsyncThunk('company/detail', async (params) => {
-  const response = await axios.get(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/company/${params.id}` );
+export const getCompany = createAsyncThunk('company/detail', async (params, { dispatch, getState }) => {
+  const response = await axios.get(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/company/${params.id}`,  {headers: {userId: getState().auth.user.data.id}});
+  const data = await response.data.data;
+  return data;
+});
+
+export const getCompanyRelationships = createAsyncThunk('company/relationship', async (params, { dispatch, getState }) => {
+  const response = await axios.get(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/company/${params.id}/relationship`, {headers: {userId: getState().auth.user.data.id}} );
   const data = await response.data.data;
   return data;
 });
 
 export const followCompany = createAsyncThunk(
   'company/follow',
-  async (params) => {
-    const response = await axios.post(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/company/${params._id}/follow`, null, {headers: {userId: getState().auth.user.data.id}});
+  async (id, { dispatch, getState }) => {
+    const response = await axios.post(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/company/${id}/follow`, null, {headers: {userId: getState().auth.user.data.id}});
     const data = await response.data;
     return data;
   }
 );
-
 
 
 export const unfollowCompany = createAsyncThunk(
@@ -65,6 +70,10 @@ const jobSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getCompany.fulfilled]: (state, action) => action.payload,
+    [getCompanyRelationships.fulfilled]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
     [getCompanyFeed.fulfilled]: (state, action) => ({
       ...state,
       ...action.payload,

@@ -3,12 +3,15 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import FuseLoading from '@fuse/core/FuseLoading';
 
 import { styled } from '@mui/material/styles';
+import AddIcon from '@mui/icons-material/Add';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import CheckIcon from '@mui/icons-material/Check';
+import PropTypes from 'prop-types';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
@@ -22,7 +25,7 @@ import { useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import withReducer from 'app/store/withReducer';
 import reducer from "./store";
-import {getCompany} from "./store/companySlice";
+import {getCompany, getCompanyRelationships, followCompany} from "./store/companySlice";
 import AboutTab from './tabs/AboutTab';
 import PhotosVideosTab from './tabs/PhotosVideosTab';
 import TimelineTab from './tabs/TimelineTab';
@@ -99,23 +102,66 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   },
 }));
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 function CompanyPage() {
   const pageLayout = useRef(null);
   const dispatch = useDispatch();
   const routeParams = useParams();
   const [selectedTab, setSelectedTab] = useState(0);
   const [loading, setLoading] = useState(true);
-
+  const [relationships, setRelationships] = useState();
+  const [tabIndex, setTabIndex] = React.useState(0);
   const company = useSelector(({ companyPage }) => companyPage.company);
+
 
   useDeepCompareEffect(() => {
     dispatch(getCompany(routeParams)).then(() => setLoading(false));
+    dispatch(getCompanyRelationships(routeParams)).then((response) => {
+      setRelationships(response.payload.relationships)
+    });
   }, [dispatch, routeParams]);
 
 
-  function handleTabChange(event, value) {
-    setSelectedTab(value);
-  }
+  const handleTabChange = (event, index) => {
+    setTabIndex(index);
+  };
+
+  const handleFollow = (event) => {
+    dispatch(followCompany(company.id))
+  };
 
   if (loading) {
     return <FuseLoading />;
@@ -127,7 +173,7 @@ function CompanyPage() {
       content={
         <div>
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.1 } }}>
-            <Card className="mb-32">
+            <Card variant="outlined" className="mb-32 rounded-8 md:rounded-0 lg:rounded-0">
               <CardMedia
                 component="img"
                 height="72"
@@ -148,65 +194,52 @@ function CompanyPage() {
                   />
                   <div className="flex flex-col md:flex-row flex-1 items-center justify-between p-8">
                     <Typography
-                      className="md:px-16 text-24 md:text-20 font-semibold tracking-tight"
-                      variant="h4"
+                      className="md:px-16 sm:text-24 md:text-20 lg:text-16 font-semibold tracking-tight"
                       color="inherit"
                     >
                       {company.name}
                     </Typography>
                     <div className="flex items-center justify-end -mx-4 mt-24 md:mt-0">
-                      <Button className="mx-8" variant="contained" color="secondary" aria-label="Follow">
-                        Follow
-                      </Button>
+                      {relationships && relationships.hasFollowed ?
+                        <Button variant="outlined" startIcon={<CheckIcon />}>
+                          Following
+                        </Button>
+                        :
+                        <Button variant="outlined" startIcon={<AddIcon />} onClick={handleFollow}>
+                          Follow
+                        </Button>
+                      }
+                      {company.website &&
                       <Button variant="contained" color="primary" aria-label="Send Message">
-                        Send Message
+                        Visit website
                       </Button>
+                      }
                     </div>
                   </div>
                 </div>
               </CardContent>
-              <CardActions>
-                <Tabs
-                  value={selectedTab}
-                  onChange={handleTabChange}
-                  indicatorColor="primary"
-                  textColor="inherit"
-                  variant="scrollable"
-                  scrollButtons={false}
-                  className="w-full px-24 -mx-4 min-h-40"
-                  classes={{ indicator: 'flex justify-center bg-transparent w-full h-full' }}
-                  TabIndicatorProps={{
-                    children: (
-                      <Box
-                        sx={{ bgcolor: 'text.disabled' }}
-                        className="w-full h-full rounded-full opacity-20"
-                      />
-                    ),
-                  }}
-                >
-                  <Tab
-                    className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-                    disableRipple
-                    label="About"
-                  />
-                  <Tab
-                    className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-                    disableRipple
-                    label="Posts"
-                  />
-                  <Tab
-                    className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-                    disableRipple
-                    label="Jobs"
-                  />
-                </Tabs>
+              <CardActions className="px-0 pb-0">
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  <Tabs value={tabIndex} onChange={handleTabChange}>
+                    <Tab label="About" {...a11yProps(0)} />
+                    <Tab label="Posts" {...a11yProps(1)} />
+                    <Tab label="Jobs" {...a11yProps(2)} />
+                  </Tabs>
+                </Box>
               </CardActions>
             </Card>
           </motion.div>
           <div className="">
-            {selectedTab === 0 && <AboutTab />}
-            {selectedTab === 1 && <FeedTab />}
-            {selectedTab === 2 && <JobTab />}
+            <TabPanel value={tabIndex} index={0} className="px-0">
+              <AboutTab />
+            </TabPanel>
+            <TabPanel value={tabIndex} index={1}>
+              <FeedTab />
+            </TabPanel>
+            <TabPanel value={tabIndex} index={2}>
+              <JobTab />
+            </TabPanel>
+
           </div>
         </div>
       }

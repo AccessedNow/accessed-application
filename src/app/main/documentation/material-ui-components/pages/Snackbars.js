@@ -186,8 +186,8 @@ function SnackbarsDoc(props) {
       </Typography>
 
       <FuseHighlight component="pre" className="language-jsx">
-        {` 
-import Slide from '@material-ui/core/Slide';
+        {`
+import Slide from '@mui/material/Slide';
 
 function TransitionLeft(props) {
   return <Slide {...props} direction="left" />;

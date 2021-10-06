@@ -124,8 +124,8 @@ function JobDetail() {
             <div className="flex flex-col flex-1 md:ltr:pr-32 md:rtl:pl-32">
               <Card
                 component={motion.div}
-                variants={item}
-                className="w-full overflow-hidden rounded-16 shadow mb-20"
+                variant="outlined"
+                className="w-full overflow-hidden rounded-8 mb-20 "
               >
                 <JobDetailHeader company={job.company}/>
                 <div className="w-full items-center justify-between px-32 py-40">
@@ -255,7 +255,7 @@ function JobDetail() {
                   </div>
                 </div>
               </Card>
-              <Card className="mb-20" >
+              <Card variant="outlined" className="mb-20 rounded-8" >
                 <CardHeader
                   action={
                     <IconButton aria-label="Learn more">

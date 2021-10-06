@@ -39,7 +39,7 @@ const StyledSearchBar = styled('div')(({ theme }) => ({
     },
   },
   '& .MuiAutocomplete-popper': {
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
     color: theme.palette.getContrastText(theme.palette.background.paper),
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 20,
@@ -68,7 +68,7 @@ function ContactsHeader(props) {
 
   return (
     <StyledSearchBar>
-      <div className="flex flex-1 items-start justify-between">
+      <div className="flex flex-1 items-center justify-between">
         <div className="flex flex-shrink items-center">
           <Hidden lgUp>
             <IconButton

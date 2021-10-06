@@ -53,15 +53,17 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   margin: 'auto',
 
   '& .FusePageSimple-header': {
-    minHeight: 72,
+    margin: '0 auto',
+    minHeight: 200,
     // height: 72,
     background: 'none',
     [theme.breakpoints.up('lg')]: {
-      minHeight: 72,
+      minHeight: 200,
       // height: 72,
     },
     '.search': {
       width: 1120,
+      marginTop: 10,
       padding: 12,
       [theme.breakpoints.up('l')]: {
         width: '100%',

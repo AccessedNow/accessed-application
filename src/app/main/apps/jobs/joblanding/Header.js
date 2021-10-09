@@ -5,17 +5,15 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import NotesSearch from './NotesSearch';
 import { toggleVariateDescSize } from './store/notesSlice';
 
-function NotesHeader(props) {
+function Header(props) {
   const dispatch = useDispatch();
-  const variateDescSize = useSelector(({ notesApp }) => notesApp.notes.variateDescSize);
 
   return (
     <div className="flex flex-1 items-center justify-between p-8 sm:p-24 relative">
       <div className="flex flex-shrink items-center sm:w-224">
-        <Hidden smUp>
+        <Hidden lgUp>
           <IconButton
             onClick={(ev) => props.pageLayout.current.toggleLeftSidebar()}
             aria-label="open left sidebar"
@@ -46,16 +44,8 @@ function NotesHeader(props) {
         </div>
       </div>
 
-      <div className="flex flex-1 items-center justify-end">
-        <Tooltip title="Toggle Variate Description Size">
-          <IconButton onClick={(ev) => dispatch(toggleVariateDescSize())} size="large">
-            <Icon color={variateDescSize ? 'action' : 'disabled'}>format_size</Icon>
-          </IconButton>
-        </Tooltip>
-        <NotesSearch />
-      </div>
     </div>
   );
 }
 
-export default NotesHeader;
+export default Header;

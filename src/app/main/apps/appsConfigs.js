@@ -1,3 +1,4 @@
+import CompanyConfig from './company/CompanyConfig';
 import JobConfig from './jobs/JobConfig';
 
 
@@ -15,6 +16,7 @@ import ScrumboardAppConfig from './scrumboard/ScrumboardAppConfig';
 import TodoAppConfig from './todo/TodoAppConfig';
 
 const appsConfigs = [
+  CompanyConfig,
   JobConfig,
 
   AnalyticsDashboardAppConfig,

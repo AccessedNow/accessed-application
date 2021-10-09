@@ -16,7 +16,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 function AboutTab() {
-  const company = useSelector(({ companyPage }) => companyPage.company);
+  const company = useSelector(({ companyDetail }) => companyDetail.company);
   const [data, setData] = useState(null);
   const test = (x) => x + 1;
 

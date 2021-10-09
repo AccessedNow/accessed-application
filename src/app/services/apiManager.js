@@ -30,7 +30,6 @@ const getClient = (url = null) => {
   // Add a request interceptor
   client.interceptors.request.use(
     requestConfig => {
-      console.log('local', localStorage.getItem('jwt_access_token'))
       requestConfig.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwt_access_token')}`;
       requestConfig.headers.common['UserId'] = 87;
       return requestConfig;
@@ -113,8 +112,7 @@ class ApiClient {
 }
 
 const instance = new ApiClient();
-export default instance;
-// module.exports = ApiClient;
+export default ApiClient;
 
 
 

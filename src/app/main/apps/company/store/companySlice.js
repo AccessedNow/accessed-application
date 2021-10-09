@@ -2,6 +2,24 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { showMessage } from 'app/store/fuse/messageSlice';
 
+
+export const registerCompany = createAsyncThunk(
+  'company/register',
+  async (form, { getState, dispatch }) => {
+    const response = await axios.post(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/company/register`, {...form}, {headers: {userId: getState().auth.user.data.id}});
+    const data = await response.data.data;
+
+    if(form.avatar){
+      dispatch(uploadAvatar(form.avatar));
+    }
+
+    dispatch(showMessage({ message: 'Company Created' }));
+
+    return data;
+  }
+);
+
+
 export const getCompany = createAsyncThunk('company/detail', async (params, { dispatch, getState }) => {
   const response = await axios.get(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/company/${params.id}`,  {headers: {userId: getState().auth.user.data.id}});
   const data = await response.data.data;
@@ -63,6 +81,19 @@ export const getCompanyJobs = createAsyncThunk(
   }
 );
 
+export const uploadAvatar = createAsyncThunk(
+  'company/upload/avatar',
+  async (file) => {
+    const formData = new FormData();
+    formData.append(
+      "file",
+      file
+    );
+    const response = await axios.post(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/company/${id}/upload/avatar`, formData, {headers: {userId: getState().auth.user.data.id}});
+    const data = await response.data;
+    return data;
+  }
+);
 
 const jobSlice = createSlice({
   name: 'job/detail',

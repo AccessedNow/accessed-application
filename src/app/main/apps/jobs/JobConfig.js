@@ -20,12 +20,8 @@ const JobConfig = {
       component: lazy(() => import('./jobsearch/JobSearch')),
     },
     {
-      path: '/jobs',
-      component: lazy(() => import('./joblanding/JobLandingPage')),
-    },
-    {
-      path: 'jobs',
-      component: () => <Redirect to="/jobs" />,
+      path: ['jobs', '/jobs', '/jobs/myjobs/viewed', '/jobs/myjobs/saved', '/jobs/myjobs/applied'],
+      component: lazy(() => import('./joblanding/JobLanding')),
     }
   ],
 };

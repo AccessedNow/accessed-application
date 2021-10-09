@@ -1,6 +1,6 @@
 import _ from '@lodash';
 import history from '@history';
-import { styled } from '@mui/material/styles';
+import { emphasize, styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -29,13 +29,31 @@ const StyledCardItem = styled(Card)(({ theme, completed }) => ({
     },
     '& a': {
       textDecoration: 'none!important'
-    }
+    },
+    '&:hover': {
+      color: '#40a9ff',
+      backgroundColor: 'red',
+      boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+    },
   }),
 }));
 
 function JobCardItem(props) {
   const dispatch = useDispatch();
   const avatar = props.job.company && props.job.company.avatar?props.job.company.avatar:'';
+  let location = [];
+
+  if(props.job.city){
+    location.push(props.job.city);
+  }
+  if(props.job.state){
+    location.push(props.job.state);
+  }
+  if(props.job.country){
+    location.push(props.job.country);
+  }
+
+
   if(!props.job || !props.job.company){
     return null;
   }
@@ -48,46 +66,47 @@ function JobCardItem(props) {
   };
 
   return  (
-    <StyledCardItem variant="outlined" sx={{ maxWidth: 345 }} className="rounded-8" onClick={handleClick}>
+    <StyledCardItem variant="outlined" sx={{ maxWidth: 345 }} className="job-item rounded-8 cursor-pointer" onClick={handleClick}>
       <CardHeader
-        avatar={
-          <Avatar
-            sx={{
-              borderWidth: 1,
-              borderStyle: 'solid',
-              borderColor: 'background.default',
-            }}
-            className="flex items-center justify-center w-48 h-48"
-            src={avatar}
-            variant="square"
-          />
-        }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
+          <IconButton size="small" aria-label="add to favorites">
+            <FavoriteIcon fontSize="inherit"/>
           </IconButton>
         }
         title=""
         subheader=""
+        className="flex pb-0"
       />
-      <CardContent>
-        <Typography variant="body">
+      <CardContent className="flex flex-col flex-auto items-center justify-center talign-center m-0 text-center h-160" >
+        <Avatar
+          sx={{
+            borderWidth: 1,
+            borderStyle: 'solid',
+            borderColor: 'background.default',
+          }}
+          className="flex items-center justify-center talign-center mb-16 w-64 h-64 rounded-4"
+          src={avatar}
+          variant="square"
+        />
+        <Typography variant="h3" className="text-14 font-500">
           {props.job.title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {props.job.company.name}, {props.job.country}
+        <Typography variant="h4" color="text.secondary" className="text-13">
+          {props.job.company.name}
+        </Typography>
+        <Typography variant="body" color="text.secondary" className="text-13">
+          {location.join(',')}
         </Typography>
       </CardContent>
-      <CardActions >
-        <Typography variant="body2" color="text.secondary">
+      <CardActions className="flex flex-row justify-between">
+        <Typography variant="body2" color="text.secondary" className="flex items-start">
           2d ago
         </Typography>
-        <IconButton size="small" aria-label="add to favorites">
-          <FavoriteIcon fontSize="inherit"/>
-        </IconButton>
-        <IconButton size="small" aria-label="share">
-          <ShareIcon fontSize="inherit"/>
-        </IconButton>
+        <div className="flex items-end">
+          {/*<IconButton size="small" aria-label="add to favorites">*/}
+            {/*<FavoriteIcon fontSize="inherit"/>*/}
+          {/*</IconButton>*/}
+        </div>
       </CardActions>
 
     </StyledCardItem>

@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import withReducer from 'app/store/withReducer';
 import AppBar from '@mui/material/AppBar';
-
+import Autocomplete from '@mui/material/Autocomplete';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -27,6 +27,8 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
+import MenuIcon from '@mui/icons-material/Menu';
+import PlaceIcon from '@mui/icons-material/Place';
 import LocationOncon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Icon from '@mui/material/Icon';
@@ -36,7 +38,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import Rating from '@mui/material/Rating';
-
+import Select from '@mui/material/Select';
 import SearchIcon from '@mui/icons-material/Search';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -54,7 +56,9 @@ import Ad from '../../../components/Ad';
 import TopJobs from './TopJobs';
 
 import {getJobLanding} from "./store/jobLandingSlice";
+import { getTitleSuggestion } from '../store/jobsSlice';
 import JobCardItem from '../../../components/JobCardItem';
+import JobLandingSidebarContent from './JobLandingSidebarContent';
 import Categories from './Categories';
 import {buildPartyAvatarUrl} from 'app/utils/urlHelper';
 
@@ -67,7 +71,6 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   },
 
   '& .FusePageSimple-header': {
-    background: 'none',
     height: 50,
     minHeight: 50,
     [theme.breakpoints.down('lg')]: {
@@ -84,8 +87,26 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     width: '100%',
     // maxWidth: 1120,
     margin: 'auto',
+    '& .banner': {
+      // background: 'url("assets/images/backgrounds/portrait-people.jpg")!important',
+      backgroundSize: 'cover!important',
+      backgroundPosition: 'center center!important',
+    },
   },
 
+  '& .FusePageSimple-toolbar': {
+    width: '100%',
+    margin: 'auto',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: 'auto',
+    height: 'auto',
+    aliginItesm: 'flex-start',
+  },
+  '& .FusePageSimple-sidebar': {
+    border: 0,
+  },
   '& .FusePageSimple-toolbar': {
     width: '100%',
     margin: 'auto',
@@ -203,7 +224,7 @@ function JobLandingPage() {
   const [location, setLocation] = React.useState('');
   const [menuTab, setMenuTab] = useState(0);
   const [categoryTab, setCategoryTab] = React.useState('0');
-
+  const [suggestion, setSuggestion] = React.useState([]);
 
 
   const jobLanding = useSelector(({ jobLandingPage }) => {
@@ -219,10 +240,6 @@ function JobLandingPage() {
     setMenuTab(newValue);
   }
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
-
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
   };
@@ -237,6 +254,13 @@ function JobLandingPage() {
     dispatch(getJobLanding());
   }, []);
 
+  const handleTitleChange = (event) => {
+    dispatch(getTitleSuggestion(event.target.value)).then((response) => {
+      let data = _.reduce(response.payload, function(res, item, i){res.push({id: i, label: item}); return res;}, []);
+      setSuggestion(data)
+    });
+  }
+
 
   if(!jobLanding){
     return <FuseLoading/>
@@ -249,91 +273,136 @@ function JobLandingPage() {
 
   return (
     <Root
-      header={
-        <div className="flex flex-1 items-start justify-between relative">
-          <AppBar position="static">
-            <Tabs value={menuTab} onChange={handleMenuTab} aria-label="basic tabs example">
-              <Tab label="Home" {...a11yProps(0)} />
-              <Tab label="Viewed" {...a11yProps(1)} />
-              <Tab label="Saved" {...a11yProps(2)} />
-              <Tab label="Applied" {...a11yProps(3)} />
-              <Tab label="Alerts" {...a11yProps(4)} />
-            </Tabs>
-          </AppBar>
-        </div>
-      }
+      // header={
+      //   <div className="flex flex-1 items-start justify-between relative">
+      //     <AppBar position="static">
+      //       <Tabs variant="scrollable" value={menuTab} onChange={handleMenuTab} aria-label="basic tabs example">
+      //         <Tab label="Home" {...a11yProps(0)} />
+      //         <Tab label="My Jobs" {...a11yProps(1)} />
+      //       </Tabs>
+      //     </AppBar>
+      //   </div>
+      // }
+      contentToolbar={
+        <>
+          <div className='banner relative w-full overflow-hidden flex flex-col flex-shrink-0 items-center justify-center text-center p-0 h-200 sm:h-288'>
+            <Typography color="inherit" className="text-24 sm:text-40 font-light">
+              The Easiest Way to Get Your New Job
+            </Typography>
+            <img className={classes.headerBg} src="assets/images/backgrounds/portrait-people.jpg" />
+            <Paper component="div" className="search flex sm:flex-col lg:flex-row py-0 rounded-8 bg-white">
+              <div className="flex flex-1 flex-col">
+                <div className="flex">
+                  <div className="flex">
+                    <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                      <SearchIcon />
+                    </IconButton>
+                    <Autocomplete
+                      freeSolo
+                      disablePortal
+                      id="combo-box-demo"
+                      options={suggestion}
+                      sx={{ width: 300 }}
+                      renderInput={(params) =>
+                        <TextField
+                          {...params}
+                          label="Search by title"
+                          InputProps={{
+                            ...params.InputProps,
+                            type: 'search',
+                          }}
+                          onChange={handleTitleChange}
+                          className="border-0"
+                        />
+                      }
+                    />
+                  </div>
+                  <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                  <div className="flex">
+                    <IconButton color="primary" sx={{ p: '10px' }} aria-label="locations">
+                      <PlaceIcon />
+                    </IconButton>
+                    <InputBase
+                      sx={{ ml: 1, flex: 1 }}
+                      placeholder="City, state, or country"
+                      inputProps={{ 'aria-label': 'search google maps' }}
+                    />
 
+                  </div>
+                </div>
+
+              </div>
+            </Paper>
+          </div>
+
+          <div className="flex flex-row items-center justify-between w-full px-80 bg-white opacity-75">
+            <div className="flex items-center px-16 py-20">
+              <img className="max-h-24" src="assets/images/company/national.png"/>
+            </div>
+            <div className="flex items-center px-16 py-20">
+              <img className="max-h-24" src="assets/images/company/polygon.png"/>
+            </div>
+            <div className="flex items-center px-16 py-20">
+              <img className="max-h-24" src="assets/images/company/reddit.png"/>
+            </div>
+            <div className="flex items-center px-16 py-20">
+              <img className="max-h-24" src="assets/images/company/techradar.png"/>
+            </div>
+            <div className="flex items-center px-16 py-20">
+              <img className="max-h-24" src="assets/images/company/reuter.png"/>
+            </div>
+            <div className="flex items-center px-16 py-20">
+              <img className="max-h-24" src="assets/images/company/theverge.png"/>
+            </div>
+            <div className="flex items-center px-16 py-20">
+              <img className="max-h-24" src="assets/images/company/axios.png"/>
+            </div>
+          </div>
+          <Tabs
+            value={menuTab}
+            onChange={handleMenuTab}
+            indicatorColor="primary"
+            textColor="inherit"
+            variant="scrollable"
+            scrollButtons={false}
+            className="w-full px-24 -mx-4 min-h-40"
+            classes={{ indicator: 'flex justify-center bg-transparent w-full h-full' }}
+            TabIndicatorProps={{
+              children: (
+                <Box
+                  sx={{ bgcolor: 'text.disabled' }}
+                  className="w-full h-full rounded-full opacity-20"
+                />
+              ),
+            }}
+          >
+            <Tab
+              className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+              disableRipple
+              label="Timeline"
+            />
+            <Tab
+              className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+              disableRipple
+              label="About"
+            />
+            <Tab
+              className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+              disableRipple
+              label="Photos & Videos"
+            />
+          </Tabs>
+        </>
+      }
       content={
         <div className="flex flex-col w-full items-start">
-          <TabPanel value={menuTab} index={0} className="w-full">
-            <div className='relative overflow-hidden flex flex-col flex-shrink-0 items-center justify-center text-center p-0 h-200 sm:h-288'>
-              <Typography color="inherit" className="text-24 sm:text-40 font-light">
-                The Easiest Way to Get Your New Job
-              </Typography>
-              <img className={classes.headerBg} src="assets/images/backgrounds/portrait-people.jpg" />
-              <Grid container spacing={3} className={classes.form}>
-                <Grid item xs={12} sm={6} className="bg-none">
-                  <TextField
-                    id="standard-search"
-                    placeholder="Search title, skill, or company"
-                    type="search"
-                    variant="outlined"
-                    className={classes.input + ' w-full bg-grey-50'}
-                    InputLabelProps={{
-                      shrink: false,
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}  className="bg-none">
-                  <TextField
-                    id="standard-search"
-                    placeholder="Search city, state"
-                    type="search"
-                    variant="outlined"
-                    className={classes.input + ' w-full bg-grey-50'}
-                    InputLabelProps={{
-                      shrink: false,
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LocationOncon />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+          <TabPanel value={menuTab} index={0} className="w-full flex">
 
-
-                </Grid>
-              </Grid>
-            </div>
 
 
             <div className="py-40 px-80 ">
 
-              {/*<Box sx={{ width: '100%', typography: 'body1' }}>*/}
-                {/*<TabContext value={categoryTab}>*/}
-                  {/*<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>*/}
-                    {/*<TabList onChange={handleCategoryTab()} aria-label="lab API tabs example">*/}
-                      {/*<Tab label="Item One" value="1" />*/}
-                      {/*<Tab label="Item Two" value="2" />*/}
-                      {/*<Tab label="Item Three" value="3" />*/}
-                    {/*</TabList>*/}
-                  {/*</Box>*/}
-                  {/*<TabPanel value="1">Item One</TabPanel>*/}
-                  {/*<TabPanel value="2">Item Two</TabPanel>*/}
-                  {/*<TabPanel value="3">Item Three</TabPanel>*/}
-                {/*</TabContext>*/}
-              {/*</Box>*/}
-
-              <Card className={classes.card + " w-full mb-16 rounded-4"} elevation={0}>
+              <Card className={classes.card + " w-full mb-40 rounded-4"} elevation={0}>
                 <AppBar position="static" elevation={0} className="bg-transparent">
                   <div
                     className={clsx(
@@ -354,7 +423,7 @@ function JobLandingPage() {
                 </CardContent>
               </Card>
 
-              <div>
+              <div className="mb-60">
                 <Typography className="font-semibold mb-4 text-20">TOP FEATURED EMPLOYERS</Typography>
                 <Typography className="mb-20">We can determine what developers needs and what skills they're proficient in.  You'll get access to the community, relevancy to your business, and more qualified employers.</Typography>
                 <Divider />
@@ -376,13 +445,21 @@ function JobLandingPage() {
                               borderStyle: 'solid',
                               borderColor: 'background.default',
                             }}
-                            className="flex -mt-48  w-80 h-80 items-center mb-14"
+                            className="flex -mt-48  w-80 h-80 items-center mb-14 rounded-8"
                             src="assets/images/company/nbc.png"
                           />
                           <Typography color="inherit" className="flex text-24 sm:text-14 text-gray-900 mb-6">
                             NBC
                           </Typography>
                           <Rating name="read-only" value={4.5} size="small" readOnly />
+                          <div className="flex items-center justify-center">
+                            <IconButton size="small" aria-label="add to favorites" className="flex items-start justify-center">
+                              <LocationOncon fontSize="inherit"/>
+                            </IconButton>
+                            <Typography color="inherit" className="text-12 text-gray-900">
+                              San Jose, US | 17 Jobs
+                            </Typography>
+                          </div>
                         </CardContent>
                       </Card>
                     </Grid>
@@ -402,13 +479,21 @@ function JobLandingPage() {
                               borderStyle: 'solid',
                               borderColor: 'background.default',
                             }}
-                            className="flex -mt-48  w-80 h-80 items-center mb-14"
+                            className="flex -mt-48  w-80 h-80 items-center mb-14 rounded-8"
                             src="assets/images/company/hackernews.png"
                           />
                           <Typography color="inherit" className="flex text-24 sm:text-14 text-gray-900 mb-6">
                             Hacker News
                           </Typography>
                           <Rating name="read-only" value={4.5} size="small" readOnly />
+                          <div className="flex items-center justify-center">
+                            <IconButton size="small" aria-label="add to favorites" className="flex items-start justify-center">
+                              <LocationOncon fontSize="inherit"/>
+                            </IconButton>
+                            <Typography color="inherit" className="text-12 text-gray-900">
+                              San Jose, US | 17 Jobs
+                            </Typography>
+                          </div>
                         </CardContent>
                       </Card>
                     </Grid>
@@ -428,13 +513,21 @@ function JobLandingPage() {
                               borderStyle: 'solid',
                               borderColor: 'background.default',
                             }}
-                            className="flex -mt-48  w-80 h-80 items-center mb-14"
+                            className="flex -mt-48  w-80 h-80 items-center mb-14 rounded-8"
                             src="assets/images/company/theverge.png"
                           />
                           <Typography color="inherit" className="flex text-24 sm:text-14 text-gray-900 mb-6">
                             The Verge
                           </Typography>
                           <Rating name="read-only" value={5} size="small" readOnly />
+                          <div className="flex items-center justify-center">
+                            <IconButton size="small" aria-label="add to favorites" className="flex items-start justify-center">
+                              <LocationOncon fontSize="inherit"/>
+                            </IconButton>
+                            <Typography color="inherit" className="text-12 text-gray-900">
+                              San Jose, US | 17 Jobs
+                            </Typography>
+                          </div>
                         </CardContent>
                       </Card>
                     </Grid>
@@ -454,13 +547,21 @@ function JobLandingPage() {
                               borderStyle: 'solid',
                               borderColor: 'background.default',
                             }}
-                            className="flex -mt-40  w-80 h-80 talign-center"
+                            className="flex -mt-40  w-80 h-80 talign-center rounded-8"
                             src="assets/images/company/reddit.png"
                           />
                           <Typography color="inherit" className="flex text-24 sm:text-14 text-gray-900 mb-6">
                             Reddit
                           </Typography>
                           <Rating name="read-only" value={4} size="small" readOnly />
+                          <div className="flex items-center justify-center">
+                            <IconButton size="small" aria-label="add to favorites" className="flex items-start justify-center">
+                              <LocationOncon fontSize="inherit"/>
+                            </IconButton>
+                            <Typography color="inherit" className="text-12 text-gray-900">
+                              San Jose, US  |  17 Jobs
+                            </Typography>
+                          </div>
                         </CardContent>
                       </Card>
                     </Grid>
@@ -469,140 +570,51 @@ function JobLandingPage() {
 
               </div>
 
-              <Card className={classes.card + " w-full mb-16 rounded-4"} elevation={0}>
-                <AppBar position="static" elevation={0} className="bg-transparent">
-                  <div
-                    className={clsx(
-                      'relative overflow-hidden flex flex-col flex-shrink-0 items-center justify-center text-center p-16 sm:p-24 mt-50'
-                    )}
-                  >
-                    <Typography color="inherit" className="text-24 sm:text-30 text-gray-900">
-                      Popular Companies
-                    </Typography>
-                  </div>
-                </AppBar>
-
-                <CardContent className="m-auto text-center" alignItems="center">
-                  <Grid container spacing={3}>
-                    {jobLanding.popularCompanies.map(company => (
-                      <Grid item xs={3}>
-                        <Card >
-                          <CardHeader
-                            action={
-                              <IconButton aria-label="settings">
-                                <FavoriteIcon  />
-                              </IconButton>
-                            }
-                            title=""
-                            subheader=""
-                            className="pb-0"
-                          />
-                          <CardContent alignItems="center" className="m-auto item-center justify-center m-0 text-center pb-40" >
-                            <a href={`/company/${company.id}`}><Avatar variant="rounded" className={classes.avatar + " w-80 h-80 text-center"} src={buildPartyAvatarUrl(company)} /></a>
-                          </CardContent>
-                          <CardActions className="p-12 border-t-1">
-                            <div className="flex w-full">
-                              <Typography gutterBottom variant="subtitle1" component="h6" alignItems="center" className="text-center m-0">
-                                <a href={`/company/${company.id}`}>{company.name}</a>
-                              </Typography>
-                            </div>
-                          </CardActions>
-                        </Card>
-                      </Grid>
-                    ))}
-                  </Grid>
-                  <Button variant="contained" className="mt-32 text-center" color="primary">
-                    Browse All Popular Companies
-                  </Button>
-                </CardContent>
-              </Card>
-
               {jobLanding.highlightJobs && (
-                <Card className={classes.card + " w-full mb-16 rounded-4"} elevation={0}>
-                  <AppBar position="static" elevation={0} className="bg-transparent">
-                    <div
-                      className={clsx(
-                        'relative overflow-hidden flex flex-col flex-shrink-0 items-center justify-center text-center p-16 sm:p-24 mt-50'
-                      )}
-                    >
-                      <Typography color="inherit" className="text-24 sm:text-30 text-gray-900">
-                        Highlight Jobs
-                      </Typography>
-                    </div>
-                  </AppBar>
-
-                  <CardContent alignItems="center">
-                    <Grid container spacing={3}>
-                      {jobLanding.highlightJobs.map(job => (
-                        <Grid item xs={3}>
-                          <JobCardItem job={job}/>
-                        </Grid>
-                      ))}
+              <div className="mb-60">
+                <Typography className="font-semibold mb-4 text-20">HIGHLIGHT JOBS</Typography>
+                <Divider />
+                <Grid container spacing={3}  className="mt-20">
+                  {jobLanding.highlightJobs.map(job => (
+                    <Grid item xs={3}>
+                      <JobCardItem job={job}/>
                     </Grid>
-                    <Button variant="contained" className="mt-32 text-center" color="primary">
-                      Browse All Highlight Jobs
-                    </Button>
-                  </CardContent>
-                </Card>
+                  ))}
+                </Grid>
+
+              </div>
               )}
 
               {jobLanding.popularJobs && (
-                <Card className={classes.card + " w-full mb-16 rounded-4"} elevation={0}>
-                  <AppBar position="static" elevation={0} className="bg-transparent">
-                    <div
-                      className={clsx(
-                        'relative overflow-hidden flex flex-col flex-shrink-0 items-center justify-center text-center p-16 sm:p-24 mt-50'
-                      )}
-                    >
-                      <Typography color="inherit" className="text-24 sm:text-30 text-gray-900">
-                        Popular Jobs
-                      </Typography>
-                    </div>
-                  </AppBar>
+                <div  className="mb-60">
+                  <Typography className="font-semibold mb-4 text-20">POPULAR JOBS</Typography>
+                  <Divider />
+                  <Grid container spacing={3}  className="mt-20">
+                    {jobLanding.popularJobs.map(job => (
+                      <Grid item xs={3}>
+                        <JobCardItem job={job}/>
+                      </Grid>
+                    ))}
+                  </Grid>
 
-                  <CardContent className="m-auto text-center" alignItems="center">
-                    <Grid container spacing={3}>
-                      {jobLanding.popularJobs.map(job => (
-                        <Grid item xs={3} className="justify-items-stretch">
-                          <JobCardItem job={job} />
-                        </Grid>
-                      ))}
-                    </Grid>
-                    <Button variant="contained" className="mt-32 text-center" color="primary">
-                      Browse All Popular Jobs
-                    </Button>
-                  </CardContent>
-                </Card>
+                </div>
               )}
 
               {jobLanding.newJobs && (
-                <Card className={classes.card + " w-full mb-16 rounded-4"} elevation={0}>
-                  <AppBar position="static" elevation={0} className="bg-transparent">
-                    <div
-                      className={clsx(
-                        'relative overflow-hidden flex flex-col flex-shrink-0 items-center justify-center text-center p-16 sm:p-24 mt-50'
-                      )}
-                    >
-                      <Typography color="inherit" className="text-24 sm:text-30 text-gray-900">
-                        New Jobs
-                      </Typography>
-                    </div>
-                  </AppBar>
+                <div  className="mb-60">
+                  <Typography className="font-semibold mb-4 text-20">NEW JOBS</Typography>
+                  <Divider />
+                  <Grid container spacing={3}  className="mt-20">
+                    {jobLanding.newJobs.map(job => (
+                      <Grid item xs={3}>
+                        <JobCardItem job={job}/>
+                      </Grid>
+                    ))}
+                  </Grid>
 
-                  <CardContent className="m-auto text-center" alignItems="center">
-                    <Grid container spacing={3}>
-                      {jobLanding.newJobs.map(job => (
-                        <Grid item xs={3} className="justify-items-stretch">
-                          <JobCardItem job={job}/>
-                        </Grid>
-                      ))}
-                    </Grid>
-                    <Button variant="contained" className="mt-32 text-center" color="primary">
-                      Browse All New Jobs
-                    </Button>
-                  </CardContent>
-                </Card>
+                </div>
               )}
+
             </div>
 
           </TabPanel>
@@ -652,7 +664,6 @@ function JobLandingPage() {
 
         </div>
       }
-      sidebarInner
       ref={pageLayout}
       innerScroll
     />

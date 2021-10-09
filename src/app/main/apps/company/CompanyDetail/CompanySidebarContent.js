@@ -17,8 +17,8 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Ad from "../../components/Ad";
-import MediaAd from "../../components/MediaAd";
+import Ad from "../../../components/Ad";
+import MediaAd from "../../../components/MediaAd";
 
 function MainSidebarContent() {
   const [data, setData] = useState(null);

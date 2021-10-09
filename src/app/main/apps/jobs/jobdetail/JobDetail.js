@@ -6,6 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import ChevronRight from '@mui/icons-material/ChevronRight';
@@ -29,7 +30,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { withRouter, useParams } from 'react-router-dom';
 import JobDetailHeader from './JobDetailHeader';
 
-import {getJob, saveJob, applyJob, openDialog, closeDialog, updateStep, addTodo} from "./store/jobSlice";
+import {getJob, saveJob, applyJob, openDialog, closeDialog, updateStep} from "./store/jobSlice";
 import reducer from './store';
 import {getSimilarJobs} from "./store/similarJobsSlice";
 import ApplyDialog from "../components/dialogs/ApplyDialog";
@@ -254,6 +255,16 @@ function JobDetail() {
                     }
                   </div>
                 </div>
+                <CardActions className="flex items-center justify-center text-center border-t-1">
+
+                  <Typography variant="span" color="text.secondary" className="flex" onClick={() => {
+                    setShowDetails(!showDetails);
+                  }}>
+                    {!showDetails? 'See More' : 'See Less' }
+                  </Typography>
+
+                </CardActions>
+
               </Card>
               <Card variant="outlined" className="mb-20 rounded-8" >
                 <CardHeader
@@ -282,6 +293,13 @@ function JobDetail() {
 
                   </div>
                 </CardContent>
+                {!showDetails &&
+                <CardActions className="text-center">
+                  <Typography variant="span" color="text.secondary" className="">
+                    See More
+                  </Typography>
+                </CardActions>
+                }
               </Card>
               <div>
                 {similarJobs &&
@@ -311,7 +329,7 @@ function JobDetail() {
           </div>
         </motion.div>
         {/*<ApplyDialog job={job} updateStep={updateStep} openDialog={openDialog} closedialog={closeDialog} applicationDialog={applicationDialog}/>*/}
-        <TodoDialog job={job} addTodo={addTodo} apply={applyJob} openDialog={openDialog} closeDialog={closeDialog}  applicationDialog={applicationDialog}/>
+        <TodoDialog job={job} apply={applyJob} openDialog={openDialog} closeDialog={closeDialog}  applicationDialog={applicationDialog}/>
     </Root>
   );
 }

@@ -24,11 +24,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import withReducer from 'app/store/withReducer';
-import reducer from "./store";
-import {getCompany, getCompanyRelationships, followCompany} from "./store/companySlice";
+import reducer from "../store";
+import {getCompany, getCompanyRelationships, followCompany} from "../store/companySlice";
 import AboutTab from './tabs/AboutTab';
-import PhotosVideosTab from './tabs/PhotosVideosTab';
-import TimelineTab from './tabs/TimelineTab';
 import JobTab from './tabs/JobTab';
 import FeedTab from './tabs/FeedTab';
 
@@ -136,7 +134,7 @@ function a11yProps(index) {
   };
 }
 
-function CompanyPage() {
+function CompanyDetail() {
   const pageLayout = useRef(null);
   const dispatch = useDispatch();
   const routeParams = useParams();
@@ -144,7 +142,7 @@ function CompanyPage() {
   const [loading, setLoading] = useState(true);
   const [relationships, setRelationships] = useState();
   const [tabIndex, setTabIndex] = React.useState(0);
-  const company = useSelector(({ companyPage }) => companyPage.company);
+  const company = useSelector(({ companyDetail }) => companyDetail.company);
 
 
   useDeepCompareEffect(() => {
@@ -253,4 +251,4 @@ function CompanyPage() {
   );
 }
 
-export default withReducer('companyPage', reducer)(CompanyPage);
+export default withReducer('companyDetail', reducer)(CompanyDetail);

@@ -1,6 +1,3 @@
-import CompanyPageConfig from './company/CompanyPageConfig';
-
-
 import ForgotPassword2PageConfig from './auth/forgot-password-2/ForgotPassword2PageConfig';
 import ForgotPasswordPageConfig from './auth/forgot-password/ForgotPasswordPageConfig';
 import LockPageConfig from './auth/lock/LockPageConfig';
@@ -32,8 +29,6 @@ import RegisterConfirmationConfig from './confirmation/register-confirmation/Reg
 
 
 const pagesConfigs = [
-  CompanyPageConfig,
-
   RegisterConfirmationConfig,
 
   LoginPageConfig,

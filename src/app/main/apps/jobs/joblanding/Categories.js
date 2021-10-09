@@ -40,17 +40,17 @@ function Categories(props) {
     <Grid container spacing={2}>
       {categories.map(category => (
       <Grid item xs={3}>
-        <Paper elevation={0} className="flex flex-row items-start justify-between rounded-4 p-14 border-1 grey">
+        <Paper elevation={0} className="flex flex-row items-center justify-between rounded-4 p-14 border-1 grey">
           <div className="flex items-center justify-center">
             <IconButton size="small" aria-label="add to favorites" className="flex items-start justify-center">
               <FavoriteIcon fontSize="inherit"/>
             </IconButton>
-            <Typography color="inherit" className="text-12 text-gray-900">
+            <Typography color="inherit" className="text-14 text-gray-900">
               {unescape(category.name)}
             </Typography>
           </div>
           <div className="flex items-end justify-center">
-            <Typography color="inherit" className="text-12 text-gray-900">
+            <Typography color="inherit" className="text-14 text-gray-900">
               532 jobs
             </Typography>
           </div>

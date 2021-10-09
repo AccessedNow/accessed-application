@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import {getCompanyJobs} from "../store/companySlice";
-import JobGrid from "../../../components/JobGrid";
+import {getCompanyJobs} from "../../store/companySlice";
+import JobGrid from "../../../../components/JobGrid";
 
 function JobTab() {
   const dispatch = useDispatch();

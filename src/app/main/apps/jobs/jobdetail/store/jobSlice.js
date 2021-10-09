@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 
 import axios from 'axios';
 import { showMessage } from 'app/store/fuse/messageSlice';
-import {getTodos} from "../../../todo/store/todosSlice";
 
 export const getJob = createAsyncThunk('job/detail', async (params) => {
   const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${params.id}` );
@@ -28,7 +27,7 @@ export const applyJob = createAsyncThunk(
   async (form, { getState, dispatch }) => {
     let {id} = form;
     delete form.id;
-    const response = await axios.post(`http://localhost:8080/api/jobs/${id}/apply`, {...form}, {headers: {userId: getState().auth.user.data.id}});
+    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${id}/apply`, {...form}, {headers: {userId: getState().auth.user.data.id}});
     const data = await response.data;
 
     dispatch(showMessage({ message: 'Job Applied' }));
@@ -42,19 +41,6 @@ export const getSimilarJobs = createAsyncThunk(
   async (params) => {
     const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${params.id}/similar` );
     const data = await response.data.data.content;
-
-    return data;
-  }
-);
-
-
-export const addTodo = createAsyncThunk(
-  'todoApp/todos/addTodo',
-  async (todo, { dispatch, getState }) => {
-    const response = await axios.post('/api/todo-app/new-todo', todo);
-    const data = await response.data;
-
-    dispatch(getTodos());
 
     return data;
   }
@@ -98,8 +84,7 @@ const jobSlice = createSlice({
     [applyJob.fulfilled]: (state, action) => ({
       ...state,
       ...action.payload,
-    }),
-    [addTodo.fulfilled]: jobAdapter.addOne,
+    })
   },
 });
 

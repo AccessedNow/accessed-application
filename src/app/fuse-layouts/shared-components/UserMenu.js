@@ -79,6 +79,12 @@ function UserMenu(props) {
               </ListItemIcon>
               <ListItemText primary="Register" />
             </MenuItem>
+            <MenuItem component={Link} to="/company/register" role="button">
+              <ListItemIcon className="min-w-40">
+                <Icon>business</Icon>
+              </ListItemIcon>
+              <ListItemText primary="Create Company" />
+            </MenuItem>
           </>
         ) : (
           <>

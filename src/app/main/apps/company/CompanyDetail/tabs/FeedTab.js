@@ -21,7 +21,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import {getCompanyFeed} from "../store/companySlice";
+import {getCompanyFeed} from "../../store/companySlice";
 
 function TimelineTab() {
   const dispatch = useDispatch();

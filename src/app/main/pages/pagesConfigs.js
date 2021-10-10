@@ -25,10 +25,13 @@ import ProfilePageConfig from './profile/ProfilePageConfig';
 import ClassicSearchPageConfig from './search/classic/ClassicSearchPageConfig';
 import ModernSearchPageConfig from './search/modern/ModernSearchPageConfig';
 
+import HomeConfig from './home/HomeConfig';
+
 import RegisterConfirmationConfig from './confirmation/register-confirmation/RegisterConfirmationPageConfig';
 
 
 const pagesConfigs = [
+  HomeConfig,
   RegisterConfirmationConfig,
 
   LoginPageConfig,

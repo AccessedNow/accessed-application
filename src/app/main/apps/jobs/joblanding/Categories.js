@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 function Categories(props) {
 	const dispatch = useDispatch();
   const categories = useSelector(({ jobLandingPage }) => {
-    return jobLandingPage.jobLanding?jobLandingPage.jobLanding.categories:null;
+    return jobLandingPage.jobLanding?jobLandingPage.jobLanding.categories:[];
   });
 	const classes = useStyles(props);
 
@@ -39,7 +39,7 @@ function Categories(props) {
 
     <Grid container spacing={2}>
       {categories.map(category => (
-      <Grid item xs={3}>
+      <Grid item s={1} md={3}>
         <Paper elevation={0} className="flex flex-row items-center justify-between rounded-4 p-14 border-1 grey">
           <div className="flex items-center justify-center">
             <IconButton size="small" aria-label="add to favorites" className="flex items-start justify-center">

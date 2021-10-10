@@ -60,30 +60,6 @@ const SidebarNav = ({ pages }) => {
         <Box>
           <NavItem title={'Portfolio'} items={portfolioPages} />
         </Box>
-        <Box marginTop={2}>
-          <Button
-            size={'large'}
-            variant="outlined"
-            fullWidth
-            component="a"
-            href="/docs/introduction"
-          >
-            Documentation
-          </Button>
-        </Box>
-        <Box marginTop={1}>
-          <Button
-            size={'large'}
-            variant="contained"
-            color="primary"
-            fullWidth
-            component="a"
-            target="blank"
-            href="https://material-ui.com/store/items/the-front-landing-page/"
-          >
-            Purchase now
-          </Button>
-        </Box>
       </Box>
     </Box>
   );

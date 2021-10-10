@@ -33,7 +33,7 @@ function Error500Page() {
           </Typography>
         </motion.div>
 
-        <Link className="font-normal" to="/apps/dashboards/project">
+        <Link className="font-normal" to="">
           Report this problem
         </Link>
       </div>

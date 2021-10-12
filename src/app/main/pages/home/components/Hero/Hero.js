@@ -16,7 +16,7 @@ const Hero = () => {
   });
 
   return (
-    <Box bgcolor={'white'} padding={{ xs: 2, md: 4 }} borderRadius={2}>
+    <Box bgcolor={'alternate.main'}padding={{ xs: 2, md: 4 }} borderRadius={2}>
       <Grid container spacing={4}>
         <Grid
           item

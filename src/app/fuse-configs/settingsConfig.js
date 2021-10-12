@@ -6,8 +6,8 @@ const settingsConfig = {
   customScrollbars: true,
   direction: 'ltr', // rtl, ltr
   theme: {
-    main: 'default',
-    navbar: 'greyDark',
+    main: 'accessed',
+    navbar: 'accessed',
     toolbar: 'mainThemeLight',
     footer: 'mainThemeDark',
   },

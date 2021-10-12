@@ -1,4 +1,5 @@
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Icon from '@mui/material/Icon';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -26,94 +27,118 @@ function UserMenu(props) {
   };
 
   return (
+
     <>
-      <Button
-        className="min-h-40 min-w-40 px-0 md:px-16 py-0 md:py-6"
-        onClick={userMenuClick}
-        color="inherit"
-      >
-        <div className="hidden md:flex flex-col mx-4 items-end">
-          <Typography component="span" className="font-semibold flex">
-            {user.data.displayName}
-          </Typography>
-          <Typography className="text-11 font-medium capitalize" color="textSecondary">
-            {user.role.toString()}
-            {(!user.role || (Array.isArray(user.role) && user.role.length === 0)) && 'Guest'}
-          </Typography>
+      {user.data.id ?
+        <div>
+          <Button
+            className="min-h-40 min-w-40 px-0 md:px-16 py-0 md:py-6"
+            onClick={userMenuClick}
+            color="inherit"
+          >
+            <div className="hidden md:flex flex-col mx-4 items-end">
+              <Typography component="span" className="font-semibold flex">
+                {user.data.displayName}
+              </Typography>
+              <Typography className="text-11 font-medium capitalize" color="textSecondary">
+                {user.role.toString()}
+                {(!user.role || (Array.isArray(user.role) && user.role.length === 0)) && 'Guest'}
+              </Typography>
+            </div>
+
+            {user.data.photoURL ? (
+              <Avatar className="md:mx-4" alt="user photo" src={user.data.photoURL}/>
+            ) : (
+              <Avatar className="md:mx-4">{user.data.displayName[0]}</Avatar>
+            )}
+          </Button>
+          <Popover
+            open={Boolean(userMenu)}
+            anchorEl={userMenu}
+            onClose={userMenuClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+            classes={{
+              paper: 'py-8',
+            }}
+          >
+            {!user.role || user.role.length === 0 ? (
+              <>
+                <MenuItem component={Link} to="/login" role="button">
+                  <ListItemIcon className="min-w-40">
+                    <Icon>lock</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary="Login"/>
+                </MenuItem>
+                <MenuItem component={Link} to="/register" role="button">
+                  <ListItemIcon className="min-w-40">
+                    <Icon>person_add</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary="Register"/>
+                </MenuItem>
+              </>
+            ) : (
+              <>
+                <MenuItem component={Link} to="/pages/profile" onClick={userMenuClose} role="button">
+                  <ListItemIcon className="min-w-40">
+                    <Icon>account_circle</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary="My Profile"/>
+                </MenuItem>
+                <MenuItem component={Link} to="/apps/mail" onClick={userMenuClose} role="button">
+                  <ListItemIcon className="min-w-40">
+                    <Icon>mail</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary="Inbox"/>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    dispatch(logoutUser());
+                    userMenuClose();
+                  }}
+                >
+                  <ListItemIcon className="min-w-40">
+                    <Icon>exit_to_app</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary="Logout"/>
+                </MenuItem>
+              </>
+            )}
+          </Popover>
         </div>
-
-        {user.data.photoURL ? (
-          <Avatar className="md:mx-4" alt="user photo" src={user.data.photoURL} />
-        ) : (
-          <Avatar className="md:mx-4">{user.data.displayName[0]}</Avatar>
-        )}
-      </Button>
-
-      <Popover
-        open={Boolean(userMenu)}
-        anchorEl={userMenu}
-        onClose={userMenuClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        classes={{
-          paper: 'py-8',
-        }}
-      >
-        {!user.role || user.role.length === 0 ? (
-          <>
-            <MenuItem component={Link} to="/login" role="button">
-              <ListItemIcon className="min-w-40">
-                <Icon>lock</Icon>
-              </ListItemIcon>
-              <ListItemText primary="Login" />
-            </MenuItem>
-            <MenuItem component={Link} to="/register" role="button">
-              <ListItemIcon className="min-w-40">
-                <Icon>person_add</Icon>
-              </ListItemIcon>
-              <ListItemText primary="Register" />
-            </MenuItem>
-            <MenuItem component={Link} to="/company/register" role="button">
-              <ListItemIcon className="min-w-40">
-                <Icon>business</Icon>
-              </ListItemIcon>
-              <ListItemText primary="Create Company" />
-            </MenuItem>
-          </>
-        ) : (
-          <>
-            <MenuItem component={Link} to="/pages/profile" onClick={userMenuClose} role="button">
-              <ListItemIcon className="min-w-40">
-                <Icon>account_circle</Icon>
-              </ListItemIcon>
-              <ListItemText primary="My Profile" />
-            </MenuItem>
-            <MenuItem component={Link} to="/apps/mail" onClick={userMenuClose} role="button">
-              <ListItemIcon className="min-w-40">
-                <Icon>mail</Icon>
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                dispatch(logoutUser());
-                userMenuClose();
-              }}
+        :
+        <Box sx={{ display: { xs: 'none', md: 'flex' } }} alignItems={'center'}>
+          <Box marginLeft={4}>
+            <Button
+              variant="outlined"
+              color="primary"
+              component="a"
+              target="blank"
+              href="/register"
+              size="large"
+              className="mr-10"
             >
-              <ListItemIcon className="min-w-40">
-                <Icon>exit_to_app</Icon>
-              </ListItemIcon>
-              <ListItemText primary="Logout" />
-            </MenuItem>
-          </>
-        )}
-      </Popover>
+              Join
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              component="a"
+              target="blank"
+              href="/login"
+              size="large"
+            >
+              Sign in
+            </Button>
+          </Box>
+        </Box>
+      }
     </>
   );
 }

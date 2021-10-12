@@ -52,14 +52,61 @@ const getMainThemeId = (state) => state.fuse.settings.current.theme.main;
 const getNavbarThemeId = (state) => state.fuse.settings.current.theme.navbar;
 const getToolbarThemeId = (state) => state.fuse.settings.current.theme.toolbar;
 const getFooterThemeId = (state) => state.fuse.settings.current.theme.footer;
+import shadows from '../accessed/shadows';
 
 function generateMuiTheme(themes, id, direction) {
+  console.log('theme', themes[id])
+  const accessedTheme = {
+    shadows: shadows('light'),
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            fontWeight: 400,
+            borderRadius: 5,
+            paddingTop: 10,
+            paddingBottom: 10,
+          },
+          containedSecondary: { color: 'white' },
+        },
+      },
+      MuiInputBase: {
+        styleOverrides: {
+          root: {
+            borderRadius: 5,
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            borderRadius: 5,
+          },
+          input: {
+            borderRadius: 5,
+          },
+        },
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            borderRadius: 4,
+          },
+        },
+      },
+    },
+  }
   const data = _.merge({}, defaultThemeOptions, themes[id], mustHaveThemeOptions);
   const response = createTheme(
-    _.merge({}, data, {
-      mixins: extendThemeWithMixins(data),
-      direction,
-    })
+    _.merge(
+      {},
+      data,
+      {
+        mixins: extendThemeWithMixins(data),
+        direction,
+      },
+      accessedTheme
+      )
   );
   return response;
 }

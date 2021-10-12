@@ -13,12 +13,6 @@ const darkText = {
   disabled: 'rgb(156, 163, 175)',
 };
 
-const accessedText = {
-  primary: 'rgb(17, 24, 39)',
-  secondary: 'rgb(107, 114, 128)',
-  disabled: 'rgb(149, 156, 169)',
-};
-
 const themesConfig = {
   default: {
     palette: {
@@ -47,7 +41,7 @@ const themesConfig = {
   defaultDark: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: fuseDark,
       secondary: {
         light: skyBlue[100],
@@ -392,7 +386,7 @@ const themesConfig = {
   dark1: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#C2C2C3',
         main: '#323338',
@@ -417,7 +411,7 @@ const themesConfig = {
   dark2: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#C9CACE',
         main: '#4B4F5A',
@@ -446,7 +440,7 @@ const themesConfig = {
   dark3: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#C2C8D2',
         main: '#354968',
@@ -471,7 +465,7 @@ const themesConfig = {
   dark4: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#CECADF',
         main: '#5A4E93',
@@ -496,7 +490,7 @@ const themesConfig = {
   dark5: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#CCD7E2',
         main: '#56789D',
@@ -521,7 +515,7 @@ const themesConfig = {
   dark6: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#FFC7CE',
         main: '#FF445D',
@@ -546,7 +540,7 @@ const themesConfig = {
   dark7: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: 'FFECC5',
         main: '#FEBE3E',
@@ -571,7 +565,7 @@ const themesConfig = {
   dark8: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#BEBFC8',
         main: '#252949',
@@ -596,7 +590,7 @@ const themesConfig = {
   dark9: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#BCC8CD',
         main: '#204657',
@@ -621,7 +615,7 @@ const themesConfig = {
   dark10: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#C3C2D2',
         main: '#36336A',
@@ -646,7 +640,7 @@ const themesConfig = {
   dark11: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#BFB7BF',
         main: '#2A0F29',
@@ -671,7 +665,7 @@ const themesConfig = {
   dark12: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: '#CCC3C8',
         main: '#543847',
@@ -696,7 +690,7 @@ const themesConfig = {
   greyDark: {
     palette: {
       mode: 'dark',
-      text: accessedText,
+      text: darkText,
       primary: {
         light: fuseDark[200],
         main: fuseDark[700],
@@ -710,6 +704,48 @@ const themesConfig = {
       background: {
         paper: fuseDark[400],
         default: fuseDark[500],
+      },
+      error: red,
+    },
+    status: {
+      danger: 'orange',
+    },
+  },
+  accessed: {
+    palette: {
+      mode: 'light',
+      text: lightText,
+      common: {
+        black: 'rgb(17, 24, 39)',
+        white: 'rgb(255, 255, 255)',
+      },
+      alternate: {
+        main: '#f7f9fc',
+        dark: '#edf1f7',
+      },
+      primary: {
+        main: '#377dff',
+        light: '#467de3',
+        dark: '#2f6ad9',
+        contrastText: '#fff'
+      },
+      secondary: {
+        light: '#ffb74d',
+        main: '#f9b934',
+        dark: '#FF9800',
+        contrastText: 'rgba(0, 0, 0, 0.87)',
+      },
+      text: {
+        primary: '#1e2022',
+        secondary: '#677788',
+      },
+      divider: 'rgba(0, 0, 0, 0.12)',
+      background: {
+        default: '#F7FAFF',
+        paper: '#ffffff',
+        default: '#ffffff',
+        level2: '#f5f5f5',
+        level1: '#ffffff',
       },
       error: red,
     },

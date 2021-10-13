@@ -9,8 +9,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
-import Page from '../components/Page';
-import Main from '../../layouts/Main';
 
 const validationSchema = yup.object({
   fullName: yup
@@ -47,7 +45,7 @@ const validationSchema = yup.object({
     .max(200, 'Please enter a valid address'),
 });
 
-const General = () => {
+const Profile = () => {
   const initialValues = {
     fullName: '',
     bio: '',
@@ -68,8 +66,6 @@ const General = () => {
   });
 
   return (
-    <Main>
-      <Page>
         <Box>
           <Typography variant="h6" gutterBottom fontWeight={700}>
             Change your private information
@@ -225,7 +221,7 @@ const General = () => {
                       You may also consider to update your{' '}
                       <Link
                         color={'primary'}
-                        href={'/account-billing'}
+                        href={'/settings/account/billing'}
                         underline={'none'}
                       >
                         billing information.
@@ -240,9 +236,7 @@ const General = () => {
             </Grid>
           </form>
         </Box>
-      </Page>
-    </Main>
   );
 };
 
-export default General;
+export default Profile;

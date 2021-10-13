@@ -25,14 +25,14 @@ import ProfilePageConfig from './profile/ProfilePageConfig';
 import ClassicSearchPageConfig from './search/classic/ClassicSearchPageConfig';
 import ModernSearchPageConfig from './search/modern/ModernSearchPageConfig';
 
-import AccountConfig from './account/AccountConfig';
+import SettingsConfig from './settings/SettingsConfig';
 import HomeConfig from './home/HomeConfig';
 import RegisterConfirmationConfig from './confirmation/register-confirmation/RegisterConfirmationPageConfig';
 import TermsConditionsConfig from './terms-conditions/TermsConditionsConfig';
 
 
 const pagesConfigs = [
-  AccountConfig,
+  SettingsConfig,
   HomeConfig,
   RegisterConfirmationConfig,
   TermsConditionsConfig,

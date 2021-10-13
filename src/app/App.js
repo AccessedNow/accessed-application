@@ -13,6 +13,13 @@ import { selectCurrLangDir } from 'app/store/i18nSlice';
 import withAppProviders from './withAppProviders';
 import { Auth } from './auth';
 
+// import 'react-lazy-load-image-component/src/effects/blur.css';
+// import 'slick-carousel/slick/slick.css';
+// import 'slick-carousel/slick/slick-theme.css';
+// import 'react-image-lightbox/style.css';
+// import 'aos/dist/aos.css';
+
+
 // import axios from 'axios';
 /**
  * Axios HTTP Request defaults

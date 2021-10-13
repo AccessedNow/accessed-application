@@ -13,7 +13,7 @@ const Newsletter = () => {
   const theme = useTheme();
 
   return (
-    <Box bgcolor={alpha(theme.palette.primary.main, 0.7)} borderRadius={2}>
+    <Box bgcolor={alpha(theme.palette.primary.main, 0.1)} borderRadius={2}>
       <Container>
         <Box
           display={'flex'}

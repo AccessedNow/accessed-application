@@ -11,9 +11,6 @@ import Link from '@mui/material/Link';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
-import Page from '../components/Page';
-import Main from '../../layouts/Main';
-
 const validationSchema = yup.object({
   currentPassword: yup.string().required('Please specify your password'),
   newPassword: yup
@@ -44,8 +41,6 @@ const Security = () => {
   });
 
   return (
-    <Main>
-      <Page>
         <Box>
           <Box
             display={'flex'}
@@ -197,8 +192,6 @@ const Security = () => {
             </Grid>
           </form>
         </Box>
-      </Page>
-    </Main>
   );
 };
 

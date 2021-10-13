@@ -10,8 +10,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
-import Page from '../components/Page';
-import Main from '../../layouts/Main';
 
 const validationSchema = yup.object({
   cardNumber: yup
@@ -69,8 +67,6 @@ const Billing = () => {
   });
 
   return (
-    <Main>
-      <Page>
         <Box>
           <Typography variant="h6" gutterBottom fontWeight={700}>
             Change your card data
@@ -214,7 +210,7 @@ const Billing = () => {
                         You may also consider to update your{' '}
                         <Link
                           color={'primary'}
-                          href={'/account-general'}
+                          href={'/settings/account/profile'}
                           underline={'none'}
                         >
                           private information.
@@ -234,8 +230,6 @@ const Billing = () => {
             </form>
           </Box>
         </Box>
-      </Page>
-    </Main>
   );
 };
 

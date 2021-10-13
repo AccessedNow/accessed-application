@@ -8,13 +8,9 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-import Page from '../components/Page';
-import Main from '../../layouts/Main';
 
 const Notifications = () => {
   return (
-    <Main>
-      <Page>
         <Box>
           <Box
             display={'flex'}
@@ -131,8 +127,6 @@ const Notifications = () => {
             </Grid>
           </form>
         </Box>
-      </Page>
-    </Main>
   );
 };
 

@@ -1,7 +1,9 @@
 import React from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import { useTheme } from '@mui/material/styles';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
+import { useForm, Controller } from 'react-hook-form';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
@@ -15,6 +17,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import WYSIWYGEditor from 'app/shared-components/WYSIWYGEditor';
 
 
 const ITEM_HEIGHT = 48;
@@ -94,6 +97,12 @@ const JobForm = () => {
   };
 
   const theme = useTheme();
+  const { watch, handleSubmit, formState, control } = useForm({
+    mode: 'onChange',
+    defaultValues: initialValues,
+    resolver: yupResolver(validationSchema),
+  });
+
   const [personName, setPersonName] = React.useState([]);
 
   const handleChange = (event) => {
@@ -162,17 +171,11 @@ const JobForm = () => {
                 >
                   Description
                 </Typography>
-                <TextField
-                  label="Description"
-                  variant="outlined"
-                  name={'description'}
-                  multiline
-                  rows={5}
-                  fullWidth
-                  value={formik.values.description}
-                  onChange={formik.handleChange}
-                  error={formik.touched.description && Boolean(formik.errors.description)}
-                  helperText={formik.touched.description && formik.errors.description}
+                <Controller
+                  className="mt-8 mb-16"
+                  render={({ field }) => <WYSIWYGEditor {...field} />}
+                  name="message"
+                  control={control}
                 />
               </Grid>
               <Grid item xs={12}>

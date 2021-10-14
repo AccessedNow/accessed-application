@@ -1,5 +1,6 @@
 import CompanyConfig from './company/CompanyConfig';
 import JobConfig from './jobs/JobConfig';
+import TalentConfig from './talent/TalentConfig';
 
 
 import AcademyAppConfig from './academy/AcademyAppConfig';
@@ -18,6 +19,7 @@ import TodoAppConfig from './todo/TodoAppConfig';
 const appsConfigs = [
   CompanyConfig,
   JobConfig,
+  TalentConfig,
 
   AnalyticsDashboardAppConfig,
   ProjectDashboardAppConfig,

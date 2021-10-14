@@ -63,7 +63,7 @@ function SettingsLayout({ content, route }) {
               className="text-14 md:text-18 font-medium flex items-center"
               role="button"
             >
-              <Icon className="mr-8">import_contacts</Icon> <span>Settings</span>
+              <Icon className="mr-8">settings</Icon> <span>Settings</span>
             </Link>
           </div>
         </div>

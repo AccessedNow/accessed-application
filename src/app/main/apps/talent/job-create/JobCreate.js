@@ -159,7 +159,7 @@ function JobCreate(props) {
                   ) : (
                     <Fab
                       sx={{ background: `${green[500]}!important`, color: 'white!important' }}
-                      to="/apps/academy/courses"
+                      to=""
                       component={Link}
                     >
                       <Icon>check</Icon>

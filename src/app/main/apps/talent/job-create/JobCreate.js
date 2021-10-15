@@ -86,7 +86,7 @@ function JobCreate(props) {
 
   function handleChangeActiveStep(index) {
     // dispatch(upddateJob({ activeStep: index + 1 }));
-    setActiveStep(activeStep+1)
+    setActiveStep(index+1)
   }
 
   function handleNext() {
@@ -142,32 +142,32 @@ function JobCreate(props) {
               </SwipeableViews>
             </FuseScrollbars>
 
-            <div className="flex justify-center w-full absolute left-0 right-0 bottom-0 pb-16 md:pb-32">
-              <div className="flex justify-between w-full max-w-xl px-8">
-                <div>
-                  {activeStep !== 1 && (
-                    <Fab className="" color="secondary" onClick={handleBack}>
-                      <Icon>{theme.direction === 'ltr' ? 'chevron_left' : 'chevron_right'}</Icon>
-                    </Fab>
-                  )}
-                </div>
-                <div>
-                  {activeStep < steps.length ? (
-                    <Fab className="" color="secondary" onClick={handleNext}>
-                      <Icon>{theme.direction === 'ltr' ? 'chevron_right' : 'chevron_left'}</Icon>
-                    </Fab>
-                  ) : (
-                    <Fab
-                      sx={{ background: `${green[500]}!important`, color: 'white!important' }}
-                      to=""
-                      component={Link}
-                    >
-                      <Icon>check</Icon>
-                    </Fab>
-                  )}
-                </div>
-              </div>
-            </div>
+            {/*<div className="flex justify-center w-full absolute left-0 right-0 bottom-0 pb-16 md:pb-32">*/}
+              {/*<div className="flex justify-between w-full max-w-xl px-8">*/}
+                {/*<div>*/}
+                  {/*{activeStep !== 1 && (*/}
+                    {/*<Fab className="" color="secondary" onClick={handleBack}>*/}
+                      {/*<Icon>{theme.direction === 'ltr' ? 'chevron_left' : 'chevron_right'}</Icon>*/}
+                    {/*</Fab>*/}
+                  {/*)}*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                  {/*{activeStep < steps.length ? (*/}
+                    {/*<Fab className="" color="secondary" onClick={handleNext}>*/}
+                      {/*<Icon>{theme.direction === 'ltr' ? 'chevron_right' : 'chevron_left'}</Icon>*/}
+                    {/*</Fab>*/}
+                  {/*) : (*/}
+                    {/*<Fab*/}
+                      {/*sx={{ background: `${green[500]}!important`, color: 'white!important' }}*/}
+                      {/*to=""*/}
+                      {/*component={Link}*/}
+                    {/*>*/}
+                      {/*<Icon>check</Icon>*/}
+                    {/*</Fab>*/}
+                  {/*)}*/}
+                {/*</div>*/}
+              {/*</div>*/}
+            {/*</div>*/}
           </div>
 
       }

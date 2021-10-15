@@ -114,10 +114,10 @@ function JobCreate(props) {
               <Icon>menu</Icon>
             </IconButton>
           </Hidden>
-          <IconButton to="/apps/academy/courses" component={Link} size="large">
+          <IconButton to="/talent/company/25/jobs" component={Link} size="large">
             <Icon>{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
           </IconButton>
-          {job && <Typography className="flex-1 text-20 mx-16">Create Job</Typography>}
+          <Typography className="flex-1 text-20 mx-16">Create Job</Typography>
         </div>
       }
       content={

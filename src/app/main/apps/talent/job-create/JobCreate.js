@@ -70,8 +70,8 @@ function JobCreate(props) {
     /**
      * Get the Job
      */
-    
-    dispatch(getJob(routeParams));
+
+    // dispatch(getJob(routeParams));
   }, [dispatch, routeParams]);
 
   useEffect(() => {
@@ -121,7 +121,6 @@ function JobCreate(props) {
         </div>
       }
       content={
-        job && (
           <div className="flex flex-1 relative overflow-hidden">
             <FuseScrollbars className="w-full overflow-auto">
               <SwipeableViews
@@ -153,7 +152,7 @@ function JobCreate(props) {
                   )}
                 </div>
                 <div>
-                  {activeStep < job.steps.length ? (
+                  {activeStep < steps.length ? (
                     <Fab className="" color="secondary" onClick={handleNext}>
                       <Icon>{theme.direction === 'ltr' ? 'chevron_right' : 'chevron_left'}</Icon>
                     </Fab>
@@ -170,10 +169,10 @@ function JobCreate(props) {
               </div>
             </div>
           </div>
-        )
+
       }
       leftSidebarContent={
-        job && (
+
           <Stepper
             classes={{ root: 'bg-transparent' }}
             activeStep={activeStep - 1}
@@ -187,7 +186,7 @@ function JobCreate(props) {
               );
             })}
           </Stepper>
-        )
+
       }
       innerScroll
       ref={pageLayout}

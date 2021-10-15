@@ -7,7 +7,7 @@ const TalentConfig = {
   },
   routes: [
     {
-      path: '/talent/company/:courseId/jobs/create/:courseHandle',
+      path: '/talent/company/:id/jobs/create',
       component: lazy(() => import('./job-create/JobCreate')),
     },
   ],

@@ -18,7 +18,8 @@ import { Link, useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import SwipeableViews from 'react-swipeable-views';
 import reducer from './store';
-import { getCourse, updateCourse } from './store/courseSlice';
+import { useState } from 'react';
+import { getJob, updateJob } from '../store/jobSlice';
 import JobForm from './components/JobForm';
 import Billing from './components/Billing';
 
@@ -42,14 +43,15 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   },
 }));
 
-function Course(props) {
+function JobCreate(props) {
   const dispatch = useDispatch();
-  const course = useSelector(({ academyApp }) => academyApp.course);
+  const job = useSelector(({ jobCreate }) => jobCreate.job);
   const theme = useTheme();
 
   const routeParams = useParams();
   const pageLayout = useRef(null);
-
+  const [showDetails, setShowDetails] = useState(false);
+  const [activeStep, setActiveStep] = useState(1);
 
   const steps = [
     {
@@ -66,9 +68,10 @@ function Course(props) {
 
   useDeepCompareEffect(() => {
     /**
-     * Get the Course Data
+     * Get the Job
      */
-    dispatch(getCourse(routeParams));
+    
+    dispatch(getJob(routeParams));
   }, [dispatch, routeParams]);
 
   useEffect(() => {
@@ -76,24 +79,27 @@ function Course(props) {
      * If the course is opened for the first time
      * Change ActiveStep to 1
      */
-    if (course && course.activeStep === 0) {
-      dispatch(updateCourse({ activeStep: 1 }));
+    if (job && activeStep === 0) {
+      // dispatch(upddateJob({ currentStep: 1 }));
     }
-  }, [dispatch, course]);
+  }, [dispatch, job]);
 
   function handleChangeActiveStep(index) {
-    dispatch(updateCourse({ activeStep: index + 1 }));
+    // dispatch(upddateJob({ activeStep: index + 1 }));
+    setActiveStep(activeStep+1)
   }
 
   function handleNext() {
-    dispatch(updateCourse({ activeStep: course.activeStep + 1 }));
+    // dispatch(upddateJob({ activeStep: course.activeStep + 1 }));
+    setActiveStep(activeStep+1);
   }
 
   function handleBack() {
-    dispatch(updateCourse({ activeStep: course.activeStep - 1 }));
+    // dispatch(upddateJob({ activeStep: course.activeStep - 1 }));
+    setActiveStep(activeStep-1);
   }
 
-  const activeStep = course && course.activeStep !== 0 ? course.activeStep : 1;
+  // const activeStep = job && currentStep !== 0 ? currentStep : 0;
 
   return (
     <Root
@@ -111,11 +117,11 @@ function Course(props) {
           <IconButton to="/apps/academy/courses" component={Link} size="large">
             <Icon>{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
           </IconButton>
-          {course && <Typography className="flex-1 text-20 mx-16">Create Job</Typography>}
+          {job && <Typography className="flex-1 text-20 mx-16">Create Job</Typography>}
         </div>
       }
       content={
-        course && (
+        job && (
           <div className="flex flex-1 relative overflow-hidden">
             <FuseScrollbars className="w-full overflow-auto">
               <SwipeableViews
@@ -147,7 +153,7 @@ function Course(props) {
                   )}
                 </div>
                 <div>
-                  {activeStep < course.steps.length ? (
+                  {activeStep < job.steps.length ? (
                     <Fab className="" color="secondary" onClick={handleNext}>
                       <Icon>{theme.direction === 'ltr' ? 'chevron_right' : 'chevron_left'}</Icon>
                     </Fab>
@@ -167,7 +173,7 @@ function Course(props) {
         )
       }
       leftSidebarContent={
-        course && (
+        job && (
           <Stepper
             classes={{ root: 'bg-transparent' }}
             activeStep={activeStep - 1}
@@ -189,4 +195,4 @@ function Course(props) {
   );
 }
 
-export default withReducer('academyApp', reducer)(Course);
+export default withReducer('jobCreate', reducer)(JobCreate);

@@ -1,12 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import course from './courseSlice';
-import courses from './coursesSlice';
+import job from '../../store/jobSlice';
 import categories from './categoriesSlice';
 
 const reducer = combineReducers({
   categories,
-  courses,
-  course,
+  job,
 });
 
 export default reducer;

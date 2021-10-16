@@ -96,14 +96,17 @@ const viewNamesObj = {
 
 function JobDetailHeader(props) {
   const { calendarRef, currentDate } = props;
-
   const mainThemeDark = useSelector(selectMainThemeDark);
   const calendarApi = () => calendarRef.current?.getApi();
+
+  if(!props.company){
+    return;
+  }
   return (
     <ThemeProvider theme={mainThemeDark}>
       <Root
         className={clsx(
-          'flex h-200 min-h-200 relative',
+          'w-full flex h-200 min-h-200 relative',
           format(new Date(currentDate?.start || null), 'MMM')
         )}
       >

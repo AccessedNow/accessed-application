@@ -2,6 +2,7 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import { useTheme, styled } from '@mui/material/styles';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import { green } from '@mui/material/colors';
+
 import Fab from '@mui/material/Fab';
 import Hidden from '@mui/material/Hidden';
 import Icon from '@mui/material/Icon';
@@ -21,7 +22,7 @@ import reducer from './store';
 import { useState } from 'react';
 import { getJob, updateJob } from '../store/jobSlice';
 import JobForm from './components/JobForm';
-import Billing from './components/Billing';
+import ApplicationForm from './components/ApplicationForm';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -62,7 +63,7 @@ function JobCreate(props) {
     {
       id: '1',
       title: 'Application Form',
-      content: <Billing />
+      content: <ApplicationForm />
     }
   ]
 
@@ -131,12 +132,12 @@ function JobCreate(props) {
               >
                 {steps.map((step, index) => (
                   <div
-                    className="flex justify-center p-16 pb-64 sm:p-24 sm:pb-64 md:p-48 md:pb-64"
+                    className="flex justify-start p-16 pb-64 sm:p-24 sm:pb-64 md:p-48 md:pb-64"
                     key={step.id}
                   >
-                    <Paper className="w-full max-w-lg rounded-20 p-16 md:p-24 shadow text-14 leading-normal">
+                    <div className="w-full text-14 leading-normal">
                       {step.content}
-                    </Paper>
+                    </div>
                   </div>
                 ))}
               </SwipeableViews>

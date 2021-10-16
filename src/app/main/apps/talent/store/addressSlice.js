@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getAllLocations = createAsyncThunk('jobCreate/address', async (routeParams, { getState }) => {
+export const getTemplates = createAsyncThunk('company/templates', async (routeParams, { getState }) => {
 	routeParams = routeParams;
 	const response = await axios.get('/api/address/all', {
 		params: routeParams

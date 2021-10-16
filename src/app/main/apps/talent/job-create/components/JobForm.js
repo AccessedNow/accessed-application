@@ -1,11 +1,25 @@
-import React from 'react';
+import FuseUtils from '@fuse/utils/FuseUtils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import _ from '@lodash';
 import { useTheme } from '@mui/material/styles';
 import { useFormik } from 'formik';
 import { useForm, Controller } from 'react-hook-form';
+import React, { useCallback, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
@@ -18,7 +32,14 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import WYSIWYGEditor from 'app/shared-components/WYSIWYGEditor';
+import JobDetailHeader from '../../../jobs/components/JobDetailHeader';
+import JobDetailBody from '../../../jobs/components/JobDetailBody';
 
+import {
+  getJob,
+  addJob,
+  updateJob
+} from '../../store/jobSlice';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -51,59 +72,107 @@ const validationSchema = yup.object({
     .trim()
     .min(10, 'Please enter a valid title')
     .max(50, 'Please enter a valid title')
-    .required('Please specify your first name'),
-  email: yup
+    .required('Please specify your a title'),
+
+
+  // description: yup
+  //   .string()
+  //   .trim()
+  //   .max(500, 'Should be less than 500 chars'),
+  category: yup
     .string()
     .trim()
-    .email('Please enter a valid email address')
-    .required('Email is required.'),
-  bio: yup
+    .min(10, 'Please enter a valid requirements')
+    .max(50, 'Please enter a valid requirements')
+    .required('Please specify your requirements'),
+  jobFunction: yup
     .string()
     .trim()
-    .max(500, 'Should be less than 500 chars'),
+    .min(10, 'Please enter a valid requirements')
+    .max(50, 'Please enter a valid requirements')
+    .required('Please specify your requirements'),
+  employmentType: yup
+    .string()
+    .trim()
+    .min(10, 'Please enter a valid requirements')
+    .max(50, 'Please enter a valid requirements')
+    .required('Please specify your requirements'),
   country: yup
     .string()
     .trim()
-    .min(2, 'Please enter a valid name')
-    .max(80, 'Please enter a valid name')
-    .required('Please specify your country name'),
+    .min(2, 'Please enter a valid country')
+    .max(80, 'Please enter a valid country')
+    .required('Please specify your country'),
   city: yup
     .string()
     .trim()
-    .min(2, 'Please enter a valid name')
-    .max(80, 'Please enter a valid name')
-    .required('Please specify your city name'),
-  address: yup
-    .string()
-    .required('Please specify your address')
-    .min(2, 'Please enter a valid address')
-    .max(200, 'Please enter a valid address'),
+    .min(2, 'Please enter a valid city')
+    .max(80, 'Please enter a valid city')
+    .required('Please specify your city')
 });
 
-const JobForm = () => {
-  const initialValues = {
-    title: '',
-    description: '',
-    requirements: '',
-    minimumRequirements: '',
-    responsibilities: '',
-    category: '',
-    jobFunction: '',
-    employmentType: '',
-    education: '',
-    country: '',
-    city: '',
-    address: '',
-  };
+const initialValues = {
+  title: 'abc',
+  description: '',
+  requirements: [],
+  qualifications: [],
+  minimumQualifications: [],
+  responsibilities: [],
+  category: '',
+  jobFunction: '',
+  employmentType: '',
+  education: '',
+  country: '',
+  city: '',
+  company: {
+    id: 1,
+    name: 'Hacker News',
+    avatar: ''
+  }
+};
 
+
+const JobForm = () => {
+  const dispatch = useDispatch();
+  const routeParams = useParams();
   const theme = useTheme();
-  const { watch, handleSubmit, formState, control } = useForm({
+  const { control, watch, reset, handleSubmit, formState, getValues } = useForm({
     mode: 'onChange',
-    defaultValues: initialValues,
+    initialValues,
     resolver: yupResolver(validationSchema),
   });
+  const form = watch();
+  const { isValid, dirtyFields, errors } = formState;
 
   const [personName, setPersonName] = React.useState([]);
+
+  const job = {
+    title: 'Android',
+    qualifications: [],
+    minimumQualifications: [],
+    responsibilities: [],
+    company: {
+      id: 1,
+      name: 'Hacker News',
+      avatar: ''
+    }
+  }
+
+  /**
+   * Initialize Form
+   */
+  const initForm = useCallback(() => {
+
+    reset({
+      ...initialValues,
+      id: FuseUtils.generateGUID(),
+    });
+
+  }, [reset]);
+
+  useEffect(() => {
+    initForm()
+  }, [initForm]);
 
   const handleChange = (event) => {
     const {
@@ -114,33 +183,49 @@ const JobForm = () => {
       typeof value === 'string' ? value.split(',') : value,
     );
   };
-
-  const onSubmit = (values) => {
-    return values;
+  const handleDescription = (key) => (event) => {
+    setState({
+      ...state,
+      [key]: event.target.value
+    });
   };
 
-  const formik = useFormik({
-    initialValues,
-    validationSchema: validationSchema,
-    onSubmit,
-  });
+
+
+  /**
+   * Form Submit
+   */
+  function onSubmit(data) {
+    dispatch(addJob(data));
+  }
+
+  if(!Object.keys(form).length === 0){
+    return
+  }
 
   return (
-        <Box>
-          <Typography variant="h6" gutterBottom fontWeight={700}>
-            Job Detail
-          </Typography>
-          <Typography variant={'subtitle2'} color={'text.secondary'}>
-            Please read our{' '}
-            <Link color={'primary'} href={'/terms-conditions'} underline={'none'}>
-              terms of use
-            </Link>{' '}
-            to be informed how we manage your private data.
-          </Typography>
-          <Box paddingY={4}>
-            <Divider />
-          </Box>
-          <form onSubmit={formik.handleSubmit}>
+    <Grid container spacing={4}>
+      <Grid item xs={12} sm={7}>
+        <Box className="flex flex-col items-start justify-start px-20">
+          {/*<Typography variant="h6" gutterBottom fontWeight={700}>*/}
+            {/*Job Detail*/}
+          {/*</Typography>*/}
+          {/*<Typography variant={'subtitle2'} color={'text.secondary'}>*/}
+            {/*Please read our{' '}*/}
+            {/*<Link color={'primary'} href={'/terms-conditions'} underline={'none'}>*/}
+              {/*terms of use*/}
+            {/*</Link>{' '}*/}
+            {/*to be informed how we manage your private data.*/}
+          {/*</Typography>*/}
+          {/*<Box paddingY={4}>*/}
+            {/*<Divider />*/}
+          {/*</Box>*/}
+          <form
+            noValidate
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col md:overflow-hidden"
+          >
+
             <Grid container spacing={4}>
               <Grid item xs={12} sm={12}>
                 <Typography
@@ -150,17 +235,23 @@ const JobForm = () => {
                 >
                   Enter Job Title *
                 </Typography>
-                <TextField
-                  label="Title"
-                  variant="outlined"
-                  name={'title'}
-                  fullWidth
-                  value={formik.values.title}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.title && Boolean(formik.errors.title)
-                  }
-                  helperText={formik.touched.title && formik.errors.title}
+                <Controller
+                  control={control}
+                  name="title"
+
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Title"
+                      id="title"
+                      error={!!errors.title}
+                      helperText={errors?.title?.message}
+                      variant="outlined"
+                      required
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -173,7 +264,7 @@ const JobForm = () => {
                 </Typography>
                 <Controller
                   className="mt-8 mb-16"
-                  render={({ field }) => <WYSIWYGEditor {...field} />}
+                  render={({ field }) => <WYSIWYGEditor {...field} onChange={handleDescription} />}
                   name="message"
                   control={control}
                 />
@@ -189,17 +280,19 @@ const JobForm = () => {
                 >
                   Requirements
                 </Typography>
-                <TextField
-                  label="Enter a requirement"
-                  variant="outlined"
-                  name={'requirements'}
-                  fullWidth
-                  value={formik.values.requirements}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.requirements && Boolean(formik.errors.requirements)
-                  }
-                  helperText={formik.touched.requirements && formik.errors.requirements}
+                <Controller
+                  control={control}
+                  name="requirements"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Requirements"
+                      id="requirements"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
                 <Button variant="outlined" size="large" className="w-full rounded-4 mt-14">
                   + Add
@@ -213,17 +306,19 @@ const JobForm = () => {
                 >
                   Minimum Requirements
                 </Typography>
-                <TextField
-                  label="Enter a requirement"
-                  variant="outlined"
-                  name={'minimumRequirements'}
-                  fullWidth
-                  value={formik.values.minimumRequirements}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.requirements && Boolean(formik.errors.minimumRequirements)
-                  }
-                  helperText={formik.touched.minimumRequirements && formik.errors.minimumRequirements}
+                <Controller
+                  control={control}
+                  name="minimumRequirements"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Minimum Requirements"
+                      id="minimumRequirements"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
                 <Button variant="outlined" size="large" className="w-full rounded-4 mt-14">
                   + Add
@@ -237,18 +332,21 @@ const JobForm = () => {
                 >
                   Responsibilities
                 </Typography>
-                <TextField
-                  label="Enter a responsibility"
-                  variant="outlined"
-                  name={'responsibilities'}
-                  fullWidth
-                  value={formik.values.responsibilities}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.responsibilities && Boolean(formik.errors.responsibilities)
-                  }
-                  helperText={formik.touched.responsibilities && formik.errors.responsibilities}
+                <Controller
+                  control={control}
+                  name="responsibilities"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Responsibilities"
+                      id="responsibilities"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
+
                 <Button variant="outlined" size="large" className="w-full rounded-4 mt-14">
                   + Add
                 </Button>
@@ -264,17 +362,19 @@ const JobForm = () => {
                 >
                   Category
                 </Typography>
-                <TextField
-                  label="Select Category"
-                  variant="outlined"
-                  name={'category'}
-                  fullWidth
-                  value={formik.values.category}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.category && Boolean(formik.errors.category)
-                  }
-                  helperText={formik.touched.category && formik.errors.category}
+                <Controller
+                  control={control}
+                  name="category"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Category"
+                      id="category"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -285,15 +385,19 @@ const JobForm = () => {
                 >
                   Select Job Function
                 </Typography>
-                <TextField
-                  label="Job Function"
-                  variant="outlined"
-                  name={'category'}
-                  fullWidth
-                  value={formik.values.category}
-                  onChange={formik.handleChange}
-                  error={formik.touched.category && Boolean(formik.errors.category)}
-                  helperText={formik.touched.category && formik.errors.category}
+                <Controller
+                  control={control}
+                  name="jobFunction"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Job Function"
+                      id="jobFunction"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -304,15 +408,19 @@ const JobForm = () => {
                 >
                   Employment Type
                 </Typography>
-                <TextField
-                  label="Employment Type"
-                  variant="outlined"
-                  name={'employmentType'}
-                  fullWidth
-                  value={formik.values.employmentType}
-                  onChange={formik.handleChange}
-                  error={formik.touched.employmentType && Boolean(formik.errors.employmentType)}
-                  helperText={formik.touched.employmentType && formik.errors.employmentType}
+                <Controller
+                  control={control}
+                  name="employmentType"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Employment Type"
+                      id="employmentType"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -326,15 +434,19 @@ const JobForm = () => {
                 >
                   Minimum
                 </Typography>
-                <TextField
-                  label="Minimum"
-                  variant="outlined"
-                  name={'salaryRangeLow'}
-                  fullWidth
-                  value={formik.values.salaryRangeLow}
-                  onChange={formik.handleChange}
-                  error={formik.touched.salaryRangeLow && Boolean(formik.errors.salaryRangeLow)}
-                  helperText={formik.touched.salaryRangeLow && formik.errors.salaryRangeLow}
+                <Controller
+                  control={control}
+                  name="salaryRangeLow"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Minimum"
+                      id="salaryRangeLow"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -345,15 +457,19 @@ const JobForm = () => {
                 >
                   Maximum
                 </Typography>
-                <TextField
-                  label="Maximum"
-                  variant="outlined"
-                  name={'maximum'}
-                  fullWidth
-                  value={formik.values.salaryRangeHigh}
-                  onChange={formik.handleChange}
-                  error={formik.touched.salaryRangeHigh && Boolean(formik.errors.salaryRangeHigh)}
-                  helperText={formik.touched.salaryRangeHigh && formik.errors.salaryRangeHigh}
+                <Controller
+                  control={control}
+                  name="salaryRangeHigh"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Maximum"
+                      id="salaryRangeHigh"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -364,15 +480,19 @@ const JobForm = () => {
                 >
                   Currency
                 </Typography>
-                <TextField
-                  label="Currency"
-                  variant="outlined"
-                  name={'currency'}
-                  fullWidth
-                  value={formik.values.currency}
-                  onChange={formik.handleChange}
-                  error={formik.touched.currency && Boolean(formik.errors.currency)}
-                  helperText={formik.touched.currency && formik.errors.currency}
+                <Controller
+                  control={control}
+                  name="currency"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Currency"
+                      id="currency"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -386,15 +506,19 @@ const JobForm = () => {
                 >
                   Country
                 </Typography>
-                <TextField
-                  label="Country"
-                  variant="outlined"
-                  name={'country'}
-                  fullWidth
-                  value={formik.values.country}
-                  onChange={formik.handleChange}
-                  error={formik.touched.country && Boolean(formik.errors.country)}
-                  helperText={formik.touched.country && formik.errors.country}
+                <Controller
+                  control={control}
+                  name="country"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Country"
+                      id="country"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -405,15 +529,19 @@ const JobForm = () => {
                 >
                   State
                 </Typography>
-                <TextField
-                  label="State"
-                  variant="outlined"
-                  name={'state'}
-                  fullWidth
-                  value={formik.values.state}
-                  onChange={formik.handleChange}
-                  error={formik.touched.state && Boolean(formik.errors.state)}
-                  helperText={formik.touched.state && formik.errors.state}
+                <Controller
+                  control={control}
+                  name="state"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="State"
+                      id="state"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -424,15 +552,19 @@ const JobForm = () => {
                 >
                   City
                 </Typography>
-                <TextField
-                  label="City"
-                  variant="outlined"
-                  name={'city'}
-                  fullWidth
-                  value={formik.values.city}
-                  onChange={formik.handleChange}
-                  error={formik.touched.city && Boolean(formik.errors.city)}
-                  helperText={formik.touched.city && formik.errors.city}
+                <Controller
+                  control={control}
+                  name="city"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="City"
+                      id="city"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -446,15 +578,19 @@ const JobForm = () => {
                 >
                   Min. Month Experience
                 </Typography>
-                <TextField
-                  label="Min. Month Experience"
-                  variant="outlined"
-                  name={'minimumExperience'}
-                  fullWidth
-                  value={formik.values.minimumExperience}
-                  onChange={formik.handleChange}
-                  error={formik.touched.minimumExperience && Boolean(formik.errors.minimumExperience)}
-                  helperText={formik.touched.minimumExperience && formik.errors.minimumExperience}
+                <Controller
+                  control={control}
+                  name="minimumExperience"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Minimum"
+                      id="minimumExperience"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -465,15 +601,19 @@ const JobForm = () => {
                 >
                   Max. Month Experience
                 </Typography>
-                <TextField
-                  label="Max. Month Experience"
-                  variant="outlined"
-                  name={'maximumExperience'}
-                  fullWidth
-                  value={formik.values.maximumExperience}
-                  onChange={formik.handleChange}
-                  error={formik.touched.maximumExperience && Boolean(formik.errors.maximumExperience)}
-                  helperText={formik.touched.maximumExperience && formik.errors.maximumExperience}
+                <Controller
+                  control={control}
+                  name="maximumExperience"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Maximum"
+                      id="maximumExperience"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -484,15 +624,19 @@ const JobForm = () => {
                 >
                   Education
                 </Typography>
-                <TextField
-                  label="Education"
-                  variant="outlined"
-                  name={'education'}
-                  fullWidth
-                  value={formik.values.education}
-                  onChange={formik.handleChange}
-                  error={formik.touched.education && Boolean(formik.errors.education)}
-                  helperText={formik.touched.education && formik.errors.education}
+                <Controller
+                  control={control}
+                  name="education"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      className="mb-24"
+                      label="Education"
+                      id="education"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -563,14 +707,37 @@ const JobForm = () => {
                       </Link>
                     </Typography>
                   </Box>
-                  <Button size={'large'} variant={'contained'} type={'submit'} className="rounded-6">
-                    Create
-                  </Button>
+                  <div className="px-16">
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                      disabled={_.isEmpty(dirtyFields) || !isValid}
+                      className="rounded-6"
+                    >
+                      Save
+                    </Button>
+                  </div>
                 </Box>
               </Grid>
             </Grid>
           </form>
         </Box>
+      </Grid>
+      <Grid item xs={12} sm={5}>
+        {Object.keys(form).length !== 0 && (
+        <Card
+          component={motion.div}
+          variant="outlined"
+          className="flex flex-col items-center justify-start w-full overflow-hidden rounded-8 mb-20 "
+          >
+
+          <JobDetailHeader company={job.company}/>
+          <JobDetailBody job={form}/>
+          </Card>
+        )}
+      </Grid>
+    </Grid>
   );
 };
 

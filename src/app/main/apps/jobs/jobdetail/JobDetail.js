@@ -28,7 +28,8 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { withRouter, useParams } from 'react-router-dom';
-import JobDetailHeader from './JobDetailHeader';
+import JobDetailHeader from '../components/JobDetailHeader';
+import JobDetailBody from '../components/JobDetailBody';
 
 import {getJob, saveJob, applyJob, openDialog, closeDialog, updateStep} from "./store/jobSlice";
 import reducer from './store';
@@ -129,132 +130,8 @@ function JobDetail() {
                 className="w-full overflow-hidden rounded-8 mb-20 "
               >
                 <JobDetailHeader company={job.company}/>
-                <div className="w-full items-center justify-between px-32 py-40">
-                  <div className="flex flex-1 w-full items-center justify-between">
-                    <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
-                      <Typography className="text-16 sm:text-20 truncate font-semibold">
-                        {job.title}
-                      </Typography>
-                    </motion.div>
-                    <motion.div
-                      className="flex"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
-                    >
-                      <IconButton aria-label="Apply" onClick={handleApplyJob} size="large">
-                        <FontDownload fontSize="inherit"/>
-                      </IconButton>
-                      <IconButton
-                        aria-label="Save"
-                        onClick={(ev) => {
-                        ev.stopPropagation();
-                        dispatch(saveJob(job));
-                      }} size="large">
-                        <Favorite fontSize="inherit"/>
-                      </IconButton>
-                    </motion.div>
-                  </div>
-                  <div className="flex flex-1 w-full items-center justify-between mb-40">
-                    <Typography className="truncate">
-                      {job.company.name} - {job.country}
-                    </Typography>
-                    <Typography className="truncate">
-                      Posted 1 week ago - 12 Applicants
-                    </Typography>
-                  </div>
-                  <div className="flex flex-1 w-full items-center justify-between mb-20">
-                    <div className="flex flex-col items-center justify-center">
-                      <Typography variant="caption" className="mt-4">
-                        EXPERIENCE
-                      </Typography>
-                      <Typography variant="caption" className="mt-4 font-600">
-                        {job.level}
-                      </Typography>
-                    </div>
-                    <div className="flex flex-col items-center justify-center">
-                      <Typography variant="caption" className="mt-4">
-                        LEVEL
-                      </Typography>
-                      <Typography variant="caption" className="mt-4 font-600">
-                        {job.level}
-                      </Typography>
-                    </div>
-                    <div className="flex flex-col items-center justify-center">
-                      <Typography variant="caption" className="mt-4">
-                        EMPLOYMENT
-                      </Typography>
-                      <Typography variant="caption" className="mt-4 font-600">
-                        {job.employmentType}
-                      </Typography>
-                    </div>
-                    <div className="flex flex-col items-center justify-center">
-                      <Typography variant="caption" className="mt-4">
-                        SALARY
-                      </Typography>
-                      <Typography variant="caption" className="mt-4 font-600">
-                        {salary}
-                      </Typography>
-                    </div>
-                  </div>
+                <JobDetailBody job={job}/>
 
-                  <div className="w-full items-center justify-between" mb-40>
-                    <Typography variant="h6" className="mb-10 text-14 mb-30">
-                      Description
-                    </Typography>
-                    {!showDetails ?
-                      <div>
-                        <Typography className="mb-16" component="p" style={{whiteSpace: "pre-line", overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', 'WebkitLineClamp': '5', 'WebkitBoxOrient': 'vertical'}}>
-                          {job.description}
-                        </Typography>
-                        <Typography
-                          color="primary"
-                          className="cursor-pointer underline mb-8"
-                          onClick={() => {
-                            setShowDetails(!showDetails);
-                          }}
-                        >
-                          {showDetails ? <span>Hide</span> : <span>Show More</span>}
-                        </Typography>
-                      </div>
-                      :
-                      <div>
-                        <Typography className="mb-16" component="p" style={{whiteSpace: "pre-line"}}>
-                          {job.description}
-                        </Typography>
-                        <div className="w-full items-center justify-between" mb-40>
-                          <Typography variant="h6" className="mb-10 text-14 mb-30">
-                            Qualifications
-                          </Typography>
-                          <ul>
-                            {job.qualifications.map((q) => (
-                              <li>{q}</li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="w-full items-center justify-between" mb-40>
-                          <Typography variant="h6" className="mb-10 text-14 mb-30">
-                            Minimum Qualifications
-                          </Typography>
-                          <ul>
-                            {job.minimumQualifications.map((q) => (
-                              <li>{q}</li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="w-full items-center justify-between" mb-40>
-                          <Typography variant="h6" className="mb-10 text-14 mb-30">
-                            Responsibilities
-                          </Typography>
-                          <ul>
-                            {job.responsibilities.map((q) => (
-                              <li>{q}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    }
-                  </div>
-                </div>
                 <CardActions className="flex items-center justify-center text-center border-t-1">
 
                   <Typography variant="span" color="text.secondary" className="flex" onClick={() => {

@@ -193,16 +193,16 @@ export const updateUserData = (user) => async (dispatch, getState) => {
 
 const initialState = {
   role: [], // guest
-  // data: {
-  //   id: 5,
-  //   displayName: 'Guest',
-  //   photoURL: 'assets/images/avatars/Velazquez.jpg',
-  //   email: 'guest@accessed.co',
-  //   shortcuts: ['calendar', 'mail', 'contacts', 'todo'],
-  // },
   data: {
-    shortcuts: [],
+    id: 5,
+    displayName: 'Guest',
+    photoURL: 'assets/images/avatars/Velazquez.jpg',
+    email: 'guest@accessed.co',
+    shortcuts: ['calendar', 'mail', 'contacts', 'todo'],
   },
+  // data: {
+  //   shortcuts: [],
+  // },
 };
 
 const userSlice = createSlice({

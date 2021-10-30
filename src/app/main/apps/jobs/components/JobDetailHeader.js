@@ -123,7 +123,7 @@ function JobDetailHeader(props) {
                   borderStyle: 'solid',
                   borderColor: 'background.default',
                 }}
-                className="flex items-center justify-center w-96 h-96 -mb-52"
+                className="flex items-center justify-center w-96 h-96 -mb-52 rounded-6"
                 src={props.company.avatar}
                 variant="square"
               />

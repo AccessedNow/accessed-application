@@ -15,8 +15,6 @@ import {saveJob} from "../jobdetail/store/jobSlice";
 function JobDetailBody(props) {
   const mainThemeDark = useSelector(selectMainThemeDark);
 
-  console.log('job', props.job)
-
   let salary='';
   if(props.job.salaryFixed){
     salary = props.job.salaryFixed;
@@ -32,16 +30,23 @@ function JobDetailBody(props) {
 
   return (
     <div className="w-full items-center justify-between px-32 py-40">
-      <div className="flex flex-1 w-full items-center justify-between">
+      <div className="flex flex-1 w-full items-center justify-between mt-20">
         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
+          {!props.title?
+          <Typography className="text-16 sm:text-20 truncate font-semibold gray text-gray-500 italic">
+            Enter job title
+          </Typography>
+            :
           <Typography className="text-16 sm:text-20 truncate font-semibold">
             {props.job.title}
           </Typography>
+          }
         </motion.div>
+        {!props.preview &&
         <motion.div
           className="flex"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
+          initial={{opacity: 0, x: 20}}
+          animate={{opacity: 1, x: 0, transition: {delay: 0.3}}}
         >
           <IconButton aria-label="Apply" onClick={props.handleApplyJob} size="large">
             <FontDownload fontSize="inherit"/>
@@ -55,14 +60,17 @@ function JobDetailBody(props) {
             <Favorite fontSize="inherit"/>
           </IconButton>
         </motion.div>
+        }
       </div>
       <div className="flex flex-1 w-full items-center justify-between mb-40">
         <Typography className="truncate">
           {props.job.company? `${props.job.company.name} - ${props.job.country}`:''}
         </Typography>
+        {!props.preview &&
         <Typography className="truncate">
           Posted 1 week ago - 12 Applicants
         </Typography>
+        }
       </div>
       <div className="flex flex-1 w-full items-start justify-between mb-20">
         <div className="flex flex-col items-center justify-start">
@@ -70,7 +78,7 @@ function JobDetailBody(props) {
             EXPERIENCE
           </Typography>
           <Typography variant="caption" className="mt-4 font-600">
-            {props.job.level}
+            {props.job.level?props.job.level:'--'}
           </Typography>
         </div>
         <div className="flex flex-col items-center justify-center">
@@ -78,7 +86,7 @@ function JobDetailBody(props) {
             LEVEL
           </Typography>
           <Typography variant="caption" className="mt-4 font-600">
-            {props.job.level}
+            {props.job.level?props.job.level:'--'}
           </Typography>
         </div>
         <div className="flex flex-col items-center justify-center">
@@ -86,7 +94,7 @@ function JobDetailBody(props) {
             EMPLOYMENT
           </Typography>
           <Typography variant="caption" className="mt-4 font-600">
-            {props.job.employmentType}
+            {props.job.employmentType?props.job.employmentType:'--'}
           </Typography>
         </div>
         <div className="flex flex-col items-center justify-center">
@@ -104,46 +112,60 @@ function JobDetailBody(props) {
           Description
         </Typography>
         <div>
-          <Typography className="mb-16" component="p" style={{whiteSpace: "pre-line"}}>
-            {props.job.description}
-          </Typography>
+          {props.job.description ?
+            <Typography className="mb-16" component="p" style={{whiteSpace: "pre-line"}}>
+              {props.job.description}
+            </Typography>
+            :
+            <Typography className="mb-16 gray text-gray-500 font-semibold italic" component="p">
+              Enter job description
+            </Typography>
+          }
 
-          {props.job.qualifications.length && (
+          {props.job.qualifications.length?
           <div className="w-full items-center justify-between" mb-40>
             <Typography variant="h6" className="mb-10 text-14 mb-30">
               Qualifications
             </Typography>
             <ul>
-              {props.job.qualifications.map((q) => (
-                <li>{q}</li>
+              {props.job.qualifications.map((q, index) => (
+                <li key={index}>{q}</li>
               ))}
             </ul>
           </div>
-          )}
-          {props.job.minimumQualifications.length && (
+            :
+          <span></span>
+          }
+
+          {props.job.minimumQualifications.length?
           <div className="w-full items-center justify-between" mb-40>
             <Typography variant="h6" className="mb-10 text-14 mb-30">
               Minimum Qualifications
             </Typography>
             <ul>
-              {props.job.minimumQualifications.map((q) => (
-                <li>{q}</li>
+              {props.job.minimumQualifications.map((q, index) => (
+                <li key={index}>{q}</li>
               ))}
             </ul>
           </div>
-          )}
-          {props.job.responsibilities.length && (
+            :
+            <span></span>
+          }
+          {props.job.responsibilities.length?
           <div className="w-full items-center justify-between" mb-40>
             <Typography variant="h6" className="mb-10 text-14 mb-30">
               Responsibilities
             </Typography>
             <ul>
-              {props.job.responsibilities.map((q) => (
-                <li>{q}</li>
+              {props.job.responsibilities.map((q, index) => (
+                <li key={index}>{q}</li>
               ))}
             </ul>
           </div>
-          )}
+          :
+            <span></span>
+          }
+
         </div>
 
       </div>

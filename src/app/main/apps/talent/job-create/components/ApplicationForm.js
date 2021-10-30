@@ -80,7 +80,7 @@ const ApplicationForm = () => {
   const form = watch();
   const { isValid, dirtyFields, errors } = formState;
   const [templates, setTemplates] = React.useState([]);
-  const [selectedTemplate, setSelectedTemplate] = React.useState(null);
+  const [selectedTemplate, setSelectedTemplate] = React.useState('');
   const [age, setAge] = React.useState('');
   const [isEdit, setIsEdit] = React.useState(false);
   const [questions, setQuestions] = React.useState();
@@ -121,10 +121,13 @@ const ApplicationForm = () => {
       setSelectedTemplate([]);
     } else {
       setSelectedTemplate(templates[idx]);
-      let templateQuestions = _.reduce(selectedTemplate.questions, function(res, q){q.isEdit=false; res.push(q); return res;}, []);
-      console.log(selectedTemplate)
-      setQuestions(templateQuestions);
-      console.log('q', questions)
+      setQuestions(selectedTemplate.questions)
+      // console.log(selectedTemplate)
+      console.log(questions)
+      // let templateQuestions = _.reduce(selectedTemplate.questions, function(res, q){q.isEdit=false; res.push(q); return res;}, []);
+      // console.log(selectedTemplate)
+      // setQuestions(templateQuestions);
+      // console.log('q', questions)
 
     }
 

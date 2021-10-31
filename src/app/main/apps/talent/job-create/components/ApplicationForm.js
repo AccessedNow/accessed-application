@@ -18,12 +18,14 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
+import DoneIcon from '@mui/icons-material/Done';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
 import Link from '@mui/material/Link';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import Paper from '@mui/material/Paper';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -34,6 +36,8 @@ import {
   updateJob
 } from '../../store/jobSlice';
 import {getCompanyTemplates} from "../../store/templateSlice";
+import Application from "../components/Application";
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -123,7 +127,6 @@ const ApplicationForm = () => {
       setSelectedTemplate(templates[idx]);
       setQuestions(selectedTemplate.questions)
       // console.log(selectedTemplate)
-      console.log(questions)
       // let templateQuestions = _.reduce(selectedTemplate.questions, function(res, q){q.isEdit=false; res.push(q); return res;}, []);
       // console.log(selectedTemplate)
       // setQuestions(templateQuestions);
@@ -159,7 +162,92 @@ const ApplicationForm = () => {
           >
 
             <Grid container spacing={4}>
+              <Grid item xs={12}>
+                <Typography
+                  variant={'subtitle2'}
+                  fontWeight={700}
+                >
+                  Personal information
+                </Typography>
+                <Typography variant="caption" display="block" gutterBottom>
+                  Decide what should be displayed on the application form.
+                </Typography>
+                <div className="mt-20">
+                  <Controller
+                    control={control}
+                    name="resume"
+                    render={({ field }) => (
+                      <FormControl fullWidth sx={{ minWidth: 120 }} className="mb-16">
+                        <InputLabel id="demo-simple-select-label">Resume</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={age}
+                          label="Resume"
+                          onChange={handleChange}
+                        >
+                        <MenuItem value="None">None</MenuItem>
+                        <MenuItem value='Optional'>Optional</MenuItem>
+                        <MenuItem value='Required'>Required</MenuItem>
+                        </Select>
+                      </FormControl>
+                    )}
+                  />
+                  <Controller
+                    control={control}
+                    name="resume"
+                    render={({ field }) => (
+                      <FormControl fullWidth sx={{ minWidth: 120 }} className="mb-16">
+                        <InputLabel id="demo-simple-select-label">Cover Letter</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={age}
+                          label="Cover Letter"
+                          onChange={handleChange}
+                        >
+                        <MenuItem value="None">None</MenuItem>
+                        <MenuItem value='Optional'>Optional</MenuItem>
+                        <MenuItem value='Required'>Required</MenuItem>
+                        </Select>
+                      </FormControl>
+                    )}
+                  />
+                  <Controller
+                    control={control}
+                    name="resume"
+                    render={({ field }) => (
+                      <FormControl fullWidth sx={{ minWidth: 120 }}>
+                        <InputLabel id="demo-simple-select-label">Photo</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={age}
+                          label="Photo"
+                          onChange={handleChange}
+                        >
+                          <MenuItem value="None">None</MenuItem>
+                          <MenuItem value='Optional'>Optional</MenuItem>
+                          <MenuItem value='Required'>Required</MenuItem>
+                        </Select>
+                      </FormControl>
+                    )}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
               <Grid item container xs={12}>
+                <Typography
+                  variant={'subtitle2'}
+                  fontWeight={700}
+                >
+                  Ask candidates about their qualifications
+                </Typography>
+                <Typography variant="caption" display="block" gutterBottom>
+                  Add screening questions below to find the best candidates more easily
+                </Typography>
                 <Box
                   display="flex"
                   flexDirection={{ xs: 'column', sm: 'row' }}
@@ -262,7 +350,7 @@ const ApplicationForm = () => {
                           </FormControl>
                         </div>
                         <Box marginBottom={2} className="flex w-full">
-                          <Divider classNae="w-full"/>
+                          <Divider className="w-full"/>
                         </Box>
                         <div className="flex w-full px-14">
                           <div className="flex flex-col w-full">
@@ -360,13 +448,14 @@ const ApplicationForm = () => {
       </Grid>
       <Grid item xs={12} sm={5}>
         {Object.keys(form).length !== 0 && (
-        <Card
+        <Paper
           component={motion.div}
           variant="outlined"
           className="flex flex-col items-center justify-start w-full overflow-hidden rounded-8 mb-20 "
           >
+          <Application/>
 
-          </Card>
+          </Paper>
         )}
       </Grid>
     </Grid>

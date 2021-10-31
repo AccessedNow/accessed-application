@@ -64,6 +64,11 @@ function JobCreate(props) {
       id: '1',
       title: 'Application Form',
       content: <ApplicationForm />
+    },
+    {
+      id: '2',
+      title: 'Pipeline',
+      content: <ApplicationForm />
     }
   ]
 

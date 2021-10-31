@@ -103,9 +103,9 @@ const ApplicationForm = () => {
 
   useEffect(() => {
     initForm()
-    dispatch(getCompanyTemplates(routeParams)).then((response) => {
-      setTemplates(response.payload);
-    });
+    // dispatch(getCompanyTemplates(routeParams)).then((response) => {
+    //   setTemplates(response.payload);
+    // });
 
   }, [dispatch, routeParams, initForm]);
 

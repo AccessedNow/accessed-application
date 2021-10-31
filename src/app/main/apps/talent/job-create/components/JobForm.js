@@ -221,7 +221,6 @@ const JobForm = () => {
     }
   }
 
-  console.log('form', form)
 
   /**
    * Initialize Form

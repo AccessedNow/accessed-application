@@ -1,12 +1,16 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
+import FuseUtils from '@fuse/utils';
+
 import { showMessage } from 'app/store/fuse/messageSlice';
+import {getProduct, removeProduct, saveProduct} from "../../e-commerce/store/productSlice";
 
 
-export const getJob = createAsyncThunk('job/detail', async (params) => {
-  const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${params.id}` );
+export const getJob = createAsyncThunk('job/detail', async (params, {getState}) => {
+  const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${params.companyId}/jobs/${params.jobId}`, {headers: {userId: getState().auth.user.data.id}} );
   const data = await response.data.data;
-  return data;
+
+  return data === undefined ? null : data;
 });
 
 export const addJob = createAsyncThunk(
@@ -34,22 +38,67 @@ export const updateJob = createAsyncThunk(
   }
 );
 
+export const removeJob = createAsyncThunk(
+  'job/delete',
+  async (form, { getState, dispatch }) => {
+    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${form._id}`, {...form}, {headers: {userId: getState().auth.user.data.id}});
+    const data = await response.data;
+
+    dispatch(showMessage({ message: 'Job Saved' }));
+
+    return data;
+  }
+);
+
 
 const jobSlice = createSlice({
-  name: 'academyApp/course',
+  name: 'talent/job',
   initialState: null,
-  reducers: {},
+  reducers: {
+    resetJob: () => null,
+    newJob: {
+      reducer: (state, action) => action.payload,
+      prepare: (event) => ({
+        payload: {
+          id: FuseUtils.generateGUID(),
+          title: '',
+          description: '',
+          qualifications: [],
+          minimumQualifications: [],
+          responsibilities: [],
+          allowRemote: false,
+          category: '',
+          jobFunction: '',
+          employmentType: '',
+          education: '',
+          level: '',
+          industry: [],
+          minMonthExperience: null,
+          maxMonthExperience: null,
+          salaryRangeLow: '',
+          salaryRangeHigh: '',
+          currency: '',
+          district: '',
+          city: '',
+          state: '',
+          country: '',
+          tags: [],
+          company: {
+            id: 1,
+            name: 'Hacker News',
+            avatar: ''
+          }
+        },
+      }),
+    },
+  },
   extraReducers: {
     [getJob.fulfilled]: (state, action) => action.payload,
-    [addJob.fulfilled]: (state, action) => ({
-      ...state,
-      ...action.payload,
-    }),
-    [updateJob.fulfilled]: (state, action) => ({
-      ...state,
-      ...action.payload,
-    }),
+    [updateJob.fulfilled]: (state, action) => action.payload,
+    [removeJob.fulfilled]: (state, action) => null,
   },
 });
+
+export const { newJob, resetJob } = jobSlice.actions;
 
 export default jobSlice.reducer;

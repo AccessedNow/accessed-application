@@ -2,7 +2,10 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import { useTheme, styled } from '@mui/material/styles';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import { green } from '@mui/material/colors';
+import { useState } from 'react';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import Fab from '@mui/material/Fab';
 import Hidden from '@mui/material/Hidden';
 import Icon from '@mui/material/Icon';
@@ -19,10 +22,10 @@ import { Link, useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import SwipeableViews from 'react-swipeable-views';
 import reducer from './store';
-import { useState } from 'react';
-import { getJob, updateJob } from '../store/jobSlice';
+
 import JobForm from './components/JobForm';
 import ApplicationForm from './components/ApplicationForm';
+import { resetJob, newJob, getJob } from '../store/jobSlice';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -46,14 +49,14 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 
 function JobCreate(props) {
   const dispatch = useDispatch();
-  const job = useSelector(({ jobCreate }) => jobCreate.job);
   const theme = useTheme();
+  const job = useSelector(({ jobCreate }) => jobCreate.job);
 
   const routeParams = useParams();
+  const [jobExist, setJobExist] = useState(false);
   const pageLayout = useRef(null);
-  const [showDetails, setShowDetails] = useState(false);
-  const [activeStep, setActiveStep] = useState(1);
 
+  const [activeStep, setActiveStep] = useState(1);
   const steps = [
     {
       id: '0',
@@ -73,11 +76,30 @@ function JobCreate(props) {
   ]
 
   useDeepCompareEffect(() => {
-    /**
-     * Get the Job
-     */
+    function updateJobState() {
+      const { jobId } = routeParams;
 
-    // dispatch(getJob(routeParams));
+      if (jobId === 'new') {
+        /**
+         * Create New Product data
+         */
+        dispatch(newJob());
+      } else {
+        /**
+         * Get Product data
+         */
+        dispatch(getJob(routeParams)).then((action) => {
+          /**
+           * If the requested job is not exist show message
+           */
+          if (!action.payload) {
+            setJobExist(true);
+          }
+        });
+      }
+    }
+
+    updateJobState();
   }, [dispatch, routeParams]);
 
   useEffect(() => {

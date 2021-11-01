@@ -197,6 +197,9 @@ const JobForm = () => {
   const dispatch = useDispatch();
   const routeParams = useParams();
   const theme = useTheme();
+  const job = useSelector(({ jobCreate }) => jobCreate.job);
+
+
   const { control, watch, reset, handleSubmit, formState, setValue, getValues } = useForm({
     mode: 'onChange',
     initialValues,
@@ -209,34 +212,16 @@ const JobForm = () => {
   const [requirements, setRequirements] = React.useState([]);
   const [currency, setCurrency] = React.useState('EUR');
 
-  const job = {
-    title: 'Android',
-    qualifications: [],
-    minimumQualifications: [],
-    responsibilities: [],
-    company: {
-      id: 1,
-      name: 'Hacker News',
-      avatar: ''
-    }
-  }
-
-
-  /**
-   * Initialize Form
-   */
-  const initForm = useCallback(() => {
-
-    reset({
-      ...initialValues,
-      id: FuseUtils.generateGUID(),
-    });
-
-  }, [reset]);
 
   useEffect(() => {
-    initForm()
-  }, [initForm]);
+    if (!job) {
+      return;
+    }
+    /**
+     * Reset the form on job state changes
+     */
+    reset(job);
+  }, [job, reset]);
 
   const handleChange = (event) => {
     const {

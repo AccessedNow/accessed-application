@@ -37,6 +37,7 @@ import {
 } from '../../store/jobSlice';
 import {getCompanyTemplates} from "../../store/templateSlice";
 import Application from "../components/Application";
+import QuestionList from "../components/QuestionList";
 
 
 const ITEM_HEIGHT = 48;
@@ -103,9 +104,9 @@ const ApplicationForm = () => {
 
   useEffect(() => {
     initForm()
-    // dispatch(getCompanyTemplates(routeParams)).then((response) => {
-    //   setTemplates(response.payload);
-    // });
+    dispatch(getCompanyTemplates(routeParams)).then((response) => {
+      setTemplates(response.payload);
+    });
 
   }, [dispatch, routeParams, initForm]);
 
@@ -117,7 +118,6 @@ const ApplicationForm = () => {
       // On autofill we get a the stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
-    console.log(age)
   };
 
   const handleTemplateChange = (event, idx) => {
@@ -166,6 +166,7 @@ const ApplicationForm = () => {
                 <Typography
                   variant={'subtitle2'}
                   fontWeight={700}
+                  className="w-full"
                 >
                   Personal information
                 </Typography>
@@ -242,12 +243,15 @@ const ApplicationForm = () => {
                 <Typography
                   variant={'subtitle2'}
                   fontWeight={700}
+                  className="w-full"
                 >
                   Ask candidates about their qualifications
                 </Typography>
                 <Typography variant="caption" display="block" gutterBottom>
                   Add screening questions below to find the best candidates more easily
                 </Typography>
+              </Grid>
+              <Grid item container xs={12}>
                 <Box
                   display="flex"
                   flexDirection={{ xs: 'column', sm: 'row' }}
@@ -287,126 +291,13 @@ const ApplicationForm = () => {
                         </FormControl>
                       )}
                     />
-                    <Controller
-                      control={control}
-                      name="age"
-                      render={({ field }) => (
-                        <FormControl fullWidth sx={{ m: 1, minWidth: 120 }}>
-                          <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={age}
-                            label="Age"
-                            onChange={handleChange}
-                          >
-                            <MenuItem value="10">10</MenuItem>
-                            <MenuItem value='20'>20</MenuItem>
-                          </Select>
-                        </FormControl>
-                      )}
-                    />
+
                   </div>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} className="flex flex-col items-start justify-start">
-                  {questions && questions.map((question) =>
-                    {question.isEdit?
-                      <div className="flex flex-col w-full items-start justify-start border-1 rounded-6">
-                        <div className="flex flex-row w-full items-start justify-between px-14">
-                          <FormControl variant="standard" sx={{m: 1, minWidth: 120}}>
-                            <InputLabel id="demo-simple-select-standard-label">Age</InputLabel>
-                            <Select
-                              labelId="demo-simple-select-standard-label"
-                              id="demo-simple-select-standard"
-                              value={age}
-                              onChange={handleChange}
-                              label="Type"
-                            >
-                              <MenuItem value="">
-                                <em>None</em>
-                              </MenuItem>
-                              <MenuItem value={10}>Ten</MenuItem>
-                              <MenuItem value={20}>Twenty</MenuItem>
-                              <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                          </FormControl>
-                          <FormControl variant="standard" sx={{m: 1, minWidth: 120}}>
-                            <InputLabel id="demo-simple-select-standard-label">Age</InputLabel>
-                            <Select
-                              labelId="demo-simple-select-standard-label"
-                              id="demo-simple-select-standard"
-                              value={age}
-                              onChange={handleChange}
-                              label="Optional"
-                            >
-                              <MenuItem value="">
-                                <em>None</em>
-                              </MenuItem>
-                              <MenuItem value={10}>Ten</MenuItem>
-                              <MenuItem value={20}>Twenty</MenuItem>
-                              <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </div>
-                        <Box marginBottom={2} className="flex w-full">
-                          <Divider className="w-full"/>
-                        </Box>
-                        <div className="flex w-full px-14">
-                          <div className="flex flex-col w-full">
-                            <Typography
-                              variant={'subtitle2'}
-                              sx={{marginBottom: 2}}
-                              fontWeight={700}
-                            >
-                              Question
-                            </Typography>
-                            <Controller
-                              control={control}
-                              name="title"
-                              render={({field}) => (
-                                <TextField
-                                  {...field}
-                                  className="mb-24"
-                                  label="Question"
-                                  id="question"
-                                  error={!!errors.title}
-                                  helperText={errors?.title?.message}
-                                  variant="outlined"
-                                  required
-                                  fullWidth
-                                />
-                              )}
-                            />
-                          </div>
-                        </div>
-                        <div className="flex flex-row items-end justify-center p-14">
-                          <Button
-                            size="small"
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                            className="rounded-6 mr-5"
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            size="small"
-                            variant="contained"
-                            color="secondary"
-                            type="submit"
-                            className="rounded-6"
-                          >
-                            Save
-                          </Button>
-                        </div>
-                      </div>
-                      :
-                      <div className="w-full border-1 p-10">1 {question.text}</div>
-                    }
-                  )}
-
-                <div className="flex">
+                <QuestionList />
+                <div className="w-full mt-20">
                   <Button
                     variant="contained"
                     className="w-full rounded-6 border-1"

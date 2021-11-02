@@ -107,7 +107,7 @@ function JobDetailBody(props) {
         </div>
       </div>
 
-      <div className="w-full items-center justify-between" mb-40>
+      <div className="w-full items-center justify-between">
         <Typography variant="h6" className="mb-10 text-14 mb-30">
           Description
         </Typography>
@@ -123,7 +123,7 @@ function JobDetailBody(props) {
           }
 
           {props.job.qualifications && props.job.qualifications.length?
-          <div className="w-full items-center justify-between" mb-40>
+          <div className="w-full items-center justify-between">
             <Typography variant="h6" className="mb-10 text-14 mb-30">
               Qualifications
             </Typography>
@@ -138,7 +138,7 @@ function JobDetailBody(props) {
           }
 
           {props.job.minimumQualifications && props.job.minimumQualifications.length?
-          <div className="w-full items-center justify-between" mb-40>
+          <div className="w-full items-center justify-between">
             <Typography variant="h6" className="mb-10 text-14 mb-30">
               Minimum Qualifications
             </Typography>
@@ -152,7 +152,7 @@ function JobDetailBody(props) {
             <span></span>
           }
           {props.job.responsibilities && props.job.responsibilities.length?
-          <div className="w-full items-center justify-between" mb-40>
+          <div className="w-full items-center justify-between">
             <Typography variant="h6" className="mb-10 text-14 mb-30">
               Responsibilities
             </Typography>

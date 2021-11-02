@@ -9,7 +9,7 @@ import { useForm, Controller } from 'react-hook-form';
 import React, { useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -46,6 +46,8 @@ import JobDetailHeader from '../../../jobs/components/JobDetailHeader';
 import JobDetailBody from '../../../jobs/components/JobDetailBody';
 import CardChecklistItem from './checklist/CardChecklistItem';
 import CardAddChecklistItem from './checklist/CardAddChecklistItem';
+import JobModel from '../../models/JobModel';
+import FormList from '../../components/FormList/FormList';
 
 import {
   getJob,
@@ -84,67 +86,44 @@ const validationSchema = yup.object({
     .trim()
     .min(10, 'Please enter a valid title')
     .max(50, 'Please enter a valid title')
-    .required('Please specify your a title'),
+    .required('Please specify a title'),
 
 
   // description: yup
   //   .string()
   //   .trim()
   //   .max(500, 'Should be less than 500 chars'),
-  category: yup
-    .string()
-    .trim()
-    .min(10, 'Please enter a valid requirements')
-    .max(50, 'Please enter a valid requirements')
-    .required('Please specify your requirements'),
-  jobFunction: yup
-    .string()
-    .trim()
-    .min(10, 'Please enter a valid requirements')
-    .max(50, 'Please enter a valid requirements')
-    .required('Please specify your requirements'),
-  employmentType: yup
-    .string()
-    .trim()
-    .min(10, 'Please enter a valid requirements')
-    .max(50, 'Please enter a valid requirements')
-    .required('Please specify your requirements'),
-  country: yup
-    .string()
-    .trim()
-    .min(2, 'Please enter a valid country')
-    .max(80, 'Please enter a valid country')
-    .required('Please specify your country'),
-  city: yup
-    .string()
-    .trim()
-    .min(2, 'Please enter a valid city')
-    .max(80, 'Please enter a valid city')
-    .required('Please specify your city')
+  // category: yup
+  //   .string()
+  //   .trim()
+  //   .min(10, 'Please enter a valid requirements')
+  //   .max(50, 'Please enter a valid requirements')
+  //   .required('Please specify your requirements'),
+  // jobFunction: yup
+  //   .string()
+  //   .trim()
+  //   .min(10, 'Please enter a valid requirements')
+  //   .max(50, 'Please enter a valid requirements')
+  //   .required('Please specify your requirements'),
+  // employmentType: yup
+  //   .string()
+  //   .trim()
+  //   .min(10, 'Please enter a valid requirements')
+  //   .max(50, 'Please enter a valid requirements')
+  //   .required('Please specify your requirements'),
+  // country: yup
+  //   .string()
+  //   .trim()
+  //   .min(2, 'Please enter a valid country')
+  //   .max(80, 'Please enter a valid country')
+  //   .required('Please specify your country'),
+  // city: yup
+  //   .string()
+  //   .trim()
+  //   .min(2, 'Please enter a valid city')
+  //   .max(80, 'Please enter a valid city')
+  //   .required('Please specify your city')
 });
-
-const initialValues = {
-  title: '',
-  description: '',
-  requirements: [],
-  qualifications: [],
-  minimumQualifications: [],
-  responsibilities: [
-    "Prepare, plan and lead scrum teams and meetings with product and engineering teams",
-    "Determine and define clear deliverables, roles, and responsibilities for team members required for specific projects or initiatives"
-  ],
-  category: '',
-  jobFunction: '',
-  employmentType: '',
-  education: '',
-  country: '',
-  city: '',
-  company: {
-    id: 1,
-    name: 'Hacker News',
-    avatar: ''
-  }
-};
 
 const currencies = [
   {
@@ -164,8 +143,6 @@ const currencies = [
     label: '¥',
   },
 ];
-
-
 
 const Root = styled('div')(({ theme }) => ({
     '.field-container': {
@@ -193,20 +170,27 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 
-const JobForm = () => {
+const JobForm = (props) => {
   const dispatch = useDispatch();
   const routeParams = useParams();
   const theme = useTheme();
   const job = useSelector(({ jobCreate }) => jobCreate.job);
 
 
-  const { control, watch, reset, handleSubmit, formState, setValue, getValues } = useForm({
+  const defaultValues = _.merge(
+    {},
+    JobModel(),
+    props.job
+  );
+  const { formState, handleSubmit, getValues, reset, watch, setValue, control } = useForm({
     mode: 'onChange',
-    initialValues,
+    defaultValues,
     resolver: yupResolver(validationSchema),
   });
-  const form = watch();
+
   const { isValid, dirtyFields, errors } = formState;
+  const jobForm = watch();
+
 
   const [personName, setPersonName] = React.useState([]);
   const [requirements, setRequirements] = React.useState([]);
@@ -214,14 +198,23 @@ const JobForm = () => {
 
 
   useEffect(() => {
-    if (!job) {
+    if (!props.job || props.variant === 'new' || !props.onChange) {
       return;
     }
-    /**
-     * Reset the form on job state changes
-     */
-    reset(job);
-  }, [job, reset]);
+    if (!_.isEqual(props.job, jobForm)) {
+      props.onChange(jobForm);
+    }
+  }, [jobForm, props, defaultValues]);
+
+  /**
+   * Create New Job
+   */
+  function onCreate(data) {
+    if (!props.onCreate) {
+      return;
+    }
+    props.onCreate(data);
+  }
 
   const handleChange = (event) => {
     const {
@@ -253,11 +246,11 @@ const JobForm = () => {
   /**
    * Form Submit
    */
-  function onSubmit(data) {
-    dispatch(addJob(data));
+  function onSubmit() {
+    dispatch(addJob(getValues()));
   }
 
-  if(!Object.keys(form).length === 0){
+  if(!Object.keys(jobForm).length === 0){
     return
   }
 
@@ -266,25 +259,6 @@ const JobForm = () => {
       <Grid container spacing={4}>
         <Grid item xs={12} sm={7}>
           <Box className="flex flex-col items-start justify-start sm:px-20">
-            {/*<Typography variant="h6" gutterBottom fontWeight={700}>*/}
-              {/*Job Detail*/}
-            {/*</Typography>*/}
-            {/*<Typography variant={'subtitle2'} color={'text.secondary'}>*/}
-              {/*Please read our{' '}*/}
-              {/*<Link color={'primary'} href={'/terms-conditions'} underline={'none'}>*/}
-                {/*terms of use*/}
-              {/*</Link>{' '}*/}
-              {/*to be informed how we manage your private data.*/}
-            {/*</Typography>*/}
-            {/*<Box paddingY={4}>*/}
-              {/*<Divider />*/}
-            {/*</Box>*/}
-            <form
-              noValidate
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col md:overflow-hidden"
-            >
-
               <Grid container spacing={4}>
                 <Grid item xs={12} sm={12}>
                   <Typography
@@ -295,22 +269,24 @@ const JobForm = () => {
                     Enter Job Title *
                   </Typography>
                   <Controller
-                    control={control}
                     name="title"
+                    control={control}
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        className="mb-24"
-                        label="Title"
-                        id="title"
+                        className="mt-8 mb-16"
                         error={!!errors.title}
-                        helperText={errors?.title?.message}
-                        variant="outlined"
                         required
+                        helperText={errors?.title?.message}
+                        label="Title"
+                        autoFocus
+                        id="title"
+                        variant="outlined"
                         fullWidth
                       />
                     )}
                   />
+
                 </Grid>
                 <Grid item xs={12}>
                   <Typography
@@ -338,47 +314,18 @@ const JobForm = () => {
                   >
                     Qualifications
                   </Typography>
-                  {/*<Controller*/}
-                    {/*control={control}*/}
-                    {/*name="requirements"*/}
-                    {/*render={({ field }) => (*/}
-                      {/*<TextField*/}
-                        {/*{...field}*/}
-                        {/*className="mb-24"*/}
-                        {/*label="Requirements"*/}
-                        {/*id="requirements"*/}
-                        {/*variant="outlined"*/}
-                        {/*fullWidth*/}
-                      {/*/>*/}
-                    {/*)}*/}
-                  {/*/>*/}
-                  {/*<Button variant="outlined" size="large" className="w-full rounded-4 mt-14">*/}
-                    {/*+ Add*/}
-                  {/*</Button>*/}
-
-                  {form.qualifications &&
-                  <List className="p-0">
-                    {form.qualifications.map((checkItem, _index) => (
-                      <ListItem className="px-0" key={_index} dense>
-                        <Controller
-                          name={'n'+_index}
-                        defaultValue={checkItem}
-                        control={control}
-                        className="ml-0"
-                        render={({ field }) => (
-                        <TextField {...field} className="flex flex-1 mx-8" variant="outlined" />
-                        )}
-                        />
-                        <IconButton aria-label="Delete" size="large" onClick={() => {
-                          onChange(_.reject(value, { id: checkItem.id }));
-                        }}>
-                          <Icon>delete</Icon>
-                        </IconButton>
-                      </ListItem>
-                    ))}
-                    <CardAddChecklistItem onListItemAdd={(item) => onChange([...value, item])} />
-                  </List>
-                  }
+                  <Controller
+                    name="qualifications"
+                    control={control}
+                    defaultValue={[]}
+                    render={({ field: { onChange, value } }) => {
+                      return (
+                        <div className="px-16">
+                          <FormList list={value} onListChange={(val) => onChange(val)} />
+                        </div>
+                      );
+                    }}
+                  />
 
                 </Grid>
                 <Grid item xs={12} sm={12}>
@@ -389,29 +336,18 @@ const JobForm = () => {
                   >
                     Minimum Qualifications
                   </Typography>
-                  {form.minimumQualifications &&
-                  <List className="p-0">
-                    {form.minimumQualifications.map((checkItem, _index) => (
-                      <ListItem className="px-0" key={_index} dense>
-                        <Controller
-                          name={'n'+_index}
-                          defaultValue={checkItem}
-                          control={control}
-                          className="ml-0"
-                          render={({ field }) => (
-                            <TextField {...field} className="flex flex-1 mx-8" variant="outlined" />
-                          )}
-                        />
-                        <IconButton aria-label="Delete" size="large" onClick={() => {
-                          onChange(_.reject(value, { id: checkItem.id }));
-                        }}>
-                          <Icon>delete</Icon>
-                        </IconButton>
-                      </ListItem>
-                    ))}
-                    <CardAddChecklistItem onListItemAdd={(item) => onChange([...value, item])} />
-                  </List>
-                  }
+                  <Controller
+                    name="minimumQualifications"
+                    control={control}
+                    defaultValue={[]}
+                    render={({ field: { onChange, value } }) => {
+                      return (
+                        <div className="px-16">
+                          <FormList list={value} onListChange={(val) => onChange(val)} />
+                        </div>
+                      );
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={12}>
                   <Typography
@@ -421,29 +357,18 @@ const JobForm = () => {
                   >
                     Responsibilities
                   </Typography>
-                  {form.responsibilities &&
-                  <List className="p-0">
-                    {form.responsibilities.map((checkItem, _index) => (
-                      <ListItem className="px-0" key={_index} dense>
-                        <Controller
-                          name={'n'+_index}
-                          defaultValue={checkItem}
-                          control={control}
-                          className="ml-0"
-                          render={({ field }) => (
-                            <TextField {...field} className="flex flex-1 mx-8" variant="outlined" />
-                          )}
-                        />
-                        <IconButton aria-label="Delete" size="large" onClick={() => {
-                          onChange(_.reject(value, { id: checkItem.id }));
-                        }}>
-                          <Icon>delete</Icon>
-                        </IconButton>
-                      </ListItem>
-                    ))}
-                    <CardAddChecklistItem onListItemAdd={(item) => onChange([...value, item])} />
-                  </List>
-                  }
+                  <Controller
+                    name="responsibilities"
+                    control={control}
+                    defaultValue={[]}
+                    render={({ field: { onChange, value } }) => {
+                      return (
+                        <div className="px-16">
+                          <FormList list={value} onListChange={(val) => onChange(val)} />
+                        </div>
+                      );
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Divider />
@@ -754,6 +679,7 @@ const JobForm = () => {
                         type="submit"
                         disabled={_.isEmpty(dirtyFields) || !isValid}
                         className="rounded-6"
+                        onClick={onSubmit}
                       >
                         Save
                       </Button>
@@ -761,19 +687,19 @@ const JobForm = () => {
                   </Box>
                 </Grid>
               </Grid>
-            </form>
+            {/*</form>*/}
           </Box>
         </Grid>
         <Grid item xs={12} sm={5}>
-          {Object.keys(form).length !== 0 && (
+          {Object.keys(jobForm).length !== 0 && (
           <Card
             component={motion.div}
             variant="outlined"
             className="flex flex-col items-center justify-start w-full overflow-hidden rounded-8 mb-20 "
             >
 
-            <JobDetailHeader company={job.company} />
-            <JobDetailBody job={form} preview="true"/>
+            <JobDetailHeader company={jobForm.company} />
+            <JobDetailBody job={jobForm} preview="true"/>
             </Card>
           )}
         </Grid>
@@ -782,4 +708,10 @@ const JobForm = () => {
   );
 };
 
-export default JobForm;
+JobForm.propTypes = {};
+JobForm.defaultProps = {
+  variant: 'edit',
+  job: null,
+};
+
+export default withRouter(JobForm);

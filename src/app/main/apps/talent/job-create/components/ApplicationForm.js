@@ -174,66 +174,6 @@ const ApplicationForm = () => {
                   Decide what should be displayed on the application form.
                 </Typography>
                 <div className="mt-20">
-                  <Controller
-                    control={control}
-                    name="resume"
-                    render={({ field }) => (
-                      <FormControl fullWidth sx={{ minWidth: 120 }} className="mb-16">
-                        <InputLabel id="demo-simple-select-label">Resume</InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={age}
-                          label="Resume"
-                          onChange={handleChange}
-                        >
-                        <MenuItem value="None">None</MenuItem>
-                        <MenuItem value='Optional'>Optional</MenuItem>
-                        <MenuItem value='Required'>Required</MenuItem>
-                        </Select>
-                      </FormControl>
-                    )}
-                  />
-                  <Controller
-                    control={control}
-                    name="resume"
-                    render={({ field }) => (
-                      <FormControl fullWidth sx={{ minWidth: 120 }} className="mb-16">
-                        <InputLabel id="demo-simple-select-label">Cover Letter</InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={age}
-                          label="Cover Letter"
-                          onChange={handleChange}
-                        >
-                        <MenuItem value="None">None</MenuItem>
-                        <MenuItem value='Optional'>Optional</MenuItem>
-                        <MenuItem value='Required'>Required</MenuItem>
-                        </Select>
-                      </FormControl>
-                    )}
-                  />
-                  <Controller
-                    control={control}
-                    name="resume"
-                    render={({ field }) => (
-                      <FormControl fullWidth sx={{ minWidth: 120 }}>
-                        <InputLabel id="demo-simple-select-label">Photo</InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={age}
-                          label="Photo"
-                          onChange={handleChange}
-                        >
-                          <MenuItem value="None">None</MenuItem>
-                          <MenuItem value='Optional'>Optional</MenuItem>
-                          <MenuItem value='Required'>Required</MenuItem>
-                        </Select>
-                      </FormControl>
-                    )}
-                  />
                 </div>
               </Grid>
               <Grid item xs={12}>
@@ -270,27 +210,27 @@ const ApplicationForm = () => {
                     </Typography>
                   </Box>
                   <div className="px-16">
-                    <Controller
-                      control={control}
-                      name="template"
-                      render={({ field }) => (
-                        <FormControl fullWidth sx={{ m: 1, minWidth: 120 }}>
-                          <InputLabel id="demo-simple-select-label">Template</InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={selectedTemplate}
-                            label="Template"
-                            // onChange={handleTemplateChange}
-                          >
-                            <MenuItem onClick={(ev) => handleTemplateChange(ev, null)} value="None">None</MenuItem>
-                            {templates.map((template, idx) => (
-                              <MenuItem onClick={(ev) => handleTemplateChange(ev, idx)} value={template.name}>{template.name}</MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      )}
-                    />
+                    {/*<Controller*/}
+                      {/*control={control}*/}
+                      {/*name="template"*/}
+                      {/*render={({ field }) => (*/}
+                        {/*<FormControl fullWidth sx={{ m: 1, minWidth: 120 }}>*/}
+                          {/*<InputLabel id="demo-simple-select-label">Template</InputLabel>*/}
+                          {/*<Select*/}
+                            {/*labelId="demo-simple-select-label"*/}
+                            {/*id="demo-simple-select"*/}
+                            {/*value={selectedTemplate}*/}
+                            {/*label="Template"*/}
+                            {/*// onChange={handleTemplateChange}*/}
+                          {/*>*/}
+                            {/*<MenuItem onClick={(ev) => handleTemplateChange(ev, null)} value="None">None</MenuItem>*/}
+                            {/*{templates.map((template, idx) => (*/}
+                              {/*<MenuItem key={idx} onClick={(ev) => handleTemplateChange(ev, idx)} value={template.name}>{template.name}</MenuItem>*/}
+                            {/*))}*/}
+                          {/*</Select>*/}
+                        {/*</FormControl>*/}
+                      {/*)}*/}
+                    {/*/>*/}
 
                   </div>
                 </Box>

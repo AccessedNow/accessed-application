@@ -35,7 +35,6 @@ function CardAddChecklistItem(props) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
       <ListItem className="px-0" dense>
         <Controller
           name="name"
@@ -61,7 +60,6 @@ function CardAddChecklistItem(props) {
           <Icon>add</Icon>
         </Fab>
       </ListItem>
-    </form>
   );
 }
 

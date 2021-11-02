@@ -65,7 +65,10 @@ const jobSlice = createSlice({
           description: '',
           qualifications: [],
           minimumQualifications: [],
-          responsibilities: [],
+          responsibilities: [
+            "Prepare, plan and lead scrum teams and meetings with product and engineering teams",
+            "Determine and define clear deliverables, roles, and responsibilities for team members required for specific projects or initiatives"
+          ],
           allowRemote: false,
           category: '',
           jobFunction: '',

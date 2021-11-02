@@ -166,7 +166,7 @@ function JobDetail(props) {
             </Typography>
           </div>
         </div>
-        <div className="w-full items-center justify-between" mb-40>
+        <div className="w-full items-center justify-between">
           <Typography variant="h6" className="mb-10 text-14 mb-30">
             Description
           </Typography>

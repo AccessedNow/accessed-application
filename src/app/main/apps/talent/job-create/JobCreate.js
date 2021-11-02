@@ -26,6 +26,7 @@ import reducer from './store';
 import JobForm from './components/JobForm';
 import ApplicationForm from './components/ApplicationForm';
 import { resetJob, newJob, getJob } from '../store/jobSlice';
+import {closeNoteDialog} from "../../notes/store/notesSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -61,7 +62,7 @@ function JobCreate(props) {
     {
       id: '0',
       title: 'Job Detail',
-      content: <JobForm />
+      content: <JobForm job={job} onChange={handleOnChange} />
     },
     {
       id: '1',
@@ -108,13 +109,18 @@ function JobCreate(props) {
      * Change ActiveStep to 1
      */
     if (job && activeStep === 0) {
-      // dispatch(upddateJob({ currentStep: 1 }));
+      // dispatch(updateJob({ currentStep: 1 }));
     }
   }, [dispatch, job]);
 
   function handleChangeActiveStep(index) {
-    // dispatch(upddateJob({ activeStep: index + 1 }));
+    // dispatch(updateJob({ activeStep: index + 1 }));
     setActiveStep(index+1)
+  }
+
+  function handleOnChange() {
+    // dispatch(upddateJob({ activeStep: course.activeStep + 1 }));
+    // setActiveStep(activeStep+1);
   }
 
   function handleNext() {

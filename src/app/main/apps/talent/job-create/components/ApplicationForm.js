@@ -8,7 +8,7 @@ import { useForm, Controller } from 'react-hook-form';
 import React, { useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -36,8 +36,11 @@ import {
   updateJob
 } from '../../store/jobSlice';
 import {getCompanyTemplates} from "../../store/templateSlice";
+
 import Application from "../components/Application";
-import QuestionList from "../components/QuestionList";
+// import QuestionList from "../components/QuestionList";
+import QuestionList from '../../components/checklist/QuestionList';
+import JobModel from "../../models/JobModel";
 
 
 const ITEM_HEIGHT = 48;
@@ -63,6 +66,7 @@ const validationSchema = yup.object({
 
 const initialValues = {
   questionTemplate: '',
+  questions: [],
   applicationForm: {
     resume: true,
     coverLetter: false,
@@ -73,17 +77,26 @@ const initialValues = {
 };
 
 
-const ApplicationForm = () => {
+const ApplicationForm = (props) => {
   const dispatch = useDispatch();
   const routeParams = useParams();
   const theme = useTheme();
-  const { control, watch, reset, handleSubmit, formState, getValues } = useForm({
+
+  const defaultValues = _.merge(
+    {},
+    JobModel(),
+    props.job
+  );
+  const { formState, handleSubmit, getValues, reset, watch, setValue, control } = useForm({
     mode: 'onChange',
-    initialValues,
+    defaultValues,
     resolver: yupResolver(validationSchema),
   });
-  const form = watch();
+
   const { isValid, dirtyFields, errors } = formState;
+  const applicationForm = watch();
+
+  console.log(applicationForm)
   const [templates, setTemplates] = React.useState([]);
   const [selectedTemplate, setSelectedTemplate] = React.useState('');
   const [age, setAge] = React.useState('');
@@ -147,7 +160,7 @@ const ApplicationForm = () => {
     dispatch(addJob(data));
   }
 
-  if(!Object.keys(form).length === 0){
+  if(!Object.keys(applicationForm).length === 0){
     return
   }
 
@@ -155,11 +168,11 @@ const ApplicationForm = () => {
     <Grid container spacing={4}>
       <Grid item xs={12} sm={7}>
         <Box className="flex flex-col items-start justify-start px-20">
-          <form
-            noValidate
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col md:overflow-hidden"
-          >
+          {/*<form*/}
+            {/*noValidate*/}
+            {/*onSubmit={handleSubmit(onSubmit)}*/}
+            {/*className="flex flex-col md:overflow-hidden"*/}
+          {/*>*/}
 
             <Grid container spacing={4}>
               <Grid item xs={12}>
@@ -236,16 +249,29 @@ const ApplicationForm = () => {
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} className="flex flex-col items-start justify-start">
-                <QuestionList />
-                <div className="w-full mt-20">
-                  <Button
-                    variant="contained"
-                    className="w-full rounded-6 border-1"
-                    onClick={handleAdd}
-                  >
-                    + Add
-                  </Button>
-                </div>
+                {/*<QuestionList />*/}
+                {/*<div className="w-full mt-20">*/}
+                  {/*<Button*/}
+                    {/*variant="contained"*/}
+                    {/*className="w-full rounded-6 border-1"*/}
+                    {/*onClick={handleAdd}*/}
+                  {/*>*/}
+                    {/*+ Add*/}
+                  {/*</Button>*/}
+                {/*</div>*/}
+
+                <Controller
+                  name="questions"
+                  control={control}
+                  defaultValue={[]}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <div className="w-full">
+                        <QuestionList list={value} onListChange={(val) => onChange(val)} />
+                      </div>
+                    );
+                  }}
+                />
 
               </Grid>
               <Grid item xs={12}>
@@ -274,11 +300,11 @@ const ApplicationForm = () => {
                 </Box>
               </Grid>
             </Grid>
-          </form>
+          {/*</form>*/}
         </Box>
       </Grid>
       <Grid item xs={12} sm={5}>
-        {Object.keys(form).length !== 0 && (
+        {Object.keys(applicationForm).length !== 0 && (
         <Paper
           component={motion.div}
           variant="outlined"
@@ -293,4 +319,11 @@ const ApplicationForm = () => {
   );
 };
 
-export default ApplicationForm;
+ApplicationForm.propTypes = {};
+ApplicationForm.defaultProps = {
+  variant: 'edit',
+  job: null,
+};
+
+
+export default withRouter(ApplicationForm);

@@ -1,5 +1,8 @@
 import _ from '@lodash';
 import * as React from 'react';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import { useForm, Controller } from 'react-hook-form';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -15,12 +18,37 @@ import Paper from '@mui/material/Paper';
 
 import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
-import FormList from '../FormList/FormList';
+import TextField from '@mui/material/TextField';
+
+import CheckboxList from '../CheckboxList/CheckboxList';
 
 import clsx from 'clsx';
+import JobModel from "../../models/JobModel";
+
+const validationSchema = yup.object({
+  text: yup
+    .string()
+    .trim()
+    .required('Must enter text'),
+
+});
 
 function QuestionListItem(props) {
   const [age, setAge] = React.useState('');
+
+  const defaultValues = _.merge(
+    {},
+    props.item
+  );
+  const { formState, handleSubmit, getValues, reset, watch, setValue, control } = useForm({
+    mode: 'onChange',
+    defaultValues,
+    resolver: yupResolver(validationSchema),
+  });
+
+  const { isValid, dirtyFields, errors } = formState;
+  const questionForm = watch();
+
 
   const handleTypeChange = (event) => {
     props.onListItemChange(
@@ -53,6 +81,10 @@ function QuestionListItem(props) {
     );
   };
 
+  function handlePanelChange() {
+    props.onPanelChange('');
+  }
+
   function handleChange(event) {
     props.onListItemChange(
       _.setIn(
@@ -61,11 +93,18 @@ function QuestionListItem(props) {
         event.target.type === 'checkbox' ? event.target.checked : event.target.value
       )
     );
+    setValue(
+      'text',
+      event.target.value,
+      { shouldDirty: true, shouldValidate: true }
+    );
   }
 
   if (!props.item) {
     return null;
   }
+
+  console.log(questionForm)
 
   return (
     <ListItem className="p-0 mb-20" key={props.item.id} dense>
@@ -119,25 +158,46 @@ function QuestionListItem(props) {
             </div>
             :
             <div className="flex flex-col">
-              <Input
-                className={clsx('flex flex-1 mx-8', props.item.checked && 'line-through opacity-50')}
+              <Controller
                 name="text"
-                value={props.item.text}
-                onChange={handleChange}
-                disableUnderline
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    className="mt-8 mb-16"
+                    error={!!errors.text}
+                    required
+                    helperText={errors?.text?.message}
+                    label="Question"
+                    autoFocus
+                    id="question"
+                    variant="outlined"
+                    fullWidth
+                    value={props.item.text}
+                    onChange={handleChange}
+                  />
+                )}
               />
-
                     <div className="px-16">
-                      <FormList list={props.item.options} onListChange={handleOptionChange} />
+                      <CheckboxList list={props.item.options} onListChange={handleOptionChange} />
                     </div>
             </div>
           }
         </div>
         <div className="p-10 justify-end">
           <Stack spacing={2} direction="row">
-            <Button size="small" variant="text">Cancel</Button>
+            <Button size="small" variant="text" onClick={handlePanelChange}>Cancel</Button>
             <Button size="small" variant="contained">Save and add another</Button>
-            <Button size="large" variant="outlined">Save</Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              type="submit"
+              disabled={_.isEmpty(dirtyFields) || !isValid}
+              className="rounded-6"
+            >
+              Save
+            </Button>
           </Stack>
         </div>
       </Paper>

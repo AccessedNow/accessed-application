@@ -28,7 +28,6 @@ const Accordion = styled((props) => (
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
     {...props}
   />
 ))(({ theme }) => ({
@@ -52,7 +51,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 
 function QuestionList(props) {
-  const [expanded, setExpanded] = React.useState('panel1');
+  const [expanded, setExpanded] = React.useState('');
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -70,6 +69,11 @@ function QuestionList(props) {
 
   function handleListItemAdd(item) {
     props.onListChange([...props.list, item]);
+    setExpanded('panel' + props.list.length);
+  }
+
+  function handlePanelChange(panel) {
+    setExpanded(panel);
   }
 
   if (!props.list) {
@@ -94,22 +98,25 @@ function QuestionList(props) {
       <div className="mb-20">
         {props.list.map((item, idx) => (
         <Accordion expanded={expanded === ('panel' + idx )} onChange={handleChange(('panel' + idx))}>
-          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <Typography>{item.text}</Typography>
-            <IconButton
-              className="flex w-32 h-32 mx-4 p-0"
-              aria-label="Delete"
-              onClick={() => handleListItemRemove(idx)}
-              size="small"
-            >
-              <Icon fontSize="small">delete</Icon>
-            </IconButton>
+          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" >
+            <div className="flex flex-row justify-between w-full">
+              <Typography className="flex">{expanded === ('panel' + idx ) ?'':item.text}</Typography>
+              <IconButton
+                className="flex w-32 h-32 mx-4 p-0"
+                aria-label="Delete"
+                onClick={() => handleListItemRemove(idx)}
+                size="small"
+              >
+                <Icon fontSize="small">delete</Icon>
+              </IconButton>
+            </div>
           </AccordionSummary>
           <AccordionDetails>
             <QuestionListItem
             item={item}
             key={idx}
             index={idx}
+            onPanelChange={handlePanelChange}
             onListItemChange={handleListItemChange}
             onListItemRemove={handleListItemRemove}
             />
@@ -117,7 +124,9 @@ function QuestionList(props) {
         </Accordion>
         ))}
       </div>
-      <QuestionAddListItem onListItemAdd={handleListItemAdd} />
+      {!expanded &&
+      <QuestionAddListItem onListItemAdd={handleListItemAdd}/>
+      }
     </div>
   );
 }

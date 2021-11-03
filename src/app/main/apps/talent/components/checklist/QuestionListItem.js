@@ -35,10 +35,11 @@ const validationSchema = yup.object({
 
 function QuestionListItem(props) {
   const [age, setAge] = React.useState('');
+  const [data, setData] = React.useState(props.item);
 
   const defaultValues = _.merge(
     {},
-    props.item
+    data
   );
   const { formState, handleSubmit, getValues, reset, watch, setValue, control } = useForm({
     mode: 'onChange',
@@ -51,13 +52,9 @@ function QuestionListItem(props) {
 
 
   const handleTypeChange = (event) => {
-    props.onListItemChange(
-      _.setIn(
-        props.item,
-        event.target.name,
-        event.target.value
-      )
-    );
+    setData(
+      {...data, type: event.target.value}
+    )
   };
 
   const handleRequiredChange = (event) => {
@@ -71,7 +68,6 @@ function QuestionListItem(props) {
   };
 
   const handleOptionChange = (data) => {
-    console.log(data)
     props.onListItemChange(
       _.setIn(
         props.item,
@@ -81,30 +77,28 @@ function QuestionListItem(props) {
     );
   };
 
-  function handlePanelChange() {
+  function handleCancel() {
+    setData(questionForm);
     props.onPanelChange('');
   }
 
   function handleChange(event) {
-    props.onListItemChange(
-      _.setIn(
-        props.item,
-        event.target.name,
-        event.target.type === 'checkbox' ? event.target.checked : event.target.value
-      )
-    );
-    setValue(
-      'text',
-      event.target.value,
-      { shouldDirty: true, shouldValidate: true }
-    );
+    setData(
+      {...data, text: event.target.value}
+    )
+
+  }
+
+  function handleSave() {
+    props.onListItemChange(data);
+    props.onPanelChange('');
   }
 
   if (!props.item) {
     return null;
   }
 
-  console.log(questionForm)
+  console.log(data)
 
   return (
     <ListItem className="p-0 mb-20" key={props.item.id} dense>
@@ -173,7 +167,7 @@ function QuestionListItem(props) {
                     id="question"
                     variant="outlined"
                     fullWidth
-                    value={props.item.text}
+                    value={data.text}
                     onChange={handleChange}
                   />
                 )}
@@ -186,15 +180,16 @@ function QuestionListItem(props) {
         </div>
         <div className="p-10 justify-end">
           <Stack spacing={2} direction="row">
-            <Button size="small" variant="text" onClick={handlePanelChange}>Cancel</Button>
+            <Button size="small" variant="text" onClick={handleCancel}>Cancel</Button>
             <Button size="small" variant="contained">Save and add another</Button>
             <Button
               variant="contained"
               color="secondary"
               size="small"
               type="submit"
-              disabled={_.isEmpty(dirtyFields) || !isValid}
+              // disabled={_.isEmpty(dirtyFields) || !isValid}
               className="rounded-6"
+              onClick={handleSave}
             >
               Save
             </Button>

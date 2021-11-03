@@ -30,6 +30,16 @@ function QuestionListItem(props) {
     );
   };
 
+  const handleRequiredChange = (event) => {
+    props.onListItemChange(
+      _.setIn(
+        props.item,
+        event.target.name,
+        event.target.value === 'Yes' ? true:false
+      )
+    );
+  };
+
   function handleChange(event) {
     props.onListItemChange(
       _.setIn(
@@ -49,7 +59,7 @@ function QuestionListItem(props) {
       <Paper className="flex flex-col w-full shadow-none border-1 rounded-4">
         <div className="flex flex-row justify-between p-10 border-b-1">
           <FormControl variant="standard" className="flex">
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <InputLabel id="demo-simple-select-label">Type</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -65,14 +75,30 @@ function QuestionListItem(props) {
               <MenuItem value={'MULTICHOICE'}>Multiple Choice</MenuItem>
             </Select>
           </FormControl>
-          <IconButton
-            className="flex w-32 h-32 mx-4 p-0"
-            aria-label="Delete"
-            onClick={() => props.onListItemRemove(props.index)}
-            size="large"
-          >
-            <Icon fontSize="small">delete</Icon>
-          </IconButton>
+          <div>
+            <FormControl variant="standard" className="flex">
+              <InputLabel id="demo-simple-select-label">Required</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={props.item.type}
+                label="Required"
+                name="required"
+                onChange={handleTypeChange}
+              >
+                <MenuItem value={'Yes'}>Yes</MenuItem>
+                <MenuItem value={'No'}>No</MenuItem>
+              </Select>
+            </FormControl>
+            <IconButton
+              className="flex w-32 h-32 mx-4 p-0"
+              aria-label="Delete"
+              onClick={() => props.onListItemRemove(props.index)}
+              size="large"
+            >
+              <Icon fontSize="small">delete</Icon>
+            </IconButton>
+          </div>
         </div>
         <div className="p-10 border-b-1">
           <Input

@@ -53,7 +53,7 @@ function QuestionAddListItem(props) {
               InputProps={{
                 disableUnderline: true,
                 className: 'px-2',
-                startAdornment: (
+                endAdornment: (
                   <InputAdornment position="start">
                     <IconButton
                       className="w-32 h-32 p-0 -mx-6"

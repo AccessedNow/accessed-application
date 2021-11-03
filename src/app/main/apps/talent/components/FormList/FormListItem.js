@@ -8,13 +8,7 @@ import clsx from 'clsx';
 
 function FormListItem(props) {
   function handleChange(event) {
-    props.onListItemChange(
-      _.setIn(
-        props.item,
-        event.target.name,
-        event.target.type === 'checkbox' ? event.target.checked : event.target.value
-      )
-    );
+    props.onListItemChange(event.target.value, props.index);
   }
 
   if (!props.item) {

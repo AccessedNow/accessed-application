@@ -1,5 +1,6 @@
 import _ from '@lodash';
 import * as React from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -14,6 +15,7 @@ import Paper from '@mui/material/Paper';
 
 import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
+import FormList from '../FormList/FormList';
 
 import clsx from 'clsx';
 
@@ -40,6 +42,17 @@ function QuestionListItem(props) {
     );
   };
 
+  const handleOptionChange = (data) => {
+    console.log(data)
+    props.onListItemChange(
+      _.setIn(
+        props.item,
+        'options',
+        data
+      )
+    );
+  };
+
   function handleChange(event) {
     props.onListItemChange(
       _.setIn(
@@ -56,33 +69,33 @@ function QuestionListItem(props) {
 
   return (
     <ListItem className="p-0 mb-20" key={props.item.id} dense>
-      <Paper className="flex flex-col w-full shadow-none border-1 rounded-4">
+      <Paper className="flex flex-col w-full shadow-none ">
         <div className="flex flex-row justify-between p-10 border-b-1">
           <FormControl variant="standard" className="flex">
             <InputLabel id="demo-simple-select-label">Type</InputLabel>
             <Select
+              displayEmpty
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={props.item.type}
-              label="Type"
               name="type"
               onChange={handleTypeChange}
             >
               <MenuItem value={'SINGLELINE'}>Text(single line)</MenuItem>
-              <MenuItem value={'MULTILINE'}>TEXT(multiple lines)</MenuItem>
+              <MenuItem value={'MULTILINE'}>Text(multiple lines)</MenuItem>
               <MenuItem value={'YESNO'}>Yes/No</MenuItem>
               <MenuItem value={'SINGLECHOICE'}>Single Choice</MenuItem>
               <MenuItem value={'MULTICHOICE'}>Multiple Choice</MenuItem>
             </Select>
           </FormControl>
-          <div>
+          <div className="flex flex-row">
             <FormControl variant="standard" className="flex">
               <InputLabel id="demo-simple-select-label">Required</InputLabel>
               <Select
+                displayEmpty
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={props.item.type}
-                label="Required"
                 name="required"
                 onChange={handleTypeChange}
               >
@@ -90,24 +103,35 @@ function QuestionListItem(props) {
                 <MenuItem value={'No'}>No</MenuItem>
               </Select>
             </FormControl>
-            <IconButton
-              className="flex w-32 h-32 mx-4 p-0"
-              aria-label="Delete"
-              onClick={() => props.onListItemRemove(props.index)}
-              size="large"
-            >
-              <Icon fontSize="small">delete</Icon>
-            </IconButton>
+
           </div>
         </div>
         <div className="p-10 border-b-1">
-          <Input
-            className={clsx('flex flex-1 mx-8', props.item.checked && 'line-through opacity-50')}
-            name="text"
-            value={props.item.text}
-            onChange={handleChange}
-            disableUnderline
-          />
+          {props.item.type != 'SINGLECHOICE' && props.item.type !== 'MULTICHOICE' ?
+            <div>
+              <Input
+              className={clsx('flex flex-1 mx-8', props.item.checked && 'line-through opacity-50')}
+              name="text"
+              value={props.item.text}
+              onChange={handleChange}
+              disableUnderline
+              />
+            </div>
+            :
+            <div className="flex flex-col">
+              <Input
+                className={clsx('flex flex-1 mx-8', props.item.checked && 'line-through opacity-50')}
+                name="text"
+                value={props.item.text}
+                onChange={handleChange}
+                disableUnderline
+              />
+
+                    <div className="px-16">
+                      <FormList list={props.item.options} onListChange={handleOptionChange} />
+                    </div>
+            </div>
+          }
         </div>
         <div className="p-10 justify-end">
           <Stack spacing={2} direction="row">

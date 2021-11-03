@@ -5,8 +5,10 @@ import FormAddListItem from './FormAddListItem';
 import FormListItem from './FormListItem';
 
 function FormList(props) {
-  function handleListItemChange(item) {
-    props.onListChange(props.list.map((_item) => (_item.id === item.id ? item : _item)));
+  function handleListItemChange(item, index) {
+    props.onListChange(props.list.map((_item, idx) => {
+      return index===idx ? item : _item
+    }));
   }
 
   function handleListItemRemove(idx) {

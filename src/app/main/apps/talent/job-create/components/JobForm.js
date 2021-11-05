@@ -174,12 +174,14 @@ const JobForm = (props) => {
   const dispatch = useDispatch();
   const routeParams = useParams();
   const theme = useTheme();
-  const job = useSelector(({ jobCreate }) => jobCreate.job);
-
+  const company = {
+    id: 1,
+    name: 'Hacker News',
+    avatar: ''
+  }
 
   const defaultValues = _.merge(
     {},
-    JobModel(),
     props.job
   );
   const { formState, handleSubmit, getValues, reset, watch, setValue, control } = useForm({
@@ -191,7 +193,7 @@ const JobForm = (props) => {
   const { isValid, dirtyFields, errors } = formState;
   const jobForm = watch();
 
-
+  console.log('jobForm', jobForm)
   const [personName, setPersonName] = React.useState([]);
   const [requirements, setRequirements] = React.useState([]);
   const [currency, setCurrency] = React.useState('EUR');
@@ -698,7 +700,7 @@ const JobForm = (props) => {
             className="flex flex-col items-center justify-start w-full overflow-hidden rounded-8 mb-20 "
             >
 
-            <JobDetailHeader company={jobForm.company} />
+            <JobDetailHeader company={company} />
             <JobDetailBody job={jobForm} preview="true"/>
             </Card>
           )}

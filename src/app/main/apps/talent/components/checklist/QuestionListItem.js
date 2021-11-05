@@ -33,6 +33,15 @@ const validationSchema = yup.object({
 
 });
 
+const listOfTypes = [
+  { value: 'SINGLELINE', name: 'Text'},
+  { value: 'MULTILINE', name: 'Text(multiple lines)' },
+  { value: 'YESNO', name: 'Yes/No' },
+  { value: 'SINGLECHOICE', name: 'Single Selection' },
+  { value: 'MULTICHOICE', name: 'Multiple Selection'}
+  ]
+
+
 function QuestionListItem(props) {
   const [age, setAge] = React.useState('');
   const [data, setData] = React.useState(props.item);
@@ -58,13 +67,9 @@ function QuestionListItem(props) {
   };
 
   const handleRequiredChange = (event) => {
-    props.onListItemChange(
-      _.setIn(
-        props.item,
-        event.target.name,
-        event.target.value === 'Yes' ? true:false
-      )
-    );
+    setData(
+      {...data, required: event.target.value}
+    )
   };
 
   const handleOptionChange = (data) => {
@@ -101,7 +106,7 @@ function QuestionListItem(props) {
   console.log(data)
 
   return (
-    <ListItem className="p-0 mb-20" key={props.item.id} dense>
+    <ListItem className="p-0 mb-28" key={props.item.id} dense>
       <Paper className="flex flex-col w-full shadow-none ">
         <div className="flex flex-row justify-between p-10 border-b-1">
           <FormControl variant="standard" className="flex">
@@ -110,37 +115,34 @@ function QuestionListItem(props) {
               displayEmpty
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={props.item.type}
+              value={data.type}
               name="type"
               onChange={handleTypeChange}
             >
-              <MenuItem value={'SINGLELINE'}>Text(single line)</MenuItem>
-              <MenuItem value={'MULTILINE'}>Text(multiple lines)</MenuItem>
-              <MenuItem value={'YESNO'}>Yes/No</MenuItem>
-              <MenuItem value={'SINGLECHOICE'}>Single Choice</MenuItem>
-              <MenuItem value={'MULTICHOICE'}>Multiple Choice</MenuItem>
+              {listOfTypes.map((item, idx) => (
+                <MenuItem key={idx} value={item.value}>{item.name}</MenuItem>
+              ))}
             </Select>
           </FormControl>
           <div className="flex flex-row">
             <FormControl variant="standard" className="flex">
-              <InputLabel id="demo-simple-select-label">Required</InputLabel>
+              <InputLabel id="demo-simple-select-label">Type</InputLabel>
               <Select
                 displayEmpty
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={props.item.type}
+                value={data.required}
                 name="required"
-                onChange={handleTypeChange}
+                onChange={handleRequiredChange}
               >
-                <MenuItem value={'Yes'}>Yes</MenuItem>
-                <MenuItem value={'No'}>No</MenuItem>
+                  <MenuItem key={1} value={false}>Optional</MenuItem>
+                <MenuItem key={2} value={true}>Required</MenuItem>
               </Select>
             </FormControl>
-
           </div>
         </div>
         <div className="p-10 border-b-1">
-          {props.item.type != 'SINGLECHOICE' && props.item.type !== 'MULTICHOICE' ?
+          {data.type != 'SINGLECHOICE' && data.type !== 'MULTICHOICE' ?
             <div>
               <Input
               className={clsx('flex flex-1 mx-8', props.item.checked && 'line-through opacity-50')}
@@ -165,7 +167,7 @@ function QuestionListItem(props) {
                     label="Question"
                     autoFocus
                     id="question"
-                    variant="outlined"
+                    variant="standard"
                     fullWidth
                     value={data.text}
                     onChange={handleChange}
@@ -187,7 +189,7 @@ function QuestionListItem(props) {
               color="secondary"
               size="small"
               type="submit"
-              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              disabled={_.isEmpty(dirtyFields) || !isValid}
               className="rounded-6"
               onClick={handleSave}
             >

@@ -24,6 +24,7 @@ function CheckboxListItem(props) {
         disableRipple
         name="checked"
         color="default"
+        size="small"
       />
       <Input
         className={clsx('flex flex-1 mx-12 border-b-1 rounded-0')}

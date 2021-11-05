@@ -65,6 +65,10 @@ function QuestionList(props) {
   function handleListItemRemove(idx) {
     _.pullAt(props.list, [idx]);
     props.onListChange(props.list);
+
+    if(!props.list.length){
+      setExpanded('');
+    }
   }
 
   function handleListItemAdd(item) {
@@ -100,7 +104,7 @@ function QuestionList(props) {
         <Accordion expanded={expanded === ('panel' + idx )} onChange={handleChange(('panel' + idx))}>
           <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" >
             <div className="flex flex-row justify-between w-full">
-              <Typography className="flex">{expanded === ('panel' + idx ) ?'':item.text}</Typography>
+              <Typography className="flex items-center">{expanded === ('panel' + idx ) ?'':(item.text + (!item.required? '(Optional)':''))}</Typography>
               <IconButton
                 className="flex w-32 h-32 mx-4 p-0"
                 aria-label="Delete"

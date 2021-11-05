@@ -55,7 +55,6 @@ const getFooterThemeId = (state) => state.fuse.settings.current.theme.footer;
 import shadows from '../accessed/shadows';
 
 function generateMuiTheme(themes, id, direction) {
-  console.log('theme', themes[id])
   const accessedTheme = {
     shadows: shadows('light'),
     components: {

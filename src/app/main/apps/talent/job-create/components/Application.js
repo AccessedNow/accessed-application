@@ -72,7 +72,7 @@ const initialValues = {
 };
 
 
-const Application = () => {
+const Application = (props) => {
   const dispatch = useDispatch();
   const routeParams = useParams();
   const theme = useTheme();
@@ -176,7 +176,7 @@ const Application = () => {
         <Grid item xs={6} sm={6}>
           <Controller
             control={control}
-            name="email"
+            name="lastName"
             render={({ field }) => (
               <TextField
                 {...field}
@@ -191,11 +191,12 @@ const Application = () => {
             )}
           />
         </Grid>
+        {props.applicationForm.email.isDisplay &&
         <Grid item xs={12} sm={12}>
           <Controller
             control={control}
             name="email"
-            render={({ field }) => (
+            render={({field}) => (
               <TextField
                 {...field}
                 className="bg-white border-1"
@@ -210,6 +211,7 @@ const Application = () => {
             )}
           />
         </Grid>
+        }
         <Grid item xs={12} sm={12}>
           <Controller
             control={control}
@@ -229,11 +231,12 @@ const Application = () => {
             )}
           />
         </Grid>
+        {props.applicationForm.resume.isDisplay &&
         <Grid item xs={12} sm={12}>
           <Controller
             name="resume"
             control={control}
-            render={({ field: { onChange, value } }) => (
+            render={({field: {onChange, value}}) => (
               <label
                 htmlFor="button-file"
                 className="productImageUpload flex items-center justify-center relative w-full h-48 rounded-4 border-1 shadow-none bg-white mb-14 overflow-hidden cursor-pointer hover:shadow-lg"
@@ -275,12 +278,121 @@ const Application = () => {
                   cloud_upload
                 </Icon>
                 <Typography className="text-12 ml-5">
-                  Upload CV
+                  Upload CV{props.applicationForm.resume.isRequired?'*': ''}
                 </Typography>
               </label>
             )}
           />
         </Grid>
+        }
+        {props.applicationForm.coverLetter.isDisplay &&
+        <Grid item xs={12} sm={12}>
+          <Controller
+            name="resume"
+            control={control}
+            render={({field: {onChange, value}}) => (
+              <label
+                htmlFor="button-file"
+                className="productImageUpload flex items-center justify-center relative w-full h-48 rounded-4 border-1 shadow-none bg-white mb-14 overflow-hidden cursor-pointer hover:shadow-lg"
+              >
+                <input
+                  accept="image/*"
+                  className="hidden"
+                  id="button-file"
+                  type="file"
+                  onChange={async (e) => {
+                    function readFileAsync() {
+                      return new Promise((resolve, reject) => {
+                        const file = e.target.files[0];
+                        if (!file) {
+                          return;
+                        }
+                        const reader = new FileReader();
+
+                        reader.onload = () => {
+                          resolve({
+                            id: FuseUtils.generateGUID(),
+                            url: `data:${file.type};base64,${btoa(reader.result)}`,
+                            type: 'image',
+                          });
+                        };
+
+                        reader.onerror = reject;
+
+                        reader.readAsBinaryString(file);
+                      });
+                    }
+
+                    const newImage = await readFileAsync();
+
+                    onChange([newImage, ...value]);
+                  }}
+                />
+                <Icon fontSize="large" color="action">
+                  cloud_upload
+                </Icon>
+                <Typography className="text-12 ml-5">
+                  Cover Letter{props.applicationForm.coverLetter.isRequired?'*': ''}
+                </Typography>
+              </label>
+            )}
+          />
+        </Grid>
+        }
+        {props.applicationForm.photo.isDisplay &&
+        <Grid item xs={12} sm={12}>
+          <Controller
+            name="resume"
+            control={control}
+            render={({field: {onChange, value}}) => (
+              <label
+                htmlFor="button-file"
+                className="productImageUpload flex items-center justify-center relative w-full h-48 rounded-4 border-1 shadow-none bg-white mb-14 overflow-hidden cursor-pointer hover:shadow-lg"
+              >
+                <input
+                  accept="image/*"
+                  className="hidden"
+                  id="button-file"
+                  type="file"
+                  onChange={async (e) => {
+                    function readFileAsync() {
+                      return new Promise((resolve, reject) => {
+                        const file = e.target.files[0];
+                        if (!file) {
+                          return;
+                        }
+                        const reader = new FileReader();
+
+                        reader.onload = () => {
+                          resolve({
+                            id: FuseUtils.generateGUID(),
+                            url: `data:${file.type};base64,${btoa(reader.result)}`,
+                            type: 'image',
+                          });
+                        };
+
+                        reader.onerror = reject;
+
+                        reader.readAsBinaryString(file);
+                      });
+                    }
+
+                    const newImage = await readFileAsync();
+
+                    onChange([newImage, ...value]);
+                  }}
+                />
+                <Icon fontSize="large" color="action">
+                  cloud_upload
+                </Icon>
+                <Typography className="text-12 ml-5">
+                  Photo{props.applicationForm.photo.isRequired?'*': ''}
+                </Typography>
+              </label>
+            )}
+          />
+        </Grid>
+        }
         <Grid item xs={12} sm={12}>
           <Controller
             name="acceptTermsConditions"

@@ -28,6 +28,25 @@ function JobModel(data) {
     state: '',
     country: '',
     tags: [],
+    questionTemplate: '',
+    applicationForm: {
+      resume: {
+        isDisplay: false,
+        isRequired: true
+      },
+      coverLetter: {
+        isDisplay: true,
+        isRequired: true
+      },
+      photo: {
+        isDisplay: true,
+        isRequired: true
+      },
+      email: {
+        isDisplay: true,
+        isRequired: true
+      }
+    },
     company: {
       id: 1,
       name: 'Hacker News',

@@ -16,6 +16,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import Checkbox from '@mui/material/Checkbox';
 import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import DoneIcon from '@mui/icons-material/Done';
@@ -65,27 +66,26 @@ const validationSchema = yup.object({
 });
 
 const initialValues = {
-  questionTemplate: '',
-  questions: [],
-  applicationForm: {
-    resume: true,
-    coverLetter: false,
-    photo: true,
-    phone: true,
-    email: true
-  }
+  questions: []
 };
 
+
+const listOfTypes = [
+  {}
+];
 
 const ApplicationForm = (props) => {
   const dispatch = useDispatch();
   const routeParams = useParams();
+
+
   const theme = useTheme();
+  const [job, setJob] = React.useState(props.job);
 
   const defaultValues = _.merge(
     {},
-    JobModel(),
-    props.job
+    initialValues,
+    job
   );
   const { formState, handleSubmit, getValues, reset, watch, setValue, control } = useForm({
     mode: 'onChange',
@@ -94,44 +94,50 @@ const ApplicationForm = (props) => {
   });
 
   const { isValid, dirtyFields, errors } = formState;
-  const applicationForm = watch();
+  const form = watch();
 
-  console.log(applicationForm)
+
+
   const [templates, setTemplates] = React.useState([]);
   const [selectedTemplate, setSelectedTemplate] = React.useState('');
-  const [age, setAge] = React.useState('');
-  const [isEdit, setIsEdit] = React.useState(false);
   const [questions, setQuestions] = React.useState();
-  /**
-   * Initialize Form
-   */
-  const initForm = useCallback(() => {
-
-    reset({
-      ...initialValues,
-      id: FuseUtils.generateGUID(),
-    });
-
-  }, [reset]);
-
+  console.log('applicationForm', job)
 
   useEffect(() => {
-    initForm()
     dispatch(getCompanyTemplates(routeParams)).then((response) => {
       setTemplates(response.payload);
     });
 
-  }, [dispatch, routeParams, initForm]);
+  }, [dispatch, routeParams]);
 
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setAge(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
   };
+
+  function handleFieldChange(event) {
+    // props.onListItemChange(
+    //   _.setIn(
+    //     props.job,
+    //     event.target.name,
+    //     event.target.type === 'checkbox' ? event.target.checked : event.target.value
+    //   )
+    // );
+    // props.job.applicationForm[event.target.name] = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+    const check = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+    // setJob({
+    //   ...job,
+    //   'applicationForm': {
+    //     resume: true
+    //   }
+    // });
+    var someProperty = {...job}
+    const field = event.target.name.split('.');
+    someProperty.applicationForm[field[0]][field[1]] = event.target.checked;
+    setJob(someProperty)
+
+  }
 
   const handleTemplateChange = (event, idx) => {
     if(!idx && idx!==0){
@@ -160,7 +166,7 @@ const ApplicationForm = (props) => {
     dispatch(addJob(data));
   }
 
-  if(!Object.keys(applicationForm).length === 0){
+  if(!Object.keys(form).length === 0){
     return
   }
 
@@ -186,7 +192,71 @@ const ApplicationForm = (props) => {
                 <Typography variant="caption" display="block" gutterBottom>
                   Decide what should be displayed on the application form.
                 </Typography>
-                <div className="mt-20">
+                <div className="mt-20 w-full">
+                  <Grid container spacing={2} item xs={12}>
+                    <Grid item xs={8}  sm={8}>
+                    </Grid>
+                    <Grid item xs={2} sm={2}>
+                      <Typography
+                        variant={'subtitle2'}
+                        fontWeight={600}
+                      >
+                        Display
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={2}>
+                      <Typography
+                        variant={'subtitle2'}
+                        fontWeight={600}
+                      >
+                        Required
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  {Object.keys(job.applicationForm).map((item, idx) => (
+                  <Grid container spacing={2} item xs={12}>
+                    <Grid item xs={8}  sm={8}>
+                      <Typography
+                        variant={'subtitle2'}
+                      >
+                        {item}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={2} justifyContent="flex-end">
+                      <Checkbox
+                        index={idx}
+                        checked={job.applicationForm[item].isDisplay}
+                        onChange={handleFieldChange}
+                        name={`${item}.isDisplay`}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                      />
+                      {/*<Controller*/}
+                        {/*name="applicationForm"*/}
+                        {/*control={control}*/}
+                        {/*defaultValue={job.applicationForm[item]}*/}
+                        {/*render={({ field: { onChange, value } }) => {*/}
+                          {/*return (*/}
+                            {/*<Checkbox*/}
+                          {/*checked={value.isDisplay}*/}
+                          {/*onChange={(val) => onChange(val)}*/}
+                          {/*name={item.isDisplay}*/}
+                          {/*inputProps={{ 'aria-label': 'controlled' }}*/}
+                          {/*/>*/}
+                          {/*);*/}
+                        {/*}}*/}
+                      {/*/>*/}
+                    </Grid>
+                    <Grid item xs={2} sm={2} justifyContent="flex-end">
+                      <Checkbox
+                        index={idx}
+                        checked={props.job.applicationForm[item].isRequired}
+                        onChange={handleFieldChange}
+                        name={`${item}.isRequired`}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                      />
+                    </Grid>
+                  </Grid>
+                    ))}
                 </div>
               </Grid>
               <Grid item xs={12}>
@@ -222,30 +292,6 @@ const ApplicationForm = (props) => {
                       Screening Questions
                     </Typography>
                   </Box>
-                  <div className="px-16">
-                    {/*<Controller*/}
-                      {/*control={control}*/}
-                      {/*name="template"*/}
-                      {/*render={({ field }) => (*/}
-                        {/*<FormControl fullWidth sx={{ m: 1, minWidth: 120 }}>*/}
-                          {/*<InputLabel id="demo-simple-select-label">Template</InputLabel>*/}
-                          {/*<Select*/}
-                            {/*labelId="demo-simple-select-label"*/}
-                            {/*id="demo-simple-select"*/}
-                            {/*value={selectedTemplate}*/}
-                            {/*label="Template"*/}
-                            {/*// onChange={handleTemplateChange}*/}
-                          {/*>*/}
-                            {/*<MenuItem onClick={(ev) => handleTemplateChange(ev, null)} value="None">None</MenuItem>*/}
-                            {/*{templates.map((template, idx) => (*/}
-                              {/*<MenuItem key={idx} onClick={(ev) => handleTemplateChange(ev, idx)} value={template.name}>{template.name}</MenuItem>*/}
-                            {/*))}*/}
-                          {/*</Select>*/}
-                        {/*</FormControl>*/}
-                      {/*)}*/}
-                    {/*/>*/}
-
-                  </div>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} className="flex flex-col items-start justify-start">
@@ -304,13 +350,13 @@ const ApplicationForm = (props) => {
         </Box>
       </Grid>
       <Grid item xs={12} sm={5}>
-        {Object.keys(applicationForm).length !== 0 && (
+        {Object.keys(form).length !== 0 && (
         <Paper
           component={motion.div}
           variant="outlined"
           className="flex flex-col items-center justify-start w-full overflow-hidden rounded-8 mb-20 "
           >
-          <Application/>
+          <Application applicationForm={props.job.applicationForm}/>
 
           </Paper>
         )}

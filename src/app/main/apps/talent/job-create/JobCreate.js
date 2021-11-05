@@ -27,6 +27,7 @@ import JobForm from './components/JobForm';
 import ApplicationForm from './components/ApplicationForm';
 import { resetJob, newJob, getJob } from '../store/jobSlice';
 import {closeNoteDialog} from "../../notes/store/notesSlice";
+import JobModel from "../models/JobModel";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -51,13 +52,14 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 function JobCreate(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const job = useSelector(({ jobCreate }) => jobCreate.job);
+  // const job = useSelector(({ jobCreate }) => jobCreate.job);
 
+  const [job, setJob] = useState(null);
   const routeParams = useParams();
   const [jobExist, setJobExist] = useState(false);
   const pageLayout = useRef(null);
 
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const steps = [
     {
       id: '0',
@@ -68,11 +70,6 @@ function JobCreate(props) {
       id: '1',
       title: 'Application Form',
       content: <ApplicationForm job={job} onChange={handleOnChange}  />
-    },
-    {
-      id: '2',
-      title: 'Pipeline',
-      content: <ApplicationForm />
     }
   ]
 
@@ -82,9 +79,9 @@ function JobCreate(props) {
 
       if (jobId === 'new') {
         /**
-         * Create New Product data
+         * Create New Job data
          */
-        dispatch(newJob());
+        setJob(JobModel());
       } else {
         /**
          * Get Product data

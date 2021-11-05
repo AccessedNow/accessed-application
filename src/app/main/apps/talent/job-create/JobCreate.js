@@ -25,6 +25,8 @@ import reducer from './store';
 
 import JobForm from './components/JobForm';
 import ApplicationForm from './components/ApplicationForm';
+import WorkflowForm from './components/WorkflowForm';
+
 import { resetJob, newJob, getJob } from '../store/jobSlice';
 import {closeNoteDialog} from "../../notes/store/notesSlice";
 import JobModel from "../models/JobModel";
@@ -62,15 +64,21 @@ function JobCreate(props) {
   const [activeStep, setActiveStep] = useState(0);
   const steps = [
     {
-      id: '0',
-      title: 'Job Detail',
+      id: '1',
+      title: 'Job',
       content: <JobForm job={job} onChange={handleOnChange} />
     },
     {
-      id: '1',
-      title: 'Application Form',
+      id: '2',
+      title: 'Application',
       content: <ApplicationForm job={job} onChange={handleOnChange}  />
+    },
+    {
+      id: '3',
+      title: 'Wrkflow',
+      content: <WorkflowForm job={job} onChange={handleOnChange}  />
     }
+
   ]
 
   useDeepCompareEffect(() => {

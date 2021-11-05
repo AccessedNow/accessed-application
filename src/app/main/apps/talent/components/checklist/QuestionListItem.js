@@ -88,6 +88,7 @@ function QuestionListItem(props) {
   }
 
   function handleChange(event) {
+
     setData(
       {...data, text: event.target.value}
     )
@@ -148,7 +149,13 @@ function QuestionListItem(props) {
               className={clsx('flex flex-1 mx-8', props.item.checked && 'line-through opacity-50')}
               name="text"
               value={props.item.text}
-              onChange={handleChange}
+              // onChange={handleChange}
+              onChange = {() =>
+                setValue("lastName", "Luo", {
+                  shouldValidate: true,
+                  shouldDirty: true
+                })
+              }
               disableUnderline
               />
             </div>

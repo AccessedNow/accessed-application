@@ -1,15 +1,16 @@
 import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
 
-function TaskModel(data) {
+function StageModel(data) {
   data = data || {};
 
   return _.defaults(data, {
     id: FuseUtils.generateGUID(),
-    type: 'EMAIL',
-    required: false,
-    allowChange: true
+    type: "",
+    timeLimit: 7,
+    name: "",
+    tasks: []
   });
 }
 
-export default TaskModel;
+export default StageModel;

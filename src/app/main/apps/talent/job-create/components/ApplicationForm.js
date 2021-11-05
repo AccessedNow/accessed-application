@@ -36,7 +36,7 @@ import {
   addJob,
   updateJob
 } from '../../store/jobSlice';
-import {getCompanyTemplates} from "../../store/templateSlice";
+import {getCompanyQuestionTemplates} from "../../store/templateSlice";
 
 import Application from "../components/Application";
 // import QuestionList from "../components/QuestionList";
@@ -104,7 +104,7 @@ const ApplicationForm = (props) => {
   console.log('applicationForm', job)
 
   useEffect(() => {
-    dispatch(getCompanyTemplates(routeParams)).then((response) => {
+    dispatch(getCompanyQuestionTemplates(routeParams)).then((response) => {
       setTemplates(response.payload);
     });
 

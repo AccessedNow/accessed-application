@@ -59,13 +59,13 @@ function TaskAddListItem(props) {
           control={control}
           render={({ field }) => (
               <FormControl variant="standard" className="flex w-full">
-                <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                <InputLabel id="demo-simple-select-label">Task</InputLabel>
                 <Select
                   {...field}
                   displayEmpty
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  name="type"
+                  name="Task"
                   onChange={onSelect}
                 >
                   {listOfTypes.map((item, idx) => (

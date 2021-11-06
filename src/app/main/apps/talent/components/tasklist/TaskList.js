@@ -27,7 +27,8 @@ const Accordion = styled((props) => (
   '&:before': {
     display: 'none',
   },
-  borderRadius: 6
+  borderRadius: 6,
+  marginBottom: 10
 }));
 
 const AccordionSummary = styled((props) => (

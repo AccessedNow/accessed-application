@@ -75,7 +75,7 @@ function JobCreate(props) {
     },
     {
       id: '3',
-      title: 'Wrkflow',
+      title: 'Workflow',
       content: <WorkflowForm job={job} onChange={handleOnChange}  />
     }
 

@@ -743,7 +743,7 @@ const themesConfig = {
       background: {
         default: '#F7FAFF',
         paper: '#ffffff',
-        default: '#ffffff',
+        default: '#f6f7f9',
         level2: '#f5f5f5',
         level1: '#ffffff',
       },

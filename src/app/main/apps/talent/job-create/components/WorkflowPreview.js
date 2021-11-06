@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import EmailIcon from '@mui/icons-material/Email';
+import EventIcon from '@mui/icons-material/Event';
+import IconButton from '@mui/material/IconButton';
+
+import RatingIcon from '@mui/icons-material/Star';
+import Stack from '@mui/material/Stack';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -40,12 +46,27 @@ const WorkflowPreview = (props) => {
                 <Box sx={{ mb: 2 }}>
                   <div className="tasks">
                     {stage.tasks.length ?
-                      <Button
-                        variant="contained"
-                        sx={{mt: 1, mr: 1}}
-                      >
-                        {index === props.stages.length - 1 ? 'Finish' : 'Continue'}
-                      </Button>
+                      <Stack direction="row" spacing={1}>
+                        {stage.tasks.map((task, index) => (
+                          <div>
+                            {task.type === 'EMAIL' &&
+                            <IconButton aria-label="email">
+                              <EmailIcon/>
+                            </IconButton>
+                            }
+                            {task.type === 'EVALUATION' &&
+                            <IconButton aria-label="evaluation">
+                              <RatingIcon/>
+                            </IconButton>
+                            }
+                            {task.type === 'EVENT' &&
+                            <IconButton aria-label="event">
+                              <EventIcon/>
+                            </IconButton>
+                            }
+                          </div>
+                        ))}
+                      </Stack>
                       :
                       <Typography variant="caption">No Tasks</Typography>
                     }

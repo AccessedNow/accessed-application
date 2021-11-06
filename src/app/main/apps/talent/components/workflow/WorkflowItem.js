@@ -186,7 +186,7 @@ function WorkflowItem(props) {
               }}
             />
           </div>
-          <div className="flex flex-auto justify-between items-center pb-12">
+          <div className="flex flex-auto justify-between items-center pt-12">
             <div className="flex items-center">
 
               <Tooltip title="Add Task" placement="bottom">
@@ -200,7 +200,23 @@ function WorkflowItem(props) {
 
               </Tooltip>
 
+              <Tooltip title="Add Member" placement="bottom">
+                <IconButton
+                  className="w-32 h-32 mx-4 p-0"
+                  size="large"
+                >
+                  <Icon fontSize="small">people</Icon>
+                </IconButton>
+              </Tooltip>
 
+              <Tooltip title="Add Member" placement="bottom">
+                <IconButton
+                  className="w-32 h-32 mx-4 p-0"
+                  size="large"
+                >
+                  <Icon fontSize="small">forward_to_inbox</Icon>
+                </IconButton>
+              </Tooltip>
             </div>
           </div>
 
@@ -214,7 +230,7 @@ function WorkflowItem(props) {
               color="secondary"
               size="small"
               type="submit"
-              disabled={_.isEmpty(dirtyFields) || !isValid}
+              // disabled={_.isEmpty(dirtyFields) || !isValid}
               className="rounded-6"
               onClick={handleSave}
             >

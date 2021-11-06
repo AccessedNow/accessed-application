@@ -19,11 +19,9 @@ import * as yup from 'yup';
 import _ from '@lodash';
 
 const listOfTypes = [
-  { value: 'SINGLELINE', name: 'Text'},
-  { value: 'MULTILINE', name: 'Text(multiple lines)' },
-  { value: 'YESNO', name: 'Yes/No' },
-  { value: 'SINGLECHOICE', name: 'Single Selection' },
-  { value: 'MULTICHOICE', name: 'Multiple Selection'}
+  { value: 'EMAIL', name: 'Email'},
+  { value: 'EVALUATION', name: 'Evaluation' },
+  { value: 'EVENT', name: 'Event' }
 ]
 
 
@@ -47,35 +45,33 @@ function TaskAddListItem(props) {
 
   const { isValid, dirtyFields, errors } = formState;
 
-  function onSelect(data) {
-    props.onListItemAdd(TaskModel(data));
+  function onSelect(event) {
+    props.onListItemAdd(TaskModel({type: event.target.value}));
     reset(defaultValues);
   }
 
   return (
-      <ListItem className="p-0" dense>
-        <Controller
-          name="type"
-          control={control}
-          render={({ field }) => (
-              <FormControl variant="standard" className="flex w-full">
-                <InputLabel id="demo-simple-select-label">Task</InputLabel>
-                <Select
-                  {...field}
-                  displayEmpty
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="Task"
-                  onChange={onSelect}
-                >
-                  {listOfTypes.map((item, idx) => (
-                    <MenuItem key={idx} value={item.value}>{item.name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-          )}
-        />
-      </ListItem>
+    <Controller
+      name="type"
+      control={control}
+      render={({ field }) => (
+          <FormControl className="flex">
+            <InputLabel id="demo-simple-select-label">Add Task</InputLabel>
+            <Select
+              {...field}
+              displayEmpty
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              name="Task"
+              onChange={onSelect}
+            >
+              {listOfTypes.map((item, idx) => (
+                <MenuItem key={idx} value={item.value}>{item.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+      )}
+    />
   );
 }
 

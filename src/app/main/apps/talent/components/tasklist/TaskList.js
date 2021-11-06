@@ -2,14 +2,19 @@ import _ from '@lodash';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import FormControl from '@mui/material/FormControl';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
-
-import List from '@mui/material/List';
 import TaskAddListItem from './TaskAddListItem';
 import TaskListItem from './TaskListItem';
+import TaskModel from "../../models/TaskModel";
 
 
 const Accordion = styled((props) => (
@@ -22,11 +27,11 @@ const Accordion = styled((props) => (
   '&:before': {
     display: 'none',
   },
+  borderRadius: 6
 }));
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
     {...props}
   />
 ))(({ theme }) => ({
@@ -73,6 +78,12 @@ function TaskList(props) {
     props.onListChange([...props.list, item]);
   }
 
+  function onSelect(data) {
+    console.log(props.item)
+    // props.onListItemAdd(TaskModel(data));
+    // reset(defaultValues);
+  }
+
   console.log('tasklist', props)
 
   if (!props.list) {
@@ -84,17 +95,28 @@ function TaskList(props) {
   <div className={props.className}>
     <div className="tasks mb-20">
       {props.list.map((item, idx) => (
-        <Accordion expanded={expanded === ('panel'+idx)} onChange={handleChange(('panel'+idx))}>
+        <Accordion key={idx} expanded={expanded === ('panel'+idx)} onChange={handleChange(('panel'+idx))}>
           <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <Typography>Collapsible Group Item #1</Typography>
+            <div className="flex flex-row items-center justify-between w-full">
+              <Typography>{item.type}</Typography>
+              <IconButton
+                className="w-32 h-32 mx-4 p-0"
+                aria-label="Delete"
+                onClick={() => handleListItemRemove(idx)}
+                size="small"
+              >
+                <Icon fontSize="small">delete</Icon>
+              </IconButton>
+            </div>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-              malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-              sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-              sit amet blandit leo lobortis eget.
-            </Typography>
+            <TaskListItem
+              item={item}
+              key={idx}
+              index={idx}
+              onListItemChange={handleListItemChange}
+              onListItemRemove={handleListItemRemove}
+            />
           </AccordionDetails>
         </Accordion>
       ))}

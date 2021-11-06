@@ -1,13 +1,31 @@
+import * as React from 'react';
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import { Controller, useForm } from 'react-hook-form';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+
 import TaskModel from '../../models/TaskModel';
+import { Controller, useForm } from 'react-hook-form';
+
 import * as yup from 'yup';
 import _ from '@lodash';
+
+const listOfTypes = [
+  { value: 'SINGLELINE', name: 'Text'},
+  { value: 'MULTILINE', name: 'Text(multiple lines)' },
+  { value: 'YESNO', name: 'Yes/No' },
+  { value: 'SINGLECHOICE', name: 'Single Selection' },
+  { value: 'MULTICHOICE', name: 'Multiple Selection'}
+]
+
 
 const defaultValues = {
   type: '',
@@ -29,49 +47,35 @@ function TaskAddListItem(props) {
 
   const { isValid, dirtyFields, errors } = formState;
 
-  function onSubmit(data) {
+  function onSelect(data) {
     props.onListItemAdd(TaskModel(data));
     reset(defaultValues);
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
       <ListItem className="p-0" dense>
         <Controller
           name="type"
           control={control}
           render={({ field }) => (
-            <TextField
-              {...field}
-              className="flex flex-1"
-              error={!!errors.type}
-              helperText={errors?.type?.message}
-              placeholder="Add a task"
-              variant="standard"
-              autoFocus
-              hiddenLabel
-              InputProps={{
-                disableUnderline: true,
-                className: 'px-2',
-                endAdornment: (
-                  <InputAdornment position="start">
-                    <IconButton
-                      className="w-32 h-32 p-0 -mx-6"
-                      aria-label="Add"
-                      type="submit"
-                      disabled={_.isEmpty(dirtyFields) || !isValid}
-                      size="large"
-                    >
-                      <Icon fontSize="small">add</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+              <FormControl variant="standard" className="flex w-full">
+                <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                <Select
+                  {...field}
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="type"
+                  onChange={onSelect}
+                >
+                  {listOfTypes.map((item, idx) => (
+                    <MenuItem key={idx} value={item.value}>{item.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
           )}
         />
       </ListItem>
-    </form>
   );
 }
 

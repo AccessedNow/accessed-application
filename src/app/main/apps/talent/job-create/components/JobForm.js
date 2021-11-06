@@ -260,437 +260,434 @@ const JobForm = (props) => {
     <Root>
       <Grid container spacing={4}>
         <Grid item xs={12} sm={7}>
-          <Box className="flex flex-col items-start justify-start sm:px-20">
-              <Grid container spacing={4}>
-                <Grid item xs={12} sm={12}>
-                  <Typography
-                    variant={'subtitle2'}
-                    sx={{ marginBottom: 2 }}
-                    fontWeight={700}
-                  >
-                    Enter Job Title *
-                  </Typography>
-                  <Controller
-                    name="title"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        className="mt-8 mb-16"
-                        error={!!errors.title}
-                        required
-                        helperText={errors?.title?.message}
-                        label="Title"
-                        autoFocus
-                        id="title"
-                        variant="outlined"
-                        fullWidth
-                      />
-                    )}
-                  />
-
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    variant={'subtitle2'}
-                    sx={{ marginBottom: 2 }}
-                    fontWeight={700}
-                  >
-                    Description
-                  </Typography>
-                  <Controller
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={12}>
+              <Typography
+                variant={'subtitle2'}
+                sx={{ marginBottom: 2 }}
+                fontWeight={700}
+              >
+                Enter Job Title *
+              </Typography>
+              <Controller
+                name="title"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
                     className="mt-8 mb-16"
-                    render={({ field }) => <WYSIWYGEditor {...field} onEditorStateChange={handleDescription} />}
-                    name="description"
-                    control={control}
+                    error={!!errors.title}
+                    required
+                    helperText={errors?.title?.message}
+                    label="Title"
+                    autoFocus
+                    id="title"
+                    variant="outlined"
+                    fullWidth
                   />
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12} sm={12}>
-                  <Typography
-                    variant={'subtitle2'}
-                    sx={{ marginBottom: 2 }}
-                    fontWeight={700}
-                  >
-                    Qualifications
-                  </Typography>
-                  <Controller
-                    name="qualifications"
-                    control={control}
-                    defaultValue={[]}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <div className="px-16">
-                          <FormList list={value} onListChange={(val) => onChange(val)} />
-                        </div>
-                      );
-                    }}
-                  />
+                )}
+              />
 
-                </Grid>
-                <Grid item xs={12} sm={12}>
-                  <Typography
-                    variant={'subtitle2'}
-                    sx={{ marginBottom: 2 }}
-                    fontWeight={700}
-                  >
-                    Minimum Qualifications
-                  </Typography>
-                  <Controller
-                    name="minimumQualifications"
-                    control={control}
-                    defaultValue={[]}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <div className="px-16">
-                          <FormList list={value} onListChange={(val) => onChange(val)} />
-                        </div>
-                      );
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12}>
-                  <Typography
-                    variant={'subtitle2'}
-                    sx={{ marginBottom: 2 }}
-                    fontWeight={700}
-                  >
-                    Responsibilities
-                  </Typography>
-                  <Controller
-                    name="responsibilities"
-                    control={control}
-                    defaultValue={[]}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <div className="px-16">
-                          <FormList list={value} onListChange={(val) => onChange(val)} />
-                        </div>
-                      );
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12} sm={12} className="listing-type">
-                  <Typography
-                    variant={'subtitle2'}
-                    sx={{ marginBottom: 2 }}
-                    fontWeight={700}
-                  >
-                    Listing Type
-                  </Typography>
-                  <Paper className="field-container flex flex-row items-start justify-end shadow-none py-5 px-5">
-                    <Grid item xs={5} sm={5}>
-                      <TextField
-                        id="standard-select-currency"
-                        select
-                        label="Category"
-                        value={currency}
-                        onChange={handleChange}
-                        className="flex"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={5} sm={5}>
-                      <TextField
-                        id="standard-select-currency"
-                        select
-                        label="Job Function"
-                        value={currency}
-                        onChange={handleChange}
-                        className="flex"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={2} sm={2}>
-                      <TextField
-                        id="standard-select-currency"
-                        select
-                        label="Employment Type"
-                        value={currency}
-                        onChange={handleChange}
-                        className="flex"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12} sm={12} className="salary">
-                  <Typography
-                    variant={'subtitle2'}
-                    sx={{ marginBottom: 2 }}
-                    fontWeight={700}
-                  >
-                    Salary
-                  </Typography>
-                  <Paper className="field-container flex flex-row items-start justify-end shadow-none py-5 px-5">
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        required
-                        id="salary-min"
-                        label="Min"
-                        defaultValue={0}
-                        className="flex border-r-0"
-                      />
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        required
-                        id="salary-max"
-                        label="Max"
-                        defaultValue={0}
-                        className="flex"
-                      />
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        id="standard-select-currency"
-                        select
-                        label="Currency"
-                        value={currency}
-                        onChange={handleChange}
-                        className="flex"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12} sm={12} className="location">
-                  <Typography
-                    variant={'subtitle2'}
-                    sx={{ marginBottom: 2 }}
-                    fontWeight={700}
-                  >
-                    Location
-                  </Typography>
-                  <Paper className="field-container flex flex-row items-start justify-end shadow-none py-5 px-5">
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        id="standard-select-currency"
-                        select
-                        label="City"
-                        value={currency}
-                        onChange={handleChange}
-                        className="flex"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        id="standard-select-currency"
-                        select
-                        label="State"
-                        value={currency}
-                        onChange={handleChange}
-                        className="flex"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        id="standard-select-currency"
-                        select
-                        label="Country"
-                        value={currency}
-                        onChange={handleChange}
-                        className="flex"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12} sm={12} className="experiences">
-                  <Typography
-                    variant={'subtitle2'}
-                    sx={{ marginBottom: 2 }}
-                    fontWeight={700}
-                  >
-                    Experiences
-                  </Typography>
-                  <Paper className="field-container flex flex-row items-start justify-end shadow-none py-5 px-5">
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        id="standard-select-currency"
-                        select
-                        label="Min Month"
-                        value={currency}
-                        onChange={handleChange}
-                        className="flex"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        id="standard-select-currency"
-                        select
-                        label="Max Month"
-                        value={currency}
-                        onChange={handleChange}
-                        className="flex"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        id="standard-select-currency"
-                        select
-                        label="Education"
-                        value={currency}
-                        onChange={handleChange}
-                        className="flex"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid>
-                  </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    variant={'subtitle2'}
-                    sx={{ marginBottom: 2 }}
-                    fontWeight={700}
-                  >
-                    Skills
-                  </Typography>
-                  <FormControl sx={{width: '100%' }}>
-                    <InputLabel id="demo-multiple-chip-label">Skills</InputLabel>
-                    <Select
-                      labelId="demo-multiple-chip-label"
-                      id="demo-multiple-chip"
-                      multiple
-                      value={personName}
-                      onChange={handleChange}
-                      input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                      renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {selected.map((value) => (
-                            <Chip key={value} label={value} />
-                          ))}
-                        </Box>
-                      )}
-                      MenuProps={MenuProps}
-                    >
-                      {names.map((name) => (
-                        <MenuItem
-                          key={name}
-                          value={name}
-                          style={getStyles(name, personName, theme)}
-                        >
-                          {name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                <Grid item container xs={12}>
-                  <Box
-                    display="flex"
-                    flexDirection={{ xs: 'column', sm: 'row' }}
-                    alignItems={{ xs: 'stretched', sm: 'center' }}
-                    justifyContent={'space-between'}
-                    width={1}
-                    margin={'0 auto'}
-                  >
-                    <Box marginBottom={{ xs: 1, sm: 0 }}>
-                      <Typography
-                        variant={'subtitle2'}
-                        color={'text.secondary'}
-                        align={'center'}
-                      >
-                        By clicking "Create" button you agree with our{' '}
-                        <Link
-                          component={'a'}
-                          color={'primary'}
-                          href={'/company-terms'}
-                          underline={'none'}
-                        >
-                          company terms and conditions.
-                        </Link>
-                      </Typography>
-                    </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography
+                variant={'subtitle2'}
+                sx={{ marginBottom: 2 }}
+                fontWeight={700}
+              >
+                Description
+              </Typography>
+              <Controller
+                className="mt-8 mb-16"
+                render={({ field }) => <WYSIWYGEditor {...field} onEditorStateChange={handleDescription} />}
+                name="description"
+                control={control}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Typography
+                variant={'subtitle2'}
+                sx={{ marginBottom: 2 }}
+                fontWeight={700}
+              >
+                Qualifications
+              </Typography>
+              <Controller
+                name="qualifications"
+                control={control}
+                defaultValue={[]}
+                render={({ field: { onChange, value } }) => {
+                  return (
                     <div className="px-16">
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        type="submit"
-                        disabled={_.isEmpty(dirtyFields) || !isValid}
-                        className="rounded-6"
-                        onClick={onSubmit}
-                      >
-                        Save
-                      </Button>
+                      <FormList list={value} onListChange={(val) => onChange(val)} />
                     </div>
-                  </Box>
+                  );
+                }}
+              />
+
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Typography
+                variant={'subtitle2'}
+                sx={{ marginBottom: 2 }}
+                fontWeight={700}
+              >
+                Minimum Qualifications
+              </Typography>
+              <Controller
+                name="minimumQualifications"
+                control={control}
+                defaultValue={[]}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <div className="px-16">
+                      <FormList list={value} onListChange={(val) => onChange(val)} />
+                    </div>
+                  );
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Typography
+                variant={'subtitle2'}
+                sx={{ marginBottom: 2 }}
+                fontWeight={700}
+              >
+                Responsibilities
+              </Typography>
+              <Controller
+                name="responsibilities"
+                control={control}
+                defaultValue={[]}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <div className="px-16">
+                      <FormList list={value} onListChange={(val) => onChange(val)} />
+                    </div>
+                  );
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12} sm={12} className="listing-type">
+              <Typography
+                variant={'subtitle2'}
+                sx={{ marginBottom: 2 }}
+                fontWeight={700}
+              >
+                Listing Type
+              </Typography>
+              <Paper className="field-container flex flex-row items-start justify-end shadow-none py-5 px-5">
+                <Grid item xs={5} sm={5}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="Category"
+                    value={currency}
+                    onChange={handleChange}
+                    className="flex"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Grid>
-              </Grid>
-            {/*</form>*/}
-          </Box>
+                <Grid item xs={5} sm={5}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="Job Function"
+                    value={currency}
+                    onChange={handleChange}
+                    className="flex"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={2} sm={2}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="Employment Type"
+                    value={currency}
+                    onChange={handleChange}
+                    className="flex"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12} sm={12} className="salary">
+              <Typography
+                variant={'subtitle2'}
+                sx={{ marginBottom: 2 }}
+                fontWeight={700}
+              >
+                Salary
+              </Typography>
+              <Paper className="field-container flex flex-row items-start justify-end shadow-none py-5 px-5">
+                <Grid item xs={4} sm={4}>
+                  <TextField
+                    required
+                    id="salary-min"
+                    label="Min"
+                    defaultValue={0}
+                    className="flex border-r-0"
+                  />
+                </Grid>
+                <Grid item xs={4} sm={4}>
+                  <TextField
+                    required
+                    id="salary-max"
+                    label="Max"
+                    defaultValue={0}
+                    className="flex"
+                  />
+                </Grid>
+                <Grid item xs={4} sm={4}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="Currency"
+                    value={currency}
+                    onChange={handleChange}
+                    className="flex"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12} sm={12} className="location">
+              <Typography
+                variant={'subtitle2'}
+                sx={{ marginBottom: 2 }}
+                fontWeight={700}
+              >
+                Location
+              </Typography>
+              <Paper className="field-container flex flex-row items-start justify-end shadow-none py-5 px-5">
+                <Grid item xs={4} sm={4}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="City"
+                    value={currency}
+                    onChange={handleChange}
+                    className="flex"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={4} sm={4}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="State"
+                    value={currency}
+                    onChange={handleChange}
+                    className="flex"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={4} sm={4}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="Country"
+                    value={currency}
+                    onChange={handleChange}
+                    className="flex"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12} sm={12} className="experiences">
+              <Typography
+                variant={'subtitle2'}
+                sx={{ marginBottom: 2 }}
+                fontWeight={700}
+              >
+                Experiences
+              </Typography>
+              <Paper className="field-container flex flex-row items-start justify-end shadow-none py-5 px-5">
+                <Grid item xs={4} sm={4}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="Min Month"
+                    value={currency}
+                    onChange={handleChange}
+                    className="flex"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={4} sm={4}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="Max Month"
+                    value={currency}
+                    onChange={handleChange}
+                    className="flex"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item xs={4} sm={4}>
+                  <TextField
+                    id="standard-select-currency"
+                    select
+                    label="Education"
+                    value={currency}
+                    onChange={handleChange}
+                    className="flex"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography
+                variant={'subtitle2'}
+                sx={{ marginBottom: 2 }}
+                fontWeight={700}
+              >
+                Skills
+              </Typography>
+              <FormControl sx={{width: '100%' }}>
+                <InputLabel id="demo-multiple-chip-label">Skills</InputLabel>
+                <Select
+                  labelId="demo-multiple-chip-label"
+                  id="demo-multiple-chip"
+                  multiple
+                  value={personName}
+                  onChange={handleChange}
+                  input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {names.map((name) => (
+                    <MenuItem
+                      key={name}
+                      value={name}
+                      style={getStyles(name, personName, theme)}
+                    >
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item container xs={12}>
+              <Box
+                display="flex"
+                flexDirection={{ xs: 'column', sm: 'row' }}
+                alignItems={{ xs: 'stretched', sm: 'center' }}
+                justifyContent={'space-between'}
+                width={1}
+                margin={'0 auto'}
+              >
+                <Box marginBottom={{ xs: 1, sm: 0 }}>
+                  <Typography
+                    variant={'subtitle2'}
+                    color={'text.secondary'}
+                    align={'center'}
+                  >
+                    By clicking "Create" button you agree with our{' '}
+                    <Link
+                      component={'a'}
+                      color={'primary'}
+                      href={'/company-terms'}
+                      underline={'none'}
+                    >
+                      company terms and conditions.
+                    </Link>
+                  </Typography>
+                </Box>
+                <div className="px-16">
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    type="submit"
+                    disabled={_.isEmpty(dirtyFields) || !isValid}
+                    className="rounded-6"
+                    onClick={onSubmit}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </Box>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12} sm={5}>
           {Object.keys(jobForm).length !== 0 && (

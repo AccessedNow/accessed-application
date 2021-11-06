@@ -29,7 +29,7 @@ function TaskListItem(props) {
       <Input
         className={clsx('flex flex-1 mx-12 border-b-1 rounded-0')}
         name="text"
-        value={props.item}
+        value={props.item.type}
         onChange={handleChange}
         disableUnderline
       />

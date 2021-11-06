@@ -173,181 +173,172 @@ const ApplicationForm = (props) => {
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} sm={7}>
-        <Box className="flex flex-col items-start justify-start px-20">
-          {/*<form*/}
-            {/*noValidate*/}
-            {/*onSubmit={handleSubmit(onSubmit)}*/}
-            {/*className="flex flex-col md:overflow-hidden"*/}
-          {/*>*/}
-
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
-                <Typography
-                  variant={'subtitle2'}
-                  fontWeight={700}
-                  className="w-full"
-                >
-                  Personal information
-                </Typography>
-                <Typography variant="caption" display="block" gutterBottom>
-                  Decide what should be displayed on the application form.
-                </Typography>
-                <div className="mt-20 w-full">
-                  <Grid container spacing={2} item xs={12}>
-                    <Grid item xs={8}  sm={8}>
-                    </Grid>
-                    <Grid item xs={2} sm={2}>
-                      <Typography
-                        variant={'subtitle2'}
-                        fontWeight={600}
-                      >
-                        Display
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={2} sm={2}>
-                      <Typography
-                        variant={'subtitle2'}
-                        fontWeight={600}
-                      >
-                        Required
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  {Object.keys(job.applicationForm).map((item, idx) => (
-                  <Grid container spacing={2} item xs={12}>
-                    <Grid item xs={8}  sm={8}>
-                      <Typography
-                        variant={'subtitle2'}
-                      >
-                        {item}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={2} sm={2} justifyContent="flex-end">
-                      <Checkbox
-                        index={idx}
-                        checked={job.applicationForm[item].isDisplay}
-                        onChange={handleFieldChange}
-                        name={`${item}.isDisplay`}
-                        inputProps={{ 'aria-label': 'controlled' }}
-                      />
-                      {/*<Controller*/}
-                        {/*name="applicationForm"*/}
-                        {/*control={control}*/}
-                        {/*defaultValue={job.applicationForm[item]}*/}
-                        {/*render={({ field: { onChange, value } }) => {*/}
-                          {/*return (*/}
-                            {/*<Checkbox*/}
-                          {/*checked={value.isDisplay}*/}
-                          {/*onChange={(val) => onChange(val)}*/}
-                          {/*name={item.isDisplay}*/}
-                          {/*inputProps={{ 'aria-label': 'controlled' }}*/}
-                          {/*/>*/}
-                          {/*);*/}
-                        {/*}}*/}
+        <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <Typography
+              variant={'subtitle2'}
+              fontWeight={700}
+              className="w-full"
+            >
+              Personal information
+            </Typography>
+            <Typography variant="caption" display="block" gutterBottom>
+              Decide what should be displayed on the application form.
+            </Typography>
+            <div className="mt-20 w-full">
+              <Grid container spacing={2} item xs={12}>
+                <Grid item xs={6}  sm={6}>
+                </Grid>
+                <Grid item xs={3} sm={3}>
+                  <Typography
+                    variant={'subtitle2'}
+                    fontWeight={600}
+                  >
+                    Display
+                  </Typography>
+                </Grid>
+                <Grid item xs={3} sm={3}>
+                  <Typography
+                    variant={'subtitle2'}
+                    fontWeight={600}
+                  >
+                    Required
+                  </Typography>
+                </Grid>
+              </Grid>
+              {Object.keys(job.applicationForm).map((item, idx) => (
+              <Grid container spacing={2} item xs={12}>
+                <Grid item xs={6}  sm={6}>
+                  <Typography
+                    variant={'subtitle2'}
+                  >
+                    {item}
+                  </Typography>
+                </Grid>
+                <Grid item xs={3} sm={3} justifyContent="flex-end">
+                  <Checkbox
+                    index={idx}
+                    checked={job.applicationForm[item].isDisplay}
+                    onChange={handleFieldChange}
+                    name={`${item}.isDisplay`}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
+                  {/*<Controller*/}
+                    {/*name="applicationForm"*/}
+                    {/*control={control}*/}
+                    {/*defaultValue={job.applicationForm[item]}*/}
+                    {/*render={({ field: { onChange, value } }) => {*/}
+                      {/*return (*/}
+                        {/*<Checkbox*/}
+                      {/*checked={value.isDisplay}*/}
+                      {/*onChange={(val) => onChange(val)}*/}
+                      {/*name={item.isDisplay}*/}
+                      {/*inputProps={{ 'aria-label': 'controlled' }}*/}
                       {/*/>*/}
-                    </Grid>
-                    <Grid item xs={2} sm={2} justifyContent="flex-end">
-                      <Checkbox
-                        index={idx}
-                        checked={props.job.applicationForm[item].isRequired}
-                        onChange={handleFieldChange}
-                        name={`${item}.isRequired`}
-                        inputProps={{ 'aria-label': 'controlled' }}
-                      />
-                    </Grid>
-                  </Grid>
-                    ))}
-                </div>
+                      {/*);*/}
+                    {/*}}*/}
+                  {/*/>*/}
+                </Grid>
+                <Grid item xs={3} sm={3} justifyContent="flex-end">
+                  <Checkbox
+                    index={idx}
+                    checked={props.job.applicationForm[item].isRequired}
+                    onChange={handleFieldChange}
+                    name={`${item}.isRequired`}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Divider />
-              </Grid>
-              <Grid item container xs={12}>
+                ))}
+            </div>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          <Grid item container xs={12}>
+            <Typography
+              variant={'subtitle2'}
+              fontWeight={700}
+              className="w-full"
+            >
+              Ask candidates about their qualifications
+            </Typography>
+            <Typography variant="caption" display="block" gutterBottom>
+              Add screening questions below to find the best candidates more easily
+            </Typography>
+          </Grid>
+          <Grid item container xs={12}>
+            <Box
+              display="flex"
+              flexDirection={{ xs: 'column', sm: 'row' }}
+              alignItems={{ xs: 'stretched', sm: 'center' }}
+              justifyContent={'space-between'}
+              width={1}
+              margin={'0 auto'}
+            >
+              <Box marginBottom={{ xs: 1, sm: 0 }}>
                 <Typography
                   variant={'subtitle2'}
+                  sx={{ marginBottom: 2 }}
                   fontWeight={700}
-                  className="w-full"
                 >
-                  Ask candidates about their qualifications
+                  Screening Questions
                 </Typography>
-                <Typography variant="caption" display="block" gutterBottom>
-                  Add screening questions below to find the best candidates more easily
-                </Typography>
-              </Grid>
-              <Grid item container xs={12}>
-                <Box
-                  display="flex"
-                  flexDirection={{ xs: 'column', sm: 'row' }}
-                  alignItems={{ xs: 'stretched', sm: 'center' }}
-                  justifyContent={'space-between'}
-                  width={1}
-                  margin={'0 auto'}
-                >
-                  <Box marginBottom={{ xs: 1, sm: 0 }}>
-                    <Typography
-                      variant={'subtitle2'}
-                      sx={{ marginBottom: 2 }}
-                      fontWeight={700}
-                    >
-                      Screening Questions
-                    </Typography>
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={12} className="flex flex-col items-start justify-start">
-                {/*<QuestionList />*/}
-                {/*<div className="w-full mt-20">*/}
-                  {/*<Button*/}
-                    {/*variant="contained"*/}
-                    {/*className="w-full rounded-6 border-1"*/}
-                    {/*onClick={handleAdd}*/}
-                  {/*>*/}
-                    {/*+ Add*/}
-                  {/*</Button>*/}
-                {/*</div>*/}
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={12} className="flex flex-col items-start justify-start">
+            {/*<QuestionList />*/}
+            {/*<div className="w-full mt-20">*/}
+              {/*<Button*/}
+                {/*variant="contained"*/}
+                {/*className="w-full rounded-6 border-1"*/}
+                {/*onClick={handleAdd}*/}
+              {/*>*/}
+                {/*+ Add*/}
+              {/*</Button>*/}
+            {/*</div>*/}
 
-                <Controller
-                  name="questions"
-                  control={control}
-                  defaultValue={[]}
-                  render={({ field: { onChange, value } }) => {
-                    return (
-                      <div className="w-full">
-                        <QuestionList list={value} onListChange={(val) => onChange(val)} />
-                      </div>
-                    );
-                  }}
-                />
-
-              </Grid>
-              <Grid item xs={12}>
-                <Divider />
-              </Grid>
-              <Grid item container xs={12}>
-                <Box
-                  display="flex"
-                  flexDirection={{ xs: 'column', sm: 'row' }}
-                  alignItems={{ xs: 'stretched', sm: 'center' }}
-                  justifyContent={'space-between'}
-                  width={1}
-                  margin={'0 auto'}
-                >
-                  <div className="px-16">
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      type="submit"
-                      disabled={_.isEmpty(dirtyFields) || !isValid}
-                      className="rounded-6"
-                    >
-                      Save
-                    </Button>
+            <Controller
+              name="questions"
+              control={control}
+              defaultValue={[]}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <div className="w-full">
+                    <QuestionList list={value} onListChange={(val) => onChange(val)} />
                   </div>
-                </Box>
-              </Grid>
-            </Grid>
-          {/*</form>*/}
-        </Box>
+                );
+              }}
+            />
+
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          <Grid item container xs={12}>
+            <Box
+              display="flex"
+              flexDirection={{ xs: 'column', sm: 'row' }}
+              alignItems={{ xs: 'stretched', sm: 'center' }}
+              justifyContent={'space-between'}
+              width={1}
+              margin={'0 auto'}
+            >
+              <div className="px-16">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  type="submit"
+                  disabled={_.isEmpty(dirtyFields) || !isValid}
+                  className="rounded-6"
+                >
+                  Save
+                </Button>
+              </div>
+            </Box>
+          </Grid>
+        </Grid>
       </Grid>
       <Grid item xs={12} sm={5}>
         {Object.keys(form).length !== 0 && (

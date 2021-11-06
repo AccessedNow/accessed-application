@@ -21,6 +21,8 @@ function TaskList(props) {
     props.onListChange([...props.list, item]);
   }
 
+  console.log('tasklist', props)
+
   if (!props.list) {
     return null;
   }

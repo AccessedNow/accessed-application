@@ -56,7 +56,7 @@ function WorkflowItem(props) {
   const [showList, setShowList] = React.useState(false);
   const defaultValues = _.merge(
     {},
-    data
+    props.item
   );
   const { formState, handleSubmit, getValues, reset, watch, setValue, control } = useForm({
     mode: 'onChange',
@@ -112,7 +112,7 @@ function WorkflowItem(props) {
     return null;
   }
 
-  console.log(data)
+  console.log('workflow item', data, props.item)
 
   return (
     <ListItem className="p-0 mb-28" key={props.item.id} dense>
@@ -149,7 +149,7 @@ function WorkflowItem(props) {
             </Select>
           </FormControl>
         </div>
-        <div className="p-10 border-b-1">
+        <div className="p-20 border-b-1">
           <div className="flex flex-col">
             <Controller
               name="name"
@@ -162,7 +162,6 @@ function WorkflowItem(props) {
                   required
                   helperText={errors?.name?.message}
                   label="Name"
-                  autoFocus
                   id="name"
                   variant="standard"
                   fullWidth
@@ -171,20 +170,17 @@ function WorkflowItem(props) {
                 />
               )}
             />
-            {/*<div className="px-16">*/}
-              {/*<TaskList list={props.item.tasks} onListChange={handleTasksChange} />*/}
-            {/*</div>*/}
             <Controller
               name="tasks"
               control={control}
-              defaultValue={[]}
+              defaultValue={props.item.tasks}
               render={({ field: { onChange, value } }) => {
                 if (value.length === 0 && !showList) {
                   return null;
                 }
                 return (
                   <div className="">
-                    <TaskList list={value} onListChange={handleTasksChange} />
+                    <TaskList list={props.item.tasks} onListChange={handleTasksChange} />
                   </div>
                 );
               }}
@@ -199,8 +195,9 @@ function WorkflowItem(props) {
                   onClick={() => setShowList(!showList)}
                   size="large"
                 >
-                  <Icon fontSize="small">playlist_add_check</Icon>
+                  <Icon fontSize="small">{props.item.tasks.length? 'playlist_add_check':'reorder'}</Icon>
                 </IconButton>
+
               </Tooltip>
 
 

@@ -39,6 +39,7 @@ import {
 import {getCompanyPipelineTemplates} from "../../store/templateSlice";
 
 import WorkflowList from '../../components/workflow/WorkflowList';
+import WorkflowPreview from '../components/WorkflowPreview';
 
 
 
@@ -126,90 +127,61 @@ const WorkflowForm = (props) => {
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} sm={7}>
-        <Box className="flex flex-col items-start justify-start px-20">
-          {/*<form*/}
-            {/*noValidate*/}
-            {/*onSubmit={handleSubmit(onSubmit)}*/}
-            {/*className="flex flex-col md:overflow-hidden"*/}
-          {/*>*/}
+        <Grid container spacing={4}>
+          <Grid item container xs={12}>
+            <Typography
+              variant={'subtitle2'}
+              fontWeight={700}
+              className="w-full"
+            >
+              Pipeline
+            </Typography>
+            <Typography variant="caption" display="block" gutterBottom>
+              Manage candidates by setting up a hiring pipeline for your job.  Learn more
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={12} className="flex flex-col items-start justify-start">
 
-            <Grid container spacing={4}>
-              <Grid item container xs={12}>
-                <Typography
-                  variant={'subtitle2'}
-                  fontWeight={700}
-                  className="w-full"
-                >
-                  Pipeline
-                </Typography>
-                <Typography variant="caption" display="block" gutterBottom>
-                  Manage candidates by setting up a hiring pipeline for your job.  Learn more
-                </Typography>
-              </Grid>
-              <Grid item container xs={12}>
-                <Box
-                  display="flex"
-                  flexDirection={{ xs: 'column', sm: 'row' }}
-                  alignItems={{ xs: 'stretched', sm: 'center' }}
-                  justifyContent={'space-between'}
-                  width={1}
-                  margin={'0 auto'}
-                >
-                  <Box marginBottom={{ xs: 1, sm: 0 }}>
-                    <Typography
-                      variant={'subtitle2'}
-                      sx={{ marginBottom: 2 }}
-                      fontWeight={700}
-                    >
-                      Stages
-                    </Typography>
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={12} className="flex flex-col items-start justify-start">
-
-                <Controller
-                  name="stages"
-                  control={control}
-                  defaultValue={[]}
-                  render={({ field: { onChange, value } }) => {
-                    return (
-                      <div className="w-full">
-                        <WorkflowList list={value} onListChange={(val) => onChange(val)} />
-                      </div>
-                    );
-                  }}
-                />
-
-              </Grid>
-              <Grid item xs={12}>
-                <Divider />
-              </Grid>
-              <Grid item container xs={12}>
-                <Box
-                  display="flex"
-                  flexDirection={{ xs: 'column', sm: 'row' }}
-                  alignItems={{ xs: 'stretched', sm: 'center' }}
-                  justifyContent={'space-between'}
-                  width={1}
-                  margin={'0 auto'}
-                >
-                  <div className="px-16">
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      type="submit"
-                      disabled={_.isEmpty(dirtyFields) || !isValid}
-                      className="rounded-6"
-                    >
-                      Save
-                    </Button>
+            <Controller
+              name="stages"
+              control={control}
+              defaultValue={[]}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <div className="w-full">
+                    <WorkflowList list={value} onListChange={(val) => onChange(val)} />
                   </div>
-                </Box>
-              </Grid>
-            </Grid>
-          {/*</form>*/}
-        </Box>
+                );
+              }}
+            />
+
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          <Grid item container xs={12}>
+            <Box
+              display="flex"
+              flexDirection={{ xs: 'column', sm: 'row' }}
+              alignItems={{ xs: 'stretched', sm: 'center' }}
+              justifyContent={'space-between'}
+              width={1}
+              margin={'0 auto'}
+            >
+              <div className="px-16">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  type="submit"
+                  disabled={_.isEmpty(dirtyFields) || !isValid}
+                  className="rounded-6"
+                >
+                  Save
+                </Button>
+              </div>
+            </Box>
+          </Grid>
+      </Grid>
       </Grid>
       <Grid item xs={12} sm={5}>
         {Object.keys(form).length !== 0 && (
@@ -218,7 +190,7 @@ const WorkflowForm = (props) => {
           variant="outlined"
           className="flex flex-col items-center justify-start w-full overflow-hidden rounded-8 mb-20 "
           >
-
+            <WorkflowPreview stages={form.stages}/>
           </Paper>
         )}
       </Grid>

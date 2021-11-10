@@ -1,3 +1,4 @@
+import { useState, useCallback, useEffect } from 'react';
 import FuseSearch from '@fuse/core/FuseSearch';
 import { ThemeProvider } from '@mui/material/styles';
 import FuseShortcuts from '@fuse/core/FuseShortcuts';
@@ -6,24 +7,36 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Hidden from '@mui/material/Hidden';
 import Toolbar from '@mui/material/Toolbar';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import ChatPanelToggleButton from 'app/fuse-layouts/shared-components/chatPanel/ChatPanelToggleButton';
 import NavbarToggleButton from 'app/fuse-layouts/shared-components/NavbarToggleButton';
 import QuickPanelToggleButton from 'app/fuse-layouts/shared-components/quickPanel/QuickPanelToggleButton';
 import UserMenu from 'app/fuse-layouts/shared-components/UserMenu';
 import clsx from 'clsx';
 import { memo } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectToolbarTheme } from 'app/store/fuse/settingsSlice';
 import AdjustFontSize from '../../shared-components/AdjustFontSize';
 import FullScreenToggle from '../../shared-components/FullScreenToggle';
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
 import NotificationPanelToggleButton from '../../shared-components/notificationPanel/NotificationPanelToggleButton';
 
+import { setPreferredCompany } from 'app/auth/store/userSlice';
+
+
 function ToolbarLayout1(props) {
+  const dispatch = useDispatch();
   const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
   const navbar = useSelector(({ fuse }) => fuse.navbar);
   const toolbarTheme = useSelector(selectToolbarTheme);
   const user = useSelector(({ auth }) => auth.user);
+
+  const handleChange = (event) => {
+    dispatch(setPreferredCompany(event.target.value));
+  };
 
   return (
     <ThemeProvider theme={toolbarTheme}>
@@ -57,7 +70,27 @@ function ToolbarLayout1(props) {
               )}
 
               <Hidden lgDown>
-                <FuseShortcuts/>
+                {user.data.company?
+                  <FormControl sx={{m: 1, minWidth: 120}}>
+                    <InputLabel id="demo-controlled-open-select-label">Age</InputLabel>
+                    <Select
+                      labelId="demo-controlled-open-select-label"
+                      id="demo-controlled-open-select"
+                      value={user.data.preferredCompany}
+                      label="Age"
+                      onChange={handleChange}
+                    >
+
+                      {user.data.company.map((company) => (
+                        <MenuItem key={company.companyid} value={company.companyId}>
+                          {company.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  :
+                  <span></span>
+                }
               </Hidden>
             </div>
 

@@ -1,5 +1,7 @@
 import FuseUtils from '@fuse/utils/FuseUtils';
 import axios from 'axios';
+import _ from 'lodash';
+
 import jwtDecode from 'jwt-decode';
 /* eslint-disable camelcase */
 
@@ -108,61 +110,64 @@ class JwtService extends FuseUtils.EventEmitter {
   signInWithEmailAndPassword = (username, password) => {
     return new Promise((resolve, reject) => {
       axios
-        .post('http://localhost:8080/api/authenticate', {
+        .post('http://accessed-auth.us-west-2.elasticbeanstalk.com/api/authenticate', {
             username: username,
             password: password
         })
         .then((response) => {
           if (response.data.data.user) {
-            console.log(response.data.data)
-            this.setSession(response.data.data.access_token);
+            this.setSession(response.data.data.token);
 
-            let user = {
-              uuid: 'XgbuVEXBU5gtSKdbQRP1Zbbby1i1',
-              from: 'custom-db',
-              password: 'admin',
-              role: 'admin',
-              data: {
-                displayName: response.data.data.user.firstName + ' ' + response.data.data.user.lastName,
-                photoURL: 'assets/images/avatars/Abbott.jpg',
-                email: response.data.data.user.email,
-                settings: {
-                layout: {
-                  style: 'layout1',
-                    config: {
-                    scroll: 'content',
-                      navbar: {
-                        display: false,
-                        folded: true,
-                        position: 'left'
-                    },
-                    toolbar: {
-                        display: false,
-                        style: 'fixed',
-                        position: 'below'
-                    },
-                    footer: {
-                        display: false,
-                        style: 'fixed',
-                        position: 'below'
-                    },
-                    mode: 'fullwidth'
-                  }
-                },
-                customScrollbars: true,
-                  theme: {
-                  main: 'defaultDark',
-                    navbar: 'defaultDark',
-                    toolbar: 'defaultDark',
-                    footer: 'defaultDark'
-                }
-              },
-              shortcuts: ['calendar', 'mail', 'contacts']
-            }
-            };
+            // let user = {
+            //   role: 'admin',
+            //   data: {
+            //     id: response.data.data.user.id,
+            //     displayName: response.data.data.user.firstName + ' ' + response.data.data.user.lastName,
+            //     avatar: response.data.data.user.avatar,
+            //     email: response.data.data.user.email,
+            //     settings: {
+            //     layout: {
+            //       style: 'layout1',
+            //         config: {
+            //         scroll: 'content',
+            //           navbar: {
+            //             display: true,
+            //             folded: true,
+            //             position: 'left'
+            //         },
+            //         toolbar: {
+            //             display: true,
+            //             style: 'fixed',
+            //             position: 'below'
+            //         },
+            //         footer: {
+            //             display: false,
+            //             style: 'fixed',
+            //             position: 'below'
+            //         },
+            //         mode: 'fullwidth'
+            //       }
+            //     },
+            //     customScrollbars: true,
+            //       theme: {
+            //       main: 'accessed',
+            //         navbar: 'accessed',
+            //         toolbar: 'accessed',
+            //         footer: 'defaultDark'
+            //     }
+            //   },
+            //   // shortcuts: ['calendar', 'mail', 'contacts']
+            // }
+            // };
+            // resolve(user);
 
             // resolve(response.data.user);
-            resolve(user);
+            resolve({
+              data: {...response.data.data.user, displayName: response.data.data.user.firstName + ' ' + response.data.data.user.lastName },
+              role: _.some(response.data.data.user.roles, ['name', 'ROLE_ADMIN'])? 'admin': 'user',
+              shortcuts: ['calendar', 'mail', 'contacts']
+            });
+
           } else {
             reject(response.data.error);
           }

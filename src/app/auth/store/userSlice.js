@@ -1,5 +1,7 @@
 /* eslint import/no-extraneous-dependencies: off */
-import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
+
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import history from '@history';
@@ -9,6 +11,20 @@ import { showMessage } from 'app/store/fuse/messageSlice';
 import auth0Service from 'app/services/auth0Service';
 import firebaseService from 'app/services/firebaseService';
 import jwtService from 'app/services/jwtService';
+import { authRoles } from 'app/auth';
+
+import {
+  setNavigation,
+  resetNavigation,
+} from 'app/store/fuse/navigationSlice';
+
+
+export const getTalentUser = createAsyncThunk('user/talent', async (params) => {
+  const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/session?company=${params.company}`, {headers: {userId: params.id}} );
+  const data = await response.data.data;
+
+  return data === undefined ? null : data;
+});
 
 export const setUserDataAuth0 = (tokenData) => async (dispatch) => {
   const user = {
@@ -76,17 +92,114 @@ export const createUserSettingsFirebase = (authUser) => async (dispatch, getStat
 
 export const setUserData = (user) => async (dispatch, getState) => {
   /*
-        You can redirect the logged-in user to a specific route depending on his role
+        You can redirect the logged-in user to a specific route depdispatch(setNavigation([
+            {
+                'id'      : 'auth',
+                'title'   : 'Auth',
+                'type'    : 'group',
+                'icon'    : 'apps',
+                'children': [
+                    {
+                        'id'   : 'login',
+                        'title': 'Login',
+                        'type' : 'item',
+                        'url'  : '/login',
+                        auth   : authRoles.onlyGuest,
+                        'icon' : 'lock'
+                    },
+                    {
+                        'id'   : 'register',
+                        'title': 'Register',
+                        'type' : 'item',
+                        'url'  : '/register',
+                        auth   : authRoles.onlyGuest,
+                        'icon' : 'person_add'
+                    },
+                ]
+            }
+        ]));ending on his role
          */
 
+
+
+  dispatch(setNavigation([
+    {
+      'id': 'auth',
+      'title': 'Auth',
+      'type': 'group',
+      'icon': 'apps',
+      'children': [
+        {
+          'id': 'jobs',
+          'title': 'Jobs',
+          'type': 'item',
+          'url': '/jobs',
+          auth: authRoles.admin,
+          'icon': 'lock'
+        },
+        {
+          'id': 'candidates',
+          'title': 'Candidates',
+          'type': 'item',
+          'url': '/candidats',
+          auth: authRoles.admin,
+          'icon': 'lock'
+        },
+        {
+          'id': 'settings',
+          'title': 'Settings',
+          'type': 'item',
+          'url': '/settings',
+          auth: authRoles.admin,
+          'icon': 'lock'
+        },
+      ]
+    }
+  ]));
+
   history.location.state = {
-    redirectUrl: user.redirectUrl, // for example 'apps/academy'
+    redirectUrl: user.role === 'admin' ? 'talent/dashboard' : '', // for example 'apps/academy'
   };
 
   /*
     Set User Settings
      */
-  dispatch(setDefaultSettings(user.data.settings));
+
+  const settings = {
+    layout: {
+      style: 'layout1',
+      config: {
+        scroll: 'content',
+        navbar: {
+          display: true,
+          folded: true,
+          position: 'left'
+        },
+        toolbar: {
+          display: true,
+          style: 'fixed',
+          position: 'below'
+        },
+        footer: {
+          display: false,
+          style: 'fixed',
+          position: 'below'
+        },
+        mode: 'fullwidth'
+      }
+    },
+    customScrollbars: true,
+    theme: {
+      main: 'accessed',
+      navbar: 'accessed',
+      toolbar: 'accessed',
+      footer: 'defaultDark'
+    }
+  };
+
+
+  // dispatch(setDefaultSettings(user.data.settings));
+  dispatch(setDefaultSettings(settings));
 
   dispatch(setUser(user));
 };
@@ -195,10 +308,13 @@ const initialState = {
   role: [], // guest
   data: {
     id: 5,
-    displayName: 'Guest',
+    displayName: 'John Doe',
+    firstName: 'John',
+    lastName: 'Doe',
     photoURL: 'assets/images/avatars/Velazquez.jpg',
     email: 'guest@accessed.co',
     shortcuts: ['calendar', 'mail', 'contacts', 'todo'],
+    preferCompany: ''
   },
   // data: {
   //   shortcuts: [],
@@ -211,10 +327,13 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => action.payload,
     userLoggedOut: (state, action) => initialState,
+    setPreferredCompany: (state, action) => {
+      state.data.preferredCompany = action.payload;
+    },
   },
   extraReducers: {},
 });
 
-export const { setUser, userLoggedOut } = userSlice.actions;
+export const { setUser, userLoggedOut, setPreferredCompany } = userSlice.actions;
 
 export default userSlice.reducer;

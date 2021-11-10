@@ -1,8 +1,10 @@
+import _ from 'lodash';
+
 import { createSlice } from '@reduxjs/toolkit';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import firebaseService from 'app/services/firebaseService';
 import jwtService from 'app/services/jwtService';
-import { setUserData } from './userSlice';
+import {getTalentUser, setUserData} from './userSlice';
 
 export const submitLogin =
   ({ email, password }) =>
@@ -10,7 +12,19 @@ export const submitLogin =
     return jwtService
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
-        dispatch(setUserData(user));
+        if(user.role==='admin'){
+          dispatch(getTalentUser({id: 5, company: ''})).then(({payload}) => {
+            user.data = _.merge(
+              user.data,
+              payload,
+              {id: payload.userId}
+            );
+            dispatch(setUserData(user));
+          });
+
+        }
+
+        // dispatch(setUserData(user));
 
         return dispatch(loginSuccess());
       })

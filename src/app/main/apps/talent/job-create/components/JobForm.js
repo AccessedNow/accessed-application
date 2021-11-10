@@ -15,6 +15,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AddIcon from '@mui/icons-material/Add';
+import Autocomplete from '@mui/material/Autocomplete';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -36,6 +37,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
+import NativeSelect from '@mui/material/NativeSelect';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Paper from '@mui/material/Paper';
 import Select from '@mui/material/Select';
@@ -48,6 +50,8 @@ import CardChecklistItem from './checklist/CardChecklistItem';
 import CardAddChecklistItem from './checklist/CardAddChecklistItem';
 import JobModel from '../../models/JobModel';
 import FormList from '../../components/FormList/FormList';
+import SearchSkill from 'app/shared-components/SearchSkill';
+import SearchLocation from 'app/shared-components/SearchLocation';
 
 import {
   getJob,
@@ -66,9 +70,19 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'AngularJs', 'Analytic', 'C', 'C++', 'Java', 'Ruby'
-];
+const top100Films = [
+  { title: 'The Shawshank Redemption', year: 1994 },
+  { title: 'The Godfather', year: 1972 },
+  { title: 'The Godfather: Part II', year: 1974 },
+  { title: 'The Dark Knight', year: 2008 },
+  { title: '12 Angry Men', year: 1957 },
+  { title: "Schindler's List", year: 1993 },
+  { title: 'Pulp Fiction', year: 1994 },
+  {
+    title: 'The Lord of the Rings: The Return of the King',
+    year: 2003,
+  }
+  ]
 
 function getStyles(name, personName, theme) {
   return {
@@ -125,24 +139,40 @@ const validationSchema = yup.object({
   //   .required('Please specify your city')
 });
 
-const currencies = [
-  {
-    value: 'USD',
-    label: '$',
+
+
+const BootstrapInput = styled(InputBase)(({ theme }) => ({
+  'label + &': {
+    marginTop: theme.spacing(3),
   },
-  {
-    value: 'EUR',
-    label: '€',
+  '& .MuiInputBase-input': {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    },
   },
-  {
-    value: 'BTC',
-    label: '฿',
-  },
-  {
-    value: 'JPY',
-    label: '¥',
-  },
-];
+}));
 
 const Root = styled('div')(({ theme }) => ({
     '.field-container': {
@@ -195,8 +225,75 @@ const JobForm = (props) => {
 
   console.log('jobForm', jobForm)
   const [personName, setPersonName] = React.useState([]);
-  const [requirements, setRequirements] = React.useState([]);
+  const [requirement, setRequirements] = React.useState([]);
+  const [currencies, setCurrencies] = React.useState([
+    {
+      value: 'USD',
+      label: '$',
+    },
+    {
+      value: 'EUR',
+      label: '€',
+    },
+    {
+      value: 'BTC',
+      label: '฿',
+    },
+    {
+      value: 'JPY',
+      label: '¥',
+    },
+  ]);
+  const [categories, setCategories] = React.useState([
+
+    {
+      "id": 7779,
+      "createdDate": 1636450590,
+      "createdBy": null,
+      "lastModifiedDate": null,
+      "lastModifiedBy": null,
+      "status": "ACTIVE",
+      "name": "Accounting",
+      "parentId": 0,
+      "image": "image.png",
+      "cover": null,
+      "icon": "icon.png",
+      "shortCode": "ACCOUNTING",
+      "hasChildren": null,
+      "locales": null,
+      "children": null,
+      "active": true
+    },
+    {
+      "id": 7814,
+      "createdDate": 1636450590,
+      "createdBy": null,
+      "lastModifiedDate": null,
+      "lastModifiedBy": null,
+      "status": "ACTIVE",
+      "name": "Alternative Medicine",
+      "parentId": 0,
+      "image": "image.png",
+      "cover": null,
+      "icon": "icon.png",
+      "shortCode": "ALTERNATIVE_MEDICINE",
+      "hasChildren": null,
+      "locales": null,
+      "children": null,
+      "active": true
+    }
+  ]);
+  const [jobFunctions, setJobFunctions] = React.useState([]);
+  const [employmentTypes, setEmploymentTypes] = React.useState([]);
+  const [cities, setCities] = React.useState([]);
+  const [states, setStates] = React.useState([]);
+  const [countries, setCountries] = React.useState([]);
+  const [skills, setSkills] = React.useState([]);
   const [currency, setCurrency] = React.useState('EUR');
+  const [age, setAge] = React.useState('');
+
+  const [skillText, setSkillText] = React.useState('');
+  const [inputValue, setInputValue] = React.useState('');
 
 
   useEffect(() => {
@@ -238,7 +335,12 @@ const JobForm = (props) => {
     this.setState({ [target.name]: target.value });
   };
 
-
+  const handleIndustry = (event, value) => {
+    setValue(
+      'industry',
+      value
+    );
+  }
 
   const handleCurrencyChange = (event) => {
     setCurrency(event.target.value);
@@ -256,6 +358,7 @@ const JobForm = (props) => {
     return
   }
 
+  console.log('form', jobForm)
   return (
     <Root>
       <Grid container spacing={4}>
@@ -287,7 +390,20 @@ const JobForm = (props) => {
                   />
                 )}
               />
-
+              <Controller
+                name="industry"
+                control={control}
+                render={({ field}) => (
+                  <Autocomplete
+                    onChange={handleIndustry}
+                    id="controllable-states-demo"
+                    isOptionEqualToValue={(option, value) => option.name === value.name}
+                    options={categories}
+                    getOptionLabel={(option) => option.name}
+                    renderInput={(params) => <TextField {...params} label="Controllable" />}
+                  />
+                )}
+              />
             </Grid>
             <Grid item xs={12}>
               <Typography
@@ -384,20 +500,21 @@ const JobForm = (props) => {
               </Typography>
               <Paper className="field-container flex flex-row items-start justify-end shadow-none py-5 px-5">
                 <Grid item xs={5} sm={5}>
-                  <TextField
-                    id="standard-select-currency"
-                    select
-                    label="Category"
-                    value={currency}
-                    onChange={handleChange}
-                    className="flex"
-                  >
-                    {currencies.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+
+                  {/*<TextField*/}
+                    {/*id="standard-select-currency"*/}
+                    {/*select*/}
+                    {/*label="Category"*/}
+                    {/*value={currency}*/}
+                    {/*onChange={handleChange}*/}
+                    {/*className="flex"*/}
+                  {/*>*/}
+                    {/*{categories.map((option) => (*/}
+                      {/*<MenuItem key={option.value} value={option.value}>*/}
+                        {/*{option.label}*/}
+                      {/*</MenuItem>*/}
+                    {/*))}*/}
+                  {/*</TextField>*/}
                 </Grid>
                 <Grid item xs={5} sm={5}>
                   <TextField
@@ -408,7 +525,7 @@ const JobForm = (props) => {
                     onChange={handleChange}
                     className="flex"
                   >
-                    {currencies.map((option) => (
+                    {jobFunctions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -424,7 +541,7 @@ const JobForm = (props) => {
                     onChange={handleChange}
                     className="flex"
                   >
-                    {currencies.map((option) => (
+                    {employmentTypes.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -502,7 +619,7 @@ const JobForm = (props) => {
                     onChange={handleChange}
                     className="flex"
                   >
-                    {currencies.map((option) => (
+                    {cities.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -518,7 +635,7 @@ const JobForm = (props) => {
                     onChange={handleChange}
                     className="flex"
                   >
-                    {currencies.map((option) => (
+                    {states.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -534,7 +651,7 @@ const JobForm = (props) => {
                     onChange={handleChange}
                     className="flex"
                   >
-                    {currencies.map((option) => (
+                    {countries.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -616,35 +733,39 @@ const JobForm = (props) => {
               >
                 Skills
               </Typography>
-              <FormControl sx={{width: '100%' }}>
-                <InputLabel id="demo-multiple-chip-label">Skills</InputLabel>
-                <Select
-                  labelId="demo-multiple-chip-label"
-                  id="demo-multiple-chip"
-                  multiple
-                  value={personName}
-                  onChange={handleChange}
-                  input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {names.map((name) => (
-                    <MenuItem
-                      key={name}
-                      value={name}
-                      style={getStyles(name, personName, theme)}
-                    >
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              {/*<FormControl sx={{width: '100%' }}>*/}
+                {/*<InputLabel id="demo-multiple-chip-label">Skills</InputLabel>*/}
+                {/*<Select*/}
+                  {/*labelId="demo-multiple-chip-label"*/}
+                  {/*id="demo-multiple-chip"*/}
+                  {/*multiple*/}
+                  {/*value={personName}*/}
+                  {/*onChange={handleChange}*/}
+                  {/*input={<OutlinedInput id="select-multiple-chip" label="Chip" />}*/}
+                  {/*renderValue={(selected) => (*/}
+                    {/*<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>*/}
+                      {/*{selected.map((value) => (*/}
+                        {/*<Chip key={value} label={value} />*/}
+                      {/*))}*/}
+                    {/*</Box>*/}
+                  {/*)}*/}
+                  {/*MenuProps={MenuProps}*/}
+                {/*>*/}
+                  {/*{skills.map((name) => (*/}
+                    {/*<MenuItem*/}
+                      {/*key={name}*/}
+                      {/*value={name}*/}
+                      {/*style={getStyles(name, personName, theme)}*/}
+                    {/*>*/}
+                      {/*{name}*/}
+                    {/*</MenuItem>*/}
+                  {/*))}*/}
+                {/*</Select>*/}
+              {/*</FormControl>*/}
+
+              <div>
+                <SearchSkill className="w-full"/>
+              </div>
             </Grid>
 
             <Grid item container xs={12}>

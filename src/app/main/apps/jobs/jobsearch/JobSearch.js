@@ -203,7 +203,7 @@ function JobSearch(props) {
         content={
           <div className="">
             <React.Fragment key={'right'}>
-
+              <Button onClick={toggleDrawer('right', true)}>{'right'}</Button>
               <SwipeableDrawer
                 anchor={'right'}
                 open={state['right']}

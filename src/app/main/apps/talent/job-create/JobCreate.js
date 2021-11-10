@@ -120,7 +120,7 @@ function JobCreate(props) {
 
   function handleChangeActiveStep(index) {
     // dispatch(updateJob({ activeStep: index + 1 }));
-    setActiveStep(index+1)
+    setActiveStep(index)
   }
 
   function handleOnChange() {
@@ -219,7 +219,7 @@ function JobCreate(props) {
           >
             {steps.map((step, index) => {
               return (
-                <Step key={step.id} onClick={() => handleChangeActiveStep(index)}>
+                <Step key={step.id} onClick={() => handleChangeActiveStep(index+1)}>
                   <StepLabel sx={{ cursor: 'pointer!important' }}>{step.title}</StepLabel>
                 </Step>
               );

@@ -51,6 +51,15 @@ export const getTitleSuggestion = createAsyncThunk(
   }
 );
 
+export const searchSkills = createAsyncThunk(
+  'search/skills',
+  async (query) => {
+    const response = await axios.get(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/common/skills/search?query=${query}&id=`, null);
+    const data = await response.data.data;
+    return data;
+  }
+);
+
 const jobsAdapter = createEntityAdapter({});
 // const jobsAdapter = createEntityAdapter({
 //   selectId: function(job) {

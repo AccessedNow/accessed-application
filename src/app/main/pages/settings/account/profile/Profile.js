@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Box from '@mui/material/Box';
@@ -8,6 +10,16 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+
+const initialValues = {
+  fullName: '',
+  bio: '',
+  email: '',
+  country: '',
+  city: '',
+  address: '',
+};
+
 
 
 const validationSchema = yup.object({
@@ -46,14 +58,8 @@ const validationSchema = yup.object({
 });
 
 const Profile = () => {
-  const initialValues = {
-    fullName: '',
-    bio: '',
-    email: '',
-    country: '',
-    city: '',
-    address: '',
-  };
+  const user = useSelector(({ auth }) => auth.user.data);
+
 
   const onSubmit = (values) => {
     return values;
@@ -95,7 +101,7 @@ const Profile = () => {
                   variant="outlined"
                   name={'fullName'}
                   fullWidth
-                  value={formik.values.fullName}
+                  value={user.firstName}
                   onChange={formik.handleChange}
                   error={
                     formik.touched.fullName && Boolean(formik.errors.fullName)
@@ -116,7 +122,7 @@ const Profile = () => {
                   variant="outlined"
                   name={'email'}
                   fullWidth
-                  value={formik.values.email}
+                  value={user.email}
                   onChange={formik.handleChange}
                   error={formik.touched.email && Boolean(formik.errors.email)}
                   helperText={formik.touched.email && formik.errors.email}

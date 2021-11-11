@@ -133,7 +133,7 @@ export const setUserData = (user) => async (dispatch, getState) => {
           'id': 'jobs',
           'title': 'Jobs',
           'type': 'item',
-          'url': '/jobs',
+          'url': '/talent/jobs',
           auth: authRoles.admin,
           'icon': 'lock'
         },
@@ -141,7 +141,7 @@ export const setUserData = (user) => async (dispatch, getState) => {
           'id': 'candidates',
           'title': 'Candidates',
           'type': 'item',
-          'url': '/candidats',
+          'url': '/talent/candidates',
           auth: authRoles.admin,
           'icon': 'lock'
         },
@@ -201,6 +201,7 @@ export const setUserData = (user) => async (dispatch, getState) => {
   // dispatch(setDefaultSettings(user.data.settings));
   dispatch(setDefaultSettings(settings));
 
+  user.data.preferredCompany = user.data.preferredCompany?user.data.preferredCompany:user.data.company.length?user.data.company[0].companyId:null
   dispatch(setUser(user));
 };
 
@@ -314,7 +315,7 @@ const initialState = {
     photoURL: 'assets/images/avatars/Velazquez.jpg',
     email: 'guest@accessed.co',
     shortcuts: ['calendar', 'mail', 'contacts', 'todo'],
-    preferCompany: ''
+    preferredCompany: 25
   },
   // data: {
   //   shortcuts: [],

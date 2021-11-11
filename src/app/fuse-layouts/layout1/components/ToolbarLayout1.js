@@ -23,6 +23,7 @@ import AdjustFontSize from '../../shared-components/AdjustFontSize';
 import FullScreenToggle from '../../shared-components/FullScreenToggle';
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
 import NotificationPanelToggleButton from '../../shared-components/notificationPanel/NotificationPanelToggleButton';
+import CompanySelect from '../../shared-components/CompanySelect';
 
 import { setPreferredCompany } from 'app/auth/store/userSlice';
 
@@ -34,9 +35,6 @@ function ToolbarLayout1(props) {
   const toolbarTheme = useSelector(selectToolbarTheme);
   const user = useSelector(({ auth }) => auth.user);
 
-  const handleChange = (event) => {
-    dispatch(setPreferredCompany(event.target.value));
-  };
 
   return (
     <ThemeProvider theme={toolbarTheme}>
@@ -71,23 +69,7 @@ function ToolbarLayout1(props) {
 
               <Hidden lgDown>
                 {user.data.company?
-                  <FormControl sx={{m: 1, minWidth: 120}}>
-                    <InputLabel id="demo-controlled-open-select-label">Age</InputLabel>
-                    <Select
-                      labelId="demo-controlled-open-select-label"
-                      id="demo-controlled-open-select"
-                      value={user.data.preferredCompany}
-                      label="Age"
-                      onChange={handleChange}
-                    >
-
-                      {user.data.company.map((company) => (
-                        <MenuItem key={company.companyid} value={company.companyId}>
-                          {company.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                  <CompanySelect />
                   :
                   <span></span>
                 }

@@ -142,7 +142,7 @@ export default function FilterItem(props) {
 
   return (
     <React.Fragment>
-      <Box sx={{ width: 221, fontSize: 13 }}>
+      <Box sx={{ }}>
         <Button disableRipple aria-describedby={id} onClick={handleClick}>
           <span>{props.label}</span>
           <AddIcon />

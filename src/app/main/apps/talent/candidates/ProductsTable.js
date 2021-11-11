@@ -195,7 +195,14 @@ function ProductsTable(props) {
                             {n.firstName[0]}
                           </Avatar>
                         )}
-                        <span className="flex ml-10">{n.firstName + ' ' + n.lastName}</span>
+                        <div className="flex ml-10 flex-col justify-center">
+                          <Typography className="flex font-600">
+                            {n.firstName + ' ' + n.lastName}
+                          </Typography>
+                          <Typography className="flex">
+                            {n.jobTitle}
+                          </Typography>
+                        </div>
                       </div>
                     </TableCell>
 

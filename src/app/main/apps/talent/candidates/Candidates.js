@@ -13,16 +13,20 @@ import {getFilters} from "./store/filtersSlice";
 import {getFolders} from "./store/foldersSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
+
+
   '& .FusePageSimple-header': {
     minHeight: 72,
     height: 72,
-    alignItems: 'center',
-    background: 'white',
+  },
+  '& .FusePageSimple-contentWrapper': {
+    padding: 0,
+    paddingBottom: 80,
     [theme.breakpoints.up('sm')]: {
-      minHeight: 136,
-      height: 136,
+      padding: 0,
     },
   },
+
   '& .FusePageCarded-content': {
     display: 'flex',
   },
@@ -30,11 +34,16 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     overflow: 'hidden',
   },
   '& .FusePageSimple-sidebar': {
-    width: 256,
+    width: 320,
+
+
+    '& .FusePageSimple-sidebarContent': {
+      background: 'white',
+    }
   },
   '& tr': {
     '& .MuiTableCell-root': {
-      border: 'none'
+      // border: 'none'
     },
 
     '.cell-wrapper': {
@@ -42,12 +51,12 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     },
 
     '& > :first-child': {
-      borderTopLeftRadius: 6,
-      borderBottomLeftRadius: 6
+      // borderTopLeftRadius: 6,
+      // borderBottomLeftRadius: 6
     },
     '& > :last-child': {
-      borderTopRightRadius: 6,
-      borderBottomRightRadius: 6
+      // borderTopRightRadius: 6,
+      // borderBottomRightRadius: 6
     },
     '& > :n-child': {
       height: 72
@@ -55,7 +64,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   },
   '& tr:hover': {
     '& .MuiTableCell-root': {
-      backgroundColor: '#eee'
+      // backgroundColor: '#eee'
     }
 
   },

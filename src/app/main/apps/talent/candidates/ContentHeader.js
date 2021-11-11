@@ -1,49 +1,55 @@
 import Hidden from '@mui/material/Hidden';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
-import Input from '@mui/material/Input';
-import Paper from '@mui/material/Paper';
-import { ThemeProvider } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setSearchText } from './store/candidatesSlice';
+import NotesSearch from './NotesSearch';
 
-function ContentHeader(props) {
+function NotesHeader(props) {
   const dispatch = useDispatch();
-  const searchText = useSelector(({ candidatesApp }) => candidatesApp.candidates.searchText);
-  const mainTheme = useSelector(selectMainTheme);
+  // const variateDescSize = useSelector(({ notesApp }) => notesApp.notes.variateDescSize);
 
   return (
-    <ThemeProvider theme={mainTheme}>
-      <div className="flex flex-1">
-        <Paper className="flex items-center w-full h-48 sm:h-56 p-16 ltr:pl-4 lg:ltr:pl-16 rtl:pr-4 lg:rtl:pr-16 shadow">
-          <Hidden lgUp>
-            <IconButton
-              onClick={(ev) => props.pageLayout.current.toggleLeftSidebar()}
-              aria-label="open left sidebar"
-              size="large"
-            >
-              <Icon>menu</Icon>
-            </IconButton>
-          </Hidden>
+    <div className="flex flex-1 items-center justify-between p-8 sm:p-24 relative">
+      <div className="flex flex-shrink items-center sm:w-224">
+        <Hidden lgUp>
+          <IconButton
+            onClick={(ev) => props.pageLayout.current.toggleLeftSidebar()}
+            aria-label="open left sidebar"
+            size="large"
+          >
+            <Icon>menu</Icon>
+          </IconButton>
+        </Hidden>
 
-          <Icon color="action">search</Icon>
-
-          <Input
-            placeholder="Search"
-            className="px-16"
-            disableUnderline
-            fullWidth
-            value={searchText}
-            inputProps={{
-              'aria-label': 'Search',
-            }}
-            onChange={(ev) => dispatch(setSearchText(ev))}
-          />
-        </Paper>
+        <div className="flex items-center">
+          <Icon
+            component={motion.span}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1, transition: { delay: 0.2 } }}
+            className="text-24 md:text-32"
+          >
+            account_box
+          </Icon>
+          <Typography
+            component={motion.span}
+            initial={{ x: -20 }}
+            animate={{ x: 0, transition: { delay: 0.2 } }}
+            delay={300}
+            className="text-16 md:text-24 mx-12 font-semibold"
+          >
+            Candidates
+          </Typography>
+        </div>
       </div>
-    </ThemeProvider>
+
+      <div className="flex flex-1 items-center justify-end">
+        <NotesSearch />
+      </div>
+    </div>
   );
 }
 
-export default ContentHeader;
+export default NotesHeader;

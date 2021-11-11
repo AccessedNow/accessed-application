@@ -31,7 +31,6 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   },
   '& .FusePageSimple-sidebar': {
     width: 256,
-    border: 0,
   },
   '& tr': {
     '& .MuiTableCell-root': {

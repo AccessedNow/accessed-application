@@ -165,17 +165,6 @@ export default function FilterItem(props) {
       <StyledPopper id={id} open={open} anchorEl={anchorEl} placement="bottom-start">
         <ClickAwayListener onClickAway={handleClose}>
           <div>
-            <Box
-              sx={{
-                borderBottom: `1px solid ${
-                  theme.palette.mode === 'light' ? '#eaecef' : '#30363d'
-                  }`,
-                padding: '8px 10px',
-                fontWeight: 600,
-              }}
-            >
-              Apply labels to this pull request
-            </Box>
             <Autocomplete
               open
               multiple
@@ -199,7 +188,6 @@ export default function FilterItem(props) {
               PopperComponent={PopperComponent}
               renderTags={() => null}
               noOptionsText="No labels"
-              getOptionLabel={(option) => option.title}
               renderOption={(props, option, { selected }) => (
                 <li key={option.id} {...props}>
                   <Box
@@ -208,18 +196,6 @@ export default function FilterItem(props) {
                     style={{
                       visibility: selected ? 'visible' : 'hidden',
                     }}
-                  />
-                  <Box
-                    component="span"
-                    sx={{
-                      width: 14,
-                      height: 14,
-                      flexShrink: 0,
-                      borderRadius: '3px',
-                      mr: 1,
-                      mt: '2px',
-                    }}
-                    style={{ backgroundColor: option.color }}
                   />
                   <Box
                     sx={{
@@ -257,7 +233,7 @@ export default function FilterItem(props) {
                   ref={params.InputProps.ref}
                   inputProps={params.inputProps}
                   autoFocus
-                  placeholder="Filter labels"
+                  placeholder="Search"
                 />
               )}
             />

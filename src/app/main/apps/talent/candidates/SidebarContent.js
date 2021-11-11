@@ -2,6 +2,8 @@ import _ from '@lodash';
 import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+
 import Icon from '@mui/material/Icon';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -15,7 +17,7 @@ import { selectFilters } from './store/filtersSlice';
 import { selectFolders } from './store/foldersSlice';
 import { selectLabels } from './store/labelsSlice';
 // import { openNewTodoDialog } from './store/todosSlice';
-import { setFilter } from './store/candidatesSlice';
+import { setFilter, searchCandidates } from './store/candidatesSlice';
 import FilterItem from '../components/FilterItem';
 
 
@@ -139,46 +141,49 @@ function SidebarContent(props) {
       <div className="p-24 pb-16">
         <Button
           onClick={() => {
-            dispatch(openNewTodoDialog());
+            dispatch(searchCandidates());
           }}
           variant="contained"
           color="secondary"
           className="w-full"
         >
-          Add task
+          Apply
         </Button>
       </div>
+      <Divider />
+      <div>
 
-      <div className="px-12 ">
-
-        <Controller
-          name="city"
-          control={control}
-          render={({ field }) => (
-            <FilterItem
-              {...field}
-              label="City"
-              list={labels}
-              value={filter.city}
-              onListItemChange={handleListItemChange}
-            />
-          )}
-        />
-
-        <Controller
-          name="state"
-          control={control}
-          render={({ field }) => (
-            <FilterItem
-              {...field}
-              label="State"
-              list={labels}
-              value={filter.state}
-              onListItemChange={handleListItemChange}
-            />
-          )}
-        />
-
+        <div className="min-h-32 mb-8 px-20 pt-12">
+          <Controller
+            name="city"
+            control={control}
+            render={({ field }) => (
+              <FilterItem
+                {...field}
+                label="City"
+                list={labels}
+                value={filter.city}
+                onListItemChange={handleListItemChange}
+              />
+            )}
+          />
+        </div>
+        <Divider />
+        <div className="min-h-32 mb-8 px-20 pt-12">
+          <Controller
+            name="state"
+            control={control}
+            render={({ field }) => (
+              <FilterItem
+                {...field}
+                label="State"
+                list={labels}
+                value={filter.state}
+                onListItemChange={handleListItemChange}
+              />
+            )}
+          />
+        </div>
       </div>
 
       <div className="px-12">

@@ -78,6 +78,9 @@ const candidatesSlice = createSlice({
       },
       prepare: (event) => ({ payload: event.target.value || '' }),
     },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
   },
   extraReducers: {
     [searchCandidates.fulfilled]: (state, action) => {
@@ -96,6 +99,6 @@ const candidatesSlice = createSlice({
   },
 });
 
-export const { setSearchText } = candidatesSlice.actions;
+export const { setSearchText, setFilter } = candidatesSlice.actions;
 
 export default candidatesSlice.reducer;

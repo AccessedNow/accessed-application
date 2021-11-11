@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import reducer from './store';
-import ProductsHeader from './ProductsHeader';
+import ContentHeader from './ContentHeader';
 import ProductsTable from './ProductsTable';
 import SidebarContent from './SidebarContent';
 import {getLabels} from "./store/labelsSlice";
@@ -14,12 +14,13 @@ import {getFolders} from "./store/foldersSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
-    minHeight: 0,
-    height: 0,
+    minHeight: 72,
+    height: 72,
     alignItems: 'center',
+    background: 'white',
     [theme.breakpoints.up('sm')]: {
-      minHeight: 0,
-      height: 0,
+      minHeight: 136,
+      height: 136,
     },
   },
   '& .FusePageCarded-content': {
@@ -27,6 +28,10 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   },
   '& .FusePageCarded-contentCard': {
     overflow: 'hidden',
+  },
+  '& .FusePageSimple-sidebar': {
+    width: 256,
+    border: 0,
   },
   '& tr': {
     '& .MuiTableCell-root': {
@@ -74,7 +79,8 @@ function Candidates() {
 
   return <Root
     leftSidebarContent={<SidebarContent />}
-     content={<ProductsTable pageLayout={pageLayout} />}
+    header={<ContentHeader pageLayout={pageLayout} />}
+    content={<ProductsTable pageLayout={pageLayout} />}
     ref={pageLayout}
      innerScroll
   />;

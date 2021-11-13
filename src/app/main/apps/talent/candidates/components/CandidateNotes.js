@@ -13,7 +13,7 @@ import ChecklistModel from 'app/main/apps/scrumboard/model/ChecklistModel';
 import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import _ from '@lodash';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import {getCandidateNotes, addCandidateNote} from "../store/candidateSlice";
@@ -32,6 +32,7 @@ function CandidateNotes(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [notes, setNotes] = useState([]);
   const [message, setMessage] = useState('');
+  const user = useSelector(({ auth }) => auth.user);
 
   useEffect(() => {
     dispatch(getCandidateNotes(props.id, routeParams)).then((response) => {
@@ -56,8 +57,19 @@ function CandidateNotes(props) {
         message,
         subject: props.id
       })
-    ).then(() => {
+    ).then((data) => {
       setMessage('');
+
+      data.payload.createdBy = user.data;
+      let temp = _.setIn(
+        notes,
+        'content',
+        notes.content.concat(data.payload)
+      );
+
+      setNotes(
+        temp
+      );
     });
   }
 

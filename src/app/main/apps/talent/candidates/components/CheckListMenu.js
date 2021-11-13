@@ -53,7 +53,7 @@ function CheckListMenu(props) {
   return (
     <div>
       <IconButton color="inherit" onClick={handleMenuOpen} size="large">
-        <Icon>check_box</Icon>
+        <Icon>label</Icon>
       </IconButton>
       <ToolbarMenu state={anchorEl} onClose={handleMenuClose}>
         <form onSubmit={handleSubmit(onSubmit)} className="p-16 flex flex-col items-end">
@@ -63,7 +63,7 @@ function CheckListMenu(props) {
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Checklist title"
+                label="Tags"
                 error={!!errors.name}
                 helperText={errors?.name?.message}
                 fullWidth

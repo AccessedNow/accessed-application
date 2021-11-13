@@ -320,7 +320,7 @@ const initialState = {
     displayName: 'John Doe',
     firstName: 'John',
     lastName: 'Doe',
-    photoURL: 'assets/images/avatars/Velazquez.jpg',
+    avatar: 'assets/images/avatars/Velazquez.jpg',
     email: 'guest@accessed.co',
     shortcuts: ['calendar', 'mail', 'contacts', 'todo'],
     preferredCompany: 25

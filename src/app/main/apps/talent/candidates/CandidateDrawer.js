@@ -253,6 +253,9 @@ function CandidateDrawer() {
               >
                 <Icon color="secondary">check_circle</Icon>
               </IconButton>
+            </div>
+
+            <div className="flex items-center justify-start">
               <Controller
                 name="checklists"
                 control={control}
@@ -263,24 +266,10 @@ function CandidateDrawer() {
                   />
                 )}
               />
-            </div>
-
-            <div className="flex items-center justify-start">
               <IconButton onClick={() => onChange(!value)} size="large">
-                <Icon style={{ color: amber[500] }}>star</Icon>
+                <Icon style={{ color: amber[500] }}>favorite</Icon>
               </IconButton>
 
-              <div>
-                <IconButton
-                  aria-owns={labelMenuEl ? 'label-menu' : null}
-                  aria-haspopup="true"
-                  onClick={(ev) => setLabelMenuEl(ev.currentTarget)}
-                  size="large"
-                >
-                  <Icon>label</Icon>
-                </IconButton>
-
-              </div>
             </div>
           </Toolbar>
           <div className="flex flex-col items-center justify-center pb-24">

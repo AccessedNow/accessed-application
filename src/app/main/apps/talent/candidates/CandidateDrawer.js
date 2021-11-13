@@ -4,11 +4,11 @@ import { Controller, useForm } from 'react-hook-form';
 import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
 import { styled } from '@mui/material/styles';
+import PropTypes from 'prop-types';
 
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
-
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
@@ -27,7 +27,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Rating from '@mui/material/Rating';
-
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -37,6 +38,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import CheckListMenu from './components/CheckListMenu';
+import CandidateNotes from './components/CandidateNotes';
 
 import * as yup from 'yup';
 import { selectLabels } from './store/labelsSlice';
@@ -48,6 +50,7 @@ import {
   closeEditCandidateDialog,
   updateCandidate,
 } from './store/candidatesSlice';
+import {getChat} from "../../chat/store/chatSlice";
 
 const defaultValues = {
   id: '',
@@ -105,6 +108,39 @@ const SmallAvatar = styled(Avatar)(({ theme }) => ({
   border: `2px solid ${theme.palette.background.paper}`,
 }));
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );F
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 function CandidateDrawer() {
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -112,7 +148,7 @@ function CandidateDrawer() {
   const {data, props, type} = useSelector(({ candidatesApp }) => candidatesApp.candidates.candidateDialog);
   const labels = useSelector(selectLabels);
   const [labelMenuEl, setLabelMenuEl] = useState(null);
-  const drawerWidth = isMobile? 240:320;
+  const drawerWidth = isMobile? 240:400;
 
 
   const { watch, handleSubmit, formState, reset, control, setValue } = useForm({
@@ -121,12 +157,13 @@ function CandidateDrawer() {
     resolver: yupResolver(schema),
   });
 
-
   const { errors, isValid, dirtyFields } = formState;
   const formId = watch('id');
   const formLabels = watch('labels');
   const dueDate = watch('deuDate');
   const startDate = watch('startDate');
+  const [tab, setTab] = useState(0);
+
 
   /**
    * Initialize Dialog with Data
@@ -187,6 +224,10 @@ function CandidateDrawer() {
     });
   }
 
+  const handleTabChange = (event, newValue) => {
+    setTab(newValue);
+  };
+
   if(!props.open){
     return <span></span>;
   }
@@ -243,7 +284,7 @@ function CandidateDrawer() {
             </div>
           </Toolbar>
           <div className="flex flex-col items-center justify-center pb-24">
-            <Avatar className="w-72 h-72" alt="contact avatar" src={data.avatar} />
+            <Avatar className="w-96 h-96" alt="contact avatar" src={data.avatar} />
             {/*<Badge*/}
               {/*overlap="circular"*/}
               {/*anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}*/}
@@ -262,50 +303,66 @@ function CandidateDrawer() {
             </Typography>
           </div>
         </AppBar>
-        <div className="p-20">
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12}>
-              <Typography variant={'subtitle2'} fontWeight={600}>
-                EMAIL
-              </Typography>
-              <Typography variant={'body'}>
-                {data.firstName}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Typography variant={'subtitle2'} fontWeight={600}>
-                PHONE
-              </Typography>
-              <Typography variant={'body'}>
-                {data.phoneNumnber}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Typography variant={'subtitle2'} fontWeight={600}>
-                LOCATION
-              </Typography>
-              <Typography variant={'body'}>
-                {data.primaryAddress.city + ' ' + data.primaryAddress.country}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Typography variant={'subtitle2'} fontWeight={600}>
-                EMAIL
-              </Typography>
-              <Typography variant={'body'}>
-                {data.firstName}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Typography variant={'subtitle2'} fontWeight={600}>
-                EMAIL
-              </Typography>
-              <Typography variant={'body'}>
-                {data.firstName}
-              </Typography>
-            </Grid>
+        <Box sx={{ width: '100%' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
+              <Tab label="Detail" {...a11yProps(0)} />
+              <Tab label="Notes" {...a11yProps(1)} />
+              <Tab label="History" {...a11yProps(2)} />
+            </Tabs>
+          </Box>
+          <TabPanel value={tab} index={0}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12}>
+                <Typography variant={'subtitle2'} fontWeight={600}>
+                  EMAIL
+                </Typography>
+                <Typography variant={'body'}>
+                  {data.firstName}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Typography variant={'subtitle2'} fontWeight={600}>
+                  PHONE
+                </Typography>
+                <Typography variant={'body'}>
+                  {data.phoneNumnber}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Typography variant={'subtitle2'} fontWeight={600}>
+                  LOCATION
+                </Typography>
+                <Typography variant={'body'}>
+                  {data.primaryAddress.city + ' ' + data.primaryAddress.country}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Typography variant={'subtitle2'} fontWeight={600}>
+                  EMAIL
+                </Typography>
+                <Typography variant={'body'}>
+                  {data.firstName}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Typography variant={'subtitle2'} fontWeight={600}>
+                  EMAIL
+                </Typography>
+                <Typography variant={'body'}>
+                  {data.firstName}
+                </Typography>
+              </Grid>
           </Grid>
-        </div>
+          </TabPanel>
+          <TabPanel value={tab} index={1}>
+            <CandidateNotes id={data.id} />
+          </TabPanel>
+          <TabPanel value={tab} index={2}>
+
+          </TabPanel>
+        </Box>
+
       </Box>
     </Drawer>
   );

@@ -1,6 +1,8 @@
 import _ from '@lodash';
 import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import { styled } from '@mui/material/styles';
+import Autocomplete from '@mui/material/Autocomplete';
+
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 
@@ -9,6 +11,8 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
+import TextField from '@mui/material/TextField';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -19,6 +23,7 @@ import { selectLabels } from './store/labelsSlice';
 // import { openNewTodoDialog } from './store/todosSlice';
 import { setFilter, searchCandidates } from './store/candidatesSlice';
 import FilterItem from '../components/FilterItem';
+import CustomAutocomplete from '../components/CustomAutocomplete';
 
 
 // From https://github.com/abdonrd/github-labels
@@ -67,7 +72,98 @@ const labels = [
   }
 ];
 
+const stages = [
+  {
+    id: 1,
+    name: 'Apply',
+    color: '#7057ff',
+  },
+  {
+    id: 2,
+    name: 'Phone Screen',
+    color: '#008672',
+  },
+  {
+    id: 3,
+    name: 'Phone Interview',
+    color: '#b60205',
+  },
+  {
+    id: 4,
+    name: 'Interview',
+    color: '#d93f0b',
+  },
+  {
+    id: 5,
+    name: 'Test',
+    color: '#0e8a16',
+  },
+  {
+    id: 6,
+    name: 'Offer',
+    color: '#fbca04',
+  },
+  {
+    id: 7,
+    name: 'Hired',
+    color: '#fec1c1',
+  }
+];
 
+const favorites = [
+    {
+      id: 0,
+      handle: "starred",
+      title: "Followed",
+      icon: "star"
+    },
+    {
+      id: 1,
+      handle: "important",
+      title: "Priority",
+      icon: "error"
+    },
+    {
+      id: 2,
+      handle: "dueDate",
+      title: "Sheduled",
+      icon: "schedule"
+    },
+    {
+      id: 3,
+      handle: "completed",
+      title: "Qualified",
+      icon: "check"
+    }
+]
+
+const statuses = [
+  {
+    id: 1,
+    handle: "qualified",
+    title: "Qualfied",
+    color: "#388E3C"
+  },
+  {
+    id: 2,
+    handle: "disqualified",
+    title: "Disqualfied",
+    color: "#F44336"
+  },
+  {
+    id: 3,
+    handle: "hold",
+    title: "On Hold",
+    color: "#FF9800"
+  },
+  {
+    id: 4,
+    handle: "archived",
+    title: "Archived",
+    color: "#0091EA"
+  }
+
+]
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   color: 'inherit!important',
@@ -151,6 +247,90 @@ function SidebarContent(props) {
         </Button>
       </div>
       <Divider />
+
+      <div className="px-12">
+        <List>
+          {folders.length > 0 &&
+          folders.map((folder) => (
+            <StyledListItem
+              button
+              component={NavLinkAdapter}
+              to={`/apps/todo/${folder.handle}`}
+              key={folder.id}
+              activeClassName="active"
+            >
+              <Icon className="list-item-icon" color="action">
+                {folder.icon}
+              </Icon>
+              <ListItemText primary={folder.title} disableTypography />
+            </StyledListItem>
+          ))}
+        </List>
+
+        <List>
+          <ListSubheader className="pl-12" disableSticky>
+            FAVORITES
+          </ListSubheader>
+
+          {favorites.length > 0 &&
+          favorites.map((favorite) => (
+            <StyledListItem
+              button
+              component={NavLinkAdapter}
+              to={`/apps/todo/filter/${favorite.handle}`}
+              activeClassName="active"
+              key={favorite.id}
+            >
+              <Icon className="list-item-icon" color="action">
+                {favorite.icon}
+              </Icon>
+              <ListItemText primary={favorite.title} disableTypography />
+            </StyledListItem>
+          ))}
+        </List>
+
+        <List>
+          <ListSubheader className="pl-12" disableSticky>
+            STATUS
+          </ListSubheader>
+
+          {statuses.length > 0 &&
+          statuses.map((status) => (
+            <StyledListItem
+              button
+              component={NavLinkAdapter}
+              to={`/apps/todo/label/${status.handle}`}
+              key={status.id}
+            >
+              <Icon className="list-item-icon" style={{ color: status.color }} color="action">
+                label
+              </Icon>
+              <ListItemText primary={status.title} disableTypography />
+            </StyledListItem>
+          ))}
+        </List>
+        <List>
+          <ListSubheader className="pl-12" disableSticky>
+            STAGES
+          </ListSubheader>
+
+          {stages.length > 0 &&
+          stages.map((stage) => (
+            <StyledListItem
+              button
+              component={NavLinkAdapter}
+              to={`/apps/todo/label/${stage.handle}`}
+              key={stage.id}
+            >
+              <Icon className="list-item-icon" style={{ color: stage.color }} color="action">
+                label
+              </Icon>
+              <ListItemText primary={stage.name} disableTypography />
+            </StyledListItem>
+          ))}
+        </List>
+      </div>
+
       <div>
 
         <div className="min-h-32 mb-8 px-20 pt-12">
@@ -184,70 +364,54 @@ function SidebarContent(props) {
             )}
           />
         </div>
+        <div className="min-h-32 mb-8 px-20 pt-12">
+          <Controller
+            name="state"
+            control={control}
+            render={({ field }) => (
+              <CustomAutocomplete
+                {...field}
+                label="State"
+                list={labels}
+                value={filter.state}
+                onListItemChange={handleListItemChange}
+              />
+            )}
+          />
+        </div>
+        <div className="min-h-32 mb-8 px-20 pt-12">
+          <Controller
+            name="state"
+            control={control}
+            render={({ field }) => (
+              <Autocomplete
+                multiple
+                sx={{
+                  display: 'inline-block',
+                  '& input': {
+                    width: 200,
+                    bgcolor: 'background.paper',
+                    color: (theme) =>
+                      theme.palette.getContrastText(theme.palette.background.paper),
+                  },
+                }}
+                id="custom-input-demo"
+                options={labels}
+                getOptionLabel={(option) => option.title}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    label="Size small"
+                    placeholder="Favorites"
+                  />
+                )}
+              />
+            )}
+          />
+        </div>
       </div>
 
-      <div className="px-12">
-        <List>
-          {folders.length > 0 &&
-            folders.map((folder) => (
-              <StyledListItem
-                button
-                component={NavLinkAdapter}
-                to={`/apps/todo/${folder.handle}`}
-                key={folder.id}
-                activeClassName="active"
-              >
-                <Icon className="list-item-icon" color="action">
-                  {folder.icon}
-                </Icon>
-                <ListItemText primary={folder.title} disableTypography />
-              </StyledListItem>
-            ))}
-        </List>
-
-        <List>
-          <ListSubheader className="pl-12" disableSticky>
-            FILTERS
-          </ListSubheader>
-
-          {filters.length > 0 &&
-            filters.map((filter) => (
-              <StyledListItem
-                button
-                component={NavLinkAdapter}
-                to={`/apps/todo/filter/${filter.handle}`}
-                activeClassName="active"
-                key={filter.id}
-              >
-                <Icon className="list-item-icon" color="action">
-                  {filter.icon}
-                </Icon>
-                <ListItemText primary={filter.title} disableTypography />
-              </StyledListItem>
-            ))}
-        </List>
-
-        <List>
-          <ListSubheader className="pl-12" disableSticky>
-            LABELS
-          </ListSubheader>
-
-          {labels.length > 0 &&
-            labels.map((label) => (
-              <StyledListItem
-                button
-                component={NavLinkAdapter}
-                to={`/apps/todo/label/${label.handle}`}
-                key={label.id}
-              >
-                <Icon className="list-item-icon" style={{ color: label.color }} color="action">
-                  label
-                </Icon>
-                <ListItemText primary={label.title} disableTypography />
-              </StyledListItem>
-            ))}
-        </List>
-      </div>
     </motion.div>
   );
 }

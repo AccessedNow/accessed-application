@@ -1,12 +1,17 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
+import _ from '@lodash';
+
 import {searchJobs} from "../../../jobs/store/jobsSlice";
+import {getTodos} from "../../../todo/store/todosSlice";
 
 export const searchCandidates = createAsyncThunk(
   'candidates/search',
   async (params, { getState }) => {
     let user = getState().auth.user.data;
-    let filter = getState().candidatesApp.candidates.filter;
+    let filter = _.merge({}, getState().candidatesApp.candidates.filter);
+    filter.company = [user.preferredCompany];
+
     let sort = getState().candidatesApp.candidates.sort;
     let searchText = getState().candidatesApp.candidates.searchText;
     let queryParams = _.merge(sort, {query: searchText});
@@ -18,21 +23,42 @@ export const searchCandidates = createAsyncThunk(
   }
 );
 
-export const getProducts = createAsyncThunk('eCommerceApp/products/getProducts', async () => {
-  const response = await axios.get('/api/e-commerce-app/products');
-  const data = await response.data;
+export const addCandidate = createAsyncThunk(
+  'candidates/add',
+  async (candidate, { dispatch, getState }) => {
+    const response = await axios.post('/api/todo-app/new-todo', candidate);
+    const data = await response.data;
 
-  return data;
-});
+    dispatch(getTodos());
 
-export const removeProducts = createAsyncThunk(
-  'eCommerceApp/products/removeProducts',
-  async (productIds, { dispatch, getState }) => {
-    await axios.post('/api/e-commerce-app/remove-products', { productIds });
-
-    return productIds;
+    return data;
   }
 );
+
+export const updateCandidate = createAsyncThunk(
+  'candidates/update',
+  async (candidate, { dispatch, getState }) => {
+    const response = await axios.post('/api/todo-app/update-todo', candidate);
+    const data = await response.data;
+
+    dispatch(searchCandidates());
+
+    return data;
+  }
+);
+
+export const removeCandidate = createAsyncThunk(
+  'candidates/remove',
+  async (candidateId, { dispatch, getState }) => {
+    const response = await axios.post('/api/todo-app/remove-todo', candidateId);
+    const data = await response.data;
+
+    dispatch(getTodos());
+
+    return data;
+  }
+);
+
 
 const candidatesAdapter = createEntityAdapter({});
 
@@ -43,6 +69,8 @@ const candidatesSlice = createSlice({
   name: 'talent/candidates',
   initialState: candidatesAdapter.getInitialState({
     searchText: '',
+    orderBy: '',
+    orderDescending: false,
     totalPage: 0,
     totalElements: 0,
     data: [],
@@ -56,7 +84,7 @@ const candidatesSlice = createSlice({
       city: [],
       state: [],
       country: [],
-      company: [25],
+      company: [],
       employmentType: [],
       industry: [],
       tags: [],
@@ -69,7 +97,15 @@ const candidatesSlice = createSlice({
       size: 20,
       sortBy: 'createdDate',
       direction: 'DESC'
-    }
+    },
+    candidateDialog: {
+      type: 'new',
+      props: {
+        open: false,
+      },
+      data: null,
+    },
+
   }),
   reducers: {
     setSearchText: {
@@ -81,8 +117,64 @@ const candidatesSlice = createSlice({
     setFilter: (state, action) => {
       state.filter = action.payload;
     },
+    openCandidateDialog: (state, action) => {
+      state.candidateDialog = {
+        type: 'edit',
+        props: {
+          open: true,
+        },
+        data: action.payload,
+      };
+    },
+    closeCandidateDialog: (state, action) => {
+      state.candidateDialog = {
+        type: 'edit',
+        props: {
+          open: false,
+        },
+        data: null,
+      };
+    },
+    openNewCandidateDialog: (state, action) => {
+      state.candidateDialog = {
+        type: 'new',
+        props: {
+          open: true,
+        },
+        data: null,
+      };
+    },
+    closeNewCandidateDialog: (state, action) => {
+      state.candidateDialog = {
+        type: 'new',
+        props: {
+          open: false,
+        },
+        data: null,
+      };
+    },
+    openEditCandidateDialog: (state, action) => {
+      state.candidateDialog = {
+        type: 'edit',
+        props: {
+          open: true,
+        },
+        data: action.payload,
+      };
+    },
+    closeEditCandidateDialog: (state, action) => {
+      state.candidateDialog = {
+        type: 'edit',
+        props: {
+          open: false,
+        },
+        data: null,
+      };
+    },
   },
   extraReducers: {
+    [updateCandidate.fulfilled]: candidatesAdapter.upsertOne,
+    [addCandidate.fulfilled]: candidatesAdapter.addOne,
     [searchCandidates.fulfilled]: (state, action) => {
 
       const { payload, routeParams } = action;
@@ -99,6 +191,17 @@ const candidatesSlice = createSlice({
   },
 });
 
-export const { setSearchText, setFilter } = candidatesSlice.actions;
+export const {
+  toggleOrderDescending,
+  changeOrder,
+  openCandidateDialog,
+  closeCandidateDialog,
+  openNewCandidateDialog,
+  closeNewCandidateDialog,
+  openEditCandidateDialog,
+  closeEditCandidateDialog,
+  setSearchText,
+  setFilter } = candidatesSlice.actions;
+
 
 export default candidatesSlice.reducer;

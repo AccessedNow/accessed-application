@@ -130,6 +130,14 @@ export const setUserData = (user) => async (dispatch, getState) => {
       'icon': 'apps',
       'children': [
         {
+          'id': 'dashboard',
+          'title': 'Dashboard',
+          'type': 'item',
+          'url': '/talent/dashboard',
+          auth: authRoles.admin,
+          'icon': 'lock'
+        },
+        {
           'id': 'jobs',
           'title': 'Jobs',
           'type': 'item',

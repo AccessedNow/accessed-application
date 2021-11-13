@@ -1,16 +1,22 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import withReducer from 'app/store/withReducer';
 import { styled } from '@mui/material/styles';
+import { useDeepCompareEffect } from '@fuse/hooks';
 import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import reducer from './store';
 import ContentHeader from './ContentHeader';
 import ProductsTable from './ProductsTable';
+import CandidateList from './CandidateList';
+import CandidateDrawer from './CandidateDrawer';
+import Toolbar from './Toolbar';
+
 import SidebarContent from './SidebarContent';
 import {getLabels} from "./store/labelsSlice";
 import {getFilters} from "./store/filtersSlice";
 import {getFolders} from "./store/foldersSlice";
+import {searchCandidates} from "./store/candidatesSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
 
@@ -85,13 +91,29 @@ function Candidates() {
     dispatch(getLabels());
   }, [dispatch]);
 
-  return <Root
-    leftSidebarContent={<SidebarContent />}
-    header={<ContentHeader pageLayout={pageLayout} />}
-    content={<ProductsTable pageLayout={pageLayout} />}
-    ref={pageLayout}
-     innerScroll
-  />;
+  useDeepCompareEffect(() => {
+    dispatch(searchCandidates(routeParams));
+  }, [dispatch, routeParams]);
+
+  return(
+    <>
+      <Root
+        leftSidebarContent={<SidebarContent />}
+        header={<ContentHeader pageLayout={pageLayout} />}
+        // content={
+        //   <div>
+        //     <ProductsTable pageLayout={pageLayout} />
+        //   </div>
+        // }
+        contentToolbar={<Toolbar />}
+        content={<CandidateList />}
+
+        ref={pageLayout}
+         innerScroll
+      />;
+      <CandidateDrawer />
+    </>
+  )
 }
 
 export default withReducer('candidatesApp', reducer)(Candidates);

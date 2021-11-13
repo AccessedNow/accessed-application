@@ -1,9 +1,12 @@
 import Hidden from '@mui/material/Hidden';
+import Button from '@mui/material/Button';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
 import { useDispatch, useSelector } from 'react-redux';
 import NotesSearch from './NotesSearch';
 
@@ -44,8 +47,20 @@ function NotesHeader(props) {
           </Typography>
         </div>
       </div>
-
       <div className="flex flex-1 items-center justify-end">
+        <Button
+          component={Link}
+          to="/apps/e-commerce/products/new"
+          className="whitespace-nowrap"
+          variant="contained"
+          color="secondary"
+        >
+          <Icon>
+            person_add
+          </Icon>
+          <span className="hidden sm:flex">{'   '}Add New</span>
+          <span className="flex sm:hidden">New</span>
+        </Button>
         <NotesSearch />
       </div>
     </div>

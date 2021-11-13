@@ -5,7 +5,12 @@ import { authRoles } from 'app/auth';
 const TalentConfig = {
   // auth: authRoles.admin,
   settings: {
-    layout: {},
+    layout: {
+      config: {
+        scroll: 'content',
+        mode: 'fullwidth'
+      }
+    },
   },
   routes: [
     {

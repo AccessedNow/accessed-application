@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/system';
-import { setSearchText } from './store/candidatesSlice';
+import { setSearchText } from '../store/candidatesSlice';
 
 function NotesSearch(props) {
   const dispatch = useDispatch();

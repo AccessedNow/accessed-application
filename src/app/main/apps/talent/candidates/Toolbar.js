@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleOrderDescending, changeOrder } from './store/candidatesSlice';
+import { toggleOrderDescending, changeOrder } from '../store/candidatesSlice';
 
 function Toolbar(props) {
   const dispatch = useDispatch();

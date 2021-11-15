@@ -1,13 +1,19 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
 import FuseUtils from '@fuse/utils';
 
-export const getCandidate = createAsyncThunk('eCommerceApp/product/getProduct', async (params) => {
-  const response = await axios.get('/api/e-commerce-app/product', { params });
-  const data = await response.data;
+export const getCandidate = createAsyncThunk(
+  'candidate/detail',
+  async (params, {getState}) => {
+  let user = getState().auth.user.data;
+  const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/candidates/${params.candidateId}`, {headers: {userId: user.id}});
+
+  const data = await response.data.data;
 
   return data === undefined ? null : data;
 });
+
+
 
 export const removeCandidate = createAsyncThunk(
   'eCommerceApp/product/removeProduct',
@@ -33,6 +39,53 @@ export const updateCandidate = createAsyncThunk(
     return data;
   }
 );
+
+export const getCandidateSimilar = createAsyncThunk(
+  'candidate/notes',
+  async (id, { getState }) => {
+    let user = getState().auth.user.data;
+    const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/candidates/${id}/similar`, {headers: {userId: user.id}});
+    const data = await response.data.data;
+
+    return data;
+  }
+);
+
+export const getCandidateExperiences = createAsyncThunk(
+  'candidate/experiences',
+  async (id, { getState }) => {
+    let user = getState().auth.user.data;
+    const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/candidates/${id}/experiences?`, {headers: {userId: user.id}});
+    const data = await response.data.data;
+
+    return data;
+  }
+);
+
+
+export const getCandidateEducations = createAsyncThunk(
+  'candidate/educations',
+  async (id, { getState }) => {
+    let user = getState().auth.user.data;
+    const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/candidates/${id}/educations?`, {headers: {userId: user.id}});
+    const data = await response.data.data;
+
+    return data;
+  }
+);
+
+
+export const getCandidateResumes = createAsyncThunk(
+  'candidate/resumes',
+  async (id, { getState }) => {
+    let user = getState().auth.user.data;
+    const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/candidates/${id}/resumes?`, {headers: {userId: user.id}});
+    const data = await response.data.data;
+
+    return data;
+  }
+);
+
 
 export const getCandidateNotes = createAsyncThunk(
   'candidate/notes',
@@ -60,11 +113,21 @@ export const addCandidateNote = createAsyncThunk(
   }
 );
 
+const candidateAdapter = createEntityAdapter({});
+
 const candidateSlice = createSlice({
   name: 'talent/candidate',
-  initialState: null,
+  initialState: candidateAdapter.getInitialState({
+    id: '',
+    firstName: '',
+    lastName: '',
+    jobTitle: '',
+    resumes: [],
+    silarCandidates: [],
+    notes: []
+  }),
   reducers: {
-    resetProduct: () => null,
+    resetCandidate: () => null,
     newProduct: {
       reducer: (state, action) => action.payload,
       prepare: (event) => ({
@@ -96,7 +159,17 @@ const candidateSlice = createSlice({
     [getCandidate.fulfilled]: (state, action) => action.payload,
     [updateCandidate.fulfilled]: (state, action) => action.payload,
     [removeCandidate.fulfilled]: (state, action) => null,
-    [getCandidateNotes.fulfilled]: (state, action) => action.payload,
+    [getCandidateSimilar.fulfilled]: (state, action) => {
+      state.similarCandidates = action.payload;
+    },
+    [getCandidateResumes.fulfilled]: (state, action) => {
+      state.resumes = action.payload;
+    },
+    [getCandidateExperiences.fulfilled]: (state, action) => action.payload,
+    [getCandidateEducations.fulfilled]: (state, action) => action.payload,
+    [getCandidateNotes.fulfilled]: (state, action) => {
+      state.notes = action.payload;
+    },
     [addCandidateNote.fulfilled]: (state, action) => action.payload,
   },
 });

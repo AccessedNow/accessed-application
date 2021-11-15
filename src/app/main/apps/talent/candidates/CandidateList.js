@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectCandidates } from './store/candidatesSlice';
+import { selectCandidates } from '../store/candidatesSlice';
 
 import CandidateListItem from './CandidateListItem';
 

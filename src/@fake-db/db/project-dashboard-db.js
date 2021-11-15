@@ -11,7 +11,7 @@ const projectDashboardAppDB = {
 			},
 			currentRange: 'DT',
 			data: {
-				name: 'Due Tasks',
+				name: 'Applications',
 				count: {
 					DY: 21,
 					DT: 25,
@@ -43,9 +43,9 @@ const projectDashboardAppDB = {
 		},
 		{
 			id: 'widget3',
-			title: 'Issues',
+			title: 'Open',
 			data: {
-				name: 'Open',
+				name: 'In Progress',
 				count: 32,
 				extra: {
 					name: 'Closed today',
@@ -56,9 +56,9 @@ const projectDashboardAppDB = {
 		},
 		{
 			id: 'widget4',
-			title: 'Features',
+			title: 'Offer',
 			data: {
-				name: 'Proposals',
+				name: 'Candidates	',
 				count: 42,
 				extra: {
 					name: 'Implemented',
@@ -69,7 +69,7 @@ const projectDashboardAppDB = {
 		},
 		{
 			id: 'widget5',
-			title: 'Github Issues',
+			title: 'Stages',
 			ranges: {
 				TW: 'This Week',
 				LW: 'Last Week',
@@ -154,7 +154,7 @@ const projectDashboardAppDB = {
 			},
 			supporting: {
 				created: {
-					name: 'CREATED',
+					name: 'APPLIED',
 					count: {
 						'2W': 48,
 						LW: 46,
@@ -231,7 +231,7 @@ const projectDashboardAppDB = {
 					}
 				},
 				closed: {
-					name: 'CLOSED',
+					name: 'PHONE SCREEN',
 					count: {
 						'2W': 27,
 						LW: 31,
@@ -308,7 +308,7 @@ const projectDashboardAppDB = {
 					}
 				},
 				reOpened: {
-					name: 'RE-OPENED',
+					name: 'INTERVIEW',
 					count: {
 						'2W': 4,
 						LW: 5,
@@ -420,7 +420,7 @@ const projectDashboardAppDB = {
 					}
 				},
 				wontFix: {
-					name: "WON'T FIX",
+					name: "TEST",
 					count: {
 						'2W': 6,
 						LW: 3,
@@ -497,7 +497,7 @@ const projectDashboardAppDB = {
 					}
 				},
 				needsTest: {
-					name: 'NEEDS TEST',
+					name: 'OFFER',
 					count: {
 						'2W': 10,
 						LW: 7,
@@ -574,7 +574,7 @@ const projectDashboardAppDB = {
 					}
 				},
 				fixed: {
-					name: 'FIXED',
+					name: 'HIRED',
 					count: {
 						'2W': 21,
 						LW: 17,
@@ -733,7 +733,7 @@ const projectDashboardAppDB = {
 					},
 					{
 						id: 3,
-						title: 'Public Beta Release',
+						title: 'Interview David Scholtz',
 						time: '11:00 AM'
 					},
 					{
@@ -743,18 +743,18 @@ const projectDashboardAppDB = {
 					},
 					{
 						id: 5,
-						title: 'Dinner with David',
-						time: '17:30 PM'
+						title: 'Interview Jonathan Davis',
+						time: '1:30 PM'
 					},
 					{
 						id: 6,
-						title: "Jane's Birthday Party",
-						time: '19:30 PM'
+						title: "Phone Screen Lisa Marie",
+						time: '13:30 PM'
 					},
 					{
 						id: 7,
-						title: "Overseer's Retirement Party",
-						time: '21:30 PM'
+						title: "Group Meeting",
+						time: '14:30 PM'
 					}
 				],
 				TM: [
@@ -823,7 +823,7 @@ const projectDashboardAppDB = {
 							shadeIntensity: 0.65
 						}
 					},
-					labels: ['Wireframing', 'Design', 'Coding', 'Marketing', 'Extra']
+					labels: ['Engineer', 'Finance', 'Marketing', 'Operation', 'Sales']
 				}
 			}
 		},
@@ -1099,7 +1099,7 @@ const projectDashboardAppDB = {
 						cells: [
 							{
 								id: 'budget_type',
-								value: 'Wireframing',
+								value: 'Engineering',
 								classes: 'bg-blue text-white',
 								icon: ''
 							},
@@ -1140,7 +1140,7 @@ const projectDashboardAppDB = {
 						cells: [
 							{
 								id: 'budget_type',
-								value: 'Design',
+								value: 'Finance',
 								classes: 'bg-green text-white',
 								icon: ''
 							},
@@ -1181,7 +1181,7 @@ const projectDashboardAppDB = {
 						cells: [
 							{
 								id: 'budget_type',
-								value: 'Coding',
+								value: 'Marketing',
 								classes: 'bg-red text-white',
 								icon: ''
 							},
@@ -1222,7 +1222,7 @@ const projectDashboardAppDB = {
 						cells: [
 							{
 								id: 'budget_type',
-								value: 'Marketing',
+								value: 'Operation',
 								classes: 'bg-pink text-white',
 								icon: ''
 							},
@@ -1263,7 +1263,7 @@ const projectDashboardAppDB = {
 						cells: [
 							{
 								id: 'budget_type',
-								value: 'Extra',
+								value: 'Sales',
 								classes: 'bg-orange text-white',
 								icon: ''
 							},

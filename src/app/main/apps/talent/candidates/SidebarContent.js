@@ -17,12 +17,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 
 import { motion } from 'framer-motion';
-import { selectFilters } from './store/filtersSlice';
-import { selectFolders } from './store/foldersSlice';
-import { selectLabels } from './store/labelsSlice';
-// import { openNewTodoDialog } from './store/todosSlice';
-import { setFilter, searchCandidates } from './store/candidatesSlice';
+import { selectFilters } from '../store/filtersSlice';
+import { selectFolders } from '../store/foldersSlice';
+import { setFilter, searchCandidates } from '../store/candidatesSlice';
 import FilterItem from '../components/FilterItem';
+import Filter from '../components/filter/Filter';
+
 import CustomAutocomplete from '../components/CustomAutocomplete';
 
 
@@ -197,7 +197,6 @@ function SidebarContent(props) {
   const filter = useSelector(({ candidatesApp }) => candidatesApp.candidates.filter);
 
 
-  const labels = useSelector(selectLabels);
   const folders = useSelector(selectFolders);
   const filters = useSelector(selectFilters);
 
@@ -384,29 +383,7 @@ function SidebarContent(props) {
             name="state"
             control={control}
             render={({ field }) => (
-              <Autocomplete
-                multiple
-                sx={{
-                  display: 'inline-block',
-                  '& input': {
-                    width: 200,
-                    bgcolor: 'background.paper',
-                    color: (theme) =>
-                      theme.palette.getContrastText(theme.palette.background.paper),
-                  },
-                }}
-                id="custom-input-demo"
-                options={labels}
-                getOptionLabel={(option) => option.title}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Size small"
-                    placeholder="Favorites"
-                  />
-                )}
-              />
+              <Filter/>
             )}
           />
         </div>

@@ -1,0 +1,66 @@
+import FuseLoading from '@fuse/core/FuseLoading';
+import { motion } from 'framer-motion';
+import Avatar from '@mui/material/Avatar';
+import Hidden from '@mui/material/Hidden';
+import Button from '@mui/material/Button';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import CandidateTags from '../components/candidate-tags/CandidateTags';
+
+
+function ContentHeader(props) {
+  const dispatch = useDispatch();
+  const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
+
+  if(!candidate){
+    return <FuseLoading/>
+  }
+  return (
+    <div className="w-full p-20 flex flex-row items-start justify-between">
+      <div className="flex flex-row items-start justify-start">
+        <Avatar
+          sx={{
+            borderWidth: 1,
+            borderStyle: 'solid',
+            borderColor: 'background.default',
+          }}
+          className="w-40 h-40 md:w-96 md:h-96"
+          src={candidate.avatar}
+        />
+        <div className="flex flex-col flex-1 items-start justify-start p-8">
+          <div>
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+            >
+              <Typography variant="h6" color="inherit" className="pt-8">
+                {candidate.firstName + ' ' + candidate.lastName}
+              </Typography>
+              <Typography variant="body" color="inherit" className="pt-8">
+                {candidate.jobTitle}
+              </Typography>
+            </motion.div>
+          </div>
+          <CandidateTags tags={candidate.tags} />
+        </div>
+      </div>
+      <div className="flex toolbar align-center justify-end">
+        <IconButton className="sm:hidden">
+          <Icon>delete</Icon>
+        </IconButton>
+        <IconButton>
+          <Icon>cloud_download</Icon>
+        </IconButton>
+        <IconButton>
+          <Icon>more_vert</Icon>
+        </IconButton>
+      </div>
+    </div>
+  );
+}
+
+export default ContentHeader;

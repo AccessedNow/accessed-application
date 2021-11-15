@@ -1,4 +1,4 @@
-
+import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
@@ -16,7 +16,7 @@ import _ from '@lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import {getCandidateNotes, addCandidateNote} from "../store/candidateSlice";
+import {getCandidateNotes, addCandidateNote} from "../../store/candidateSlice";
 import NoteList from "./NoteList";
 
 /**
@@ -72,6 +72,8 @@ function CandidateNotes(props) {
       );
     });
   }
+
+  if(notes)
 
   return (
     <div>

@@ -17,11 +17,8 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectLabelsEntities } from './store/labelsSlice';
-import { openCandidateDialog, updateCandidate, openEditCandidateDialog } from './store/candidatesSlice';
+import { openCandidateDialog, updateCandidate, openEditCandidateDialog } from '../store/candidatesSlice';
 
-import TodoChip from './TodoChip';
-import {dateDiff} from "../../../../utils/helper";
 
 const ITEM_HEIGHT = 48;
 
@@ -50,7 +47,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function CandidateListItem(props) {
   const dispatch = useDispatch();
-  const labels = useSelector(selectLabelsEntities);
   const [anchorEl, setAnchorEl] = useState(null);
   const openOption = Boolean(anchorEl);
   const handleOptionClick = (event) => {

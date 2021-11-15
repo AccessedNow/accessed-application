@@ -22,6 +22,7 @@ import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
@@ -38,10 +39,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import CheckListMenu from './components/CheckListMenu';
-import CandidateNotes from './components/CandidateNotes';
+import CandidateNotes from '../components/candidate-notes/CandidateNotes';
 
 import * as yup from 'yup';
-import { selectLabels } from './store/labelsSlice';
+import { selectLabels } from '../store/labelsSlice';
 import {
   removeCandidate,
   addCandidate,
@@ -49,7 +50,7 @@ import {
   closeNewCandidateDialog,
   closeEditCandidateDialog,
   updateCandidate,
-} from './store/candidatesSlice';
+} from '../store/candidatesSlice';
 import {getChat} from "../../chat/store/chatSlice";
 
 const defaultValues = {
@@ -146,8 +147,7 @@ function CandidateDrawer() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
   const {data, props, type} = useSelector(({ candidatesApp }) => candidatesApp.candidates.candidateDialog);
-  const labels = useSelector(selectLabels);
-  const [labelMenuEl, setLabelMenuEl] = useState(null);
+
   const drawerWidth = isMobile? 240:400;
 
 
@@ -284,9 +284,12 @@ function CandidateDrawer() {
               {/*<Avatar alt="Travis Howard" src="/material-ui-static/images/avatar/2.jpg" />*/}
             {/*</Badge>*/}
 
-            <Typography variant="h6" color="inherit" className="pt-8">
-              {data.firstName + ' ' + data.lastName}
-            </Typography>
+            <Link className="font-normal mt-8" href={`/talent/candidates/${data.id}`}>
+              <Typography variant="h6" color="inherit" className="pt-8">
+                {data.firstName + ' ' + data.lastName}
+              </Typography>
+            </Link>
+
             <Typography variant="body" color="inherit" className="pt-8">
               {data.jobTitle}
             </Typography>
@@ -303,7 +306,7 @@ function CandidateDrawer() {
           <TabPanel value={tab} index={0}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
-                <Typography variant={'subtitle2'} fontWeight={600}>
+                <Typography variant={'subtitle2'} fontWeight={500}>
                   EMAIL
                 </Typography>
                 <Typography variant={'body'}>
@@ -311,7 +314,7 @@ function CandidateDrawer() {
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12}>
-                <Typography variant={'subtitle2'} fontWeight={600}>
+                <Typography variant={'subtitle2'} fontWeight={500}>
                   PHONE
                 </Typography>
                 <Typography variant={'body'}>
@@ -319,7 +322,7 @@ function CandidateDrawer() {
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12}>
-                <Typography variant={'subtitle2'} fontWeight={600}>
+                <Typography variant={'subtitle2'} fontWeight={500}>
                   LOCATION
                 </Typography>
                 <Typography variant={'body'}>
@@ -327,7 +330,7 @@ function CandidateDrawer() {
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12}>
-                <Typography variant={'subtitle2'} fontWeight={600}>
+                <Typography variant={'subtitle2'} fontWeight={500}>
                   EMAIL
                 </Typography>
                 <Typography variant={'body'}>
@@ -335,7 +338,7 @@ function CandidateDrawer() {
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12}>
-                <Typography variant={'subtitle2'} fontWeight={600}>
+                <Typography variant={'subtitle2'} fontWeight={500}>
                   EMAIL
                 </Typography>
                 <Typography variant={'body'}>

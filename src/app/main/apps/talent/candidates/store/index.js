@@ -1,15 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import candidates from './candidatesSlice';
-import product from './productSlice';
-import products from './productsSlice';
-import filters from './filtersSlice';
-import folders from './foldersSlice';
-import labels from './labelsSlice';
+import candidates from '../../store/candidatesSlice';
+import filters from '../../store/filtersSlice';
+import folders from '../../store/foldersSlice';
+import labels from '../../store/labelsSlice';
 
 const reducer = combineReducers({
   candidates,
-  product,
   folders,
   labels,
   filters,

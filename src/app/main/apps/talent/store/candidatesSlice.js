@@ -2,8 +2,6 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import _ from '@lodash';
 
-import {searchJobs} from "../../../jobs/store/jobsSlice";
-import {getTodos} from "../../../todo/store/todosSlice";
 
 export const searchCandidates = createAsyncThunk(
   'candidates/search',
@@ -29,7 +27,7 @@ export const addCandidate = createAsyncThunk(
     const response = await axios.post('/api/todo-app/new-todo', candidate);
     const data = await response.data;
 
-    dispatch(getTodos());
+    // dispatch(getTodos());
 
     return data;
   }
@@ -53,7 +51,7 @@ export const removeCandidate = createAsyncThunk(
     const response = await axios.post('/api/todo-app/remove-todo', candidateId);
     const data = await response.data;
 
-    dispatch(getTodos());
+    // dispatch(getTodos());
 
     return data;
   }

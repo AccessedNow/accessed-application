@@ -94,51 +94,51 @@ function TalentDashboardAppHeader(props) {
         </Hidden>
       </div>
       <div className="flex items-end">
-        <div className="flex items-center">
-          <Box
-            className={clsx('flex items-center h-40 px-16 text-13 sm:text-16')}
-            sx={{
-              background: (theme) => lighten(theme.palette.primary.dark, 0.1),
-              color: (theme) => theme.palette.primary.contrastText,
-              borderRadius: '16px 0 0 0',
-            }}
-          >
-            {_.find(projects, ['id', selectedProject.id]).name}
-          </Box>
-          <IconButton
-            className="h-40 w-40 p-0"
-            sx={{
-              background: (theme) => lighten(theme.palette.primary.dark, 0.1),
-              color: (theme) => theme.palette.primary.contrastText,
-              borderRadius: '0 16px 0 0',
-              marginLeft: '1px',
-            }}
-            aria-owns={selectedProject.menuEl ? 'project-menu' : undefined}
-            aria-haspopup="true"
-            onClick={handleOpenProjectMenu}
-            size="large"
-          >
-            <Icon>more_horiz</Icon>
-          </IconButton>
-          <Menu
-            id="project-menu"
-            anchorEl={selectedProject.menuEl}
-            open={Boolean(selectedProject.menuEl)}
-            onClose={handleCloseProjectMenu}
-          >
-            {projects &&
-              projects.map((project) => (
-                <MenuItem
-                  key={project.id}
-                  onClick={(ev) => {
-                    handleChangeProject(project.id);
-                  }}
-                >
-                  {project.name}
-                </MenuItem>
-              ))}
-          </Menu>
-        </div>
+        {/*<div className="flex items-center">*/}
+          {/*<Box*/}
+            {/*className={clsx('flex items-center h-40 px-16 text-13 sm:text-16')}*/}
+            {/*sx={{*/}
+              {/*background: (theme) => lighten(theme.palette.primary.dark, 0.1),*/}
+              {/*color: (theme) => theme.palette.primary.contrastText,*/}
+              {/*borderRadius: '16px 0 0 0',*/}
+            {/*}}*/}
+          {/*>*/}
+            {/*{_.find(projects, ['id', selectedProject.id]).name}*/}
+          {/*</Box>*/}
+          {/*<IconButton*/}
+            {/*className="h-40 w-40 p-0"*/}
+            {/*sx={{*/}
+              {/*background: (theme) => lighten(theme.palette.primary.dark, 0.1),*/}
+              {/*color: (theme) => theme.palette.primary.contrastText,*/}
+              {/*borderRadius: '0 16px 0 0',*/}
+              {/*marginLeft: '1px',*/}
+            {/*}}*/}
+            {/*aria-owns={selectedProject.menuEl ? 'project-menu' : undefined}*/}
+            {/*aria-haspopup="true"*/}
+            {/*onClick={handleOpenProjectMenu}*/}
+            {/*size="large"*/}
+          {/*>*/}
+            {/*<Icon>more_horiz</Icon>*/}
+          {/*</IconButton>*/}
+          {/*<Menu*/}
+            {/*id="project-menu"*/}
+            {/*anchorEl={selectedProject.menuEl}*/}
+            {/*open={Boolean(selectedProject.menuEl)}*/}
+            {/*onClose={handleCloseProjectMenu}*/}
+          {/*>*/}
+            {/*{projects &&*/}
+              {/*projects.map((project) => (*/}
+                {/*<MenuItem*/}
+                  {/*key={project.id}*/}
+                  {/*onClick={(ev) => {*/}
+                    {/*handleChangeProject(project.id);*/}
+                  {/*}}*/}
+                {/*>*/}
+                  {/*{project.name}*/}
+                {/*</MenuItem>*/}
+              {/*))}*/}
+          {/*</Menu>*/}
+        {/*</div>*/}
       </div>
     </div>
   );

@@ -22,9 +22,14 @@ const TalentConfig = {
       component: lazy(() => import('./job-create/JobCreate')),
     },
     {
+      path: [ '/talent/candidates/:candidateId'],
+      component: lazy(() => import('./candidate/CandidateApp')),
+    },
+    {
       path: [ '/talent/candidates'],
       component: lazy(() => import('./candidates/Candidates')),
     },
+
   ],
 };
 

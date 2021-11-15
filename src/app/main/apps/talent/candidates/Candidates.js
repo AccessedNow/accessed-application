@@ -7,16 +7,12 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import reducer from './store';
 import ContentHeader from './ContentHeader';
-import ProductsTable from './ProductsTable';
 import CandidateList from './CandidateList';
 import CandidateDrawer from './CandidateDrawer';
 import Toolbar from './Toolbar';
 
 import SidebarContent from './SidebarContent';
-import {getLabels} from "./store/labelsSlice";
-import {getFilters} from "./store/filtersSlice";
-import {getFolders} from "./store/foldersSlice";
-import {searchCandidates} from "./store/candidatesSlice";
+import {searchCandidates} from "../store/candidatesSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
 
@@ -86,9 +82,6 @@ function Candidates() {
   const routeParams = useParams();
 
   useEffect(() => {
-    dispatch(getFilters());
-    dispatch(getFolders());
-    dispatch(getLabels());
   }, [dispatch]);
 
   useDeepCompareEffect(() => {
@@ -100,11 +93,6 @@ function Candidates() {
       <Root
         leftSidebarContent={<SidebarContent />}
         header={<ContentHeader pageLayout={pageLayout} />}
-        // content={
-        //   <div>
-        //     <ProductsTable pageLayout={pageLayout} />
-        //   </div>
-        // }
         contentToolbar={<Toolbar />}
         content={<CandidateList />}
 

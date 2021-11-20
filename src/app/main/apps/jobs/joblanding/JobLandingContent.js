@@ -55,7 +55,7 @@ function JobLandingContent(props) {
         <Typography className="mb-20">We can determine what developers needs and what skills they're proficient in.  You'll get access to the community, relevancy to your business, and more qualified employers.</Typography>
         <Divider />
         <Box sx={{ flexGrow: 1 }} className="mt-20">
-          <Grid container spacing={2}  className="mt-20">
+          <Grid container spacing={3}  className="mt-20">
             {jobLanding.popularCompanies.map(company => (
               <Grid item s={1} md={3}>
                 <Card className="rounded-8 border-1">

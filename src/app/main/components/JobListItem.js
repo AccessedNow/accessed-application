@@ -15,11 +15,13 @@ import { dateDifference, dateDiff } from '../../utils/helper';
 
 const StyledListItem = styled(ListItem)(({ theme, completed }) => ({
   background: 'white',
-  borderRadius: 6,
-  marginBottom: 8,
+  borderRadius: 0,
+  marginBottom: 0,
+  borderBottom: '1px solid #eee',
+  padding: 10,
   '&:hover': {
     borderWidth: '1px',
-    borderColor: theme.palette.secondary.light
+    borderColor: theme.palette.primary.light
   },
 }));
 
@@ -43,14 +45,15 @@ function JobListItem(props) {
       <div className="flex flex-1 flex-col relative overflow-hidden px-8">
         <Typography
           className="job-title truncate text-14 font-medium"
-          color={props.job.hasApplied ? 'textSecondary' : 'inherit'}
+          color={'textPrimary'}
         >
-          <Link href={`/jobs/view/${props.job.jobId}`} style={{textDecoration: "none"}}>{props.job.title}</Link>
+          {props.job.title}
         </Typography>
-
-        <Typography className="">
-          <Link href="#" color="secondary" underline="hover" style={{textDecoration: "none"}}>{props.job.company.name}</Link>
-        </Typography>
+        <Link href="#" color="secondary" underline="hover" style={{textDecoration: "none"}}>
+          <Typography className="" color={'textPrimary'}>
+            {props.job.company.name}
+          </Typography>
+        </Link>
         <Button size="small" aria-label={location} className="justify-start">
           <Icon className="text-16" color="action">
             place

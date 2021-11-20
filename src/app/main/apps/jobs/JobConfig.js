@@ -17,7 +17,7 @@ const JobConfig = {
         '/jobs/category/:folderHandle',
         '/jobs/search'
       ],
-      component: lazy(() => import('./jobsearch/JobSearch')),
+      component: lazy(() => import('./jobsearch/JobSearchApp')),
     },
     {
       path: ['jobs', '/jobs', '/jobs/myjobs/viewed', '/jobs/myjobs/saved', '/jobs/myjobs/applied'],

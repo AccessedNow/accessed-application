@@ -193,7 +193,7 @@ export const setUserData = (user) => async (dispatch, getState) => {
           style: 'fixed',
           position: 'below'
         },
-        mode: 'fullwidth'
+        // mode: 'fullwidth'
       }
     },
     customScrollbars: true,

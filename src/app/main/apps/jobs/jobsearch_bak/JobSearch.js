@@ -40,6 +40,8 @@ import reducer from '../store';
 import {searchJobs, setSelectedItem, setLoading, setPagination} from '../store/jobsSlice';
 import JobList from '../../../components/JobList';
 import JobDetail from './JobDetail';
+import Header from './Header';
+
 import JobSearchHeader from './JobSearchHeader';
 import ContactsHeader from './ContactsHeader';
 import SearchToolbar from './SearchToolbar';
@@ -51,7 +53,9 @@ import TopJobs from './TopJobs';
 const Root = styled(FusePageSimple)(({ theme }) => ({
 
   margin: 'auto',
-
+  '& .FusePageSimple-toolbar': {
+    background: 'white'
+  },
   '& .FusePageSimple-header': {
     margin: '0 auto',
     minHeight: 200,
@@ -75,7 +79,6 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     minHeight: 0,
     // width: '100%'
     margin: 'auto',
-    width: 1120,
   },
   '& .FusePageSimple-contentWrapper': {
     padding: 0,
@@ -108,6 +111,9 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     border: 'none',
     background: 'white'
   },
+  '& a': {
+    color: 'red'
+  }
 }));
 
 const label = { inputProps: { 'aria-label': 'Off' } };
@@ -198,21 +204,21 @@ function JobSearch(props) {
 
       <Root
         // header={<JobSearchHeader toggleDrawer={toggleDrawer} pageLayout={pageLayout} />}
-        header={<ContactsHeader pageLayout={pageLayout} />}
+          header={<Header pageLayout={pageLayout} />}
         contentToolbar={<SearchToolbar />}
         content={
           <div className="">
-            <React.Fragment key={'right'}>
-              <Button onClick={toggleDrawer('right', true)}>{'right'}</Button>
-              <SwipeableDrawer
-                anchor={'right'}
-                open={state['right']}
-                onClose={toggleDrawer('right', false)}
-                onOpen={toggleDrawer('right', true)}
-              >
-                {list('right')}
-              </SwipeableDrawer>
-            </React.Fragment>
+            {/*<React.Fragment key={'right'}>*/}
+              {/*<Button onClick={toggleDrawer('right', true)}>{'right'}</Button>*/}
+              {/*<SwipeableDrawer*/}
+                {/*anchor={'right'}*/}
+                {/*open={state['right']}*/}
+                {/*onClose={toggleDrawer('right', false)}*/}
+                {/*onOpen={toggleDrawer('right', true)}*/}
+              {/*>*/}
+                {/*{list('right')}*/}
+              {/*</SwipeableDrawer>*/}
+            {/*</React.Fragment>*/}
             <div className="flex flex-1 w-full items-center justify-between mb-10 p-12 bg-white">
               <Typography>
                 Turn on job alerts

@@ -88,6 +88,9 @@ const jobsSlice = createSlice({
       },
       prepare: (event) => ({ payload: event.target.value || '' }),
     },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
     toggleOrderDescending: (state, action) => {
       state.orderDescending = !state.orderDescending;
     },
@@ -131,6 +134,7 @@ const jobsSlice = createSlice({
 
 export const {
   setTodosSearchText,
+  setFilter,
   toggleOrderDescending,
   changeOrder,
   openNewTodoDialog,

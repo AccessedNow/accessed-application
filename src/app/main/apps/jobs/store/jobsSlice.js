@@ -5,13 +5,12 @@ import _ from 'lodash';
 
 export const searchJobs = createAsyncThunk(
   'jobs/search',
-  async (routeParams, { getState }) => {
-    routeParams = routeParams || getState().jobSearch.jobs.routeParams;
-    let filter = getState().jobSearch.jobs.filter;
-    let query = _.cloneDeep(getState().jobSearch.jobs.pagination.query);
-    query.page--;
-    query = new URLSearchParams(query);
-    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search?${query}`, filter);
+  async (params, { getState }) => {
+    let queryParams = _.cloneDeep(params.pagination);
+    queryParams.query= params.query;
+    queryParams.page = queryParams.page==0?queryParams.page:queryParams.page--;
+    queryParams = new URLSearchParams(queryParams);
+    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search?${queryParams}`, params.filter);
     const data = await response.data.data;
 
     return data;
@@ -82,25 +81,24 @@ const jobsSlice = createSlice({
     searchText: '',
     noOfElements: 0,
     filter: {
-      "createdDate": "",
-      "level": [],
-      "city": [],
-      "state": [],
-      "country": [],
-      "company": [],
-      "employmentType": [],
-      // "industry": [],
-      "tags": [],
-      "workFromHome": "REMOTE",
-      "isPromoted": false
+      createdDate: "",
+      distance: [],
+      level: [],
+      city: [],
+      state: [],
+      country: [],
+      company: [],
+      employmentType: [],
+      industry: [],
+      tags: [],
+      workFromHome: "REMOTE",
+      isPromoted: false
     },
     pagination: {
-      query: {
-        page: 0,
-        size: 20,
-        sortyBy: 'createdDate',
-        direction: 'DESC'
-      }
+      page: 0,
+      size: 20,
+      sortBy: 'createdDate',
+      direction: 'DESC'
     },
     routeParams: {},
     jobDialog: {
@@ -112,6 +110,12 @@ const jobsSlice = createSlice({
     },
   }),
   reducers: {
+    setSearchText: (state, action) => {
+      state.searchText = action.payload;
+    },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -126,11 +130,8 @@ const jobsSlice = createSlice({
     setSelectedItem: (state, action) => {
       state.selectedItem = action.payload;
     },
-    setSearchText: {
-      reducer: (state, action) => {
-        state.searchText = action.payload;
-      },
-      prepare: (event) => ({ payload: event.target.value || '' }),
+    setSelectedItem: (state, action) => {
+      state.searchText = action.payload;
     },
     toggleOrderDescending: (state, action) => {
       state.orderDescending = !state.orderDescending;
@@ -160,6 +161,7 @@ const jobsSlice = createSlice({
 });
 
 export const {
+  setFilter,
   setLoading,
   setPagination,
   setSelectedItem,

@@ -82,6 +82,9 @@ const jobsSlice = createSlice({
     setSelectedItem: (state, action) => {
       state.selectedItemId = action.payload;
     },
+    resetSearchText: (state, action) => {
+      state.searchText = '';
+    },
     setSearchText: {
       reducer: (state, action) => {
         state.searchText = action.payload;
@@ -111,6 +114,7 @@ const jobsSlice = createSlice({
 export const {
   setSelectedItem,
   setSearchText,
+  resetSearchText,
   toggleOrderDescending,
   changeOrder
 } = jobsSlice.actions;

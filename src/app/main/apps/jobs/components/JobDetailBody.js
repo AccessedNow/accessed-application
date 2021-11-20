@@ -32,7 +32,7 @@ function JobDetailBody(props) {
     <div className="w-full items-center justify-between px-32 py-40">
       <div className="flex flex-1 w-full items-center justify-between mt-20">
         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
-          {!props.title?
+          {!props.job.title?
           <Typography className="text-16 sm:text-20 truncate font-semibold gray text-gray-500 italic">
             Enter job title
           </Typography>

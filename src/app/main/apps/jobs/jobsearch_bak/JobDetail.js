@@ -21,7 +21,7 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectJobs, selectJobsById } from '../store/jobsSlice';
+import { selectJobs, selectJobsById } from './store/jobsSlice';
 import JobDetailHeader from './JobDetailHeader';
 import {removeProduct, saveProduct} from "../../e-commerce/store/productSlice";
 import {dateDiff} from "../../../../utils/helper";
@@ -72,7 +72,7 @@ function JobDetail(props) {
   //   selectJobsById(state, state.jobSearch.jobs.selectedItemId)
   // );
 
-  const selectedItem = useSelector(({ jobSearchApp }) => jobSearchApp.jobs.selectedItem);
+  const selectedItem = useSelector(({ jobSearch }) => jobSearch.jobs.selectedItem);
   if (!selectedItem) {
     return null;
   }

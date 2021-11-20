@@ -21,21 +21,13 @@ import { dateDifference, dateDiff } from '../../utils/helper';
 
 
 
-const StyledCardItem = styled(Card)(({ theme, completed }) => ({
-  ...(completed && {
-    background: 'rgba(0,0,0,0.03)',
-    '& .job-title, & .job-notes': {
-      textDecoration: 'line-through',
-    },
-    '& a': {
-      textDecoration: 'none!important'
-    },
-    '&:hover': {
-      color: '#40a9ff',
-      backgroundColor: 'red',
-      boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
-    },
-  }),
+const StyledCardItem = styled(Card)(({ theme }) => ({
+  background: 'white',
+  textDecoration: 'none!important',
+  '&:hover': {
+    color: '#40a9ff',
+    boxShadow: '0 2px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+  },
 }));
 
 function JobCardItem(props) {
@@ -88,14 +80,14 @@ function JobCardItem(props) {
           src={avatar}
           variant="square"
         />
-        <Typography variant="h3" className="text-14 font-500">
+        <Typography variant="h3" className="text-14 font-500 plain-text">
           {props.job.title}
         </Typography>
         <Typography variant="h4" color="text.secondary" className="text-13">
           {props.job.company.name}
         </Typography>
         <Typography variant="body" color="text.secondary" className="text-13">
-          {location.join(',')}
+          {location.join(', ')}
         </Typography>
       </CardContent>
       <CardActions className="flex flex-row justify-between">

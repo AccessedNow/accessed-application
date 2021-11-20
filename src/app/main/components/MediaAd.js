@@ -12,15 +12,15 @@ export default function MediaAd() {
       <CardMedia
         component="img"
         height="140"
-        image="/material-ui-static/images/cards/contemplative-reptile.jpg"
-        alt="green iguana"
+        image="/material-ui-static/images/cards/iphone.jpeg"
+        alt="Iphone 12"
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          Lizard
+        <Typography gutterBottom variant="body" component="div">
+          Iphone 12 Release
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of ...
+          A super-powerful chip. An advanced...
         </Typography>
       </CardContent>
       <CardActions>

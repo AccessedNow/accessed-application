@@ -1,6 +1,9 @@
 import _ from '@lodash';
 import FuseLoading from '@fuse/core/FuseLoading';
-
+import throttle from 'lodash/throttle';
+import parse from 'autosuggest-highlight/parse';
+import Autocomplete from '@mui/material/Autocomplete';
+import Box from '@mui/material/Box';
 import { styled, useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -103,10 +106,50 @@ function JobLanding(props) {
   const [menuTab, setMenuTab] = useState(0);
   const [categoryTab, setCategoryTab] = React.useState('0');
   const [suggestion, setSuggestion] = React.useState([]);
+  const [value, setValue] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+  const [options, setOptions] = useState([]);
+
+  const fetch = useMemo(
+    () =>
+      throttle((request, callback) => {
+        dispatch(getTitleSuggestion(request.input, callback)).then((data) => {
+          setOptions(data.payload)
+        });
+      }, 200),
+    [],
+  );
 
   useEffect(() => {
+    let active = true;
+
     dispatch(getJobLanding());
-  }, [dispatch]);
+
+    if (inputValue === '') {
+      setOptions(value ? [value] : []);
+      return '';
+    }
+
+    fetch({ input: inputValue }, (results) => {
+      if (active) {
+        let newOptions = [];
+
+        if (value) {
+          newOptions = [value];
+        }
+
+        if (results) {
+          newOptions = [...newOptions, ...results];
+        }
+
+        setOptions(newOptions);
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [value, inputValue, fetch]);
 
   const handleSearch = (event) => {
     setSearchText(event.target.value)
@@ -144,25 +187,56 @@ function JobLanding(props) {
             >
               <FormControl className="w-full border-0">
                 {/*<InputLabel htmlFor="outlined-adornment-password">Search</InputLabel>*/}
-                <OutlinedInput
-                  id="outlined-adornment-password"
-                  className="border-0 rounded-8"
-                  type="text"
-                  value={searchText}
-                  placeholder="Search"
-                  onChange={handleSearch}
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <SearchIcon
-                        aria-label="toggle password visibility"
-                        // onClick={handleClickShowPassword}
-                        // onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                       <Visibility />
-                      </SearchIcon>
-                    </InputAdornment>
-                  }
+                {/*<Autocomplete*/}
+                  {/*freeSolo*/}
+                  {/*getOptionLabel={(option) =>*/}
+                    {/*typeof option === 'string' ? option : option.description*/}
+                  {/*}*/}
+                  {/*filterOptions={(x) => x}*/}
+                  {/*options={options}*/}
+                  {/*autoComplete*/}
+                  {/*includeInputInList*/}
+                  {/*filterSelectedOptions*/}
+                  {/*value={value}*/}
+                  {/*onChange={(event, newValue) => {*/}
+                    {/*setOptions(newValue ? [newValue, ...options] : options);*/}
+                    {/*setValue(newValue);*/}
+                  {/*}}*/}
+                  {/*onInputChange={(event, newInputValue) => {*/}
+                    {/*setInputValue(newInputValue);*/}
+                  {/*}}*/}
+                  {/*renderInput={(params) => (*/}
+                    {/*<TextField {...params} label="Search by title" fullWidth />*/}
+                  {/*)}*/}
+
+                {/*/>*/}
+                <Autocomplete
+                  sx={{
+                    '& input': {
+                      width: '100%',
+                      padding: '10px',
+                      bgcolor: 'background.paper',
+                      color: (theme) =>
+                        theme.palette.getContrastText(theme.palette.background.paper),
+                    },
+                  }}
+                  id="custom-input-demo"
+                  includeInputInList
+                  filterSelectedOptions
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setOptions(newValue ? [newValue, ...options] : options);
+                    setValue(newValue);
+                  }}
+                  options={options}
+                  onInputChange={(event, newInputValue) => {
+                  setInputValue(newInputValue);
+                  }}
+                  renderInput={(params) => (
+                    <div ref={params.InputProps.ref}>
+                      <input type="text" {...params.inputProps} />
+                    </div>
+                  )}
                 />
               </FormControl>
               <Hidden smDown>

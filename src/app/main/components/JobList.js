@@ -21,22 +21,11 @@ function JobList(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const routeParams = useParams();
-  const data = useSelector(({ jobSearch }) => jobSearch.jobs.data);
-  const pagination = useSelector(({ jobSearch }) => jobSearch.jobs.pagination);
 
   const [loading, setLoading] = useState(true);
 
   const handleChange = (event, value) => {
-    let query = queryString.parse(history.location.search);
-    query.page = value
-    let url = '?'+ (new URLSearchParams(query));
-    history.push(url);
-    setLoading(true);
-    // dispatch(updatePage(value));
-    dispatch(searchJobs(routeParams)).then(({payload}) => {
-      setLoading(false);
-      scrollToTop();
-    })
+    props.onChange();
   };
 
   const scrollToTop = () => {
@@ -48,13 +37,13 @@ function JobList(props) {
   return (
     <div>
       <List className="p-0" type={props.type}>
-        {data.map((job) => (
+        {props.jobs.map((job) => (
           <JobListItem key={job._id} job={job} setSelectedItem={props.setSelectedItem}/>
 
         ))}
       </List>
       <Stack spacing={2}>
-        <Pagination count={pagination.totalPages} page={pagination.query.page} onChange={handleChange} />
+        <Pagination count={props.pagination.totalPages} page={props.pagination.page} onChange={handleChange} />
       </Stack>
     </div>
   );

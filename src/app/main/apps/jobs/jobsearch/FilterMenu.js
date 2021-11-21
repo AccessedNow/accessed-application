@@ -30,6 +30,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import {setSearchText, setFilter, getTitleSuggestion} from "../store/jobsSlice";
 import CompanyFilter from "../../../components/CompanyFilter";
 
+
+const Container = styled('div')(({ theme }) => ({
+  width: '100%',
+  '& .MuiListItem-root': {
+    display: 'inline-flex',
+    width: '50%',
+  },
+
+}));
+
+
 let distances = ['5mi', '10mi'];
 let experienceLevels = [
   {name: 'Internship', value: 'INTERN', checked: false},
@@ -147,85 +158,85 @@ function FilterMenu(props) {
       open={props.open}
       onClose={props.toggleDrawer(false)}
     >
-      <Box sx={{ width: 600 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-              <FormLabel component="legend">Experience Level</FormLabel>
-              <FormGroup>
-                {experienceLevels.map((item) => (
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={item.checked} onChange={handleChange} name="level" />
-                    }
-                    label={item.name}
-                    value={item.value}
-                  />
-                ))}
-
-              </FormGroup>
-              <FormHelperText>Be careful</FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {experienceLevels.map((item) => {
-                const labelId = `checkbox-list-label-${item.value}`;
-
-                return (
-                  <ListItem
-                    key={item.value}
-                    disablePadding
-                  >
-                    <ListItemButton role={undefined} onClick={handleToggle('level', item)} dense>
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          checked={_.includes(filter.level, item.value)}
-                          tabIndex={-1}
-                          disableRipple
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText id={labelId} primary={item.name} />
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })}
-              <ListItem
-                key={value}
-                disablePadding
-              >
-                <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
-                  <ListItemIcon>
-                    <Autocomplete
-                      sx={{
-                        display: 'inline-block',
-                        '& input': {
-                          width: 200,
-                          bgcolor: 'background.paper',
-                          color: (theme) =>
-                            theme.palette.getContrastText(theme.palette.background.paper),
-                        },
-                      }}
-                      id="custom-input-demo"
-                      options={top100Films}
-                      getOptionLabel={(option) => option.title}
-                      renderInput={(params) => (
-                        <div ref={params.InputProps.ref}>
-                          <input type="text" {...params.inputProps} />
-                        </div>
-                      )}
+      <Container>
+        <Box sx={{ width: 600 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+                <FormLabel component="legend">Experience Level</FormLabel>
+                <FormGroup>
+                  {experienceLevels.map((item) => (
+                    <FormControlLabel
+                      control={
+                        <Checkbox checked={item.checked} onChange={handleChange} name="level" />
+                      }
+                      label={item.name}
+                      value={item.value}
                     />
-                  </ListItemIcon>
-                </ListItemButton>
-              </ListItem>
-            </List>
+                  ))}
 
+                </FormGroup>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                {experienceLevels.map((item) => {
+                  const labelId = `checkbox-list-label-${item.value}`;
+
+                  return (
+                    <ListItem
+                      key={item.value}
+                      disablePadding
+                    >
+                      <ListItemButton role={undefined} onClick={handleToggle('level', item)} dense>
+                        <ListItemIcon>
+                          <Checkbox
+                            edge="start"
+                            checked={_.includes(filter.level, item.value)}
+                            tabIndex={-1}
+                            disableRipple
+                            inputProps={{ 'aria-labelledby': labelId }}
+                          />
+                        </ListItemIcon>
+                        <ListItemText id={labelId} primary={item.name} />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })}
+                <ListItem
+                  key={value}
+                  disablePadding
+                >
+                  <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+                    <ListItemIcon>
+                      <Autocomplete
+                        sx={{
+                          '& input': {
+                            width: 200,
+                            bgcolor: 'background.paper',
+                            color: (theme) =>
+                              theme.palette.getContrastText(theme.palette.background.paper),
+                          },
+                        }}
+                        id="custom-input-demo"
+                        options={top100Films}
+                        getOptionLabel={(option) => option.title}
+                        renderInput={(params) => (
+                          <div ref={params.InputProps.ref}>
+                            <input type="text" {...params.inputProps} />
+                          </div>
+                        )}
+                      />
+                    </ListItemIcon>
+                  </ListItemButton>
+                </ListItem>
+              </List>
+
+            </Grid>
           </Grid>
-        </Grid>
 
-      </Box>
+        </Box>
+      </Container>
     </Drawer>
 
   );

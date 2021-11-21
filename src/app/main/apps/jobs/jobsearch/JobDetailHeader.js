@@ -19,7 +19,7 @@ const Root = styled('div')(({ theme }) => ({
   backgroundSize: 'cover',
   backgroundPosition: '0 50%',
   backgroundRepeat: 'no-repeat',
-  borderRadius: '8px 8px 0 0',
+  // borderRadius: '8px 8px 0 0',
   '&:before': {
     content: "''",
     position: 'absolute',

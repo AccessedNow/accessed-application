@@ -1,8 +1,9 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import withReducer from 'app/store/withReducer';
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { colors } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
@@ -16,10 +17,12 @@ import JobDetail from './JobDetail';
 
 import reducer from './store';
 import {searchJobs, setSelectedItem, setLoading, setPagination} from '../store/jobsSlice';
-import {removeProduct} from "../../e-commerce/store/productSlice";
 
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
+  '& .FusePageSimple-wrapper': {
+    marginBottom: 40
+  },
   '& .FusePageSimple-topBg': {
     height: '0!important',
     padding: '0!important'
@@ -27,7 +30,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
     minHeight: 'auto',
     height: 'auto',
-    background: (theme) => theme('colors.light-green.100'),
+    background: `white!important`,
     margin: '20px 0',
     padding: 20,
     borderRadius: 6,
@@ -36,6 +39,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-contentWrapper': {
     padding: '0 !important',
     paddingBottom: 80,
+    borderTopLeftRadius: 6,
     [theme.breakpoints.up('sm')]: {
       padding: 24,
     },
@@ -43,11 +47,13 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-content': {
       minHeight: '100%',
     borderRight: '1px solid #eee',
-    marginRight: 20
+    // marginRight: 20
   },
   '& .FusePageSimple-sidebar': {
     width: 600,
     border: 0,
+    backgroundColor: 'white!important',
+    borderTopRightRadius: 6,
   },
 }));
 
@@ -65,7 +71,7 @@ function JobSearchApp(props) {
   const filter = useSelector(({ jobSearchApp }) => jobSearchApp.jobs.filter);
   const pagination = useSelector(({ jobSearchApp }) => jobSearchApp.jobs.pagination);
   const loading = useSelector(({ jobSearchApp }) => jobSearchApp.jobs.loading);
-
+  const [location, setLocation] = useState('')
   useEffect(() => {
     dispatch(searchJobs({query: searchText, filter: filter, pagination: pagination}));
   }, [dispatch, routeParams]);
@@ -76,6 +82,10 @@ function JobSearchApp(props) {
     // });
   }
 
+
+  const jobAlertText = ''.concat(searchText?searchText:'Job')
+                          .concat(' in ')
+                          .concat(location?location:'United States');
 
 
   return (
@@ -95,11 +105,21 @@ function JobSearchApp(props) {
             {/*{list('right')}*/}
             {/*</SwipeableDrawer>*/}
             {/*</React.Fragment>*/}
-            <div className="flex flex-1 w-full items-center justify-between border-t-1 border-b-1 p-12 bg-white">
-              <Typography>
-                Turn on job alerts
-              </Typography>
-              <Switch {...label} defaultChecked />
+            <div className="flex flex-1 w-full items-center justify-between border-b-1 p-12 bg-white">
+              <div>
+                <Typography>
+                  {jobAlertText}
+                </Typography>
+                <Typography className="text-10 font-400">
+                  {pagination.totalElements?pagination.totalElements + ' results':''}
+                </Typography>
+              </div>
+              <div>
+                <Switch {...label} defaultChecked />
+                <Typography className="text-10 font-400">
+                  Job Alert
+                </Typography>
+              </div>
             </div>
 
             {data &&

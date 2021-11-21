@@ -2,6 +2,8 @@ import FuseUtils from '@fuse/utils';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import clsx from 'clsx';
 import _ from '@lodash';
+import format from 'date-fns/format';
+
 import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -24,7 +26,7 @@ import { useSelector } from 'react-redux';
 import { selectJobs, selectJobsById } from '../store/jobsSlice';
 import JobDetailHeader from './JobDetailHeader';
 import {removeProduct, saveProduct} from "../../e-commerce/store/productSlice";
-import {dateDiff} from "../../../../utils/helper";
+import {dateDifference} from "../../../../utils/helper";
 
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
@@ -131,7 +133,7 @@ function JobDetail(props) {
             {selectedItem.company.name} - {selectedItem.country}
           </Typography>
           <Typography className="truncate">
-            Posted 1 week ago - 12 Applicants
+            Posted {dateDifference(selectedItem.publishedDate)} days ago - {selectedItem.noOfApplied} Applicants
           </Typography>
         </div>
         <div className="flex flex-1 w-full items-center justify-between mb-20">

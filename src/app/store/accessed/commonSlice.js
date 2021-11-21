@@ -31,36 +31,11 @@ export const searchIndustries = createAsyncThunk(
   }
 );
 
-const jobsSlice = createSlice({
-  name: 'common/search',
-  reducers: {
-    setLoading: (state, action) => {
-      state.loading = action.payload;
-    },
-    setPagination: (state, action) => {
-      state.pagination.query = {
-        page: action.payload.page?parseInt(action.payload.page):0,
-        size: action.payload.size?parseInt(action.payload.size):20,
-        sortyBy: action.payload.sortBy?action.payload.orderBy:'createdDate',
-        direction: action.payload.direction?action.payload.direction:'DESC',
-      };
-    },
-    setSelectedItem: (state, action) => {
-      state.selectedItem = action.payload;
-    },
-    setSearchText: {
-      reducer: (state, action) => {
-        state.searchText = action.payload;
-      },
-      prepare: (event) => ({ payload: event.target.value || '' }),
-    },
-    changeOrder: (state, action) => {
-      state.orderBy = action.payload;
-    },
-    updatePage: (state, action) => {
-      state.pagination.query.page = action.payload;
-    },
-  },
-});
-
-export default commonSlice.reducer;
+export const searchLocations = createAsyncThunk(
+  'search/locations',
+  async (query) => {
+    const response = await axios.get(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/address/search?query=${query}`, null);
+    const data = await response.data.data;
+    return data;
+  }
+);

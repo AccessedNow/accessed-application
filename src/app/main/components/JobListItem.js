@@ -38,7 +38,11 @@ function JobListItem(props) {
       className="py-20 px-0 sm:px-8"
       dense
       button
-      onClick={(event) => dispatch(props.setSelectedItem(props.job))}
+      disableRipple
+      onClick={(event) => {
+        event.stopPropagation();
+        dispatch(props.setSelectedItem(props.job))
+      }}
     >
       <Avatar className="mx-4 rounded-4" variant="square" sx={{width: 60, height: 60}} alt={props.job.company.name} src={props.job.company.avatar}/>
 
@@ -54,12 +58,12 @@ function JobListItem(props) {
             {props.job.company.name}
           </Typography>
         </Link>
-        <Button size="small" aria-label={location} className="justify-start">
+        <div size="small" aria-label={location} className="justify-start">
           <Icon className="text-16" color="action">
             place
           </Icon>
           <Typography className="mx-4">{location}</Typography>
-        </Button>
+        </div>
         <Typography className="">
           {dateDiff(props.job.createdDate)}
         </Typography>

@@ -35,14 +35,14 @@ function JobList(props) {
 
 
   return (
-    <div>
+    <div className="bg-white">
       <List className="p-0" type={props.type}>
         {props.jobs.map((job) => (
           <JobListItem key={job._id} job={job} setSelectedItem={props.setSelectedItem}/>
 
         ))}
       </List>
-      <Stack spacing={2}>
+      <Stack spacing={2} className="py-10">
         <Pagination count={props.pagination.totalPages} page={props.pagination.page} onChange={handleChange} />
       </Stack>
     </div>

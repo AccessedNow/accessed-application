@@ -6,11 +6,22 @@ import _ from 'lodash';
 export const searchJobs = createAsyncThunk(
   'jobs/search',
   async (params, { getState }) => {
-    let queryParams = _.cloneDeep(params.pagination);
-    queryParams.query= params.query;
+    const pagination = getState().jobSearchApp.jobs.pagination;
+    const filter = getState().jobSearchApp.jobs.filter;
+    const searchText = getState().jobSearchApp.jobs.searchText;
+    const searchLocation = getState().jobSearchApp.jobs.searchLocation;
+
+    // if(searchLocation){
+    //   filter.city = searchLocation.city?[searchLocation.city]:[];
+    //   filter.state = searchLocation.state?[searchLocation.state]:[];
+    //   filter.country = searchLocation.country?[searchLocation.country]:[];
+    // }
+
+    let queryParams = _.cloneDeep(pagination);
+    queryParams.query= searchText?searchText:'';
     queryParams.page = queryParams.page==0?queryParams.page:queryParams.page--;
     queryParams = new URLSearchParams(queryParams);
-    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search?${queryParams}`, params.filter);
+    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/search?${queryParams}`, filter);
     const data = await response.data.data;
 
     return data;
@@ -59,6 +70,16 @@ export const searchSkills = createAsyncThunk(
   }
 );
 
+export const searchJobLocations = createAsyncThunk(
+  'job/locations',
+  async (query) => {
+    const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/filters/locations/search?query=${query}`, null);
+    const data = await response.data.data;
+    return data;
+  }
+);
+
+
 const jobsAdapter = createEntityAdapter({});
 // const jobsAdapter = createEntityAdapter({
 //   selectId: function(job) {
@@ -79,6 +100,7 @@ const jobsSlice = createSlice({
     loading: true,
     selectedItem: null,
     searchText: '',
+    searchLocation: null,
     noOfElements: 0,
     filter: {
       createdDate: "",
@@ -113,6 +135,12 @@ const jobsSlice = createSlice({
     setSearchText: (state, action) => {
       state.searchText = action.payload;
     },
+    setSearchLocation: (state, action) => {
+      state.searchLocation = action.payload;
+      state.filter.city = action.payload.city?[action.payload.city]:[];
+      state.filter.state = [action.payload.state];
+      state.filter.country = [action.payload.country];
+    },
     setFilter: (state, action) => {
       state.filter = action.payload;
     },
@@ -129,9 +157,6 @@ const jobsSlice = createSlice({
     },
     setSelectedItem: (state, action) => {
       state.selectedItem = action.payload;
-    },
-    setSelectedItem: (state, action) => {
-      state.searchText = action.payload;
     },
     toggleOrderDescending: (state, action) => {
       state.orderDescending = !state.orderDescending;
@@ -166,6 +191,7 @@ export const {
   setPagination,
   setSelectedItem,
   setSearchText,
+  setSearchLocation,
   toggleOrderDescending,
   changeOrder,
   updatePage

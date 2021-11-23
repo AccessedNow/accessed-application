@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState, useRef, useMemo } from 'react';
 
 import Autocomplete from '@mui/material/Autocomplete';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -16,6 +17,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import {getTitleSuggestion, searchJobLocations, setSearchText} from "../../../jobs/store/jobsSlice";
@@ -62,15 +64,15 @@ BootstrapDialogTitle.propTypes = {
 
 const defaultValues = {
   title: '',
-  // level: '',
-  // employmentType: '',
-  // city: '',
-  // state: '',
-  // country: '',
-  // company: '',
-  // companySize: '',
-  // industry: '',
-  // remote: false
+  level: '',
+  employmentType: '',
+  city: '',
+  state: '',
+  country: '',
+  company: '',
+  companySize: '',
+  industry: '',
+  remote: true
 };
 
 
@@ -79,6 +81,7 @@ const defaultValues = {
  */
 const schema = yup.object().shape({
   title: yup.string().required('You must enter a title'),
+  // location: yup.string().required('You must enter a location'),
 });
 
 
@@ -90,7 +93,7 @@ export default function JobAlertDialog(props) {
     resolver: yupResolver(schema),
   });
 
-  // const { errors, isValid, dirtyFields } = formState;
+  const { errors, isValid, dirtyFields } = formState;
   const jobAlertForm = watch();
 
   const [inputJobTitle, setInputJobTitle] = useState('');
@@ -163,18 +166,19 @@ export default function JobAlertDialog(props) {
    * Form Submit
    */
   function onSubmit(data) {
-    dispatch(addJobAlert(data));
+    const location = data.location;
+    delete data.location;
+    const form = _.merge(data, location);
+    dispatch(addJobAlert(form));
     props.handleClose();
   }
 
-
-  console.log(jobAlertForm);
   return (
     <CustomDialog
       onClose={props.handleClose}
       aria-labelledby="customized-dialog-title"
       open={props.open}
-      fullWidth={true}
+      fullWidth={false}
       maxWidth="sm"
     >
       <form noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -182,68 +186,81 @@ export default function JobAlertDialog(props) {
         Create Job Alert
       </BootstrapDialogTitle>
       <DialogContent dividers>
-        <Controller
-          name="title"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Autocomplete
-              freeSolo
-              value={value}
-              onChange={onChange}
-              inputValue={inputJobTitle}
-              onInputChange={handleSearchJobTitle}
-              id="controllable-job-title"
-              options={jobTitles}
-              renderInput={(params) => <TextField {...params} label="Job title *" />}
-              className="mb-20"
-            />
-          )}
-        />
-        {/*<Autocomplete*/}
-          {/*freeSolo*/}
-          {/*value={inputJobTitle}*/}
-          {/*onChange={(event, newValue) => {*/}
-            {/*setInputJobTitle(newValue);*/}
-            {/*dispatch(setJobAlert({title: newValue}));*/}
-          {/*}}*/}
-          {/*inputValue={inputJobTitle}*/}
-          {/*onInputChange={handleSearchJobTitle}*/}
-          {/*id="controllable-job-title"*/}
-          {/*options={jobTitles}*/}
-          {/*renderInput={(params) => <TextField {...params} label="Job title *" />}*/}
-        {/*/>*/}
-        <Autocomplete
-          freeSolo
-          value={inputLocation}
-          getOptionLabel={(option) => {
-            let value = '';
-            if(typeof option === 'string') {
-              value = option
-            } else {
-              value = _.values(_.omitBy(_.pickBy(option, _.identity), _.isNumber)).join(', ');
-            }
-            return value;
+        <Box
+          sx={{
+            width: 300
           }}
-          onChange={(event, newValue) => {
-            // setInputLocation(newValue);
-            setJobAlert(newValue)
-          }}
-          inputValue={inputLocation}
-          onInputChange={handleSearchLocation}
-          id="controllable-location"
-          options={locations}
-          renderInput={(params) => <TextField {...params} label="City, state, country *" />}
-        />
+        >
+          <Controller
+            name="title"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Autocomplete
+                freeSolo
+                value={value}
+                onChange={(event, newValue) => {
+                  onChange(newValue);
+                }}
+                inputValue={inputJobTitle}
+                onInputChange={handleSearchJobTitle}
+                id="controllable-job-title"
+                options={jobTitles}
+                renderInput={(params) => <TextField {...params} label="Job title *" />}
+                className="mb-20"
+              />
+            )}
+          />
+          <Controller
+            name="location"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Autocomplete
+                freeSolo
+                value={inputLocation}
+                getOptionLabel={(option) => {
+                  let value = '';
+                  if(typeof option === 'string') {
+                    value = option
+                  } else {
+                    value = _.values(_.omitBy(_.pickBy(option, _.identity), _.isNumber)).join(', ');
+                  }
+                  return value;
+                }}
+                onChange={(event, newValue) => {
+                  // setInputLocation(newValue);
+                  onChange({city: newValue.city, state: newValue.state, country: newValue.country})
+                }}
+                inputValue={inputLocation}
+                onInputChange={handleSearchLocation}
+                id="controllable-location"
+                options={locations}
+                renderInput={(params) => <TextField {...params} label="City, state, country *" />}
+                className="mb-20"
+              />
+            )}
+          />
+          <Controller
+            name="remote"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <div className="flex flex-row justify-between">
+                <Typography className="font-600 ">Allow Remote</Typography>
+                <Switch
+                  checked={value}
+                  onChange={onChange}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+              </div>
+            )}
+          />
+        </Box>
       </DialogContent>
       <DialogActions>
-        {/*<Button autoFocus onClick={handleAddJobAlert}>*/}
-          {/*Add*/}
-        {/*</Button>*/}
         <Button
           type="submit"
           variant="contained"
           color="secondary"
-          // disabled={_.isEmpty(dirtyFields) || !isValid}
+          disabled={_.isEmpty(dirtyFields) || !isValid}
         >
           Save
         </Button>

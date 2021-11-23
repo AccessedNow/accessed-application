@@ -272,6 +272,8 @@ function JobSearchHeader(props) {
     setSearchText(event.target.value)
   }
 
+
+
   return (
     <Root>
       <ThemeProvider theme={mainTheme}>
@@ -327,16 +329,11 @@ function JobSearchHeader(props) {
                       id="field-search-text"
                       getOptionLabel={(option) => {
                         let value = '';
-
-
-
                         if(typeof option === 'string') {
                           value = option
                         } else {
                           value = _.values(_.omitBy(_.pickBy(option, _.identity), _.isNumber)).join(', ');
-
                         }
-
                         return value;
                       }}
                       options={locations}

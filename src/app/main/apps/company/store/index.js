@@ -2,9 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import company from './companySlice';
 
 const reducer = combineReducers({
-  company,
-
-
+  company
 });
 
 export default reducer;

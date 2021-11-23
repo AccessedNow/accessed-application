@@ -44,13 +44,13 @@ function JobTab() {
   };
 
   const handleJobAlertDialog = () => {
-    setJobAlert(true);
+    setJobAlert(!jobAlert);
   };
 
 
   return (
     <motion.div variants={container} initial="hidden" animate="show">
-      <Paper className="flex flex-row items-start justify-start justify-between w-full border-1 rounded-6 p-20 mb-12">
+      <Paper className="flex flex-row items-start justify-start justify-between w-full border-1 shadow-none   rounded-6 p-20 mb-20">
         <div className="flex flex-row">
           <Icon className="">access_time</Icon>
           <div className="flex ml-10 flex-col ">
@@ -60,8 +60,11 @@ function JobTab() {
         </div>
         <Button variant="outlined" onClick={handleJobAlertDialog}>Create Job Alert</Button>
       </Paper>
-      <JobGrid jobs={jobs}/>
-      <JobAlertDialog open={jobAlert}/>
+      <Paper className="rounded-6 shadow-none border-1 p-20">
+        <Typography className="text-14 font-600 mb-12" color="inherit">Recent Jobs</Typography>
+        <JobGrid jobs={jobs}/>
+      </Paper>
+      <JobAlertDialog open={jobAlert} handleClose={handleJobAlertDialog}/>
     </motion.div>
   );
 }

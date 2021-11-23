@@ -12,6 +12,8 @@ import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -60,46 +62,81 @@ function JobCardItem(props) {
   return  (
     <StyledCardItem variant="outlined" sx={{ maxWidth: 345 }} className="job-item rounded-8 cursor-pointer" onClick={handleClick}>
       <CardHeader
+        avatar={
+          avatar?
+          <Avatar
+            sx={{
+              borderWidth: 1,
+              borderStyle: 'solid',
+              borderColor: 'background.default',
+            }}
+            className="flex items-center justify-center talign-center mb-16 w-64 h-64 rounded-6"
+            src={avatar}
+            variant="square"
+          />
+            :
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{props.job.company.substr(0,1).toUpperCase()}</Avatar>
+        }
         action={
-          <IconButton size="small" aria-label="add to favorites">
-            <FavoriteIcon fontSize="inherit"/>
-          </IconButton>
+          <div className="flex">
+            <IconButton size="small" aria-label="add to favorites">
+              <FavoriteIcon fontSize="inherit"/>
+            </IconButton>
+
+          </div>
         }
         title=""
         subheader=""
         className="flex pb-0"
       />
-      <CardContent className="flex flex-col flex-auto items-center justify-center talign-center m-0 text-center h-160" >
-        <Avatar
-          sx={{
-            borderWidth: 1,
-            borderStyle: 'solid',
-            borderColor: 'background.default',
-          }}
-          className="flex items-center justify-center talign-center mb-16 w-64 h-64 rounded-4"
-          src={avatar}
-          variant="square"
-        />
-        <Typography variant="h3" className="text-14 font-500 plain-text">
-          {props.job.title}
-        </Typography>
-        <Typography variant="h4" color="text.secondary" className="text-13">
-          {props.job.company.name}
-        </Typography>
-        <Typography variant="body" color="text.secondary" className="text-13">
-          {location.join(', ')}
-        </Typography>
+      <CardContent className="flex flex-col flex-auto items-start justify-start m-0  h-160" >
+        {/*<Avatar*/}
+          {/*sx={{*/}
+            {/*borderWidth: 1,*/}
+            {/*borderStyle: 'solid',*/}
+            {/*borderColor: 'background.default',*/}
+          {/*}}*/}
+          {/*className="flex items-center justify-center talign-center mb-16 w-64 h-64 rounded-4"*/}
+          {/*src={avatar}*/}
+          {/*variant="square"*/}
+        {/*/>*/}
+        <div>
+          <Typography variant="h3" className="text-14 font-500 plain-text">
+            {props.job.title}
+          </Typography>
+          <Typography variant="h4" color="text.secondary" className="text-13">
+            {props.job.company.name}
+          </Typography>
+          <Typography variant="body" color="text.secondary" className="text-13">
+            {location.join(', ')}
+          </Typography>
+        </div>
+        {props.job.noOfApplied &&
+        <div className="flex flex-row items-center justify-start mt-12">
+          <IconButton size="small" aria-label="clock">
+            <AccessTimeIcon fontSize="inherit"/>
+          </IconButton>
+          <Typography variant="body2" color="text.secondary" className="flex">
+            Be an early applicant
+          </Typography>
+        </div>
+        }
       </CardContent>
-      <CardActions className="flex flex-row justify-between">
-        <Typography variant="body2" color="text.secondary" className="flex items-start">
-          2d ago
-        </Typography>
-        <div className="flex items-end">
-          {/*<IconButton size="small" aria-label="add to favorites">*/}
-            {/*<FavoriteIcon fontSize="inherit"/>*/}
-          {/*</IconButton>*/}
+      <CardActions disableSpacing>
+        <div className="flex flex-row items-center justify-between w-full">
+          <div className="flex">
+            <Typography variant="body2" color="text.secondary" className="flex items-start">
+              2d ago
+            </Typography>
+          </div>
+          <div className="flex">
+            <IconButton size="small" aria-label="more">
+              <MoreVertIcon fontSize="inherit" />
+            </IconButton>
+          </div>
         </div>
       </CardActions>
+
 
     </StyledCardItem>
   );

@@ -113,8 +113,8 @@ const jobsSlice = createSlice({
       employmentType: [],
       industry: [],
       tags: [],
-      workFromHome: "REMOTE",
-      isPromoted: false
+      isPromoted: false,
+      allowRemote: false
     },
     pagination: {
       page: 0,

@@ -32,6 +32,7 @@ import RegisterConfirmationConfig from './confirmation/register-confirmation/Reg
 import SettingsConfig from './settings/SettingsConfig';
 
 import TermsConditionsConfig from './terms-conditions/TermsConditionsConfig';
+import NoConnectionPageConfig from './errors/no-connection/NoConnectionPageConfig';
 
 
 const pagesConfigs = [
@@ -41,6 +42,7 @@ const pagesConfigs = [
   RegisterConfirmationConfig,
   SettingsConfig,
   TermsConditionsConfig,
+  NoConnectionPageConfig,
 
   LoginPageConfig,
   RegisterPageConfig,

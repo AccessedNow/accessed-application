@@ -9,12 +9,19 @@ import { hideMessage, showMessage } from 'app/store/fuse/messageSlice';
 
 import { setUserDataFirebase, setUserDataAuth0, setUserData, logoutUser } from './store/userSlice';
 
+
+
 class Auth extends Component {
   state = {
     waitAuthCheck: true,
   };
 
   componentDidMount() {
+    jwtService.on('onNetworkError', () => {
+      this.props.showMessage({ message: 'Network Error' });
+
+    });
+
     return Promise.all([
       // Comment the lines which you do not use
       this.firebaseCheck(),

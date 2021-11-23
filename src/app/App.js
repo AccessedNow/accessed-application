@@ -28,6 +28,10 @@ import { Auth } from './auth';
 // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 // axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
 
+// if(!window.navigator.onLine) {
+//   window.location.href = "http://www.w3schools.com";
+// }
+
 const emotionCacheOptions = {
   rtl: {
     key: 'muirtl',

@@ -23,6 +23,7 @@ import Typography from '@mui/material/Typography';
 import CandidateNotes from '../components/candidate-notes/CandidateNotes';
 import ExperienceList from '../components/experience-list/ExperienceList';
 import ResumeList from '../components/resume-list/ResumeList';
+import NotesTab from './tabs/NotesTab';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -141,7 +142,7 @@ function CandidateDetail() {
           <ResumeList id={candidate.id} />
         </TabPanel>
         <TabPanel value={tab} index={3}>
-          4
+          <NotesTab id={candidate.id} />
         </TabPanel>
         <TabPanel value={tab} index={4}>
           5

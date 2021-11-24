@@ -3,8 +3,13 @@ import { motion } from 'framer-motion';
 import Avatar from '@mui/material/Avatar';
 import Hidden from '@mui/material/Hidden';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
+import CallIcon from '@mui/icons-material/Call';
+import EmailIcon from '@mui/icons-material/Email';
+import PlaceIcon from '@mui/icons-material/Place';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
@@ -16,6 +21,9 @@ function ContentHeader(props) {
   const dispatch = useDispatch();
   const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
 
+  let location = _.merge({}, candidate.primaryAddress);
+  delete location.address1;
+  location = _.values(_.omitBy(_.pickBy(location, _.identity), _.isNumber)).join(', ');
   if(!candidate){
     return <FuseLoading/>
   }
@@ -24,26 +32,51 @@ function ContentHeader(props) {
       <div className="flex flex-row items-start justify-start">
         <Avatar
           sx={{
-            borderWidth: 1,
+            borderWidth: 2,
             borderStyle: 'solid',
-            borderColor: 'background.default',
+            borderColor: 'white',
           }}
-          className="w-40 h-40 md:w-96 md:h-96"
+          className="w-40 h-40 md:w-128 md:h-128"
           src={candidate.avatar}
         />
-        <div className="flex flex-col flex-1 items-start justify-start p-8">
+        <div className="flex flex-col flex-1 items-start justify-start ml-5 p-8">
           <div>
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
             >
-              <Typography variant="h6" color="inherit" className="pt-8">
-                {candidate.firstName + ' ' + candidate.lastName}
+              <Typography variant="h6" color="inherit" className="pt-8 font-600">
+                {candidate.firstName.toUpperCase() + ' ' + candidate.lastName.toUpperCase()}
               </Typography>
               <Typography variant="body" color="inherit" className="pt-8">
                 {candidate.jobTitle}
               </Typography>
             </motion.div>
+          </div>
+          <div className="flex">
+            <IconButton size="small" sx={{ p: '0px' }} aria-label="locations">
+              <PlaceIcon fontSize="inherit" />
+            </IconButton>
+            {location}
+          </div>
+          <div className="flex flex-row items-start justify-start mt-5">
+            <div className="flex">
+              <IconButton size="small" sx={{ p: '0px' }} aria-label="phone">
+                <CallIcon fontSize="inherit" />
+              </IconButton>
+              <Typography variant="body" color="inherit" className="">
+                {candidate.phoneNumber}
+              </Typography>
+            </div>
+            <Divider flexItem orientation="vertical" sx={{ mx: 2}} />
+            <div className="flex">
+              <IconButton size="small" sx={{ p: '0px' }} aria-label="email">
+                <EmailIcon fontSize="inherit" />
+              </IconButton>
+              <Typography variant="body" color="inherit" className="">
+                {candidate.email}
+              </Typography>
+            </div>
           </div>
           <CandidateTags tags={candidate.tags} />
         </div>

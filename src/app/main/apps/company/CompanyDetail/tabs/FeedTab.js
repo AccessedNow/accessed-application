@@ -84,7 +84,7 @@ function TimelineTab() {
                 component={motion.div}
                 variants={item}
                 key={post.id}
-                className="mb-32 overflow-hidden rounded-6 shadow"
+                className="mb-20 overflow-hidden rounded-6 shadow"
               >
                 <CardHeader
                   avatar={<Avatar aria-label="Recipe" src={post.party.avatar} />}

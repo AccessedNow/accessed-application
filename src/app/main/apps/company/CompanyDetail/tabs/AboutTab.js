@@ -37,7 +37,7 @@ function AboutTab() {
   return (
     <motion.div variants={container} initial="hidden" animate="show">
       <div className="">
-        <Card component={motion.div} variant="outlined" className="w-full mb-32 rounded-8">
+        <Card component={motion.div} variant="outlined" className="w-full mb-20 rounded-8">
           <CardContent>
             <div className="mb-24">
               <Typography className="font-semibold mb-4 text-15">About</Typography>
@@ -47,7 +47,7 @@ function AboutTab() {
         </Card>
 
 
-        <Card component={motion.div} variant="outlined" className="w-full mb-32 rounded-8">
+        <Card component={motion.div} variant="outlined" className="w-full mb-20 rounded-8">
           <CardContent>
             <div className="mb-24">
               <Typography className="font-semibold mb-4 text-15">Address</Typography>

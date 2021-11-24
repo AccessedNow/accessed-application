@@ -20,11 +20,11 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     height: 72,
   },
   '& .FusePageSimple-header': {
-    minHeight: 96,
-    height: 96,
+    minHeight: 120,
+    height: 160,
     [theme.breakpoints.up('sm')]: {
-      minHeight: 160,
-      height: 160,
+      minHeight: 192,
+      height: 192,
     },
   },
   '& .FusePageSimple-sidebarHeader': {

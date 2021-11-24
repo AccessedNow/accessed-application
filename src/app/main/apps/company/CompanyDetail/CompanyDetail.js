@@ -171,22 +171,22 @@ function CompanyDetail() {
       content={
         <div>
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.1 } }}>
-            <Card variant="outlined" className="mb-32 rounded-8 md:rounded-0 lg:rounded-0">
+            <Card variant="outlined" className="mb-20 rounded-8 md:rounded-0 lg:rounded-0">
               <CardMedia
                 component="img"
-                height="72"
+                height="192"
                 image="assets/images/profile/morain-lake.jpg"
-                className="h-128"
+                className="h-192"
               />
               <CardContent>
                 <div className="w-full px-16 flex flex-col md:flex-row flex-1 items-center">
                   <Avatar
                     sx={{
-                      borderWidth: 4,
+                      borderWidth: 1,
                       borderStyle: 'solid',
                       borderColor: 'background.default',
                     }}
-                    className="w-72 h-72"
+                    className="w-72 h-72 rounded-6"
                     src={company.avatar}
                     variant="square"
                   />

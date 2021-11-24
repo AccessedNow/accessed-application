@@ -43,7 +43,7 @@ function MainSidebarContent() {
       <div className="mb-20">
         <MediaAd />
       </div>
-      <div className="flex flex-row  items-center rounded-8 mb-24 bg-white p-16 shadow-sm">
+      <div className="flex flex-row  items-center justify-between rounded-8 mb-24 bg-white p-16 shadow-sm">
         <Typography className="text-14">
           Looking for talent
         </Typography>
@@ -92,19 +92,7 @@ function MainSidebarContent() {
           </Link>
         </CardActions>
       </Card>
-      <Card className="w-full mb-20 rounded-16 shadow">
-        <CardHeader title={<Typography className="text-14 font-medium">Followers</Typography>}/>
-        <CardContent className="flex flex-wrap p-16">
-          {friends.map((friend) => (
-            <img
-              key={friend.id}
-              className="w-64 m-4 rounded-16 block"
-              src={friend.avatar}
-              alt={friend.name}
-            />
-          ))}
-        </CardContent>
-      </Card>
+
       <Card className="w-full mb-20">
         <CardHeader title={<Typography className="text-14 font-medium">Connections that work here</Typography>}/>
         <CardContent className="p-0">

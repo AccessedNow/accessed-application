@@ -7,6 +7,8 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import Grid from '@mui/material/Grid';
+
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
@@ -28,8 +30,13 @@ function TimelineTab() {
   const routeParams = useParams();
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [followers, setFollowers] = useState([]);
 
   useEffect(() => {
+    axios.get('/api/profile/about').then((res) => {
+      setFollowers(res.data.friends);
+    });
+
     dispatch(getCompanyFeed(routeParams)).then((res) => {
       setPosts(res.payload);
       setLoading(false);
@@ -55,24 +62,39 @@ function TimelineTab() {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show">
-      <div className="md:flex">
-        <div className="flex flex-col flex-1">
-          {posts.map((post) => (
-            <Card
-              component={motion.div}
-              variants={item}
-              key={post.id}
-              className="mb-32 overflow-hidden rounded-16 shadow"
-            >
-              <CardHeader
-                avatar={<Avatar aria-label="Recipe" src={post.party.avatar} />}
-                action={
-                  <IconButton aria-label="more" size="large">
-                    <Icon>more_vert</Icon>
-                  </IconButton>
-                }
-                title={
-                  <span className="flex">
+      <Grid container spacing={{ xs: 2 }}>
+        <Grid item xs={4} sm={4} md={4}>
+          <Card className="w-full mb-20 rounded-6 shadow">
+            <CardHeader title={<Typography className="text-14 font-medium">Followers</Typography>}/>
+            <CardContent className="flex flex-wrap p-16">
+              {followers.map((friend) => (
+                <img
+                  key={friend.id}
+                  className="w-64 m-4 rounded-16 block"
+                  src={friend.avatar}
+                  alt={friend.name}
+                />
+              ))}
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={8}>
+            {posts.map((post) => (
+              <Card
+                component={motion.div}
+                variants={item}
+                key={post.id}
+                className="mb-32 overflow-hidden rounded-6 shadow"
+              >
+                <CardHeader
+                  avatar={<Avatar aria-label="Recipe" src={post.party.avatar} />}
+                  action={
+                    <IconButton aria-label="more" size="large">
+                      <Icon>more_vert</Icon>
+                    </IconButton>
+                  }
+                  title={
+                    <span className="flex">
                     <Typography className="font-normal" color="primary" paragraph={false}>
                       {post.party.name}
                     </Typography>
@@ -83,79 +105,77 @@ function TimelineTab() {
                       {post.type === 'article' && 'shared an article with you'}
                     </span>
                   </span>
-                }
-                subheader={post.createdDate}
-              />
+                  }
+                  subheader={post.createdDate}
+                />
 
-              <CardContent className="py-0">
-                {post.text && (
-                  <Typography component="p" className="mb-16">
-                    {post.text}
-                  </Typography>
-                )}
+                <CardContent className="py-0">
+                  {post.text && (
+                    <Typography component="p" className="mb-16">
+                      {post.text}
+                    </Typography>
+                  )}
 
-                {post.media && <img src={post.media.preview} alt="post" className="rounded-8" />}
+                  {post.media && <img src={post.media.preview} alt="post" className="rounded-8" />}
 
-                {post.article && (
-                  <div className="border-1 rounded-8 overflow-hidden">
-                    <img
-                      className="w-full border-b-1"
-                      src={post.article.media.preview}
-                      alt="article"
-                    />
-                    <div className="p-16">
-                      <Typography variant="subtitle1">{post.article.title}</Typography>
-                      <Typography variant="caption">{post.article.subtitle}</Typography>
-                      <Typography className="mt-16">{post.article.excerpt}</Typography>
+                  {post.article && (
+                    <div className="border-1 rounded-8 overflow-hidden">
+                      <img
+                        className="w-full border-b-1"
+                        src={post.article.media.preview}
+                        alt="article"
+                      />
+                      <div className="p-16">
+                        <Typography variant="subtitle1">{post.article.title}</Typography>
+                        <Typography variant="caption">{post.article.subtitle}</Typography>
+                        <Typography className="mt-16">{post.article.excerpt}</Typography>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </CardContent>
+                  )}
+                </CardContent>
 
-              <CardActions disableSpacing className="px-12">
-                <Button size="small" aria-label="Add to favorites">
-                  <Icon className="text-16" color="action">
-                    favorite
-                  </Icon>
-                  <Typography className="mx-4">Like</Typography>
-                  <Typography>({post.noOfLikes})</Typography>
-                </Button>
-                <Button aria-label="Share">
-                  <Icon className="text-16" color="action">
-                    share
-                  </Icon>
-                  <Typography className="mx-4">Share</Typography>
-                  <Typography>({post.noOfShares})</Typography>
-                </Button>
-              </CardActions>
+                <CardActions disableSpacing className="px-12">
+                  <Button size="small" aria-label="Add to favorites">
+                    <Icon className="text-16" color="action">
+                      favorite
+                    </Icon>
+                    <Typography className="mx-4">Like</Typography>
+                    <Typography>({post.noOfLikes})</Typography>
+                  </Button>
+                  <Button aria-label="Share">
+                    <Icon className="text-16" color="action">
+                      share
+                    </Icon>
+                    <Typography className="mx-4">Share</Typography>
+                    <Typography>({post.noOfShares})</Typography>
+                  </Button>
+                </CardActions>
 
-              <AppBar
-                className="card-footer flex flex-column p-16"
-                position="static"
-                color="default"
-                elevation={0}
-              >
-                {post.comments && post.comments.length > 0 && (
-                  <div className="">
-                    <div className="flex items-center">
-                      <Typography>{post.comments.length} comments</Typography>
-                      <Icon className="text-16 mx-4" color="action">
-                        keyboard_arrow_down
-                      </Icon>
+                <AppBar
+                  className="card-footer flex flex-column p-16"
+                  position="static"
+                  color="default"
+                  elevation={0}
+                >
+                  {post.comments && post.comments.length > 0 && (
+                    <div className="">
+                      <div className="flex items-center">
+                        <Typography>{post.comments.length} comments</Typography>
+                        <Icon className="text-16 mx-4" color="action">
+                          keyboard_arrow_down
+                        </Icon>
+                      </div>
+
+
                     </div>
+                  )}
 
 
-                  </div>
-                )}
-
-
-              </AppBar>
-            </Card>
-          ))}
-        </div>
-
-
-      </div>
+                </AppBar>
+              </Card>
+            ))}
+        </Grid>
+    </Grid>
     </motion.div>
   );
 }

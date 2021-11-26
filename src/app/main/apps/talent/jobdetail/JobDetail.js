@@ -216,11 +216,9 @@ function JobDetail() {
           </Toolbar>
         </AppBar>
 
-        <div className={clsx('flex flex-1 overflow-x-auto overflow-y-hidden')}>
-          <TabPanel value={tab} index={0}>
-            <BoardTab />
-          </TabPanel>
-        </div>
+        <TabPanel value={tab} index={0} className={clsx('flex flex-1 overflow-x-auto overflow-y-hidden')}>
+          <BoardTab />
+        </TabPanel>
 
       </div>
     </Root>

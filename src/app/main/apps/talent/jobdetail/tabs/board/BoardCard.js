@@ -29,6 +29,7 @@ function BoardCard(props) {
   const checkItems = getCheckItems(card);
   const commentsCount = getCommentsCount(card);
 
+  const member = card.idMembers.length?_.find(board.members, {id: card.idMembers[0] }):null;
   function handleCardClick(ev, _card) {
     ev.preventDefault();
     dispatch(openCardDialog(_card));
@@ -55,17 +56,10 @@ function BoardCard(props) {
           <StyledCard
             className={clsx(
               snapshot.isDragging ? 'shadow-lg' : 'shadow-0',
-              'w-full mb-16 rounded-16 cursor-pointer border-1'
+              'w-full mb-16 rounded6 cursor-pointer border-1'
             )}
             onClick={(ev) => handleCardClick(ev, card)}
           >
-            {board.settings.cardCoverImages && card.idAttachmentCover !== '' && (
-              <img
-                className="block"
-                src={_.find(card.attachments, { id: card.idAttachmentCover }).src}
-                alt="card cover"
-              />
-            )}
 
             <div className="p-16 pb-0">
               {card.idLabels.length > 0 && (
@@ -81,53 +75,29 @@ function BoardCard(props) {
                 </div>
               )}
 
-              <Typography className="font-medium mb-12">{card.name}</Typography>
-
-              {(card.due || checkItems > 0) && (
-                <div className="flex items-center mb-12 -mx-4">
-                  {card.due && (
-                    <div
-                      className={clsx(
-                        'flex items-center px-8 py-4 mx-4 rounded-16',
-                        getUnixTime(new Date()) > card.due
-                          ? 'bg-red text-white'
-                          : 'bg-green text-white'
-                      )}
-                    >
-                      <Icon className="text-16">access_time</Icon>
-                      <span className="mx-4">{format(fromUnixTime(card.due), 'MMM do yy')}</span>
-                    </div>
-                  )}
-
-                  {checkItems > 0 && (
-                    <div
-                      className={clsx(
-                        'flex items-center px-8 py-4 mx-4 rounded-16',
-                        checkItemsChecked === checkItems
-                          ? 'bg-green text-white'
-                          : 'bg-grey-700 text-white'
-                      )}
-                    >
-                      <Icon className="text-16">check_circle</Icon>
-                      <span className="mx-4">{`${checkItemsChecked}/${checkItems}`}</span>
-                    </div>
-                  )}
+              {member &&
+              <div className="flex flex-row items-start justify-start">
+                <Avatar
+                  sx={{
+                    borderWidth: 2,
+                    borderStyle: 'solid',
+                    borderColor: 'white',
+                  }}
+                  className="w-40 h-40 md:w-40 md:h-40"
+                  src={member.avatar}
+                />
+                <div className="flex flex-col flex-1 items-start justify-start ml-5 p-8">
+                  <Typography variant="h6" color="inherit" className="pt-8 font-600">
+                    {member.name}
+                  </Typography>
+                  <Typography variant="body" color="inherit" className="pt-8">
+                    Developer
+                  </Typography>
                 </div>
-              )}
+              </div>
+              }
 
-              {card.idMembers.length > 0 && (
-                <div className="flex flex-wrap mb-12 -mx-4">
-                  {card.idMembers.map((id) => {
-                    const member = _.find(board.members, { id });
-                    return (
-                      <Tooltip title={member.name} key={id}>
-                        <Avatar className="mx-4 w-32 h-32" src={member.avatar} />
-                      </Tooltip>
-                    );
-                  })}
-                  <div />
-                </div>
-              )}
+
             </div>
 
             <div className="flex justify-between h-48 px-16 border-t-1">

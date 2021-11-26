@@ -72,11 +72,11 @@ function Board(props) {
       <GlobalStyles
         styles={(theme) => ({
           '#fuse-main': {
-            height: '100vh',
+            height: 'auto',
           },
         })}
       />
-      <div className="flex flex-1 flex-auto flex-col w-full h-full relative" ref={containerRef}>
+      <div className="flex flex-1 flex-auto flex-col w-full h-full relative">
 
         <div className={clsx('flex flex-1 overflow-x-auto overflow-y-hidden')}>
           <DragDropContext onDragEnd={onDragEnd}>

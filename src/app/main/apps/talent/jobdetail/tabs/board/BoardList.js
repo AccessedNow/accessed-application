@@ -33,13 +33,13 @@ function BoardList(props) {
           <StyledCard
             className={clsx(
               snapshot.isDragging ? 'shadow-lg' : 'shadow',
-              'w-256 sm:w-320 mx-8 sm:mx-12 max-h-full flex flex-col rounded-20'
+              'w-256 sm:w-320 mx-8 sm:mx-12 max-h-full flex flex-col rounded-6 shadow-none border-1'
             )}
             square
           >
             <BoardListHeader
               list={props.list}
-              className="border-b-1"
+              className="border-b-1 border-1"
               handleProps={provided.dragHandleProps}
             />
 

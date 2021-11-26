@@ -297,7 +297,7 @@ function JobDetail() {
                     </Tabs>
                   </Box>
                 </Box>
-                <Stack direction="row" spacing={1} className="flex">
+                <Stack direction="row" spacing={1} className="flex items-center">
                   <FieldSelect />
                   <IconButton fontSize="small">
                     <FilterIcon fontSize="inherit" />

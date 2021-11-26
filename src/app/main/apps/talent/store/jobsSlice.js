@@ -176,8 +176,10 @@ const jobsSlice = createSlice({
       }
 
       state.data = action.payload.content;
-      state.pagination.totalPages = action.payload.totalPages;
-      state.pagination.totalElements = action.payload.totalElements;
+      // state.pagination.totalPages = action.payload.totalPages;
+      // state.pagination.totalElements = action.payload.totalElements;
+      state.totalPages = action.payload.totalPages;
+      state.totalElements = action.payload.totalElements;
 
     },
   },

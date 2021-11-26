@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 
 import ContentHeader from './ContentHeader';
 import SidebarContent from './SidebarContent';
-import JobList from '../../../components/JobList';
+import JobList from '../components/job-list/JobList';
 import Toolbar from './Toolbar';
 
 import reducer from './store';
@@ -115,7 +115,6 @@ function JobsApp(props) {
             }
           </div>
         }
-        // leftSidebarContent={<JobFilter></JobFilter>}
 
         innerScroll
         ref={pageLayout}

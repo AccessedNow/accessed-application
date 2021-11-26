@@ -213,22 +213,51 @@ function JobDetail() {
                   <Typography variant="h5" className="font-600 mb-5">{job.title}</Typography>
                   <Stack direction="row" spacing={1}>
                     <div className="">
-                      <Icon component={motion.span} initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.2 } }} className="text-12 md:text-12">check_box</Icon>
-                      <Typography component={motion.span} initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.2 } }} delay={300} className="text-12 md:text-12 mx-5 font-semibold">
-                        {job.jobFunction.name}
-                      </Typography>
+                      <Icon component={motion.span} initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.2 } }} className="text-12 md:text-12">dehaze</Icon>
+                      {job.jobFunction ?
+                        <Typography component={motion.span} initial={{x: -20}}
+                                    animate={{x: 0, transition: {delay: 0.2}}} delay={300}
+                                    className="text-12 md:text-12 mx-5 font-semibold">
+                          {job.jobFunction.name}
+                        </Typography>
+                        :
+                        <Typography component={motion.span} initial={{x: -20}}
+                                    animate={{x: 0, transition: {delay: 0.2}}} delay={300}
+                                    className="text-12 md:text-12 text-blue-500 mx-5">
+                          {'Add job function'}
+                        </Typography>
+                      }
                     </div>
                     <div className="">
                       <Icon component={motion.span} initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.2 } }} className="text-12 md:text-12">work_outline</Icon>
-                      <Typography component={motion.span} initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.2 } }} delay={300} className="text-12 md:text-12 mx-5 font-semibold">
-                        {job.employmentType}
-                      </Typography>
+                      {job.employmentType ?
+                        <Typography component={motion.span} initial={{x: -20}}
+                                    animate={{x: 0, transition: {delay: 0.2}}} delay={300}
+                                    className="text-12 md:text-12 mx-5 font-semibold">
+                          {job.employmentType}
+                        </Typography>
+                        :
+                        <Typography component={motion.span} initial={{x: -20}}
+                                    animate={{x: 0, transition: {delay: 0.2}}} delay={300}
+                                    className="text-12 md:text-12 text-blue-500 mx-5">
+                          {'Add employment type'}
+                        </Typography>
+                      }
                     </div>
                     <div className="">
                       <Icon component={motion.span} initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.2 } }} className="text-12 md:text-12">place</Icon>
-                      <Typography component={motion.span} initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.2 } }} delay={300} className="text-12 md:text-12 mx-5 font-semibold">
-                        {job.city}, {job.country}
-                      </Typography>
+
+                      {job.country?
+                        <Typography component={motion.span} initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.2 } }} delay={300} className="text-12 md:text-12 mx-5 font-semibold">
+                          {job.city}, {job.country}
+                        </Typography>
+                        :
+                        <Typography component={motion.span} initial={{x: -20}}
+                                    animate={{x: 0, transition: {delay: 0.2}}} delay={300}
+                                    className="text-12 md:text-12 text-blue-500 mx-5">
+                          {'Add location'}
+                        </Typography>
+                      }
                     </div>
                   </Stack>
                 </div>

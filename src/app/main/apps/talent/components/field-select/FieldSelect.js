@@ -4,6 +4,8 @@ import { useTheme, styled } from '@mui/material/styles';
 import Popper from '@mui/material/Popper';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import SettingsIcon from '@mui/icons-material/Settings';
+import FieldSelectionCheckIcon from '@mui/icons-material/LibraryAddCheck';
+
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
@@ -132,9 +134,9 @@ export default function FieldSelect() {
 
   return (
     <React.Fragment>
-      <Box sx={{ width: 221, fontSize: 13 }}>
-        <Button disableRipple aria-describedby={id} onClick={handleClick}>
-          <SettingsIcon />
+      <Box sx={{ }}>
+        <Button disableRipple aria-describedby={id} onClick={handleClick} className="p-0">
+          <FieldSelectionCheckIcon className="ml-3" />
         </Button>
 
       </Box>

@@ -50,7 +50,7 @@ function NotesHeader(props) {
       <div className="flex flex-1 items-center justify-end">
         <Button
           component={Link}
-          to="/apps/e-commerce/products/new"
+          to="/talent/jobs/addUpdate"
           className="whitespace-nowrap"
           variant="contained"
           color="secondary"

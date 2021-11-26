@@ -71,7 +71,7 @@ function JobCreate(props) {
     {
       id: '2',
       title: 'Application',
-      content: <ApplicationForm job={job} onChange={handleOnChange}  />
+      content: <div></div>
     },
     {
       id: '3',

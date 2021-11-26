@@ -18,16 +18,16 @@ const TalentConfig = {
       component: lazy(() => import('./dashboard/TalentDashboardApp')),
     },
     {
-      path: [ '/talent/jobs'],
-      component: lazy(() => import('./jobs/JobsApp')),
+      path: [ '/talent/jobs/addUpdate/:jobId', '/talent/jobs/addUpdate'],
+      component: lazy(() => import('./job-create/JobCreate')),
     },
     {
       path: [ '/talent/jobs/:jobId'],
       component: lazy(() => import('./jobdetail/JobDetail')),
     },
     {
-      path: [ '/talent/company/:companyId/jobs/addUpdate/:jobId', '/talent/company/:companyId/jobs/addUpdate'],
-      component: lazy(() => import('./job-create/JobCreate')),
+      path: [ '/talent/jobs'],
+      component: lazy(() => import('./jobs/JobsApp')),
     },
     {
       path: [ '/talent/candidates/:candidateId'],

@@ -4,23 +4,29 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
-
+import Autocomplete from '@mui/material/Autocomplete';
 import AlarmIcon from '@mui/icons-material/Alarm';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
+import ColumnIcon from '@mui/icons-material/ViewWeek';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterIcon from '@mui/icons-material/FilterList';
-import ColumnIcon from '@mui/icons-material/ViewWeek';
-import ListViewIcon from '@mui/icons-material/FormatListBulleted';
-
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Hidden from '@mui/material/Hidden';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
+import InputBase from '@mui/material/InputBase';
 import Link from '@mui/material/Link';
+import ListViewIcon from '@mui/icons-material/FormatListBulleted';
+import MenuItem from '@mui/material/MenuItem';
+import NativeSelect from '@mui/material/NativeSelect';
+
 import PlaceIcon from '@mui/icons-material/Place';
+import Select from '@mui/material/Select';
+
 import Stack from '@mui/material/Stack';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -38,6 +44,7 @@ import { withRouter, useParams } from 'react-router-dom';
 import {getJob} from "../store/jobSlice";
 import reducer from './store';
 import BoardTab from './tabs/BoardTab';
+import FieldSelect from '../components/field-select/FieldSelect';
 
 
 function TabPanel(props) {
@@ -112,6 +119,39 @@ const Root = styled('div')(({ theme }) => ({
 
 }));
 
+const BootstrapInput = styled(InputBase)(({ theme }) => ({
+  'label + &': {
+    marginTop: theme.spacing(3),
+  },
+  '& .MuiInputBase-input': {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    },
+  },
+}));
+
 
 function JobDetail() {
   const dispatch = useDispatch();
@@ -120,6 +160,7 @@ function JobDetail() {
   const containerRef = useRef(null);
 
   const [tab, setTab] = useState(0);
+  const [fields, setFields] = useState([]);
 
   const handleTabChange = (event, newValue) => {
     setTab(newValue);
@@ -133,6 +174,9 @@ function JobDetail() {
     dispatch(getJob(routeParams));
   }, [dispatch, routeParams]);
 
+  const handleFieldsChange = (event) => {
+    setFields(event.target.value);
+  };
 
   if(!job){
     return null;
@@ -225,6 +269,7 @@ function JobDetail() {
                   </Box>
                 </Box>
                 <Stack direction="row" spacing={1} className="flex">
+                  <FieldSelect />
                   <IconButton fontSize="small">
                     <FilterIcon fontSize="inherit" />
                   </IconButton>

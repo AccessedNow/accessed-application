@@ -86,11 +86,11 @@ function BoardCard(props) {
                   className="w-40 h-40 md:w-40 md:h-40"
                   src={member.avatar}
                 />
-                <div className="flex flex-col flex-1 items-start justify-start ml-5 p-8">
-                  <Typography variant="h6" color="inherit" className="pt-8 font-600">
+                <div className="flex flex-col items-start justify-start ml-5">
+                  <Typography variant="body2" color="inherit" className="">
                     {member.name}
                   </Typography>
-                  <Typography variant="body" color="inherit" className="pt-8">
+                  <Typography variant="caption" color="inherit" className="">
                     Developer
                   </Typography>
                 </div>

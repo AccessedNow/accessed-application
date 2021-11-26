@@ -76,7 +76,7 @@ function BoardCard(props) {
               )}
 
               {member &&
-              <div className="flex flex-row items-start justify-start">
+              <div className="flex flex-row items-start justify-start mb-10">
                 <Avatar
                   sx={{
                     borderWidth: 2,

@@ -63,7 +63,7 @@ function BoardAddList(props) {
   return (
     <div>
       <Card
-        className="w-320 mx-8 sm:mx-12 rounded-20 shadow"
+        className="w-320 mx-8 sm:mx-12 rounded-6 shadow"
         square
         sx={{
           backgroundColor: (theme) =>
@@ -118,7 +118,7 @@ function BoardAddList(props) {
             }}
           >
             <Icon className="text-32 text-red">add_circle</Icon>
-            <span className="mx-8">Add a list</span>
+            <span className="mx-8">Add a stage</span>
           </Button>
         )}
       </Card>

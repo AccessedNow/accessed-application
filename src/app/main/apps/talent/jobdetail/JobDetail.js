@@ -3,11 +3,19 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Avatar from '@mui/material/Avatar';
+import AvatarGroup from '@mui/material/AvatarGroup';
 
+import AlarmIcon from '@mui/icons-material/Alarm';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FilterIcon from '@mui/icons-material/FilterList';
+import ColumnIcon from '@mui/icons-material/ViewWeek';
+import ListViewIcon from '@mui/icons-material/FormatListBulleted';
+
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Hidden from '@mui/material/Hidden';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
@@ -97,7 +105,7 @@ const Root = styled('div')(({ theme }) => ({
   },
   '& .MuiTabs-root': {
     '& .Mui-selected': {
-      color: theme.palette.mode === 'dark' ? '#8796A5' : '#fff',
+      // color: theme.palette.mode === 'dark' ? '#8796A5' : '#fff',
     }
   }
 
@@ -140,7 +148,7 @@ function JobDetail() {
         })}
       />
       <div className="flex flex-1 flex-auto flex-col w-full h-full relative" ref={containerRef}>
-        <AppBar position="static" color="primary" elevation={0} className="header">
+        <AppBar position="static" color="inherit" elevation={0} className="header">
           <Toolbar className="flex items-center justify-between px-4 sm:px-24 h-48 sm:h-64 sm:h-96 container">
             <div className="flex flex-col items-start justify-start w-full">
               <div className="flex flex-row items-center justify-between w-full">
@@ -182,33 +190,51 @@ function JobDetail() {
                 </div>
                 <div className="flex flex-row">
                   <div className="flex flex-col">
-                    <Typography variant="caption" className="font-600 mb-5">HIRING TEAM</Typography>
+                    <Typography variant="caption" className="text-11 font-600 mb-5">HIRING TEAM</Typography>
                     <div>
-                      {job.members.map((member) => (
-                      <Avatar
-                        sx={{
-                          borderWidth: 2,
-                          borderStyle: 'solid',
-                          borderColor: 'white',
-                        }}
-                        className="w-40 h-40 md:w-32 md:h-32"
-                        src={member.avatar}
-                      />
-                        ))}
+                      {/*{job.members.map((member) => (*/}
+                      {/*<Avatar*/}
+                        {/*sx={{*/}
+                          {/*borderWidth: 2,*/}
+                          {/*borderStyle: 'solid',*/}
+                          {/*borderColor: 'white',*/}
+                        {/*}}*/}
+                        {/*className="w-40 h-40 md:w-32 md:h-32"*/}
+                        {/*src={member.avatar}*/}
+                      {/*/>*/}
+                        {/*))}*/}
+                      <AvatarGroup max={4}>
+                        <Avatar alt="Remy Sharp" src="/material-ui-static/images/avatar/1.jpg" className="w-40 h-40" />
+                        <Avatar alt="Travis Howard" src="/material-ui-static/images/avatar/2.jpg" />
+                        <Avatar alt="Cindy Baker" src="/material-ui-static/images/avatar/3.jpg" />
+                        <Avatar alt="Agnes Walker" src="/material-ui-static/images/avatar/4.jpg" />
+                        <Avatar alt="Trevor Henderson" src="/material-ui-static/images/avatar/5.jpg" />
+                      </AvatarGroup>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-start justify-start w-full">
-                <Box sx={{ width: '100%' }}>
-                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <div className="flex flex-row items-center justify-center justify-between w-full">
+                <Box className="flex">
+                  <Box sx={{ borderBottom: 0, borderColor: 'divider' }}>
                     <Tabs value={tab} onChange={handleTabChange} aria-label="tabs">
-                      <Tab label="Item One" {...a11yProps(0)} size="small" className="text-12" />
-                      <Tab label="Item Two" {...a11yProps(1)} />
-                      <Tab label="Item Three" {...a11yProps(2)} />
+                      <Tab label="Candidates" {...a11yProps(0)} size="small" className="text-12" />
+                      <Tab label="Detail" {...a11yProps(1)} />
+                      <Tab label="Insight" {...a11yProps(2)} />
                     </Tabs>
                   </Box>
                 </Box>
+                <Stack direction="row" spacing={1} className="flex">
+                  <IconButton fontSize="small">
+                    <FilterIcon fontSize="inherit" />
+                  </IconButton>
+                  <IconButton fontSize="small" aria-label="column" color="secondary">
+                    <ColumnIcon fontSize="inherit" />
+                  </IconButton>
+                  <IconButton fontSize="small" color="secondary" >
+                    <ListViewIcon fontSize="inherit" />
+                  </IconButton>
+                </Stack>
               </div>
             </div>
 

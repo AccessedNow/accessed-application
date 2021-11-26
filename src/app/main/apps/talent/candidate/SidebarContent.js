@@ -21,6 +21,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import CandidateList from '../components/candidate-list/CandidateList';
+import NotesTab from './tabs/NotesTab';
+import ActivitiesTab from './tabs/ActivitiesTab';
 
 
 function TabPanel(props) {
@@ -35,7 +37,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 2 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -69,7 +71,7 @@ function SidebarContent(props) {
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs variant="scrollable" scrollButtons="auto" value={tab} onChange={handleTabChange} aria-label="basic tabs example">
+        <Tabs variant="scrollable" scrollButtons="auto" value={tab} onChange={handleTabChange} aria-label="">
           <Tab label="Recommended" {...a11yProps(0)} />
           <Tab label="Calendar" {...a11yProps(1)} />
           <Tab label="Evaluations" {...a11yProps(2)} />
@@ -90,13 +92,13 @@ function SidebarContent(props) {
         3
       </TabPanel>
       <TabPanel value={tab} index={3}>
-        4
+        <NotesTab id={candidate.id} />
       </TabPanel>
       <TabPanel value={tab} index={4}>
         5
       </TabPanel>
       <TabPanel value={tab} index={5}>
-        6
+        <ActivitiesTab id={candidate.id} />
       </TabPanel>
     </Box>
   );

@@ -6,8 +6,9 @@ import { showMessage } from 'app/store/fuse/messageSlice';
 import {getProduct, removeProduct, saveProduct} from "../../e-commerce/store/productSlice";
 
 
-export const getJob = createAsyncThunk('job/detail', async (params, {getState}) => {
-  const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${params.companyId}/jobs/${params.jobId}`, {headers: {userId: getState().auth.user.data.id}} );
+export const getJob = createAsyncThunk('talent/job/detail', async (params, {getState}) => {
+  const user = getState().auth.user;
+  const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.data.preferredCompany}/jobs/${params.jobId}`, {headers: {userId: user.data.id}} );
   const data = await response.data.data;
 
   return data === undefined ? null : data;

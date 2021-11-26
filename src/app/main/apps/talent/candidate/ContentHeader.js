@@ -54,12 +54,12 @@ function ContentHeader(props) {
             </motion.div>
           </div>
           <div className="flex">
-            <IconButton size="small" sx={{ p: '0px' }} aria-label="locations">
-              <PlaceIcon fontSize="inherit" />
-            </IconButton>
+            {/*<IconButton size="small" sx={{ p: '0px' }} aria-label="locations">*/}
+              {/*<PlaceIcon fontSize="inherit" />*/}
+            {/*</IconButton>*/}
             {location}
           </div>
-          <div className="flex flex-row items-start justify-start mt-5">
+          <div className="flex flex-row items-start justify-start mt-8">
             <div className="flex">
               <IconButton size="small" sx={{ p: '0px' }} aria-label="phone">
                 <CallIcon fontSize="inherit" />

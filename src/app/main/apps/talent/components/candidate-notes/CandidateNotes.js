@@ -1,5 +1,6 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import { styled } from '@mui/material/styles';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
@@ -19,6 +20,19 @@ import { useParams } from 'react-router-dom';
 import {getCandidateNotes, addCandidateNote} from "../../store/candidateSlice";
 import NoteList from "./NoteList";
 
+
+const StyledInputBase = styled(TextField)(({ theme }) => ({
+  '& textarea': {
+    transition: theme.transitions.create('height'),
+    [theme.breakpoints.up('sm')]: {
+      '&:focus': {
+        height: '75px!important',
+      },
+    },
+
+  },
+}));
+
 /**
  * Form Validation Schema
  */
@@ -36,7 +50,7 @@ function CandidateNotes(props) {
 
   useEffect(() => {
     dispatch(getCandidateNotes(props.id, routeParams)).then((response) => {
-      setNotes(response.payload);
+      setNotes(response.payload.content);
     });
   }, [dispatch, routeParams]);
 
@@ -61,12 +75,8 @@ function CandidateNotes(props) {
       setMessage('');
 
       data.payload.createdBy = user.data;
-      let temp = _.setIn(
-        notes,
-        'content',
-        notes.content.concat(data.payload)
-      );
-
+      let temp = notes.slice();
+      temp.unshift(data.payload);
       setNotes(
         temp
       );
@@ -77,30 +87,33 @@ function CandidateNotes(props) {
 
   return (
     <div>
+      <form onSubmit={onMessageSubmit} className="">
+        <Paper className="flex items-center relative rounded-6 shadow">
+          <StyledInputBase
+            multiline
+            maxRows={4}
+            autoFocus={false}
+            id="message-input"
+            className="flex-1 flex flex-grow"
+            placeholder="Type your message"
+            onChange={onInputChange}
+            value={message}
+          />
+          <IconButton
+            className="absolute ltr:right-0 rtl:left-0 top-0"
+            type="submit"
+            size="large"
+          >
+            <Icon className="text-24" color="action">
+              send
+            </Icon>
+          </IconButton>
+        </Paper>
+      </form>
       <FuseScrollbars>
         <NoteList notes={notes}/>
       </FuseScrollbars>
-      <form onSubmit={onMessageSubmit} className="absolute bottom-0 right-0 left-0 py-16 px-8">
-        <Paper className="flex items-center relative rounded-24 shadow">
-        <InputBase
-        autoFocus={false}
-        id="message-input"
-        className="flex-1 flex flex-grow flex-shrink-0 mx-16 ltr:mr-48 rtl:ml-48 my-8"
-        placeholder="Type your message"
-        onChange={onInputChange}
-        value={message}
-        />
-        <IconButton
-          className="absolute ltr:right-0 rtl:left-0 top-0"
-          type="submit"
-          size="large"
-        >
-          <Icon className="text-24" color="action">
-            send
-          </Icon>
-        </IconButton>
-        </Paper>
-      </form>
+
     </div>
   );
 }

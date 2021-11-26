@@ -102,6 +102,22 @@ export const getCandidateNotes = createAsyncThunk(
   }
 );
 
+
+export const getCandidateActivities = createAsyncThunk(
+  'candidate/activities',
+  async (id, { getState }) => {
+    let user = getState().auth.user.data;
+    // let sort = getState().candidatesApp.candidates.sort;
+    // let searchText = getState().candidatesApp.candidates.searchText;
+    // let queryParams = _.merge(sort, {query: searchText});
+    // queryParams = new URLSearchParams(queryParams);
+    const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/candidates/${id}/activities?`, {headers: {userId: user.id}});
+    const data = await response.data.data;
+
+    return data;
+  }
+);
+
 export const addCandidateNote = createAsyncThunk(
   'candidate/notes/add',
   async (note, { getState }) => {
@@ -170,7 +186,14 @@ const candidateSlice = createSlice({
     [getCandidateNotes.fulfilled]: (state, action) => {
       state.notes = action.payload;
     },
-    [addCandidateNote.fulfilled]: (state, action) => action.payload,
+    [getCandidateActivities.fulfilled]: (state, action) => {
+      state.activities = action.payload;
+    },
+    // [addCandidateNote.fulfilled]: (state, action) => {
+    //   let {notes} = state;
+    //   notes.slice().unshift(action.payload);
+    //   state.notes = notes;
+    // }
   },
 });
 

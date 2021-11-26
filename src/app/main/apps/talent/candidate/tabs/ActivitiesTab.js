@@ -25,8 +25,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import {getCandidateNotes} from "../../store/candidateSlice";
-import CandidateNotes from "../../components/candidate-notes/CandidateNotes";
+import CandidateActivities from "../../components/candidate-activities/CandidateActivities";
 
 
 const CustomTimeline = styled(Timeline)(({ theme }) => ({
@@ -39,15 +38,11 @@ const CustomTimeline = styled(Timeline)(({ theme }) => ({
 
 
 
-function NotesTab(props) {
+function ActivitiesTab(props) {
   const dispatch = useDispatch();
   const routeParams = useParams();
 
   const user = useSelector(({ auth }) => auth.user);
-  const [inputNote, setInputNote] = useState(null);
-  const handleClickShowPassword = () => {
-    setNote(null);
-  };
 
   const container = {
     show: {
@@ -64,9 +59,9 @@ function NotesTab(props) {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show">
-      <CandidateNotes id={routeParams.candidateId} />
+      <CandidateActivities id={routeParams.candidateId} />
     </motion.div>
   );
 }
 
-export default NotesTab;
+export default ActivitiesTab;

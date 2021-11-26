@@ -142,7 +142,7 @@ function CandidateDetail() {
           <ResumeList id={candidate.id} />
         </TabPanel>
         <TabPanel value={tab} index={3}>
-          <NotesTab id={candidate.id} />
+          4
         </TabPanel>
         <TabPanel value={tab} index={4}>
           5

@@ -31,6 +31,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     minHeight: 96,
     height: 96,
     [theme.breakpoints.up('sm')]: {
+
       minHeight: 160,
       height: 160,
     },
@@ -45,8 +46,12 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 
   '& .FusePageSimple-rightSidebar': {
     width: 600,
-    background: 'white'
+    backgroundColor: 'white'
   },
+
+  '& .FusePageSimple-sidebarContent': {
+    backgroundColor: 'white'
+  }
 }));
 
 

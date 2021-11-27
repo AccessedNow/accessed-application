@@ -18,6 +18,18 @@ const TalentConfig = {
       component: lazy(() => import('./dashboard/TalentDashboardApp')),
     },
     {
+      path: [ '/talent/calendar'],
+      component: lazy(() => import('./calendar/CalendarApp')),
+    },
+    {
+      path: [ '/talent/mail/inbox'],
+      component: lazy(() => import('./mail/MailApp')),
+    },
+    {
+      path: [ '/talent/messages'],
+      component: lazy(() => import('./chat/ChatApp')),
+    },
+    {
       path: [ '/talent/jobs/addUpdate/:jobId', '/talent/jobs/addUpdate'],
       component: lazy(() => import('./job-create/JobCreate')),
     },

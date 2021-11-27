@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
 import _ from '@lodash';
+import {getMails} from "../../mail/store/mailsSlice";
 
 
 export const searchCandidates = createAsyncThunk(
@@ -57,6 +58,23 @@ export const removeCandidate = createAsyncThunk(
   }
 );
 
+export const setPoolOnSelectedCandidates = createAsyncThunk(
+  'mailApp/mails/setFolderOnSelectedMails',
+  async (id, { dispatch, getState }) => {
+    const { selectedMailIds } = getState().mailApp.mails;
+
+    const response = await axios.post('/api/mail-app/set-folder', {
+      selectedMailIds,
+      folderId: id,
+    });
+    const data = await response.data;
+
+    dispatch(getMails());
+
+    return data;
+  }
+);
+
 
 const candidatesAdapter = createEntityAdapter({});
 
@@ -72,6 +90,7 @@ const candidatesSlice = createSlice({
     totalPage: 0,
     totalElements: 0,
     data: [],
+    selectedCandidateIds: [],
     filter: {
       hasApplied: true,
       hasImported: false,
@@ -114,6 +133,22 @@ const candidatesSlice = createSlice({
     },
     setFilter: (state, action) => {
       state.filter = action.payload;
+    },
+    selectAllCandidates: (state, action) => {
+      state.selectedCandidateIds = state.ids;
+    },
+    deselectAllCandidates: (state, action) => {
+      state.selectedCandidateIds = [];
+    },
+    selectCandidatesByParameter: (state, action) => {
+      const [parameter, value] = action.payload;
+      state.selectedCandidateIds = state.ids.filter((id) => state.entities[id][parameter] === value);
+    },
+    toggleInSelectedCandidates: (state, action) => {
+      const candidateId = action.payload;
+      state.selectedCandidateIds = state.selectedCandidateIds.includes(candidateId)
+        ? state.selectedCandidateIds.filter((id) => id !== candidateId)
+        : [...state.selectedCandidateIds, candidateId];
     },
     openCandidateDialog: (state, action) => {
       state.candidateDialog = {
@@ -192,6 +227,10 @@ const candidatesSlice = createSlice({
 export const {
   toggleOrderDescending,
   changeOrder,
+  selectAllCandidates,
+  deselectAllCandidates,
+  selectCandidatesByParameter,
+  toggleInSelectedCandidates,
   openCandidateDialog,
   closeCandidateDialog,
   openNewCandidateDialog,
@@ -200,6 +239,5 @@ export const {
   closeEditCandidateDialog,
   setSearchText,
   setFilter } = candidatesSlice.actions;
-
 
 export default candidatesSlice.reducer;

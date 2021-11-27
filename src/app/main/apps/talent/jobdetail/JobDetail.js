@@ -39,7 +39,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDeepCompareEffect } from '@fuse/hooks';
-import { withRouter, useParams } from 'react-router-dom';
+import { withRouter, useParams, useHistory } from 'react-router-dom';
 
 import {getJob} from "../store/jobSlice";
 import reducer from './store';
@@ -153,9 +153,10 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 }));
 
 
-function JobDetail() {
+function JobDetail(props) {
   const dispatch = useDispatch();
   const routeParams = useParams();
+  const history = useHistory();
   const job = useSelector(({ jobDetail }) => jobDetail.job);
   const containerRef = useRef(null);
 
@@ -197,10 +198,12 @@ function JobDetail() {
             <div className="flex flex-col items-start justify-start w-full">
               <div className="flex flex-row items-center justify-between w-full">
                 <div className="flex items-center justify-center">
+                  <Link onClick={() => {props.history.goBack()}}>
                   <Icon component={motion.span} initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.2 } }} className="text-12 md:text-12">chevron_left</Icon>
                   <Typography component={motion.span} initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.2 } }} delay={300} className="text-12 md:text-12 mx-12">
                     {'back'}
                   </Typography>
+                  </Link>
                 </div>
                 <div className="flex">
                   <IconButton color="inherit" onClick={() => toggleSettingsDrawer(true)} size="medium">

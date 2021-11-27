@@ -44,7 +44,6 @@ const MailListItem = (props) => {
   return (
     <StyledListItem
       dense
-      disableRipple
       button
       onClick={() =>
         props.history.push(

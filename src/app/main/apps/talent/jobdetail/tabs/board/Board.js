@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Hidden from '@mui/material/Hidden';
@@ -19,6 +21,20 @@ import BoardList from './BoardList';
 import BoardTitle from './BoardTitle';
 import BoardCardDialog from './dialogs/card/BoardCardDialog';
 import BoardSettingsSidebar from './sidebars/settings/BoardSettingsSidebar';
+
+
+const container = {
+  show: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
 
 function Board(props) {
   const dispatch = useDispatch();
@@ -87,7 +103,9 @@ function Board(props) {
                   className="flex container py-16 md:py-24 px-8 md:px-12"
                 >
                   {board.lists.map((list, index) => (
+                    <motion.div variants={item} key={list.id}>
                     <BoardList key={list.id} list={list} index={index} />
+                    </motion.div>
                   ))}
                   {provided.placeholder}
 

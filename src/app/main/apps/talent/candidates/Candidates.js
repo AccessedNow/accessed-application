@@ -10,6 +10,7 @@ import ContentHeader from './ContentHeader';
 import CandidateList from './CandidateList';
 import CandidateDrawer from './CandidateDrawer';
 import Toolbar from './Toolbar';
+import CandidatesToolbar from './CandidatesToolbar';
 
 import SidebarContent from './SidebarContent';
 import {searchCandidates} from "../store/candidatesSlice";
@@ -91,11 +92,11 @@ function Candidates() {
   return(
     <>
       <Root
-        leftSidebarContent={<SidebarContent />}
-        header={<ContentHeader pageLayout={pageLayout} />}
-        contentToolbar={<Toolbar />}
-        content={<CandidateList />}
 
+        header={<ContentHeader pageLayout={pageLayout} />}
+        contentToolbar={<CandidatesToolbar />}
+        content={<CandidateList />}
+        leftSidebarContent={<SidebarContent />}
         ref={pageLayout}
          innerScroll
       />;

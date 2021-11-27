@@ -44,6 +44,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     flexDirection: 'column',
     flex: '1 1 auto',
     overflow: 'hidden',
+    backgroundColor: 'white'
   },
   '& .FusePageSimple-sidebar': {
     padding: 24,
@@ -153,7 +154,7 @@ function JobCreate(props) {
               <Icon>menu</Icon>
             </IconButton>
           </Hidden>
-          <IconButton to="/talent/company/25/jobs" component={Link} size="large">
+          <IconButton to="/talent/jobs" component={Link} size="large">
             <Icon>{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
           </IconButton>
           <Typography className="flex-1 text-20 mx-16">Create Job</Typography>

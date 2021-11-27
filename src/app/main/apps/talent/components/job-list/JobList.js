@@ -1,5 +1,6 @@
 import * as React from 'react';
 import queryString from 'query-string';
+import { motion } from 'framer-motion';
 
 import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
@@ -8,12 +9,26 @@ import List from '@mui/material/List';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
 import { useParams, useHistory } from "react-router-dom";
 
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import JobListItem from './JobListItem';
+
+
+const container = {
+  show: {
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
+
 
 function JobList(props) {
   const contentScrollEl = useRef(null);
@@ -37,8 +52,9 @@ function JobList(props) {
     <div className="bg-white">
       <List className="p-0" type={props.type}>
         {props.jobs.map((job) => (
-          <JobListItem key={job._id} job={job} setSelectedItem={props.setSelectedItem}/>
-
+          <motion.div variants={item} key={job._id}>
+            <JobListItem key={job._id} job={job} setSelectedItem={props.setSelectedItem}/>
+          </motion.div>
         ))}
       </List>
       <Stack spacing={2} className="py-10">

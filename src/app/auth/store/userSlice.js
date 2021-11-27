@@ -135,7 +135,31 @@ export const setUserData = (user) => async (dispatch, getState) => {
           'type': 'item',
           'url': '/talent/dashboard',
           auth: authRoles.admin,
-          'icon': 'lock'
+          'icon': 'dashboard'
+        },
+        {
+          'id': 'calendar',
+          'title': 'Calendar',
+          'type': 'item',
+          'url': '/talent/calendar',
+          auth: authRoles.admin,
+          'icon': 'calendar_today'
+        },
+        {
+          'id': 'mails',
+          'title': 'Mails',
+          'type': 'item',
+          'url': '/talent/mail/inbox',
+          auth: authRoles.admin,
+          'icon': 'mail'
+        },
+        {
+          'id': 'messages',
+          'title': 'Messages',
+          'type': 'item',
+          'url': '/talent/messages',
+          auth: authRoles.admin,
+          'icon': 'mail'
         },
         {
           'id': 'jobs',
@@ -143,7 +167,7 @@ export const setUserData = (user) => async (dispatch, getState) => {
           'type': 'item',
           'url': '/talent/jobs',
           auth: authRoles.admin,
-          'icon': 'lock'
+          'icon': 'work_outline'
         },
         {
           'id': 'candidates',
@@ -151,7 +175,7 @@ export const setUserData = (user) => async (dispatch, getState) => {
           'type': 'item',
           'url': '/talent/candidates',
           auth: authRoles.admin,
-          'icon': 'lock'
+          'icon': 'people'
         },
         {
           'id': 'settings',

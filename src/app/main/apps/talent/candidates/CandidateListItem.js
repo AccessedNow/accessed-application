@@ -5,6 +5,7 @@ import { amber, red } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
+import Checkbox from '@mui/material/Checkbox';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
@@ -17,7 +18,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
-import { openCandidateDialog, updateCandidate, openEditCandidateDialog } from '../store/candidatesSlice';
+import { toggleInSelectedCandidates, openCandidateDialog, updateCandidate, openEditCandidateDialog } from '../store/candidatesSlice';
 
 
 const ITEM_HEIGHT = 48;
@@ -49,6 +50,11 @@ function CandidateListItem(props) {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const openOption = Boolean(anchorEl);
+  const selectedCandidateIds = useSelector(({ candidatesApp }) => candidatesApp.candidates.selectedCandidateIds);
+  const checked =
+    selectedCandidateIds.length > 0 && selectedCandidateIds.find((id) => id === props.candidate.id) !== undefined;
+
+
   const handleOptionClick = (event) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
@@ -62,31 +68,40 @@ function CandidateListItem(props) {
       completed={props.candidate.hasApplied}
       onClick={(ev) => {
         ev.preventDefault();
-        dispatch(openCandidateDialog(props.candidate));
+        // dispatch(openCandidateDialog(props.candidate));
       }}
       dense
       button
     >
-      <IconButton
+      <Checkbox
         tabIndex={-1}
         disableRipple
-        onClick={(ev) => {
-          ev.stopPropagation();
-          dispatch(
-            updateCandidate({
-              ...props.candidate,
-              completed: !props.candidate.hasApplied,
-            })
-          );
-        }}
-        size="large"
-      >
-        {props.candidate.hasApplied ? (
-          <Icon color="secondary">check_circle</Icon>
-        ) : (
-          <Icon color="action">radio_button_unchecked</Icon>
-        )}
-      </IconButton>
+        checked={checked}
+        onChange={() => dispatch(toggleInSelectedCandidates(props.candidate.id))}
+        onClick={(ev) => ev.stopPropagation()}
+      />
+
+      {/*<IconButton*/}
+        {/*tabIndex={-1}*/}
+        {/*disableRipple*/}
+        {/*onClick={(ev) => {*/}
+          {/*ev.stopPropagation();*/}
+          {/*dispatch(*/}
+            {/*updateCandidate({*/}
+              {/*...props.candidate,*/}
+              {/*completed: !props.candidate.hasApplied,*/}
+            {/*})*/}
+          {/*);*/}
+        {/*}}*/}
+        {/*size="large"*/}
+      {/*>*/}
+        {/*{props.candidate.hasApplied ? (*/}
+          {/*<Icon color="secondary">check_circle</Icon>*/}
+        {/*) : (*/}
+          {/*<Icon color="action">radio_button_unchecked</Icon>*/}
+        {/*)}*/}
+      {/*</IconButton>*/}
+
 
       {/*<div className="flex flex-1 flex-col relative overflow-hidden px-8">*/}
         {/*<Typography*/}

@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 import Card from '@mui/material/Card';
 import { styled, darken } from '@mui/material/styles';
 import CardActions from '@mui/material/CardActions';
@@ -8,6 +10,20 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 import BoardAddCard from './BoardAddCard';
 import BoardCard from './BoardCard';
 import BoardListHeader from './BoardListHeader';
+
+const container = {
+  show: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
+
 
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: darken(
@@ -52,7 +68,9 @@ function BoardList(props) {
                   {(_provided) => (
                     <div ref={_provided.innerRef} className="flex flex-col w-full h-full p-16">
                       {props.list.idCards.map((cardId, index) => (
-                        <BoardCard key={cardId} cardId={cardId} index={index} list={props.list} />
+                        <motion.div variants={item} key={index}>
+                          <BoardCard key={cardId} cardId={cardId} index={index} list={props.list} />
+                        </motion.div>
                       ))}
                       {_provided.placeholder}
                     </div>

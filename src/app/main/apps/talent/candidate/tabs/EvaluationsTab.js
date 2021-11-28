@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import CandidateActivities from "../../components/candidate-activities/CandidateActivities";
+import CandidateEvaluations from "../../components/candidate-evaluations/CandidateEvaluations";
 
 
 const CustomTimeline = styled(Timeline)(({ theme }) => ({
@@ -38,11 +38,10 @@ const CustomTimeline = styled(Timeline)(({ theme }) => ({
 
 
 
-function ActivitiesTab(props) {
+function EvaluationsTab(props) {
   const dispatch = useDispatch();
   const routeParams = useParams();
 
-  const user = useSelector(({ auth }) => auth.user);
 
   const container = {
     show: {
@@ -58,10 +57,10 @@ function ActivitiesTab(props) {
   };
 
   return (
-    <div>
-      <CandidateActivities id={routeParams.candidateId} />
-    </div>
+    <motion.div variants={container} initial="hidden" animate="show">
+      <CandidateEvaluations id={props.id} />
+    </motion.div>
   );
 }
 
-export default ActivitiesTab;
+export default EvaluationsTab;

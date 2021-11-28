@@ -23,6 +23,7 @@ import { motion } from 'framer-motion';
 import CandidateList from '../components/candidate-list/CandidateList';
 import NotesTab from './tabs/NotesTab';
 import ActivitiesTab from './tabs/ActivitiesTab';
+import EvaluationsTab from './tabs/EvaluationsTab';
 
 
 function TabPanel(props) {
@@ -89,7 +90,7 @@ function SidebarContent(props) {
         2
       </TabPanel>
       <TabPanel value={tab} index={2}>
-        3
+        <EvaluationsTab id={candidate.userId} />
       </TabPanel>
       <TabPanel value={tab} index={3}>
         <NotesTab id={candidate.id} />

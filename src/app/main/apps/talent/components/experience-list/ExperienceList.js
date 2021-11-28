@@ -23,7 +23,7 @@ function ExperienceList(props) {
 
   return (
     <List className="p-0">
-        {props.experiences.map((exp) => (
+        {props.experiences && props.experiences.map((exp) => (
             <ExperienceListItem experience={exp} />
         ))}
     </List>

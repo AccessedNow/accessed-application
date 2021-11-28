@@ -1,10 +1,15 @@
 import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
+import EditIcon from '@mui/icons-material/Edit';
+import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import format from 'date-fns/format';
 import { Box } from '@mui/system';
+import { useSelector } from 'react-redux';
+
 
 const StyledListItem = styled(ListItem)(({ theme, active }) => ({
   ...(active && {
@@ -13,6 +18,8 @@ const StyledListItem = styled(ListItem)(({ theme, active }) => ({
 }));
 
 function NoteListItem(props) {
+  const user = useSelector(({ auth }) => auth.user);
+
   return (
     <StyledListItem
       button
@@ -30,30 +37,16 @@ function NoteListItem(props) {
           primary: 'font-medium text-14',
           secondary: 'truncate',
         }}
-        primary={props.note.createdBy.firstName + ' ' + props.note.createdBy.lastName}
-        secondary={props.note.message}
+        primary={props.note.message}
+        secondary={format(new Date(props.note.createdDate), 'PP')}
       />
 
-      {props.note.createdDate && (
+      {props.note.createdBy.userId===user.data.id && (
         <div className="flex flex-col justify-center items-end">
           {props.note.createdDate && (
-            <Typography
-              className="whitespace-nowrap mb-8 font-medium text-12"
-              color="textSecondary"
-            >
-              {format(new Date(props.note.createdDate), 'PP')}
-            </Typography>
-          )}
-          {props.note.unread && (
-            <Box
-              sx={{
-                backgroundColor: 'secondary.main',
-                color: 'secondary.contrastText',
-              }}
-              className="flex items-center justify-center min-w-24 h-24 rounded-full font-medium text-12 text-center"
-            >
-              {props.note.unread}
-            </Box>
+            <IconButton fontSize="small" className="text-16">
+              <EditIcon fontSize="inherit" />
+            </IconButton>
           )}
         </div>
       )}

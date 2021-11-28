@@ -44,6 +44,8 @@ import { withRouter, useParams, useHistory } from 'react-router-dom';
 import {getJob} from "../store/jobSlice";
 import reducer from './store';
 import BoardTab from './tabs/BoardTab';
+import JobInsightTab from './tabs/insight/JobInsightTab';
+
 import FieldSelect from '../components/field-select/FieldSelect';
 
 
@@ -213,7 +215,7 @@ function JobDetail(props) {
               </div>
               <div className="flex flex-row items-start justify-start justify-between w-full">
                 <div className="mb-10">
-                  <Typography variant="h5" className="font-600 mb-5">{job.title}</Typography>
+                  <Typography className="text-16 md:text-32 font-600 mb-5">{job.title}</Typography>
                   <Stack direction="row" spacing={1}>
                     <div className="">
                       <Icon component={motion.span} initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.2 } }} className="text-12 md:text-12">dehaze</Icon>
@@ -232,7 +234,7 @@ function JobDetail(props) {
                       }
                     </div>
                     <div className="">
-                      <Icon component={motion.span} initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.2 } }} className="text-12 md:text-12">work_outline</Icon>
+                      <Icon component={motion.span} initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.2 } }} className="text-11 md:text-12">work_outline</Icon>
                       {job.employmentType ?
                         <Typography component={motion.span} initial={{x: -20}}
                                     animate={{x: 0, transition: {delay: 0.2}}} delay={300}
@@ -242,7 +244,7 @@ function JobDetail(props) {
                         :
                         <Typography component={motion.span} initial={{x: -20}}
                                     animate={{x: 0, transition: {delay: 0.2}}} delay={300}
-                                    className="text-12 md:text-12 text-blue-500 mx-5">
+                                    className="text-11 md:text-12 text-blue-500 mx-5">
                           {'Add employment type'}
                         </Typography>
                       }
@@ -251,7 +253,7 @@ function JobDetail(props) {
                       <Icon component={motion.span} initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.2 } }} className="text-12 md:text-12">place</Icon>
 
                       {job.country?
-                        <Typography component={motion.span} initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.2 } }} delay={300} className="text-12 md:text-12 mx-5 font-semibold">
+                        <Typography component={motion.span} initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.2 } }} delay={300} className="text-11 md:text-12 mx-5 font-semibold">
                           {job.city}, {job.country}
                         </Typography>
                         :
@@ -264,31 +266,33 @@ function JobDetail(props) {
                     </div>
                   </Stack>
                 </div>
-                <div className="flex flex-row">
-                  <div className="flex flex-col">
-                    <Typography variant="caption" className="text-11 font-600 mb-5">HIRING TEAM</Typography>
-                    <div>
-                      {/*{job.members.map((member) => (*/}
-                      {/*<Avatar*/}
-                        {/*sx={{*/}
-                          {/*borderWidth: 2,*/}
-                          {/*borderStyle: 'solid',*/}
-                          {/*borderColor: 'white',*/}
-                        {/*}}*/}
-                        {/*className="w-40 h-40 md:w-32 md:h-32"*/}
-                        {/*src={member.avatar}*/}
-                      {/*/>*/}
-                        {/*))}*/}
-                      <AvatarGroup max={4}>
-                        <Avatar alt="Remy Sharp" src="/material-ui-static/images/avatar/1.jpg" className="w-40 h-40" />
-                        <Avatar alt="Travis Howard" src="/material-ui-static/images/avatar/2.jpg" />
-                        <Avatar alt="Cindy Baker" src="/material-ui-static/images/avatar/3.jpg" />
-                        <Avatar alt="Agnes Walker" src="/material-ui-static/images/avatar/4.jpg" />
-                        <Avatar alt="Trevor Henderson" src="/material-ui-static/images/avatar/5.jpg" />
-                      </AvatarGroup>
+                <Hidden smDown>
+                  <div className="flex flex-row">
+                    <div className="flex flex-col">
+                      <Typography variant="caption" className="text-11 font-600 mb-5">HIRING TEAM</Typography>
+                      <div>
+                        {/*{job.members.map((member) => (*/}
+                        {/*<Avatar*/}
+                          {/*sx={{*/}
+                            {/*borderWidth: 2,*/}
+                            {/*borderStyle: 'solid',*/}
+                            {/*borderColor: 'white',*/}
+                          {/*}}*/}
+                          {/*className="w-40 h-40 md:w-32 md:h-32"*/}
+                          {/*src={member.avatar}*/}
+                        {/*/>*/}
+                          {/*))}*/}
+                        <AvatarGroup max={4}>
+                          <Avatar alt="Remy Sharp" src="/material-ui-static/images/avatar/1.jpg" className="w-32 h-32" />
+                          <Avatar alt="Travis Howard" src="/material-ui-static/images/avatar/2.jpg" className="w-32 h-32" />
+                          <Avatar alt="Cindy Baker" src="/material-ui-static/images/avatar/3.jpg" className="w-32 h-32" />
+                          <Avatar alt="Agnes Walker" src="/material-ui-static/images/avatar/4.jpg" className="w-32 h-32" />
+                          <Avatar alt="Trevor Henderson" src="/material-ui-static/images/avatar/5.jpg" className="w-32 h-32" />
+                        </AvatarGroup>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Hidden>
               </div>
               <div className="flex flex-row items-center justify-center justify-between w-full">
                 <Box className="flex">
@@ -319,10 +323,15 @@ function JobDetail(props) {
           </Toolbar>
         </AppBar>
 
-        <TabPanel value={tab} index={0} className={clsx('flex flex-1 overflow-x-auto overflow-y-hidden')}>
+        <TabPanel value={tab} index={0} className={clsx('overflow-x-auto overflow-y-hidden')}>
           <BoardTab />
         </TabPanel>
-
+        <TabPanel value={tab} index={1} className={clsx('overflow-x-auto overflow-y-hidden')}>
+          Detail
+        </TabPanel>
+        <TabPanel value={tab} index={2} className={clsx('overflow-x-auto overflow-y-hidden')}>
+          <JobInsightTab />
+        </TabPanel>
       </div>
     </Root>
   );

@@ -103,6 +103,18 @@ export const getCandidateNotes = createAsyncThunk(
 );
 
 
+
+export const addCandidateNote = createAsyncThunk(
+  'candidate/notes/add',
+  async (note, { getState }) => {
+    let user = getState().auth.user.data;
+    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/candidates/${note.subject}/notes`, note, {headers: {userId: user.id}});
+    const data = await response.data.data;
+
+    return data;
+  }
+);
+
 export const getCandidateActivities = createAsyncThunk(
   'candidate/activities',
   async (id, { getState }) => {
@@ -118,11 +130,16 @@ export const getCandidateActivities = createAsyncThunk(
   }
 );
 
-export const addCandidateNote = createAsyncThunk(
-  'candidate/notes/add',
-  async (note, { getState }) => {
+
+export const getCandidateEvaluations = createAsyncThunk(
+  'candidate/evaluations',
+  async (params, { getState }) => {
     let user = getState().auth.user.data;
-    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/candidates/${note.subject}/notes`, note, {headers: {userId: user.id}});
+    let filter = params.filter;
+
+    let queryParams = params.paginationSort;
+    queryParams = new URLSearchParams(queryParams);
+    const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/candidates/${params.id}/evaluations?${queryParams}`, filter, {headers: {userId: user.id}});
     const data = await response.data.data;
 
     return data;
@@ -144,7 +161,7 @@ const candidateSlice = createSlice({
   }),
   reducers: {
     resetCandidate: () => null,
-    newProduct: {
+    newCandidate: {
       reducer: (state, action) => action.payload,
       prepare: (event) => ({
         payload: {
@@ -197,6 +214,6 @@ const candidateSlice = createSlice({
   },
 });
 
-export const { newProduct, resetProduct } = candidateSlice.actions;
+export const { newCandidate, resetCandidate } = candidateSlice.actions;
 
 export default candidateSlice.reducer;

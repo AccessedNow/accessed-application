@@ -1,22 +1,19 @@
+import _ from '@lodash';
+import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
+import Avatar from '@mui/material/Avatar';
+
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-
-import Icon from '@mui/material/Icon';
-import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 
-import TextField from '@mui/material/TextField';
-import ChecklistModel from 'app/main/apps/scrumboard/model/ChecklistModel';
-import { useEffect, useState } from 'react';
-import _ from '@lodash';
-import NoteListItem from "./NoteListItem";
+import EvaluationListItem from "./EvaluationListItem";
 
+function EvaluationList(props) {
 
-function NoteList(props) {
-
-  if(!props.notes){
-    return <span>No Notes</span>
+  if(!props.evaluations){
+    return <span>No Evaluations</span>
   }
 
   const container = {
@@ -34,13 +31,13 @@ function NoteList(props) {
 
   return (
     <List>
-      {props.notes.map((note) => (
+      {props.evaluations.map((evaluation) => (
         <motion.div variants={container} initial="hidden" animate="show">
-          <NoteListItem note={note}/>
+          <EvaluationListItem evaluation={evaluation}/>
         </motion.div>
       ))}
     </List>
   );
 }
 
-export default NoteList;
+export default EvaluationList;

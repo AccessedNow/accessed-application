@@ -5,26 +5,22 @@ import { styled } from '@mui/material/styles';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import reducer from './store';
 
 import ContentHeader from './ContentHeader';
 import CandidateDetail from './CandidateDetail';
 import SidebarContent from './SidebarContent';
 
-import {getCandidate} from "../store/candidateSlice";
+import {getCandidate, resetCandidate} from "../store/candidateSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
-    minHeight: 72,
-    height: 72,
-  },
-  '& .FusePageSimple-header': {
-    minHeight: 120,
-    height: 160,
+    minHeight: 150,
+    height: 192,
     [theme.breakpoints.up('sm')]: {
-      minHeight: 192,
-      height: 192,
+      minHeight: 'auto',
+      height: 'auto!important',
     },
   },
   '& .FusePageSimple-sidebarHeader': {
@@ -64,6 +60,7 @@ function CandidateApp() {
   const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
 
   useEffect(() => {
+    dispatch(resetCandidate());
     dispatch(getCandidate(routeParams));
   }, [dispatch, routeParams]);
 
@@ -87,4 +84,4 @@ function CandidateApp() {
   )
 }
 
-export default withReducer('candidateApp', reducer)(CandidateApp);
+export default withReducer('candidateApp', reducer)(withRouter(CandidateApp));

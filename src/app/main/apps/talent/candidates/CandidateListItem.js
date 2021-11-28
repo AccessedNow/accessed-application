@@ -64,6 +64,7 @@ function CandidateListItem(props) {
   };
   return (
     <StyledListItem
+      disableRipple
       className="py-20 px-0 sm:px-8"
       completed={props.candidate.hasApplied}
       onClick={(ev) => {
@@ -81,51 +82,6 @@ function CandidateListItem(props) {
         onClick={(ev) => ev.stopPropagation()}
       />
 
-      {/*<IconButton*/}
-        {/*tabIndex={-1}*/}
-        {/*disableRipple*/}
-        {/*onClick={(ev) => {*/}
-          {/*ev.stopPropagation();*/}
-          {/*dispatch(*/}
-            {/*updateCandidate({*/}
-              {/*...props.candidate,*/}
-              {/*completed: !props.candidate.hasApplied,*/}
-            {/*})*/}
-          {/*);*/}
-        {/*}}*/}
-        {/*size="large"*/}
-      {/*>*/}
-        {/*{props.candidate.hasApplied ? (*/}
-          {/*<Icon color="secondary">check_circle</Icon>*/}
-        {/*) : (*/}
-          {/*<Icon color="action">radio_button_unchecked</Icon>*/}
-        {/*)}*/}
-      {/*</IconButton>*/}
-
-
-      {/*<div className="flex flex-1 flex-col relative overflow-hidden px-8">*/}
-        {/*<Typography*/}
-          {/*className="todo-title truncate text-14 font-medium"*/}
-          {/*color={props.candidate.hasApplied ? 'textSecondary' : 'inherit'}*/}
-        {/*>*/}
-          {/*{props.candidate.title}*/}
-        {/*</Typography>*/}
-
-        {/*<Typography color="textSecondary" className="todo-notes truncate">*/}
-          {/*{_.truncate(props.candidate.about.replace(/<(?:.|\n)*?>/gm, ''), { length: 180 })}*/}
-        {/*</Typography>*/}
-
-        {/*<div className="flex -mx-2 mt-8">*/}
-          {/*{props.candidate.tags.map((label) => (*/}
-            {/*<CandidateChip*/}
-              {/*className="mx-2 mt-4"*/}
-              {/*title={labels[label].title}*/}
-              {/*color={labels[label].color}*/}
-              {/*key={label}*/}
-            {/*/>*/}
-          {/*))}*/}
-        {/*</div>*/}
-      {/*</div>*/}
       <div className="flex flex-1 relative overflow-hidden  px-8">
         <div className="flex flex-col w-full">
           <div className="flex flex-row w-full justify-between mb-12">
@@ -153,19 +109,20 @@ function CandidateListItem(props) {
                   onClick={(ev) => {
                     ev.preventDefault();
                     ev.stopPropagation();
-                    dispatch(
-                      updateCandidate({
-                        ...props.candidate,
-                        important: !props.candidate.important,
-                      })
-                    );
+                    // dispatch(
+                    //   updateCandidate({
+                    //     ...props.candidate,
+                    //     important: !props.candidate.important,
+                    //   })
+                    // );
+                    dispatch(openCandidateDialog(props.candidate));
                   }}
                   size="large"
                 >
                   {props.candidate.important ? (
-                    <Icon style={{ color: red[500] }}>error</Icon>
+                    <Icon style={{ color: red[500] }}>visibility</Icon>
                   ) : (
-                    <Icon>error_outline</Icon>
+                    <Icon>visibility</Icon>
                   )}
                 </IconButton>
                 <IconButton

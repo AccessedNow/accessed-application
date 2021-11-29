@@ -62,7 +62,7 @@ function ContactsApp(props) {
         leftSidebarContent={<ContactsSidebarContent />}
         sidebarInner
         ref={pageLayout}
-        innerScroll
+
       />
       <ContactDialog />
     </>

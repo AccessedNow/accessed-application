@@ -49,7 +49,14 @@ const SettingsNavigation = {
           url: '/settings/account/billing',
         },
       ],
-    }
+    },
+    {
+      id: 'members',
+      title: 'Members',
+      type: 'item',
+      icon: 'group',
+      url: '/settings/members'
+    },
   ],
 };
 

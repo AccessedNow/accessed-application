@@ -21,6 +21,9 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-wrapper': {
     minHeight: 0,
   },
+  '& .FusePageSimple-contentWrapper': {
+    backgroundColor: 'white'
+  },
   '& .FusePageSimple-content': {
     display: 'flex',
     flexDirection: 'column',
@@ -33,6 +36,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-sidebar': {
     width: 288,
     paddingTop: 8,
+    backgroundColor: 'white!important'
   },
   '& .description': {
     fontSize: 20,

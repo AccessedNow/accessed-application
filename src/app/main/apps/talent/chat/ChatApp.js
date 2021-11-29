@@ -57,7 +57,6 @@ const Root = styled('div')(({ theme }) => ({
 
   '& .ChatApp-contentCardWrapper': {
     position: 'relative',
-    padding: 24,
     maxWidth: 1400,
     display: 'flex',
     flexDirection: 'column',

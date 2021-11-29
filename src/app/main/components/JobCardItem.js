@@ -75,7 +75,7 @@ function JobCardItem(props) {
             variant="square"
           />
             :
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{props.job.company.substr(0,1).toUpperCase()}</Avatar>
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{props.job && props.job.company?props.job.company.name.substr(0,1).toUpperCase():''}</Avatar>
         }
         action={
           <div className="flex">

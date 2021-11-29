@@ -134,7 +134,7 @@ function ActivityList(props) {
                     }
                     {activity.action === 'APPLIED' &&
                     <Typography variant="caption" color="inherit" className="pt-8">
-                      <span className="font-600">{activity.meta.name}</span> <span className="font-600">Applied</span> to <Link href={`jobs/view/${activity.meta.job}`} className="text-blue-500">{activity.meta.jobTitle}</Link>
+                      <span className="font-600">{activity.meta.name}</span> <span className="font-600">Applied</span> to <Link href={`talent/jobs/${activity.meta.job}`} className="text-blue-500">{activity.meta.jobTitle}</Link>
                     </Typography>
                     }
 

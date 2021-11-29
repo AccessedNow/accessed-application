@@ -45,7 +45,6 @@ export default function AccountMenu() {
     dispatch(setPreferredCompany(event.target.value));
   };
 
-
   return (
     <div>
       <List
@@ -82,7 +81,6 @@ export default function AccountMenu() {
         {user.data.company.map((company, index) => (
           <MenuItem
             key={company.companyId}
-            disabled={index === 0}
             selected={company.companyId === user.data.preferredCompany}
             onClick={(event) => handleMenuItemClick(event, company.companyId)}
           >

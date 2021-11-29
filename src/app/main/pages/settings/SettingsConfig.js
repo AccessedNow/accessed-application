@@ -12,6 +12,10 @@ const SettingsConfig = {
           path: '/settings/changelog',
           component: lazy(() => import('./changelog/ChangelogDoc')),
         },
+        {
+          path: '/settings/members',
+          component: lazy(() => import('../../apps/talent/members/Members')),
+        },
         ...AccountRoutes,
       ],
     },

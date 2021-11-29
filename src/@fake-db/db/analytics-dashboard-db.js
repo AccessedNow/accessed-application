@@ -7,21 +7,21 @@ const analyticsDashboardAppDB = {
 			series: {
 				2019: [
 					{
-						name: 'Sales',
+						name: 'Views',
 						data: [1.9, 3, 3.4, 2.2, 2.9, 3.9, 2.5, 3.8, 4.1, 3.8, 3.2, 2.9],
 						fill: 'start'
 					}
 				],
 				2020: [
 					{
-						name: 'Sales',
+						name: 'Views',
 						data: [2.2, 2.9, 3.9, 2.5, 3.8, 3.2, 2.9, 1.9, 3, 3.4, 4.1, 3.8],
 						fill: 'start'
 					}
 				],
 				2021: [
 					{
-						name: 'Sales',
+						name: 'Views',
 						data: [3.9, 2.5, 3.8, 4.1, 1.9, 3, 3.8, 3.2, 2.9, 3.4, 2.2, 2.9],
 						fill: 'start'
 					}

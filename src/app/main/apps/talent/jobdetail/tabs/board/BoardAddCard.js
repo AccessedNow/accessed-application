@@ -74,7 +74,7 @@ function BoardAddCard(props) {
                   required
                   fullWidth
                   variant="filled"
-                  label="Card title"
+                  label="Search Name"
                   autoFocus
                   InputProps={{
                     ...field,
@@ -110,7 +110,7 @@ function BoardAddCard(props) {
           }}
         >
           <Icon className="text-20">add</Icon>
-          <span className="mx-8">Add a card</span>
+          <span className="mx-8">Add a candidate</span>
         </Button>
       )}
     </div>

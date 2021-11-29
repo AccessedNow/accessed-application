@@ -84,9 +84,9 @@ function JobInsightTab() {
             How many pages your users visit?
           </Typography>
 
-          <motion.div variants={item} className="widget w-full p-16 pb-48">
-            <Widget10 data={widgets.widget10} />
-          </motion.div>
+          {/*<motion.div variants={item} className="widget w-full p-16 pb-48">*/}
+            {/*<Widget10 data={widgets.widget10} />*/}
+          {/*</motion.div>*/}
 
           <motion.div variants={item} className="widget w-full p-16 pb-48">
             <Widget5 data={widgets.widget5} />
@@ -122,34 +122,34 @@ function JobInsightTab() {
             </motion.div>
           </div>
 
-          <div className="mb-32 w-full sm:w-1/2 md:w-full">
-            <Typography
-              component={motion.div}
-              variants={item}
-              className="px-16 pb-8 text-18 font-normal"
-              color="textSecondary"
-            >
-              How are your sales?
-            </Typography>
+          {/*<div className="mb-32 w-full sm:w-1/2 md:w-full">*/}
+            {/*<Typography*/}
+              {/*component={motion.div}*/}
+              {/*variants={item}*/}
+              {/*className="px-16 pb-8 text-18 font-normal"*/}
+              {/*color="textSecondary"*/}
+            {/*>*/}
+              {/*How are your sales?*/}
+            {/*</Typography>*/}
 
-            <motion.div variants={item} className="widget w-full p-16">
-              <Widget8 data={widgets.widget8} />
-            </motion.div>
-          </div>
+            {/*<motion.div variants={item} className="widget w-full p-16">*/}
+              {/*<Widget8 data={widgets.widget8} />*/}
+            {/*</motion.div>*/}
+          {/*</div>*/}
 
-          <div className="mb-32 w-full sm:w-1/2 md:w-full">
-            <Typography
-              component={motion.div}
-              variants={item}
-              className="px-16 pb-8 text-18 font-normal lg:pt-0"
-              color="textSecondary"
-            >
-              What are your top campaigns?
-            </Typography>
-            <motion.div variants={item} className="widget w-full p-16">
-              <Widget9 data={widgets.widget9} />
-            </motion.div>
-          </div>
+          {/*<div className="mb-32 w-full sm:w-1/2 md:w-full">*/}
+            {/*<Typography*/}
+              {/*component={motion.div}*/}
+              {/*variants={item}*/}
+              {/*className="px-16 pb-8 text-18 font-normal lg:pt-0"*/}
+              {/*color="textSecondary"*/}
+            {/*>*/}
+              {/*What are your top campaigns?*/}
+            {/*</Typography>*/}
+            {/*<motion.div variants={item} className="widget w-full p-16">*/}
+              {/*<Widget9 data={widgets.widget9} />*/}
+            {/*</motion.div>*/}
+          {/*</div>*/}
         </div>
       </motion.div>
     </div>

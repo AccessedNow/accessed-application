@@ -13,7 +13,6 @@ function ResumeList(props) {
   const dispatch = useDispatch();
   const routeParams = useParams();
   const [resumes, setResumes] = useState([]);
-  const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
 
   useEffect(() => {
     // if(!candidate.resumes.length) {

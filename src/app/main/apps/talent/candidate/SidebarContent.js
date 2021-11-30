@@ -63,7 +63,8 @@ function a11yProps(index) {
 function SidebarContent(props) {
   const dispatch = useDispatch();
   const [tab, setTab] = useState(0);
-  const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
+  // const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
+  const { candidate } = props;
 
   const handleTabChange = (event, newValue) => {
     setTab(newValue);

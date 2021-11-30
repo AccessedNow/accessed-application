@@ -17,7 +17,7 @@ export const searchMembers = createAsyncThunk(
 
 export const getCompanyInvites = createAsyncThunk(
   'company/invites',
-  async (searchText, { getState }) => {
+  async ({ getState }) => {
     let user = getState().auth.user.data;
     const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/members/invites?`, {headers: {userId: user.id}});
     const data = await response.data.data;
@@ -29,6 +29,7 @@ export const getCompanyInvites = createAsyncThunk(
 export const inviteMembers = createAsyncThunk(
   'members/invite',
   async (form, { dispatch, getState }) => {
+    delete form.id;
     let user = getState().auth.user.data;
     const response = await axios.post(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.preferredCompany}/members`, form, {headers: {userId: user.id}});
     const data = await response.data;

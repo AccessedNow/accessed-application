@@ -45,8 +45,8 @@ import {getJob} from "../store/jobSlice";
 import reducer from './store';
 import BoardTab from './tabs/BoardTab';
 import JobInsightTab from './tabs/insight/JobInsightTab';
-
 import FieldSelect from '../components/field-select/FieldSelect';
+import {buildUserAvatar} from "../../../../utils/urlHelper";
 
 
 function TabPanel(props) {
@@ -159,7 +159,7 @@ function JobDetail(props) {
   const dispatch = useDispatch();
   const routeParams = useParams();
   const history = useHistory();
-  const job = useSelector(({ jobDetail }) => jobDetail.job);
+  const job = useSelector(({ jobDetail }) => jobDetail.job.data);
   const containerRef = useRef(null);
 
   const [tab, setTab] = useState(0);
@@ -175,6 +175,7 @@ function JobDetail(props) {
 
   useDeepCompareEffect(() => {
     dispatch(getJob(routeParams));
+    // dispatch(getJobBoard(routeParams));
   }, [dispatch, routeParams]);
 
   const handleFieldsChange = (event) => {
@@ -283,11 +284,11 @@ function JobDetail(props) {
                         {/*/>*/}
                           {/*))}*/}
                         <AvatarGroup max={4}>
-                          <Avatar alt="Remy Sharp" src="/material-ui-static/images/avatar/1.jpg" className="w-32 h-32" />
-                          <Avatar alt="Travis Howard" src="/material-ui-static/images/avatar/2.jpg" className="w-32 h-32" />
-                          <Avatar alt="Cindy Baker" src="/material-ui-static/images/avatar/3.jpg" className="w-32 h-32" />
-                          <Avatar alt="Agnes Walker" src="/material-ui-static/images/avatar/4.jpg" className="w-32 h-32" />
-                          <Avatar alt="Trevor Henderson" src="/material-ui-static/images/avatar/5.jpg" className="w-32 h-32" />
+                          {job.members.map((member) => {
+                            <Avatar alt="" src="assets/images/avatars/Velazquez.jpg" className="w-32 h-32" />
+                          })}
+                          <Avatar alt="" src="assets/images/avatars/Velazquez.jpg" className="w-32 h-32" />
+
                         </AvatarGroup>
                       </div>
                     </div>

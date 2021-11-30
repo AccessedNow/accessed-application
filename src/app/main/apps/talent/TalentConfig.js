@@ -26,6 +26,14 @@ const TalentConfig = {
       component: lazy(() => import('./mail/MailApp')),
     },
     {
+      path: [ '/talent/boards'],
+      component: lazy(() => import('./boards/Boards')),
+    },
+    {
+      path: [ '/talent/boards/:boardId'],
+      component: lazy(() => import('./boards/board/Board')),
+    },
+    {
       path: [ '/talent/messages'],
       component: lazy(() => import('./chat/ChatApp')),
     },

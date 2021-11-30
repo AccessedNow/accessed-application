@@ -117,6 +117,12 @@ function ContactDialog(props) {
     closeComposeDialog();
   }
 
+  function handleEmailsChange(index, event) {
+    var emails = this.state.emails.slice(); // Make a copy of the emails first.
+    emails[index] = event.target.value; // Update it with the modified email.
+    this.setState({emails: emails}); // Update the state.
+  }
+
   /**
    * Remove Event
    */

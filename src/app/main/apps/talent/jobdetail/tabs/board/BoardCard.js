@@ -23,13 +23,12 @@ function BoardCard(props) {
   const dispatch = useDispatch();
   const board = useSelector(({ jobDetail }) => jobDetail.board);
 
-  const { cardId, index } = props;
-  const card = _.find(board.cards, { id: cardId });
-  const checkItemsChecked = getCheckItemsChecked(card);
-  const checkItems = getCheckItems(card);
-  const commentsCount = getCommentsCount(card);
+  const { card, index } = props;
+  // const card = _.find(board.cards, { id: cardId });
+  // const checkItemsChecked = getCheckItemsChecked(card);
+  // const checkItems = getCheckItems(card);
+  // const commentsCount = getCommentsCount(card);
 
-  const member = card.idMembers.length?_.find(board.members, {id: card.idMembers[0] }):null;
   function handleCardClick(ev, _card) {
     ev.preventDefault();
     dispatch(openCardDialog(_card));
@@ -50,7 +49,7 @@ function BoardCard(props) {
   }
 
   return (
-    <Draggable draggableId={cardId} index={index} type="card">
+    <Draggable draggableId={card._id} index={index} type="card">
       {(provided, snapshot) => (
         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
           <StyledCard
@@ -62,20 +61,19 @@ function BoardCard(props) {
           >
 
             <div className="p-16 pb-0">
-              {card.idLabels.length > 0 && (
-                <div className="flex flex-wrap mb-8 -mx-4">
-                  {card.idLabels.map((id) => {
-                    const label = _.find(board.labels, { id });
-                    return (
-                      <Tooltip title={label.name} key={id}>
-                        <div className={clsx(label.class, 'w-32  h-6 rounded-6 mx-4 mb-6')} />
-                      </Tooltip>
-                    );
-                  })}
-                </div>
-              )}
+              {/*{card.idLabels.length > 0 && (*/}
+                {/*<div className="flex flex-wrap mb-8 -mx-4">*/}
+                  {/*{card.idLabels.map((id) => {*/}
+                    {/*const label = _.find(board.labels, { id });*/}
+                    {/*return (*/}
+                      {/*<Tooltip title={label.name} key={id}>*/}
+                        {/*<div className={clsx(label.class, 'w-32  h-6 rounded-6 mx-4 mb-6')} />*/}
+                      {/*</Tooltip>*/}
+                    {/*);*/}
+                  {/*})}*/}
+                {/*</div>*/}
+              {/*)}*/}
 
-              {member &&
               <div className="flex flex-row items-start justify-start mb-10">
                 <Avatar
                   sx={{
@@ -83,19 +81,19 @@ function BoardCard(props) {
                     borderStyle: 'solid',
                     borderColor: 'white',
                   }}
-                  className="w-40 h-40 md:w-40 md:h-40"
-                  src={member.avatar}
+                  className="w-40 h-40 md:w-52 md:h-52"
+                  src={card.user.avatar}
                 />
                 <div className="flex flex-col items-start justify-start ml-5">
                   <Typography variant="body2" color="inherit" className="">
-                    {member.name}
+                    {card.user.firstName + ' ' + card.user.lastName}
                   </Typography>
                   <Typography variant="caption" color="inherit" className="">
-                    Developer
+                    {card.user.jobTitle}
                   </Typography>
                 </div>
               </div>
-              }
+
 
 
             </div>
@@ -126,13 +124,13 @@ function BoardCard(props) {
                     </Typography>
                   </span>
                 )}
-                {commentsCount > 0 && (
+                {card.noOfComments && (
                   <span className="flex items-center mx-6">
                     <Icon className="text-18" color="action">
                       comment
                     </Icon>
                     <Typography className="mx-8" color="textSecondary">
-                      {commentsCount}
+                      {card.noOfComments}
                     </Typography>
                   </span>
                 )}

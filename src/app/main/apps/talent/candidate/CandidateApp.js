@@ -73,9 +73,9 @@ function CandidateApp() {
   return(
     <>
       <Root
-        rightSidebarContent={<SidebarContent />}
-        header={<ContentHeader pageLayout={pageLayout} />}
-        content={<CandidateDetail />}
+        rightSidebarContent={<SidebarContent candidate={candidate} />}
+        header={<ContentHeader candidate={candidate} pageLayout={pageLayout} />}
+        content={<CandidateDetail candidate={candidate} />}
 
         ref={pageLayout}
          innerScroll

@@ -23,7 +23,8 @@ import Match from './Match';
 function ContentHeader(props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
+  // const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
+  const { candidate } = props;
 
   let location = _.merge({}, candidate.primaryAddress);
   delete location.address1;

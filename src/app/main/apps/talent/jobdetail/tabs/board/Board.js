@@ -20,7 +20,10 @@ import BoardAddList from './BoardAddList';
 import BoardList from './BoardList';
 import BoardTitle from './BoardTitle';
 import BoardCardDialog from './dialogs/card/BoardCardDialog';
+import CardDialog from './dialogs/card/CardDialog';
+
 import BoardSettingsSidebar from './sidebars/settings/BoardSettingsSidebar';
+import {getJobBoard} from "../../../store/jobSlice";
 
 
 const container = {
@@ -38,18 +41,22 @@ const item = {
 
 function Board(props) {
   const dispatch = useDispatch();
-  const board = useSelector(({ jobDetail }) => jobDetail.board);
+  // const board = useSelector(({ jobDetail }) => jobDetail.board);
   const containerRef = useRef(null);
 
   const routeParams = useParams();
   const [settingsDrawerOpen, setSettingsDrawerOpen] = useState(false);
 
+  const board = useSelector(({ jobDetail }) => jobDetail.job.board);
+
   useDeepCompareEffect(() => {
+    dispatch(getJobBoard(routeParams));
     dispatch(getBoard({boardId: '32gfhaf2'}));
     return () => {
       dispatch(resetBoard());
     };
   }, [dispatch, routeParams]);
+
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -102,7 +109,7 @@ function Board(props) {
                   ref={provided.innerRef}
                   className="flex container py-16 md:py-24 px-8 md:px-12"
                 >
-                  {board.lists.map((list, index) => (
+                  {board.map((list, index) => (
                     <motion.div variants={item} key={list.id}>
                     <BoardList key={list.id} list={list} index={index} />
                     </motion.div>
@@ -115,32 +122,7 @@ function Board(props) {
             </Droppable>
           </DragDropContext>
         </div>
-
-        <SwipeableDrawer
-          anchor="right"
-          className="absolute overflow-hidden"
-          classes={{
-            paper: 'absolute w-320',
-          }}
-          BackdropProps={{
-            classes: {
-              root: 'absolute',
-            },
-          }}
-          container={containerRef.current}
-          ModalProps={{
-            keepMounted: true,
-            style: { position: 'absolute' },
-          }}
-          open={settingsDrawerOpen}
-          onOpen={(ev) => {}}
-          onClose={() => toggleSettingsDrawer(false)}
-          disableSwipeToOpen
-        >
-          <BoardSettingsSidebar />
-        </SwipeableDrawer>
-
-        <BoardCardDialog />
+        <CardDialog />
       </div>
     </>
   );

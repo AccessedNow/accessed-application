@@ -64,7 +64,7 @@ function NotesTab(props) {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show">
-      <CandidateNotes id={routeParams.candidateId} />
+      <CandidateNotes id={props.id} />
     </motion.div>
   );
 }

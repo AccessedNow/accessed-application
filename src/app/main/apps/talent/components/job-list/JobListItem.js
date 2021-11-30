@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { amber, red } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
@@ -48,15 +49,18 @@ function JobListItem(props) {
         history.push(`jobs/${props.job._id}`);
       }}
     >
-      <Avatar className="mx-4 rounded-4" variant="square" sx={{width: 60, height: 60}} alt={props.job.company.name} src={props.job.company.avatar}/>
-
+      <div className="flex flex-col">
+        <Avatar className="mx-4 mb-10 rounded-4" variant="square" sx={{width: 60, height: 60}} alt={props.job.company.name} src={props.job.company.avatar}/>
+        {props.job.status === 'DRAFT' &&
+        <Chip size="small" label="DRAFT" color="warning" variant="outlined" className="text-10"/>
+        }
+      </div>
       <div className="flex flex-1 flex-col relative overflow-hidden px-8">
-        <Typography
-          className="job-title truncate text-14 font-medium"
-          color={'textPrimary'}
-        >
-          {props.job.title}
-        </Typography>
+        <div className="flex flex-row">
+          <Typography className="job-title truncate text-14 font-medium pr-20" color={'textPrimary'}>
+            {props.job.title}
+          </Typography>
+        </div>
         <Link href="#" color="secondary" underline="hover" style={{textDecoration: "none"}}>
           <Typography className="" color={'textPrimary'}>
             {props.job.company.name}

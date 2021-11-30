@@ -59,12 +59,13 @@ function a11yProps(index) {
 }
 
 
-function CandidateDetail() {
+function CandidateDetail(props) {
 
   const dispatch = useDispatch();
   const pageLayout = useRef(null);
   const routeParams = useParams();
-  const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
+  // const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
+  const { candidate } = props;
 
   const [tab, setTab] = useState(0);
 

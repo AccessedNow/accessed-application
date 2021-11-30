@@ -43,7 +43,7 @@ function BoardList(props) {
   }
 
   return (
-    <Draggable draggableId={props.list.id} index={props.index} type="list">
+    <Draggable draggableId={props.list._id} index={props.index} type="list">
       {(provided, snapshot) => (
         <div ref={provided.innerRef} {...provided.draggableProps}>
           <StyledCard
@@ -64,12 +64,12 @@ function BoardList(props) {
                 className="flex flex-col flex-1 flex-auto h-full min-h-0 w-full p-0 overflow-auto"
                 ref={contentScrollEl}
               >
-                <Droppable droppableId={props.list.id} type="card" direction="vertical">
+                <Droppable droppableId={props.list._id} type="card" direction="vertical">
                   {(_provided) => (
                     <div ref={_provided.innerRef} className="flex flex-col w-full h-full p-16">
-                      {props.list.idCards.map((cardId, index) => (
+                      {props.list.applications.map((application, index) => (
                         <motion.div variants={item} key={index}>
-                          <BoardCard key={cardId} cardId={cardId} index={index} list={props.list} />
+                          <BoardCard key={application._id} card={application} index={index} list={props.list} />
                         </motion.div>
                       ))}
                       {_provided.placeholder}

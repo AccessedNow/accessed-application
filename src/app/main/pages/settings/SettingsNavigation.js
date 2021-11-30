@@ -57,6 +57,40 @@ const SettingsNavigation = {
       icon: 'group',
       url: '/settings/members'
     },
+    {
+      id: 'boards',
+      title: 'Boards',
+      type: 'item',
+      icon: 'group',
+      url: '/settings/boards'
+    },
+
+    {
+      id: 'templates',
+      title: 'Templates',
+      type: 'collapse',
+      icon: 'account_circle',
+      children: [
+        {
+          id: 'emails',
+          title: 'Emails',
+          type: 'item',
+          url: '/settings/templates/emails',
+        },
+        {
+          id: 'evaluations',
+          title: 'Evaluations',
+          type: 'item',
+          url: '/settings/templates/evaluations',
+        },
+        {
+          id: 'questions',
+          title: 'Questions',
+          type: 'item',
+          url: '/settings/templates/questions',
+        }
+      ],
+    },
   ],
 };
 

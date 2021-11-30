@@ -59,7 +59,7 @@ function ActivitiesTab(props) {
 
   return (
     <div>
-      <CandidateActivities id={routeParams.candidateId} />
+      <CandidateActivities id={props.id} />
     </div>
   );
 }

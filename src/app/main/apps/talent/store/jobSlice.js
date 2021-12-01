@@ -22,6 +22,15 @@ export const getJobBoard = createAsyncThunk('talent/job/board', async (params, {
   return data === undefined ? null : data;
 });
 
+export const getJobApplications = createAsyncThunk('talent/job/applications', async (params, {getState}) => {
+  const user = getState().auth.user;
+  const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.data.preferredCompany}/jobs/${params.jobId}/applications`, {headers: {userId: user.data.id}} );
+  const data = await response.data.data;
+
+  return data === undefined ? null : data;
+});
+
+
 export const addJob = createAsyncThunk(
   'job/add',
   async (form, { getState, dispatch }) => {
@@ -64,11 +73,16 @@ const jobSlice = createSlice({
   name: 'talent/job',
   initialState: {
     dialogOpen: false,
+    candidateView: 'BOARD', //BOARD | LIST | GRID
     data: null,
-    board: []
+    board: [],
+    applications: []
   },
   reducers: {
     resetJob: () => null,
+    setCandidateView: (state, action) => {
+      state.candidateView = action.payload;
+    },
     newJob: {
       reducer: (state, action) => action.payload,
       prepare: (event) => ({
@@ -116,10 +130,13 @@ const jobSlice = createSlice({
     [removeJob.fulfilled]: (state, action) => null,
     [getJobBoard.fulfilled]: (state, action) => {
       state.board = action.payload;
+    },
+    [getJobApplications.fulfilled]: (state, action) => {
+      state.applications = action.payload;
     }
   },
 });
 
-export const { newJob, resetJob } = jobSlice.actions;
+export const { setCandidateView, newJob, resetJob } = jobSlice.actions;
 
 export default jobSlice.reducer;

@@ -41,9 +41,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { withRouter, useParams, useHistory } from 'react-router-dom';
 
-import {getJob} from "../store/jobSlice";
+import {getJob, getJobBoard, setCandidateView} from "../store/jobSlice";
 import reducer from './store';
-import BoardTab from './tabs/BoardTab';
+import CandidatesTab from './tabs/CandidatesTab';
 import JobInsightTab from './tabs/insight/JobInsightTab';
 import FieldSelect from '../components/field-select/FieldSelect';
 import {buildUserAvatar} from "../../../../utils/urlHelper";
@@ -171,6 +171,7 @@ function JobDetail(props) {
 
 
   useEffect(() => {
+    console.log('jobDetail')
   }, [dispatch]);
 
   useDeepCompareEffect(() => {
@@ -310,10 +311,10 @@ function JobDetail(props) {
                   <IconButton fontSize="small">
                     <FilterIcon fontSize="inherit" />
                   </IconButton>
-                  <IconButton fontSize="small" aria-label="column" color="secondary">
+                  <IconButton fontSize="small" aria-label="column" color="secondary" onClick={() => dispatch(setCandidateView('BOARD'))}>
                     <ColumnIcon fontSize="inherit" />
                   </IconButton>
-                  <IconButton fontSize="small" color="secondary" >
+                  <IconButton fontSize="small" color="secondary" onClick={() => dispatch(setCandidateView('LIST'))}>
                     <ListViewIcon fontSize="inherit" />
                   </IconButton>
                 </Stack>
@@ -325,7 +326,7 @@ function JobDetail(props) {
         </AppBar>
 
         <TabPanel value={tab} index={0} className={clsx('overflow-x-auto overflow-y-hidden')}>
-          <BoardTab />
+          <CandidatesTab />
         </TabPanel>
         <TabPanel value={tab} index={1} className={clsx('overflow-x-auto overflow-y-hidden')}>
           Detail

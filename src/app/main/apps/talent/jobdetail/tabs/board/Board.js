@@ -9,7 +9,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Toolbar from '@mui/material/Toolbar';
 import withReducer from 'app/store/withReducer';
 import clsx from 'clsx';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, withRouter, useParams } from 'react-router-dom';
@@ -24,6 +24,7 @@ import CardDialog from './dialogs/card/CardDialog';
 
 import BoardSettingsSidebar from './sidebars/settings/BoardSettingsSidebar';
 import {getJobBoard} from "../../../store/jobSlice";
+import {getJobApplications} from "../../store/applicationsSlice";
 
 
 const container = {
@@ -49,9 +50,13 @@ function Board(props) {
 
   const board = useSelector(({ jobDetail }) => jobDetail.job.board);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     dispatch(getJobBoard(routeParams));
     dispatch(getBoard({boardId: '32gfhaf2'}));
+  }, [dispatch, routeParams]);
+
+
+  useDeepCompareEffect(() => {
     return () => {
       dispatch(resetBoard());
     };

@@ -217,7 +217,7 @@ function JobDetail(props) {
               </div>
               <div className="flex flex-row items-start justify-start justify-between w-full">
                 <div className="mb-10">
-                  <Typography className="text-16 md:text-32 font-600 mb-5">{job.title}</Typography>
+                  <Typography className="text-16 md:text-24 font-600 mb-5">{job.title}</Typography>
                   <Stack direction="row" spacing={1}>
                     <div className="">
                       <Icon component={motion.span} initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.2 } }} className="text-12 md:text-12">dehaze</Icon>

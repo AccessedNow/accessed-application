@@ -92,6 +92,7 @@ const candidatesSlice = createSlice({
     data: [],
     selectedCandidateIds: [],
     filter: {
+      job: null,
       hasApplied: true,
       hasImported: false,
       minYear:0,

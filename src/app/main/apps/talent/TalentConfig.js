@@ -50,6 +50,10 @@ const TalentConfig = {
       component: lazy(() => import('./jobs/JobsApp')),
     },
     {
+      path: [ '/talent/candidates/compare'],
+      component: lazy(() => import('./candidates/candidates-compare/CandidatesCompare')),
+    },
+    {
       path: [ '/talent/candidates/:candidateId'],
       component: lazy(() => import('./candidate/CandidateApp')),
     },

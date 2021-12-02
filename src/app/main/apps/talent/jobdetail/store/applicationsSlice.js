@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
+import _ from '@lodash';
+
 import FuseUtils from '@fuse/utils';
 
 import { showMessage } from 'app/store/fuse/messageSlice';
@@ -20,6 +22,7 @@ export const getJobApplications = createAsyncThunk('talent/job/applications', as
   return data === undefined ? null : data;
 });
 
+const applicationsAdapter = createEntityAdapter({});
 
 const jobSlice = createSlice({
   name: 'talent/job/applications',
@@ -67,7 +70,7 @@ const jobSlice = createSlice({
       state.filter = action.payload;
     },
     selectAllApplications: (state, action) => {
-      state.selectedApplicationIds = state.ids;
+      state.selectedApplicationIds = _.map(state.data, '_id');
     },
     deselectAllApplications: (state, action) => {
       state.selectedApplicationIds = [];

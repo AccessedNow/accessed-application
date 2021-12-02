@@ -5,8 +5,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectFolders } from '../../../store/foldersSlice';
-import { selectLabels } from '../../../store/labelsSlice';
+import { selectFolders } from '../../store/foldersSlice';
+import { selectLabels } from '../../store/labelsSlice';
 import {
   selectAllApplications,
   deselectAllApplications,
@@ -17,6 +17,8 @@ function CandidateToolbar(props) {
   const dispatch = useDispatch();
   const selectedApplicationIds = useSelector(({ jobDetail }) => jobDetail.applications.selectedApplicationIds);
   const applications = useSelector(({ jobDetail }) => jobDetail.applications.data);
+  const labels = useSelector(selectLabels);
+  const folders = useSelector(selectFolders);
 
   const [menu, setMenu] = useState({
     selectMenu: null,
@@ -39,7 +41,7 @@ function CandidateToolbar(props) {
   }
 
   function handleCheckChange(event) {
-    return event.target.checked ? dispatch(selectAllApplications()) : dispatch(deselectAllCandidates());
+    return event.target.checked ? dispatch(selectAllApplications()) : dispatch(deselectAllApplications());
   }
 
   return (
@@ -79,7 +81,7 @@ function CandidateToolbar(props) {
         </MenuItem>
         <MenuItem
           onClick={(ev) => {
-            dispatch(deselectAllCandidates());
+            dispatch(deselectAllApplications());
             handleMenuClose(ev, 'select');
           }}
         >
@@ -166,6 +168,13 @@ function CandidateToolbar(props) {
                 </MenuItem>
               ))}
           </Menu>
+          <IconButton
+            onClick={(ev) => dispatch(setFolderOnSelectedCandidates(4))}
+            aria-label="compare"
+            size="large"
+          >
+            <Icon>compare</Icon>
+          </IconButton>
         </>
       )}
     </div>

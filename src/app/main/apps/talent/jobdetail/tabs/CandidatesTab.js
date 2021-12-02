@@ -5,6 +5,8 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 
 import Board from './board/Board';
 import ApplicationList from './applications-listview/ApplicationList';
+import ApplicationGrid from './applications-gridview/ApplicationGrid';
+
 import {getJobApplications} from "../store/applicationsSlice";
 import {resetBoard} from "../store/boardSlice";
 
@@ -34,6 +36,10 @@ function CandidatesTab() {
       {candidateView === 'LIST' &&
         <ApplicationList/>
       }
+      {candidateView === 'GRID' &&
+        <ApplicationGrid/>
+      }
+
 
     </div>
   );

@@ -20,7 +20,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleInSelectedCandidates, openCandidateDialog, updateCandidate, openEditCandidateDialog } from '../../store/candidatesSlice';
+import { toggleInSelectedCandidates, openCandidateDialog, updateCandidate, openEditCandidateDialog } from '../../../store/candidatesSlice';
 
 
 const ITEM_HEIGHT = 48;
@@ -47,7 +47,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-function CandidateListItem(props) {
+function CandidateTableRow(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -68,7 +68,7 @@ function CandidateListItem(props) {
   return (
     <StyledListItem
       disableRipple
-      className="px-0 py-8 mb-10 bg-white rounded-6"
+      className="px-0 py-8 mb-10 bg-white"
       completed={props.candidate.hasApplied}
       onClick={(ev) => {
         ev.preventDefault();
@@ -136,15 +136,6 @@ function CandidateListItem(props) {
             </div>
           </div>
         </div>
-        <div>
-          <Checkbox
-            tabIndex={-1}
-            disableRipple
-            checked={checked}
-            onChange={() => dispatch(toggleInSelectedCandidates(props.candidate.id))}
-            onClick={(ev) => ev.stopPropagation()}
-          />
-        </div>
 
       </div>
 
@@ -152,4 +143,4 @@ function CandidateListItem(props) {
   );
 }
 
-export default CandidateListItem;
+export default CandidateTableRow;

@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CandidateTags from '../components/candidate-tags/CandidateTags';
-import Match from './Match';
+import Match from '../components/Match';
 
 
 function ContentHeader(props) {
@@ -106,7 +106,7 @@ function ContentHeader(props) {
           </div>
         </div>
         <div className="flex justify-end">
-          <Match series={[87]} />
+          <Match series={[candidate.match]} />
         </div>
       </div>
     </div>

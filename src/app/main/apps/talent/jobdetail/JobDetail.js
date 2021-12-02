@@ -21,6 +21,8 @@ import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Link from '@mui/material/Link';
 import ListViewIcon from '@mui/icons-material/FormatListBulleted';
+import GridViewIcon from '@mui/icons-material/Apps';
+
 import MenuItem from '@mui/material/MenuItem';
 import NativeSelect from '@mui/material/NativeSelect';
 
@@ -316,6 +318,9 @@ function JobDetail(props) {
                   </IconButton>
                   <IconButton fontSize="small" color="secondary" onClick={() => dispatch(setCandidateView('LIST'))}>
                     <ListViewIcon fontSize="inherit" />
+                  </IconButton>
+                  <IconButton fontSize="small" color="secondary" onClick={() => dispatch(setCandidateView('GRID'))}>
+                    <GridViewIcon fontSize="inherit" />
                   </IconButton>
                 </Stack>
               </div>

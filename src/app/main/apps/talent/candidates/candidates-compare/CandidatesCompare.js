@@ -8,10 +8,12 @@ import { useParams } from 'react-router-dom';
 import reducer from './store';
 import ContentHeader from '../ContentHeader';
 import Compare from './Compare';
+import CandidatesTable from './candidates-table/CandidatesTable';
 
 import CandidateList from './CandidateList';
 import Toolbar from '../Toolbar';
 import CandidatesToolbar from '../CandidatesToolbar';
+import SidebarHeader from './SidebarHeader';
 
 import SidebarContent from '../SidebarContent';
 import {searchCandidates} from "../../store/candidatesSlice";
@@ -27,7 +29,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     padding: 0,
     paddingBottom: 80,
     [theme.breakpoints.up('sm')]: {
-      padding: 0,
+      padding: 20,
     },
   },
 
@@ -41,10 +43,12 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-sidebar': {
     width: 320,
 
-
     '& .FusePageSimple-sidebarContent': {
       padding: 20
     }
+  },
+  '& .FusePageSimple-leftSidebar': {
+    border: 0
   },
   '& tr': {
     '& .MuiTableCell-root': {
@@ -94,6 +98,7 @@ function CandidatesCompare() {
   return(
     <>
       <Root
+        leftSidebarHeader={<SidebarHeader />}
         leftSidebarContent={<CandidateList />}
         content={<Compare />}
         ref={pageLayout}

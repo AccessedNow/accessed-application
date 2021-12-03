@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/system';
 import { setSearchText } from '../store/candidatesSlice';
 
-function NotesSearch(props) {
+function CandidatesSearch(props) {
   const dispatch = useDispatch();
   const searchText = useSelector(({ candidatesApp }) => candidatesApp.candidates.searchText);
 
@@ -63,7 +63,7 @@ function NotesSearch(props) {
                 inputProps={{
                   'aria-label': 'Search',
                 }}
-                onChange={(ev) => dispatch(setNotesSearchText(ev))}
+                onChange={(ev) => dispatch(setSearchText(ev))}
                 autoFocus
               />
 
@@ -78,8 +78,8 @@ function NotesSearch(props) {
   );
 }
 
-NotesSearch.propTypes = {};
-NotesSearch.defaultProps = {
+CandidatesSearch.propTypes = {};
+CandidatesSearch.defaultProps = {
   trigger: (
     <IconButton className="w-64 h-64" size="large">
       <Icon>search</Icon>
@@ -87,4 +87,4 @@ NotesSearch.defaultProps = {
   ),
 };
 
-export default NotesSearch;
+export default CandidatesSearch;

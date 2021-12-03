@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import NotesSearch from './NotesSearch';
+import CandidatesSearch from './CandidatesSearch';
 
 function NotesHeader(props) {
   const dispatch = useDispatch();
@@ -48,6 +48,7 @@ function NotesHeader(props) {
         </div>
       </div>
       <div className="flex flex-1 items-center justify-end">
+        <CandidatesSearch />
         <Button
           component={Link}
           to="/apps/e-commerce/products/new"
@@ -61,7 +62,7 @@ function NotesHeader(props) {
           <span className="hidden sm:flex">{'   '}Add New</span>
           <span className="flex sm:hidden">New</span>
         </Button>
-        <NotesSearch />
+
       </div>
     </div>
   );

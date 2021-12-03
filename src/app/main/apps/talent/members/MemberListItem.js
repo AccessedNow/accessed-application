@@ -128,10 +128,9 @@ function MemberListItem(props) {
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  {roles.map((role) => {
-                    console.log(role);
+                  {roles.map((role) => (
                     <MenuItem value={role._id}>{role.name}</MenuItem>
-                  })}
+                  ))}
 
                 </Select>
               </FormControl>

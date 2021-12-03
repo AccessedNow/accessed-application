@@ -1,6 +1,6 @@
-import URLSearchParams from 'url-search-params';
-import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
+import queryString from 'query-string';
+import FuseUtils from '@fuse/utils';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
@@ -21,8 +21,19 @@ function SkillList(props) {
   const [skills, setSkills] = useState([{name: 'Java'}]);
 
   useEffect(() => {
-    const params = new URLSearchParams(props.location.search);
-    dispatch(getJobSkills(params))
+    dispatch(getJobSkills(queryString.parse(props.location.search))).then((data) => {
+      if(data) {
+        const _skills = _.reduce(data.payload, function(res, skill){
+          const matches = _.filter(candidates, { skills: [{id: skill.id}]} );
+
+          if(matches) {
+            res.push({name: skill.name, candidates: matches});
+          }
+          return res;
+        }, []);
+        setSkills(_skills);
+      }
+    });
   }, [dispatch, props, candidates]);
 
   if (!candidates) {
@@ -62,6 +73,7 @@ function SkillList(props) {
         {skills.map((skill) => (
           <motion.div variants={item} key={skill.name}>
             <SkillListItem skill={skill} />
+            <Divider/>
           </motion.div>
         ))}
       </motion.div>

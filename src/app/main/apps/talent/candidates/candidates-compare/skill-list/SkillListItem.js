@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { amber, red } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
+import AvatarGroup from '@mui/material/AvatarGroup';
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import Hidden from '@mui/material/Hidden';
@@ -15,6 +16,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 
@@ -52,8 +54,13 @@ function SkillListItem(props) {
       dense
       button
     >
-      <div className="flex flex-1 flex-row justify-between relative overflow-hidden px-8">
-        <Chip label={props.skill.name} variant="outlined" />
+      <div className="flex flex-1 flex-row items-center justify-between relative overflow-hidden px-8">
+        <Chip suze="small" color="primary" label={props.skill.name} variant="outlined" />
+        <AvatarGroup max={10}>
+          {props.skill.candidates.map((candidate) => (
+            <Avatar alt={candidate.firstName} src={candidate.avatar} />
+          ))}
+        </AvatarGroup>
       </div>
 
     </StyledListItem>

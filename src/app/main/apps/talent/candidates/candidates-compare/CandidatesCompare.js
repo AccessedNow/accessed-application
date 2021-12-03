@@ -44,7 +44,6 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     width: 320,
 
     '& .FusePageSimple-sidebarContent': {
-      padding: 20
     }
   },
   '& .FusePageSimple-leftSidebar': {

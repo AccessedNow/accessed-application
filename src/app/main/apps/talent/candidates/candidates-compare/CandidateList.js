@@ -73,6 +73,7 @@ function CandidateList(props) {
         {filteredData.map((candidate) => (
           <motion.div variants={item} key={candidate.id}>
             <CandidateListItem candidate={candidate} />
+            <Divider/>
           </motion.div>
         ))}
       </motion.div>

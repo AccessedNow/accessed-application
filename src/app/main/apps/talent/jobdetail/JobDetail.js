@@ -287,9 +287,9 @@ function JobDetail(props) {
                         {/*/>*/}
                           {/*))}*/}
                         <AvatarGroup max={4}>
-                          {job.members.map((member) => {
+                          {job.members.map((member) => (
                             <Avatar alt="" src="assets/images/avatars/Velazquez.jpg" className="w-32 h-32" />
-                          })}
+                          ))}
                           <Avatar alt="" src="assets/images/avatars/Velazquez.jpg" className="w-32 h-32" />
 
                         </AvatarGroup>

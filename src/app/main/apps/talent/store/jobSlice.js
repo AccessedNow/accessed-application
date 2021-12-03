@@ -22,6 +22,15 @@ export const getJobBoard = createAsyncThunk('talent/job/board', async (params, {
   return data === undefined ? null : data;
 });
 
+
+export const getJobSkills = createAsyncThunk('talent/job/board', async (params, {getState}) => {
+  const user = getState().auth.user;
+  const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/jobs/${params.jobId}/skills`, {headers: {userId: user.data.id}} );
+  const data = await response.data.data;
+
+  return data === undefined ? null : data;
+});
+
 export const getJobApplications = createAsyncThunk('talent/job/applications', async (params, {getState}) => {
   const user = getState().auth.user;
   const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/company/${user.data.preferredCompany}/jobs/${params.jobId}/applications`, {headers: {userId: user.data.id}} );

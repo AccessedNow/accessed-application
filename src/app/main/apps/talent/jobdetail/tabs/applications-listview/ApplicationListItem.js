@@ -78,7 +78,7 @@ function ApplicationListItem(props) {
       onClick={(ev) => {
         ev.preventDefault();
         // dispatch(openCandidateDialog(props.candidate));
-        history.push(`candidates/${props.application.id}`);
+        history.push(`/talent/candidates/${props.application.user.id}`);
       }}
       dense
       button

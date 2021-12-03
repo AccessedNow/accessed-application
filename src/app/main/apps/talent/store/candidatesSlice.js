@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import _ from '@lodash';
 import {getMails} from "../../mail/store/mailsSlice";
+import {getContacts} from "../../contacts/store/contactsSlice";
+import {getUserData} from "../../contacts/store/userSlice";
 
 
 export const searchCandidates = createAsyncThunk(
@@ -58,6 +60,16 @@ export const removeCandidate = createAsyncThunk(
   }
 );
 
+
+export const removeCandidates = createAsyncThunk(
+  'contactsApp/contacts/removeContacts',
+  async (contactIds, { dispatch, getState }) => {
+    await axios.post('/api/contacts-app/remove-contacts', { contactIds });
+
+    return contactIds;
+  }
+);
+
 export const setPoolOnSelectedCandidates = createAsyncThunk(
   'mailApp/mails/setFolderOnSelectedMails',
   async (id, { dispatch, getState }) => {
@@ -70,6 +82,64 @@ export const setPoolOnSelectedCandidates = createAsyncThunk(
     const data = await response.data;
 
     dispatch(getMails());
+
+    return data;
+  }
+);
+
+
+export const toggleSubscribeCandidate = createAsyncThunk(
+  'contactsApp/contacts/toggleStarredContact',
+  async (contactId, { dispatch, getState }) => {
+    const response = await axios.post('/api/contacts-app/toggle-starred-contact', { contactId });
+    const data = await response.data;
+
+    dispatch(getUserData());
+
+    dispatch(getContacts());
+
+    return data;
+  }
+);
+
+
+export const toggleSubscribeCandidates = createAsyncThunk(
+  'contactsApp/contacts/toggleStarredContacts',
+  async (contactIds, { dispatch, getState }) => {
+    const response = await axios.post('/api/contacts-app/toggle-starred-contacts', { contactIds });
+    const data = await response.data;
+
+    dispatch(getUserData());
+
+    dispatch(getContacts());
+
+    return data;
+  }
+);
+
+export const setCandidatesStarred = createAsyncThunk(
+  'contactsApp/contacts/setContactsStarred',
+  async (contactIds, { dispatch, getState }) => {
+    const response = await axios.post('/api/contacts-app/set-contacts-starred', { contactIds });
+    const data = await response.data;
+
+    dispatch(getUserData());
+
+    dispatch(getContacts());
+
+    return data;
+  }
+);
+
+export const setCandidatesUnstarred = createAsyncThunk(
+  'contactsApp/contacts/setContactsUnstarred',
+  async (contactIds, { dispatch, getState }) => {
+    const response = await axios.post('/api/contacts-app/set-contacts-unstarred', { contactIds });
+    const data = await response.data;
+
+    dispatch(getUserData());
+
+    dispatch(getContacts());
 
     return data;
   }

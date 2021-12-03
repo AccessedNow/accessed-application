@@ -23,6 +23,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Paper from '@mui/material/Paper';
+import PlaceIcon from '@mui/icons-material/Place';
 import Rating from '@mui/material/Rating';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -36,8 +37,10 @@ import Match from '../../../components/Match';
 
 const ITEM_HEIGHT = 48;
 
-const StyledGridItem = styled(Grid)(({ theme, completed }) => ({
+const StyledItem = styled(Card)(({ theme, completed }) => ({
   background: 'white',
+  '& svg': {
+  }
 
 }));
 
@@ -75,12 +78,12 @@ function ApplicationGridItem(props) {
   };
   return (
 
-    <Card
+    <StyledItem
       className="flex flex-col shadow"
       onClick={(ev) => {
             ev.preventDefault();
             // dispatch(openCandidateDialog(props.candidate));
-            history.push(`candidates/${props.application.id}`);
+            history.push(`/talent/candidates/${props.application.user.id}`);
           }} >
       <CardHeader
         action={
@@ -108,11 +111,16 @@ function ApplicationGridItem(props) {
           </div>
         </div>
       </CardContent>
-      <CardActions className="justify-start pb-10">
-        <div className="flex flex-col items-center">
-          <Typography className="">{props.application.user.primaryAddress.city?props.application.user.primaryAddress.city:props.application.user.primaryAddress.state}</Typography>
+      <CardActions className="justify-between items-start mt-10">
+        <div className="flex flex-row items-center">
+          <IconButton size="small" aria-label="settings">
+            <PlaceIcon size="inherit" />
+          </IconButton>
+          <Typography className="text-gray-500">{props.application.user.primaryAddress.city?props.application.user.primaryAddress.city:props.application.user.primaryAddress.state}</Typography>
         </div>
-        <Match series={[props.application.user.match]} />
+        <div className="w-1/4 h-32 -mt-64">
+          <Match series={[props.application.user.match]} />
+        </div>
       </CardActions>
       <LinearProgress
         className="w-full"
@@ -120,7 +128,7 @@ function ApplicationGridItem(props) {
         value={87}
         color="success"
       />
-    </Card>
+    </StyledItem>
 
       // <Checkbox
       //   tabIndex={-1}

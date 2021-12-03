@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux';
 import { selectCandidates } from '../../store/candidatesSlice';
 
 import CandidatesTable from './candidates-table/CandidatesTable';
+import ContactsList from './candidates-table/ContactsList';
+import SkillList from './skill-list/SkillList';
 
 function Compare(props) {
   const candidates = useSelector(selectCandidates);
@@ -19,8 +21,15 @@ function Compare(props) {
 
   return (
     <div className="">
-      <div className="rounded-6">
-        <CandidatesTable />
+      <div className="bg-white rounded-6 p-20">
+        <Typography fontWeight={700} variant={'h6'} gutterBottom>
+          Candidates Comparison
+        </Typography>
+        <ContactsList />
+        <Typography fontWeight={700} variant={'h6'} gutterBottom>
+          Skills Comparison
+        </Typography>
+        <SkillList />
       </div>
     </div>
   );

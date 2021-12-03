@@ -20,7 +20,7 @@ function Match(props) {
 
   var options = {
     chart: {
-      height: 100,
+      height: '130',
       type: "radialBar",
     },
     colors: ["#20E647"],
@@ -28,12 +28,12 @@ function Match(props) {
       radialBar: {
         hollow: {
           margin: 0,
-          size: "65%",
+          size: "45%",
           background: "#293450"
         },
         track: {
           dropShadow: {
-            enabled: true,
+            enabled: false,
             top: 2,
             left: 0,
             blur: 4,
@@ -48,9 +48,9 @@ function Match(props) {
             show: false
           },
           value: {
-            offsetY: 10,
+            offsetY: 5,
             color: "#fff",
-            fontSize: "1.6em",
+            fontSize: "1.8rem",
             show: true
           }
         }
@@ -81,16 +81,12 @@ function Match(props) {
   _.setWith(data, 'options.grid.borderColor', alpha(theme.palette.primary.contrastText, 0.3));
 
   return (
-    <ThemeProvider>
-      <Root>
-        <ReactApexChart
-          options={options}
-          series={series}
-          type={options.chart.type}
-          height={options.chart.height}
-        />
-      </Root>
-    </ThemeProvider>
+    <ReactApexChart
+      options={options}
+      series={series}
+      type={options.chart.type}
+      height={options.chart.height}
+    />
   );
 }
 

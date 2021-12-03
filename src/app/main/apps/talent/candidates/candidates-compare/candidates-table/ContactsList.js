@@ -14,6 +14,7 @@ import {
   toggleSubscribeCandidate,
   selectCandidates,
 } from '../../../store/candidatesSlice';
+import { dateDiffBetween } from '../../../../../../utils/helper';
 
 function ContactsList(props) {
   const dispatch = useDispatch();
@@ -21,6 +22,13 @@ function ContactsList(props) {
   const searchText = useSelector(({ candidatesApp }) => candidatesApp.candidates.searchText);
 
   const [filteredData, setFilteredData] = useState(null);
+
+  const calculateExperiences = (fromDate, thruDate) => {
+    let exp = dateDiffBetween(fromDate, thruDate);
+    let total = exp.yr?exp.yr:'';
+    let month = exp.mo?total+ '.' + exp.mo:'';
+    return total;
+  }
 
   const columns = useMemo(
     () => [
@@ -35,6 +43,33 @@ function ContactsList(props) {
         },
         className: 'font-medium',
         sortable: true,
+      },
+      {
+        id: 'company',
+        Header: 'Company',
+        width: 60,
+        sortable: true,
+        Cell: ({ row }) => {
+          let latestExp = row.original.experiences?row.original.experiences[row.original.experiences.length-1]:'';
+          console.log(latestExp)
+          return <div className="flex items-center">
+            {latestExp?latestExp.employer.name:''}
+          </div>
+        },
+      },
+      {
+        id: 'experiences',
+        Header: 'Exp',
+        width: 60,
+        sortable: true,
+        Cell: ({ row }) => {
+
+          let fromDate = _.sortedUniq(_.map(row.original.experiences, 'fromDate'));
+          let thruDate = _.sortedUniq(_.map(row.original.experiences, 'thruDate'));
+          return <div className="flex items-center">
+            {calculateExperiences(fromDate[0], thruDate[thruDate.length-1])} yrs
+          </div>
+        },
       },
       {
         id: 'action',

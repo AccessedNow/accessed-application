@@ -35,9 +35,31 @@ export function dateDiff(timestamp){
     return d;
   });
 
-  return null;
+  return r;
 };
 
+
+export function dateDiffBetween(timestamp, timestamp2){
+  var d = Math.abs(timestamp - timestamp2) / 1000;                 // delta
+  var r = {};                                                                // result
+  var s = {                                                                  // structure
+    yr: 31536000,
+    mo: 2592000,
+    w: 604800, // uncomment row to ignore
+    d: 86400,   // feel free to add your own row
+    h: 3600,
+    m: 60,
+    s: 1
+  };
+
+  Object.keys(s).forEach(function(key){
+    r[key] = Math.floor(d / s[key]);
+    d -= r[key] * s[key];
+    return d;
+  });
+
+  return r;
+};
 
 
 export function epochToPath(timestamp) {

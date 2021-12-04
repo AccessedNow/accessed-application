@@ -66,14 +66,14 @@ function JobListItem(props) {
             {props.job.company.name}
           </Typography>
         </Link>
-        <div size="small" aria-label={location} className="justify-start">
+        <div size="small" aria-label={location} className="flex flex-row justify-start">
           <Icon className="text-16" color="action">
             place
           </Icon>
           <Typography className="mx-4">{location}</Typography>
         </div>
         <Typography className="">
-          {dateDiff(props.job.createdDate)}
+          {/*{dateDiff(props.job.createdDate)}*/}
         </Typography>
       </div>
 

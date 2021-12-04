@@ -65,7 +65,7 @@ function JobListItem(props) {
           <Typography className="mx-4">{location}</Typography>
         </div>
         <Typography className="">
-          {dateDiff(props.job.createdDate)}
+          {/*{dateDiff(props.job.createdDate)}*/}
         </Typography>
       </div>
 

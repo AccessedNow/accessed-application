@@ -33,6 +33,7 @@ import Stack from '@mui/material/Stack';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import clsx from 'clsx';
@@ -162,6 +163,7 @@ function JobDetail(props) {
   const routeParams = useParams();
   const history = useHistory();
   const job = useSelector(({ jobDetail }) => jobDetail.job.data);
+  const candidateView = useSelector(({ jobDetail }) => jobDetail.job.candidateView);
   const containerRef = useRef(null);
 
   const [tab, setTab] = useState(0);
@@ -288,7 +290,9 @@ function JobDetail(props) {
                           {/*))}*/}
                         <AvatarGroup max={4}>
                           {job.members.map((member) => (
-                            <Avatar alt="" src="assets/images/avatars/Velazquez.jpg" className="w-32 h-32" />
+                            <Tooltip title={member.firstName}>
+                              <Avatar alt="" src={member.avatar} className="w-32 h-32" />
+                            </Tooltip>
                           ))}
                           <Avatar alt="" src="assets/images/avatars/Velazquez.jpg" className="w-32 h-32" />
 
@@ -309,19 +313,29 @@ function JobDetail(props) {
                   </Box>
                 </Box>
                 <Stack direction="row" spacing={1} className="flex items-center">
-                  <FieldSelect />
-                  <IconButton fontSize="small">
-                    <FilterIcon fontSize="inherit" />
-                  </IconButton>
-                  <IconButton fontSize="small" aria-label="column" color="secondary" onClick={() => dispatch(setCandidateView('BOARD'))}>
-                    <ColumnIcon fontSize="inherit" />
-                  </IconButton>
-                  <IconButton fontSize="small" color="secondary" onClick={() => dispatch(setCandidateView('LIST'))}>
-                    <ListViewIcon fontSize="inherit" />
-                  </IconButton>
-                  <IconButton fontSize="small" color="secondary" onClick={() => dispatch(setCandidateView('GRID'))}>
-                    <GridViewIcon fontSize="inherit" />
-                  </IconButton>
+                  <Tooltip title="Fields">
+                    <FieldSelect />
+                  </Tooltip>
+                  <Tooltip title="Filter">
+                    <IconButton fontSize="small">
+                      <FilterIcon fontSize="inherit" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Board">
+                    <IconButton fontSize="small" aria-label="column" color={candidateView==='BOARD'?'secondary':'primary'} onClick={() => dispatch(setCandidateView('BOARD'))}>
+                      <ColumnIcon fontSize="inherit" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="List">
+                    <IconButton fontSize="small" color={candidateView==='LIST'?'secondary':'primary'} onClick={() => dispatch(setCandidateView('LIST'))}>
+                      <ListViewIcon fontSize="inherit" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Grid">
+                    <IconButton fontSize="small" color={candidateView==='GRID'?'secondary':'primary'} onClick={() => dispatch(setCandidateView('GRID'))}>
+                      <GridViewIcon fontSize="inherit" />
+                    </IconButton>
+                  </Tooltip>
                 </Stack>
               </div>
             </div>

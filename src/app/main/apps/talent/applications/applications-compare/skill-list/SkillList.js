@@ -18,7 +18,7 @@ function SkillList(props) {
   const dispatch = useDispatch();
   const routeParams = useParams();
   const candidates = useSelector(selectCandidates);
-  const [skills, setSkills] = useState([{name: 'Java'}]);
+  const [skills, setSkills] = useState(null);
 
   useEffect(() => {
     dispatch(getJobSkills(queryString.parse(props.location.search))).then((data) => {
@@ -36,11 +36,11 @@ function SkillList(props) {
     });
   }, [dispatch, props, candidates]);
 
-  if (!candidates) {
+  if (!skills) {
     return null;
   }
 
-  if (candidates.length === 0) {
+  if (skills.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -48,7 +48,7 @@ function SkillList(props) {
         className="flex flex-1 items-center justify-center h-full"
       >
         <Typography color="textSecondary" variant="h5">
-          There are no candidates!
+          There are no match!
         </Typography>
       </motion.div>
     );

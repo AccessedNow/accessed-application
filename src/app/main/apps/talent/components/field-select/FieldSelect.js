@@ -169,25 +169,6 @@ export default function FieldSelect() {
               renderOption={(props, option, { selected }) => (
                 <li {...props}>
                   <Box
-                    component={DoneIcon}
-                    sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
-                    style={{
-                      visibility: selected ? 'visible' : 'hidden',
-                    }}
-                  />
-                  <Box
-                    component="span"
-                    sx={{
-                      width: 14,
-                      height: 14,
-                      flexShrink: 0,
-                      borderRadius: '3px',
-                      mr: 1,
-                      mt: '2px',
-                    }}
-                    style={{ backgroundColor: option.color }}
-                  />
-                  <Box
                     sx={{
                       flexGrow: 1,
                       '& span': {
@@ -201,8 +182,8 @@ export default function FieldSelect() {
                     {/*<span>{option.description}</span>*/}
                   </Box>
                   <Box
-                    component={CloseIcon}
-                    sx={{ opacity: 0.6, width: 18, height: 18 }}
+                    component={DoneIcon}
+                    sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
                     style={{
                       visibility: selected ? 'visible' : 'hidden',
                     }}

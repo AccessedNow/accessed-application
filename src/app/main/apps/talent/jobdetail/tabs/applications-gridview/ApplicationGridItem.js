@@ -33,6 +33,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleInSelectedApplications } from '../../store/applicationsSlice';
 import Match from '../../../components/Match';
+import { openCardDialog } from '../../store/cardSlice';
 
 
 const ITEM_HEIGHT = 48;
@@ -60,10 +61,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function ApplicationGridItem(props) {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const board = useSelector(({ jobDetail }) => jobDetail.job.board);
   const [anchorEl, setAnchorEl] = useState(null);
-  const openOption = Boolean(anchorEl);
   const selectedApplicationIds = useSelector(({ jobDetail }) => jobDetail.applications.selectedApplicationIds);
   const checked =
     selectedApplicationIds.length > 0 && selectedApplicationIds.find((id) => id === props.application._id) !== undefined;
@@ -82,8 +80,8 @@ function ApplicationGridItem(props) {
       className="flex flex-col shadow"
       onClick={(ev) => {
             ev.preventDefault();
-            // dispatch(openCandidateDialog(props.candidate));
-            history.push(`/talent/candidates/${props.application.user.id}`);
+            dispatch(openCardDialog(props.application.user));
+            // history.push(`/talent/candidates/${props.application.user.id}`);
           }} >
       <CardHeader
         action={

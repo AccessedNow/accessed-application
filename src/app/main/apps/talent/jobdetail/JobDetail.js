@@ -49,6 +49,8 @@ import reducer from './store';
 import CandidatesTab from './tabs/CandidatesTab';
 import JobInsightTab from './tabs/insight/JobInsightTab';
 import FieldSelect from '../components/field-select/FieldSelect';
+import CardDialog from './dialogs/card/CardDialog';
+
 import {buildUserAvatar} from "../../../../utils/urlHelper";
 
 
@@ -354,6 +356,7 @@ function JobDetail(props) {
           <JobInsightTab />
         </TabPanel>
       </div>
+      <CardDialog />
     </Root>
   );
 }

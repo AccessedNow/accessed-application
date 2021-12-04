@@ -97,6 +97,7 @@ function ApplicationListItem(props) {
             <div className="">
 
               <IconButton
+                size="small"
                 aria-label="more"
                 id="long-button"
                 aria-controls="long-menu"
@@ -104,7 +105,7 @@ function ApplicationListItem(props) {
                 aria-haspopup="true"
                 onClick={handleOptionClick}
               >
-                <MoreVertIcon />
+                <MoreVertIcon size="inherit" />
               </IconButton>
               <div>
                 <Menu
@@ -132,6 +133,7 @@ function ApplicationListItem(props) {
             </div>
           </div>
           <Checkbox
+            size="small"
             tabIndex={-1}
             disableRipple
             checked={checked}

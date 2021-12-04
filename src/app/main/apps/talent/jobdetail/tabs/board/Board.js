@@ -19,8 +19,7 @@ import { reorderCard, reorderList, resetBoard, getBoard } from '../../store/boar
 import BoardAddList from './BoardAddList';
 import BoardList from './BoardList';
 import BoardTitle from './BoardTitle';
-import BoardCardDialog from './dialogs/card/BoardCardDialog';
-import CardDialog from './dialogs/card/CardDialog';
+// import BoardCardDialog from './dialogs/card/BoardCardDialog';
 
 import BoardSettingsSidebar from './sidebars/settings/BoardSettingsSidebar';
 import {getJobBoard} from "../../../store/jobSlice";
@@ -127,7 +126,6 @@ function Board(props) {
             </Droppable>
           </DragDropContext>
         </div>
-        <CardDialog />
       </div>
     </>
   );

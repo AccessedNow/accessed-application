@@ -1,4 +1,6 @@
 import FuseUtils from '@fuse/utils';
+import FuseLoading from '@fuse/core/FuseLoading';
+
 import _ from '@lodash';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -37,7 +39,7 @@ function ApplicationList(props) {
   }, [candidates, searchText, orderBy, orderDescending]);
 
   if (!filteredData) {
-    return null;
+    return <FuseLoading />;
   }
 
   if (filteredData.length === 0) {

@@ -12,6 +12,7 @@ import Link from '@mui/material/Link';
 import CallIcon from '@mui/icons-material/Call';
 import EmailIcon from '@mui/icons-material/Email';
 import PlaceIcon from '@mui/icons-material/Place';
+import Rating from '@mui/material/Rating';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useHistory } from 'react-router-dom';
@@ -26,7 +27,7 @@ function ContentHeader(props) {
   // const candidate = useSelector(({ candidateApp }) => candidateApp.candidate);
   const { candidate } = props;
 
-  let location = _.merge({}, candidate.primaryAddress);
+  let location = candidate.primaryAddress?_.merge({}, candidate.primaryAddress):'';
   delete location.address1;
   location = _.values(_.omitBy(_.pickBy(location, _.identity), _.isNumber)).join(', ');
   if(!candidate){
@@ -54,15 +55,18 @@ function ContentHeader(props) {
       </div>
       <div className="w-full py-10 px-20 flex flex-row items-start justify-between">
         <div className="flex flex-row items-start justify-start">
-          <Avatar
-            sx={{
-              borderWidth: 2,
-              borderStyle: 'solid',
-              borderColor: 'white',
-            }}
-            className="w-40 h-40 md:w-128 md:h-128"
-            src={candidate.avatar}
-          />
+          <div className="flex flex-col items-center justify-center">
+            <Avatar
+              sx={{
+                borderWidth: 2,
+                borderStyle: 'solid',
+                borderColor: 'white',
+              }}
+              className="w-40 h-40 md:w-128 md:h-128 mb-6"
+              src={candidate.avatar}
+            />
+            <Rating size="small" name="read-only" value={candidate.rating} readOnly />
+          </div>
           <div className="flex flex-col flex-1 items-start justify-start ml-5 p-8">
             <div>
               <motion.div

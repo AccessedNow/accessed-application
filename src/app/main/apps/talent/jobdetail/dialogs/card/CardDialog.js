@@ -1,11 +1,11 @@
 import Dialog from '@mui/material/Dialog';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeCardDialog } from '../../../../store/cardSlice';
-import ContentHeader from '../../../../../candidate/ContentHeader';
-import CandidateDetail from '../../../../../candidate/CandidateDetail';
-import SidebarContent from '../../../../../candidate/SidebarContent';
+import { closeCardDialog } from '../../store/cardSlice';
+import ContentHeader from '../../../candidate/ContentHeader';
+import CandidateDetail from '../../../candidate/CandidateDetail';
+import SidebarContent from '../../../candidate/SidebarContent';
 
-function BoardCardDialog(props) {
+function CardDialog(props) {
   const dispatch = useDispatch();
   const cardDialogOpen = useSelector(({ jobDetail }) => jobDetail.card.dialogOpen);
   const data = useSelector(({ jobDetail }) => jobDetail.card.data);
@@ -37,4 +37,4 @@ function BoardCardDialog(props) {
   );
 }
 
-export default BoardCardDialog;
+export default CardDialog;

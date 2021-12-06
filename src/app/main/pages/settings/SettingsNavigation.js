@@ -58,6 +58,13 @@ const SettingsNavigation = {
       url: '/settings/members'
     },
     {
+      id: 'pools',
+      title: 'Pools',
+      type: 'item',
+      icon: 'group',
+      url: '/settings/pools'
+    },
+    {
       id: 'boards',
       title: 'Boards',
       type: 'item',

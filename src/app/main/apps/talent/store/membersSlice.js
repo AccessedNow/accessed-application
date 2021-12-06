@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import _ from '@lodash';
 import {searchCandidates} from "./candidatesSlice";
+import {addContact} from "../../contacts/store/contactsSlice";
 
 
 export const searchMembers = createAsyncThunk(

@@ -43,9 +43,14 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-sidebar': {
     width: 320,
 
+    '& .FusePageSimple-sidebarHeader':{
+      height: 'auto',
+      minHeight: 'auto'
+    },
     '& .FusePageSimple-sidebarContent': {
     }
   },
+
   '& .FusePageSimple-leftSidebar': {
     border: 0
   },

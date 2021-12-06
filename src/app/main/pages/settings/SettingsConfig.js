@@ -18,6 +18,10 @@ const SettingsConfig = {
           component: lazy(() => import('../../apps/talent/members/Members')),
         },
         {
+          path: '/settings/pools',
+          component: lazy(() => import('../../apps/talent/pools/Pools')),
+        },
+        {
           path: '/settings/boards',
           component: lazy(() => import('../../apps/talent/boards/Boards')),
         },

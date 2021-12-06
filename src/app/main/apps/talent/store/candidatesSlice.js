@@ -117,6 +117,20 @@ export const toggleSubscribeCandidates = createAsyncThunk(
   }
 );
 
+export const setCandidateStarred = createAsyncThunk(
+  'contactsApp/contacts/setContactsStarred',
+  async (contactIds, { dispatch, getState }) => {
+    const response = await axios.post('/api/contacts-app/set-contacts-starred', { contactIds });
+    const data = await response.data;
+
+    dispatch(getUserData());
+
+    dispatch(getContacts());
+
+    return data;
+  }
+);
+
 export const setCandidatesStarred = createAsyncThunk(
   'contactsApp/contacts/setContactsStarred',
   async (contactIds, { dispatch, getState }) => {

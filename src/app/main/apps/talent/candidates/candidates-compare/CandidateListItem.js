@@ -68,7 +68,7 @@ function CandidateListItem(props) {
   return (
     <StyledListItem
       disableRipple
-      className="px-0 py-8 bg-white"
+      className="mb-10 px-0 py-8 rounded-6 bg-white"
       completed={props.candidate.hasApplied}
       onClick={(ev) => {
         ev.preventDefault();

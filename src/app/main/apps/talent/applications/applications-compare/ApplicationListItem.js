@@ -26,11 +26,12 @@ import { toggleInSelectedCandidates, openCandidateDialog, updateCandidate, openE
 const ITEM_HEIGHT = 48;
 
 const StyledListItem = styled(ListItem)(({ theme, completed }) => ({
-  ...(completed && {
-    '& .todo-title, & .todo-notes': {
-      textDecoration: 'line-through',
-    },
-  }),
+    border: '1px solid #fff',
+    '&:hover':{
+      backgroundColor: 'white',
+      border: `1px solid ${theme.palette.primary.main}`,
+      boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+    }
 }));
 
 const Img = styled('img')({
@@ -68,7 +69,7 @@ function ApplicationListItem(props) {
   return (
     <StyledListItem
       disableRipple
-      className="px-0 py-8 bg-white"
+      className="mb-10 px-0 py-8 rounded-6 bg-white"
       completed={props.candidate.hasApplied}
       onClick={(ev) => {
         ev.preventDefault();

@@ -48,6 +48,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
       minHeight: 'auto'
     },
     '& .FusePageSimple-sidebarContent': {
+      padding: 10
     }
   },
 

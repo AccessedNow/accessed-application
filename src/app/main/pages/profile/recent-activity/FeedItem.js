@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
+import { styled } from '@mui/material/styles';
 
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
@@ -12,9 +13,12 @@ import CardHeader from '@mui/material/CardHeader';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
+import Link from '@mui/material/Link';
+
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import Typography from '@mui/material/Typography';
@@ -23,6 +27,17 @@ import { motion } from 'framer-motion';
 import {useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { add } from './store/activitiesSlice';
+import {openNewMemberDialog} from "../../../apps/talent/store/membersSlice";
+
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: 'center',
+  boxShadow: 'none',
+  border: `1px solid ${theme.palette.primary.main}`,
+  borderRadius: 30,
+  color: theme.palette.text.secondary,
+}));
 
 const defaultValues = {
   comment: ''
@@ -58,7 +73,7 @@ function FeedItem(props) {
       <Card
         component={motion.div}
         key={post.dataResource.id}
-        className="w-full mb-32 overflow-hidden rounded-6 shadow"
+        className="w-full mb-10 overflow-hidden rounded-6 shadow"
       >
         <CardHeader
           avatar={<Avatar aria-label="Recipe" src={post.dataResource.party.avatar} />}
@@ -92,7 +107,7 @@ function FeedItem(props) {
 
           {post.dataResource.media && <img src={post.dataResource.media.preview} alt="post" className="rounded-8" />}
 
-          {post.dataResource.resource && post.dataResource.resource.type==='IMAGE' &&  (
+          {post.dataResource.type==='LINK' && post.dataResource.resource.type==='IMAGE' &&  (
             <div className="border-1 rounded-8 overflow-hidden">
               <img
                 className="w-full border-b-1"
@@ -105,6 +120,31 @@ function FeedItem(props) {
                 {/*)}*/}
                 <Typography variant="caption">{post.dataResource.resource.title}</Typography>
                 <Typography className="mt-16">{post.dataResource.caption}</Typography>
+              </div>
+            </div>
+          )}
+
+          {post.dataResource.type==='SURVEY' && post.dataResource.resource &&  (
+            <div className="border-1 rounded-8 overflow-hidden">
+              <div className="p-16">
+                <Typography variant="h6" fontWeight={700}>
+                  {post.dataResource.resource.text}
+                </Typography>
+                <Typography variant={'subtitle2'} color={'text.secondary'}>
+                  The author can see how you vote.
+                  <Link color={'primary'} href={'/terms-conditions'} underline={'none'}>
+                    Learn more.
+                  </Link>
+                </Typography>
+                <div className="mt-14">
+                  <Stack spacing={1}>
+                    {post.dataResource.resource.items.map((item) => (
+                      <Item>
+                        <Button fullWidth size="small" className="py-5">{item.text}</Button>
+                      </Item>
+                    ))}
+                  </Stack>
+                </div>
               </div>
             </div>
           )}
@@ -184,7 +224,7 @@ function FeedItem(props) {
             <Avatar className="mx-4" src="assets/images/avatars/profile.jpg" />
             <div className="flex-1 mx-4">
               <form onSubmit={handleSubmit(onSubmit)}>
-              <Paper className="w-full mb-16 shadow-0">
+              <Paper className="w-full mb-16 rounded-32 shadow-0">
                 {/*<Input*/}
                   {/*className="p-8 w-full border-1 rounded-8"*/}
                   {/*classes={{ root: 'text-13' }}*/}
@@ -203,6 +243,8 @@ function FeedItem(props) {
                       label="Comment"
                       autoFocus
                       variant="outlined"
+                      size="small"
+                      className="rounded-32"
                     />
                   )}
                 />

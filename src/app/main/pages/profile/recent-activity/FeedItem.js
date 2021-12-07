@@ -1,8 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Controller, useForm } from 'react-hook-form';
+import _ from '@lodash';
+import format from 'date-fns/format';
 import { styled } from '@mui/material/styles';
-
+import { Controller, useForm } from 'react-hook-form';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -10,6 +11,10 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ChatIcon from '@mui/icons-material/ChatBubbleOutline';
+import ShareIcon from '@mui/icons-material/Share';
+
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
@@ -26,9 +31,43 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import {useState} from 'react';
 import { useDispatch } from 'react-redux';
+import { useTheme } from '@mui/material/styles';
+
 import { add } from './store/activitiesSlice';
 import {openNewMemberDialog} from "../../../apps/talent/store/membersSlice";
+import {closeUserSidebar} from "../../../apps/chat/store/sidebarsSlice";
 
+
+const Article = styled(Card)(({ theme }) => ({
+  borderWidth: 1,
+  borderColor: '#eee',
+  boxShadow: 'none',
+  borderRadius: 0,
+  [theme.breakpoints.up('md')]: {
+    borderRadius: 4,
+  },
+
+  '& .job-cover': {
+    background: 'url("assets/images/covers/cover11.png")',
+    backgroundSize: 'cover!important',
+    backgroundPosition: 'center center!important',
+  },
+
+  '& .article-resource':{
+    borderWidth: 1,
+    borderColor: '#eee'
+  },
+  '& .MuiCardActions-root':{
+    borderColor: '#eee',
+    borderTopWidth: 1
+  },
+  '& .comment-form':{
+    '& fieldset':{
+      borderColor: '#eee',
+      borderRadius: 30
+    }
+  }
+}));
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -51,9 +90,10 @@ const schema = yup.object().shape({
 });
 
 function FeedItem(props) {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const {post} = props;
-
+  const [showInputComment, setShowInputComment] = useState(false);
   const { watch, handleSubmit, formState, reset, control, setValue } = useForm({
     mode: 'onChange',
     defaultValues,
@@ -70,13 +110,15 @@ function FeedItem(props) {
   }
 
   return (
-      <Card
+      <Article
         component={motion.div}
-        key={post.dataResource.id}
-        className="w-full mb-10 overflow-hidden rounded-6 shadow"
+        key={post.id}
+        className={clsx('w-full mb-10 md:mb-14 overflow-hidden rounded-0 md:rounded-6 shadow-0',
+          post.type
+        )}
       >
         <CardHeader
-          avatar={<Avatar aria-label="Recipe" src={post.dataResource.party.avatar} />}
+          avatar={<Avatar aria-label="Recipe" src={post.party.avatar} />}
           action={
             <IconButton aria-label="more" size="large">
               <Icon>more_vert</Icon>
@@ -84,188 +126,178 @@ function FeedItem(props) {
           }
           title={
             <span className="flex">
-                    <Typography className="font-normal" color="primary" paragraph={false}>
-                      {post.dataResource.party.name}
+                    <Typography fontWeight={600} className="text-12 md:text-14" paragraph={false}>
+                      {post.party.name}
                     </Typography>
                     <span className="mx-4">
-                      {post.dataResource.type === 'post' && 'posted on your timeline'}
-                      {post.dataResource.type === 'something' && 'shared something with you'}
-                      {post.dataResource.type === 'video' && 'shared a video with you'}
-                      {post.dataResource.type === 'article' && 'shared an article with you'}
+                      {post.type === 'post' && 'posted on your timeline'}
+                      {post.type === 'something' && 'shared something with you'}
+                      {post.type === 'video' && 'shared a video with you'}
+                      {post.type === 'article' && 'shared an article with you'}
                     </span>
                   </span>
           }
-          subheader={post.dataResource.createdDate}
+          subheader={
+            <Typography component="span" className="text-10 md:text-12" paragraph={false}>
+              {format(new Date(post.createdDate), 'PP')}
+            </Typography>
+          }
         />
 
-        <CardContent className="py-0">
-          {post.dataResource.text && (
-            <Typography component="p" className="mb-16">
-              {post.dataResource.text}
+        <CardContent className="p-0">
+          {post.text && (
+            <Typography component="p" className="px-16 mb-16 text-12 md:text-12">
+              {post.text}
             </Typography>
           )}
 
-          {post.dataResource.media && <img src={post.dataResource.media.preview} alt="post" className="rounded-8" />}
+          {post.media && <img src={post.media.preview} alt="post" className="rounded-8" />}
 
-          {post.dataResource.type==='LINK' && post.dataResource.resource.type==='IMAGE' &&  (
-            <div className="border-1 rounded-8 overflow-hidden">
+          {post.type==='LINK' && post.resource.type==='IMAGE' &&  (
+            <div className="overflow-hidden">
               <img
                 className="w-full border-b-1"
-                src={post.dataResource.resource.imageUrl}
+                src={post.resource.imageUrl}
                 alt="article"
               />
-              <div className="p-16">
-                {/*{post.dataResource.resource && post.dataResource.resource.siteName && (*/}
-                {/*<Typography variant="subtitle1">{post.dataResource.resoure.siteName}</Typography>*/}
+              <div className="p-16 bg-blue-50">
+                {/*{post.resource && post.resource.siteName && (*/}
+                {/*<Typography variant="subtitle1">{post.resoure.siteName}</Typography>*/}
                 {/*)}*/}
-                <Typography variant="caption">{post.dataResource.resource.title}</Typography>
-                <Typography className="mt-16">{post.dataResource.caption}</Typography>
+                <Typography variant="h6" fontWeight={600} color={theme.palette.text.secondary} className="text-10">{post.resource.siteName.toUpperCase()}</Typography>
+                <Typography variant="h6" fontWeight={600} className="text-12 truncate">{post.resource.title}</Typography>
+                {/*<Typography variant="subtitle2" className="text-11 truncate">{post.resource.caption}</Typography>*/}
+
               </div>
             </div>
           )}
 
-          {post.dataResource.type==='SURVEY' && post.dataResource.resource &&  (
-            <div className="border-1 rounded-8 overflow-hidden">
+          {post.type==='JOB' && post.resource &&  (
+            <div className="overflow-hidden">
+              <div className="job-cover h-128 border-b-1">
+                {/*<img*/}
+                  {/*className="w-full h-full"*/}
+                  {/*src="assets/images/covers/cover1.png"*/}
+                  {/*alt="article"*/}
+                {/*/>*/}
+              </div>
+              <div className="flex flex-row justify-between p-16 bg-gray-50 relative">
+                {/*{post.resource && post.resource.siteName && (*/}
+                {/*<Typography variant="subtitle1">{post.resoure.siteName}</Typography>*/}
+                {/*)}*/}
+
+                <div className="flex flex-row">
+                  <Avatar variant="square" className="w-40 h-40 rounded-6" src={post.resource.company.avatar}/>
+                  <div className="px-8">
+                    <Typography variant="h6" fontWeight={600} color={theme.palette.text.secondary} className="text-10">{post.resource.company.name.toUpperCase()}</Typography>
+                    <Typography variant="h6" fontWeight={600} className="text-12 truncate">{post.resource.title}</Typography>
+                  </div>
+                  {/*<Typography variant="subtitle2" className="text-11 truncate">{post.resource.caption}</Typography>*/}
+                </div>
+                <Button to={`jobs/view/${post.resource.jobId}`} variant="contained" color="primary" size="small" className="rounded-4">
+                  Apply
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {post.type==='SURVEY' && post.resource &&  (
+            <div className="article-resource mx-16 rounded-6 overflow-hidden">
               <div className="p-16">
-                <Typography variant="h6" fontWeight={700}>
-                  {post.dataResource.resource.text}
+                <Typography variant="h6" fontWeight={600} className="text-12 md:text-14">
+                  {post.resource.text}
                 </Typography>
-                <Typography variant={'subtitle2'} color={'text.secondary'}>
+                <Typography variant={'subtitle2'} color={'text.secondary'} className="text-10">
                   The author can see how you vote.
-                  <Link color={'primary'} href={'/terms-conditions'} underline={'none'}>
+                  <Link color="primary" href={'/terms-conditions'} underline={'none'}>
                     Learn more.
                   </Link>
                 </Typography>
                 <div className="mt-14">
-                  <Stack spacing={1}>
-                    {post.dataResource.resource.items.map((item) => (
+                  <Stack spacing={1} className="mb-8">
+                    {post.resource.items.map((item) => (
                       <Item>
-                        <Button fullWidth size="small" className="py-5">{item.text}</Button>
+                        <Button fullWidth size="small" className="py-0 md:py-5">
+                          <span>{item.text}</span>
+                          {/*<img height="40" src={item.imageUrl} />*/}
+                        </Button>
                       </Item>
                     ))}
                   </Stack>
+                  <Typography variant="subtitle2" color={'text.secondary'} className="text-10">
+                    {post.resource.noOfVotes?post.resource.noOfVotes + ' votes':'Be the first to vote'} - 1w left
+                  </Typography>
                 </div>
               </div>
             </div>
           )}
         </CardContent>
 
-        <CardActions disableSpacing className="px-12">
-          <Button size="small" aria-label="Add to favorites">
-            <Icon className="text-16" color="action">
-              favorite
-            </Icon>
-            <Typography className="mx-4">Like</Typography>
-            <Typography>({post.like})</Typography>
+        <CardActions disableSpacing className="card-actions flex flex-row justify-between ">
+          <Button color="inherit" size="small" aria-label="Like" className="text-10" startIcon={<FavoriteIcon />}>
+            <Typography className="text-12">Like</Typography>
+            <Typography>{post.noOfLikes?post.noOfLikes:''}</Typography>
           </Button>
-          <Button aria-label="Share">
-            <Icon className="text-16" color="action">
-              share
-            </Icon>
-            <Typography className="mx-4">Share</Typography>
-            <Typography>({post.share})</Typography>
+          <Button color="inherit" size="small" aria-label="Comment" className="text-10"
+                  startIcon={<ChatIcon />}
+                  onClick={() => setShowInputComment(true)}
+          >
+            <Typography className="text-12">Comment</Typography>
+            <Typography color="inherit">{post.noOfComments?post.noOfComments:''}</Typography>
+          </Button>
+          <Button color="inherit" size="small" aria-label="Share" className="text-10" startIcon={<ShareIcon />}>
+            <Typography className="text-12">Share</Typography>
+            <Typography>{post.noOfShares?post.noOfShares:''}</Typography>
           </Button>
         </CardActions>
 
-        <AppBar
-          className="card-footer flex flex-column p-16"
-          position="static"
-          color="inherit"
-          elevation={0}
-        >
-          {post.dataResource.comments && post.dataResource.comments.length > 0 && (
-            <div className="">
-              <div className="flex items-center">
-                <Typography>{post.dataResource.noOfComments} comments</Typography>
-                <Icon className="text-16 mx-4" color="action">
-                  keyboard_arrow_down
-                </Icon>
-              </div>
 
-              <List>
-                {post.dataResource.comments.map((comment) => (
-                  <div key={comment.id}>
-                    <ListItem className="px-0 -mx-8">
-                      <Avatar
-                        alt={comment.user.name}
-                        src={comment.user.avatar}
-                        className="mx-8"
-                      />
-                      <ListItemText
-                        className="px-4"
-                        primary={
-                          <div className="flex">
-                            <Typography
-                              className="font-normal"
-                              color="initial"
-                              paragraph={false}
-                            >
-                              {comment.user.name}
-                            </Typography>
-                            <Typography className="mx-4" variant="caption">
-                              {comment.time}
-                            </Typography>
-                          </div>
-                        }
-                        secondary={comment.message}
-                      />
-                    </ListItem>
-                    <div className="flex items-center mx-52 mb-8">
-                      <Button>Reply</Button>
-                      <Icon className="text-14 mx-8 cursor-pointer">flag</Icon>
-                    </div>
-                  </div>
-                ))}
-              </List>
-            </div>
-          )}
-
-          <div className="flex flex-auto -mx-4">
+        {showInputComment && (
+          <div className="flex flex-auto items-start px-12 -mx-4 comment-form">
             <Avatar className="mx-4" src="assets/images/avatars/profile.jpg" />
             <div className="flex-1 mx-4">
               <form onSubmit={handleSubmit(onSubmit)}>
-              <Paper className="w-full mb-16 rounded-32 shadow-0">
-                {/*<Input*/}
+                <Paper className="w-full mb-16 rounded-32 shadow-0">
+                  {/*<Input*/}
                   {/*className="p-8 w-full border-1 rounded-8"*/}
                   {/*classes={{ root: 'text-13' }}*/}
                   {/*placeholder="Add a comment.."*/}
                   {/*multiline*/}
                   {/*margin="none"*/}
                   {/*disableUnderline*/}
-                {/*/>*/}
-                <Controller
-                  name="comment"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      label="Comment"
-                      autoFocus
-                      variant="outlined"
-                      size="small"
-                      className="rounded-32"
-                    />
-                  )}
-                />
-              </Paper>
+                  {/*/>*/}
+                  <Controller
+                    name="comment"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label="Comment"
+                        variant="outlined"
+                        size="small"
+                        className="rounded-32"
+                      />
+                    )}
+                  />
+                </Paper>
 
-              {isValid && (
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  disabled={_.isEmpty(dirtyFields) || !isValid}
-                >
-                  Post
-                </Button>
-              )}
+                {isValid && (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    disabled={_.isEmpty(dirtyFields) || !isValid}
+                  >
+                    Post
+                  </Button>
+                )}
               </form>
             </div>
           </div>
-        </AppBar>
-      </Card>
+        )}
+      </Article>
   );
 }
 

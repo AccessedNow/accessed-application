@@ -33,10 +33,10 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     height: 0,
   },
   '& .FusePageSimple-contentWrapper': {
-    padding: 16,
+    padding: 0,
     paddingBottom: 80,
-    [theme.breakpoints.up('sm')]: {
-      padding: 24,
+    [theme.breakpoints.up('md')]: {
+      padding: 16
     },
   },
   '& .FusePageSimple-content': {

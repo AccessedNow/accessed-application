@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 export default function MediaAd() {
   return (
-    <Card variant="outlined" sx={{ maxWidth: 345 }} className="rounded-8">
+    <Card variant="outlined" sx={{ maxWidth: 345 }} className="rounded-6">
       <CardMedia
         component="img"
         height="140"

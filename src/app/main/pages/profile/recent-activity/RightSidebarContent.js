@@ -102,7 +102,7 @@ function RightSidebarContent() {
       <div className="mb-20">
         <MediaAd />
       </div>
-      <div className="flex flex-row  items-center justify-between rounded-8 mb-24 bg-white p-16 shadow-sm">
+      <div className="flex flex-row  items-center justify-between rounded-6 mb-24 bg-white p-16 shadow-0">
         <Typography className="text-14">
           Looking for talent
         </Typography>
@@ -111,7 +111,7 @@ function RightSidebarContent() {
         </Button>
       </div>
 
-      <Card className="w-full mb-20">
+      <Card variant="outlined" className="w-full mb-20 rounded-6">
         <CardHeader title={<Typography className="text-14 font-medium">Influencers</Typography>}/>
 
         <CardContent className="p-0">
@@ -152,7 +152,7 @@ function RightSidebarContent() {
         </CardActions>
       </Card>
 
-      <Card className="w-full mb-20">
+      <Card variant="outlined" className="w-full mb-20">
         <CardHeader title={<Typography className="text-14 font-medium">Connections that work here</Typography>}/>
         <CardContent className="p-0">
           <List className="p-0">

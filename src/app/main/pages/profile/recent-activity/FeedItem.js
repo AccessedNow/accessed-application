@@ -160,12 +160,12 @@ function FeedItem(props) {
                 src={post.resource.imageUrl}
                 alt="article"
               />
-              <div className="p-16 bg-blue-50">
+              <div className="p-16 bg-gray-50">
                 {/*{post.resource && post.resource.siteName && (*/}
                 {/*<Typography variant="subtitle1">{post.resoure.siteName}</Typography>*/}
                 {/*)}*/}
-                <Typography variant="h6" fontWeight={600} color={theme.palette.text.secondary} className="text-10">{post.resource.siteName.toUpperCase()}</Typography>
-                <Typography variant="h6" fontWeight={600} className="text-12 truncate">{post.resource.title}</Typography>
+                <Typography variant="h6" fontWeight={600} color={theme.palette.text.secondary} className="text-12">{post.resource.siteName.toUpperCase()}</Typography>
+                <Typography variant="h6" fontWeight={600} className="text-14 truncate">{post.resource.title}</Typography>
                 {/*<Typography variant="subtitle2" className="text-11 truncate">{post.resource.caption}</Typography>*/}
 
               </div>
@@ -187,14 +187,14 @@ function FeedItem(props) {
                 {/*)}*/}
 
                 <div className="flex flex-row">
-                  <Avatar variant="square" className="w-40 h-40 rounded-6" src={post.resource.company.avatar}/>
+                  <Avatar variant="square" className="w-52 h-52 rounded-4" src={post.resource.company.avatar}/>
                   <div className="px-8">
-                    <Typography variant="h6" fontWeight={600} color={theme.palette.text.secondary} className="text-10">{post.resource.company.name.toUpperCase()}</Typography>
-                    <Typography variant="h6" fontWeight={600} className="text-12 truncate">{post.resource.title}</Typography>
+                    <Typography variant="h6" fontWeight={600} color={theme.palette.text.secondary} className="text-12">{post.resource.company.name.toUpperCase()}</Typography>
+                    <Typography variant="h6" fontWeight={600} className="text-14 truncate">{post.resource.title}</Typography>
                   </div>
                   {/*<Typography variant="subtitle2" className="text-11 truncate">{post.resource.caption}</Typography>*/}
                 </div>
-                <Button to={`jobs/view/${post.resource.jobId}`} variant="contained" color="primary" size="small" className="rounded-4">
+                <Button to={`jobs/view/${post.resource.jobId}`} variant="contained" color="primary" size="small" className="rounded-4 py-0">
                   Apply
                 </Button>
               </div>

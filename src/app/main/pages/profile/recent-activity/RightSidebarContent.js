@@ -94,7 +94,7 @@ function RightSidebarContent() {
 
 
   return (
-    <div className="flex flex-col md:w-288 p-0 lg:p-24 lg:ltr:pr-4 lg:rtl:pl-4">
+    <div className="flex flex-col md:w-288 p-0 lg:py-16 ">
     {/*<div className="flex flex-col md:w-288">*/}
       {/*<div className="mb-20">*/}
         {/*<Ad />*/}
@@ -116,24 +116,24 @@ function RightSidebarContent() {
 
         <CardContent className="p-0">
           <List className="p-0">
-            {groups.map((group) => (
-              <ListItem key={group.id} className="px-8">
-                <Avatar variant="square" className="mx-8 w-52 h-52" alt={group.name}>
-                  {group.name[0]}
+            {friends.map((friend) => (
+              <ListItem key={friend.id} className="px-8">
+                <Avatar className="mx-8 w-52 h-52" alt={friend.name} src={friend.avatar}>
+                  {friend.name[0]}
                 </Avatar>
                 <ListItemText
                   primary={
                     <div className="flex">
-                      <Typography className="font-medium" color="secondary" paragraph={false}>
-                        {group.name}
+                      <Typography className="font-medium" color="inherit" paragraph={false}>
+                        {friend.name}
                       </Typography>
 
-                      <Typography className="mx-4 font-normal" paragraph={false}>
-                        {group.category}
-                      </Typography>
+                      {/*<Typography className="mx-4 font-normal" paragraph={false}>*/}
+                        {/*{friend.category}*/}
+                      {/*</Typography>*/}
                     </div>
                   }
-                  secondary={group.members}
+                  // secondary={friend.title}
                 />
               </ListItem>
             ))}

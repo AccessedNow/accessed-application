@@ -130,6 +130,14 @@ export const setUserData = (user) => async (dispatch, getState) => {
       'icon': 'apps',
       'children': [
         {
+          'id': 'home',
+          'title': 'Home',
+          'type': 'item',
+          'url': '/home',
+          auth: authRoles.admin,
+          'icon': 'home'
+        },
+        {
           'id': 'dashboard',
           'title': 'Dashboard',
           'type': 'item',

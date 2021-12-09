@@ -16,12 +16,10 @@ const getClient = (url = null) => {
     baseURL: url?url:baseUrl
   };
 
- // if (localStorage.getItem('jwt_access_token')) {
-    options.headers = {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWyiwuVrJSyk8uyS9ILUpT0lHKTCxRsjI0MzS1MDS2MDTXUUqtKIAIWBoYGIEESotTi_ISc1OB-kBMU4f03MTMHL3k_FylWgAint93UQAAAA.IMfLQrfUn6_H_DdRBAX4A3-4FlHJmURikmdtEWhjl54`,
-      UserId: 5
-    };
-  //}
+  options.headers = {
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAKtWyiwuVrJSyk8uyS9ILUpT0lHKTCxRsjI0MzS1MDS2MDTXUUqtKIAIWBoYGIEESotTi_ISc1OB-kBMU4f03MTMHL3k_FylWgAint93UQAAAA.IMfLQrfUn6_H_DdRBAX4A3-4FlHJmURikmdtEWhjl54`,
+    UserId: 5
+  };
 
 
   const client = axios.create(options);
@@ -30,8 +28,8 @@ const getClient = (url = null) => {
   // Add a request interceptor
   client.interceptors.request.use(
     requestConfig => {
-      requestConfig.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwt_access_token')}`;
-      requestConfig.headers.common['UserId'] = 87;
+      requestConfig.headers['Authorization'] = `Bearer ${localStorage.getItem('jwt_access_token')}`;
+      requestConfig.headers['UserId'] = 87;
       return requestConfig;
     },
     (requestError) => {
@@ -112,7 +110,7 @@ class ApiClient {
 }
 
 const instance = new ApiClient();
-export default ApiClient;
+export default instance;
 
 
 

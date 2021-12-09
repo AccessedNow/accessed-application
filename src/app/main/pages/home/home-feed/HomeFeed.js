@@ -1,5 +1,6 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { motion } from 'framer-motion';
+import { colors } from '@mui/material';
 import withReducer from 'app/store/withReducer';
 import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,7 +26,7 @@ import FeedItem from '../../../components/FeedItem';
 import RightSidebarContent from './RightSidebarContent';
 
 import reducer from './store';
-import { getUserRecentActivities } from './store/activitiesSlice';
+import { getHomeFeeds } from './store/feedsSlice';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -50,7 +51,14 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     width: '100%'
   },
 }));
+const PostFeed = styled(Card)(({ theme }) => ({
 
+  borderRadius: 0,
+  [theme.breakpoints.up('md')]: {
+    borderRadius: 4,
+  },
+
+}));
 
 const container = {
   show: {
@@ -66,14 +74,15 @@ const item = {
 };
 
 
-function RecentActivity(props) {
+function HomeFeed(props) {
   const dispatch = useDispatch();
   const routeParams = useParams();
   const pageLayout = useRef(null);
-  const activities = useSelector(({ recentActivity }) => recentActivity.activities);
+  const user = useSelector(({ auth }) => auth.user);
+  const feeds = useSelector(({ homeFeed }) => homeFeed.feeds);
 
   useEffect(() => {
-    dispatch(getUserRecentActivities(routeParams));
+    dispatch(getHomeFeeds(routeParams));
   }, [dispatch, routeParams]);
 
   return (
@@ -81,7 +90,52 @@ function RecentActivity(props) {
       <Root
         content={
           <div className="flex flex-col w-full items-center">
-            {activities.data.map((post) => (
+            <PostFeed
+              variant="outlined"
+              className="w-full overflow-hidden rounded-6 mb-32"
+            >
+              <div className="flex flex-row items-start justify-start p-16">
+                {user.data.avatar ? (
+                  <Avatar className="md:mx-4" alt="user photo" src={user.data.avatar}/>
+                ) : (
+                  <Avatar className="md:mx-4">{user.data.displayName[0]}</Avatar>
+                )}
+                <Input
+                className="px-10 py-5 w-full"
+                classes={{ root: 'text-14' }}
+                placeholder="Write something.."
+                rows="1"
+                margin="none"
+                disableUnderline
+              />
+              </div>
+              <AppBar
+                className="card-footer flex flex-row border-t-1"
+                position="static"
+                color="default"
+                elevation={0}
+              >
+                <div className="flex-1 items-center">
+                  <IconButton aria-label="Add photo" size="large">
+                    <Icon>photo</Icon>
+                  </IconButton>
+                  <IconButton aria-label="Mention somebody" size="large">
+                    <Icon>person</Icon>
+                  </IconButton>
+                  <IconButton aria-label="Add location" size="large">
+                    <Icon>location_on</Icon>
+                  </IconButton>
+                </div>
+
+                <div className="p-8">
+                  <Button variant="contained" color="primary" size="small" aria-label="post" className="rounded-6">
+                    Post
+                  </Button>
+                </div>
+              </AppBar>
+            </PostFeed>
+
+            {feeds.data.map((post) => (
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1, transition: { delay: 0.1 } }}
@@ -103,4 +157,4 @@ function RecentActivity(props) {
   );
 }
 
-export default withReducer('recentActivity', reducer)(RecentActivity);
+export default withReducer('homeFeed', reducer)(HomeFeed);

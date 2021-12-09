@@ -56,7 +56,7 @@ class JwtService extends FuseUtils.EventEmitter {
     return new Promise((resolve, reject) => {
       axios.post('http://localhost:8080/api/registration', data).then((response) => {
         if (response.data.data.user) {
-          this.setSession(response.data.data.access_token);
+          this.setSession(response.data.data.access_token, response.data.data.user.id);
 
           let user = {
             uuid: 'XgbuVEXBU5gtSKdbQRP1Zbbby1i1',
@@ -121,7 +121,7 @@ class JwtService extends FuseUtils.EventEmitter {
         })
         .then((response) => {
           if (response.data.data.user) {
-            this.setSession(response.data.data.token);
+            this.setSession(response.data.data.token, response.data.data.user.id);
 
             // let user = {
             //   role: 'admin',
@@ -190,7 +190,7 @@ class JwtService extends FuseUtils.EventEmitter {
         })
         .then((response) => {
           if (response.data.user) {
-            this.setSession(response.data.access_token);
+            this.setSession(response.data.access_token, response.data.user.id);
             resolve(response.data.user);
           } else {
             this.logout();
@@ -230,10 +230,11 @@ class JwtService extends FuseUtils.EventEmitter {
     });
   };
 
-  setSession = (access_token) => {
+  setSession = (access_token, userId) => {
     if (access_token) {
       localStorage.setItem('jwt_access_token', access_token);
       axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+      axios.defaults.headers.common.userId = userId;
     } else {
       localStorage.removeItem('jwt_access_token');
       delete axios.defaults.headers.common.Authorization;

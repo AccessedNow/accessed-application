@@ -36,7 +36,12 @@ export const getUserRelationships = createAsyncThunk(
 export const followUser = createAsyncThunk(
   'user/follow',
   async (params, { dispatch, getState }) => {
-    const response = await axios.post(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/user/${params.id}/follow`, null, {headers: {userId: user.data.id}});
+    let response = null;
+    if(!params.follow) {
+      response = await axios.post(`http://localhost:5000/api/user/${params.id}/follow`, null);
+    } else {
+      response = await axios.delete(`http://localhost:5000/api/user/${params.id}/follow`, null);
+    }
     const data = await response.data;
 
 

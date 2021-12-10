@@ -42,6 +42,10 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-content': {
     display: 'flex',
     minHeight: '100%',
+
+    '& .MuiAvatar-root': {
+      borderWidth: 4
+    }
   },
   '& .FusePageSimple-sidebar': {
     border: 0,

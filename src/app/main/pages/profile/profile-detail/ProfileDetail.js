@@ -1,6 +1,7 @@
 import * as React from 'react';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import FuseLoading from '@fuse/core/FuseLoading';
+import PropTypes from 'prop-types';
 
 import { styled } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
@@ -11,13 +12,11 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CheckIcon from '@mui/icons-material/Check';
-import PropTypes from 'prop-types';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
 
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,23 +27,25 @@ import reducer from "./store";
 import {getProfile, followUser, getUserRelationships} from "./store/profileSlice";
 
 import RightSidebarContent from './RightSidebarContent';
+import {openNewMemberDialog} from "../../../apps/talent/store/membersSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
-    minHeight: 36,
-    height: 36,
+    minHeight: 0,
+    height: 0,
     background: 'none',
     [theme.breakpoints.up('lg')]: {
-      minHeight: 36,
-      height: 36,
+      minHeight: 0,
+      height: 0,
     },
   },
   '& .FusePageSimple-wrapper': {
-    marginTop: 20,
+
     minHeight: 0,
     // width: '100%'
     margin: 'auto',
-    width: 1120,
+    marginTop: 20,
+    width: '100%',
   },
 
   '& .FusePageSimple-content': {
@@ -53,6 +54,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+
 
   },
   '& .FusePageSimple-content': {
@@ -121,7 +123,12 @@ function ProfileDetail() {
 
 
   const handleFollow = (event) => {
-    dispatch(followUser(user.id))
+    dispatch(followUser({id: profile.id, follow: !relationships.relationships.hasFollowed})).then((data) => {
+      // setRelationships({
+      //   ...relationships,
+      //   hasFollowed: !relationships.relationships.hasFollowed
+      // });
+    });
   };
 
   if (loading) {
@@ -134,7 +141,7 @@ function ProfileDetail() {
       content={
         <div>
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.1 } }}>
-            <Card variant="outlined" className="mb-20 rounded-8 md:rounded-0 lg:rounded-0">
+            <Card variant="outlined"  className="mb-20 rounded-8 md:rounded-0 lg:rounded-0">
               <CardMedia
                 component="img"
                 height="192"
@@ -142,8 +149,9 @@ function ProfileDetail() {
                 className="h-192"
               />
               <CardContent>
-                <div className="w-full px-16 flex flex-col md:flex-col flex-1">
-                  <Avatar
+                <div className="w-full px-8 flex flex-col md:flex-col flex-1">
+                  <div className="flex flex-row justify-between">
+                    <Avatar
                     sx={{
                       borderWidth: 1,
                       borderStyle: 'solid',
@@ -152,6 +160,18 @@ function ProfileDetail() {
                     className="w-128 h-128 -mt-96"
                     src={profile.avatar}
                   />
+                    <div className="flex">
+                      {relationships && relationships.hasFollowed ?
+                        <Button variant="outlined" size="small"  className="rounded-20 py-0" startIcon={<CheckIcon />}>
+                          Following
+                        </Button>
+                        :
+                        <Button variant="contained" size="small" className="rounded-20 py-0" startIcon={<AddIcon />} onClick={handleFollow}>
+                          Follow
+                        </Button>
+                      }
+                    </div>
+                  </div>
                   <div className="flex flex-col md:flex-col flex-1 mt-16 mb-10">
                     <Typography color="inherit"
                       className="md:px-0 sm:text-24 md:text-24 lg:text-24 font-semibold tracking-tight">
@@ -166,7 +186,7 @@ function ProfileDetail() {
                     {profile.headline &&
                       <Typography color={'text.secondary'}
                         className="md:px-0 sm:text-24 md:text-14 lg:text-14 tracking-tight">
-                        {profile.headline}
+                        {'The best way to predict the future is to create it'}
                       </Typography>
                     }
 
@@ -174,29 +194,80 @@ function ProfileDetail() {
                       {profile.primaryAddress.city + ', ' + profile.primaryAddress.country}
                     </Typography>
                     {relationships &&
-                      <Typography color={'text.secondary'} className="md:px-0 sm:text-24 md:text-14 lg:text-14 tracking-tight">
+                      <Typography fontWeight={600} color={'text.secondary'} className="md:px-0 sm:text-24 md:text-14 lg:text-14 tracking-tight">
                         {relationships.relationships.noOfFollowers + ' followers'}
                       </Typography>
                     }
                   </div>
-                  <div className="flex">
-                    {relationships && relationships.hasFollowed ?
-                      <Button variant="outlined" size="small"  className="rounded-6" startIcon={<CheckIcon />}>
-                        Following
-                      </Button>
-                      :
-                      <Button variant="filled" size="small" className="rounded-6 border-1" startIcon={<AddIcon />} onClick={handleFollow}>
-                        Follow
-                      </Button>
-                    }
 
-                  </div>
                 </div>
               </CardContent>
               <CardActions className="px-0 pb-0">
               </CardActions>
             </Card>
           </motion.div>
+          <Paper variant="outlined" className="flex flex-col p-24 mb-16 rounded-6">
+            <div>
+              <div className="flex flex-row justify-between">
+                <Typography variant="h6" gutterBottom fontWeight={500} className="mb-20">
+                  Experiences
+                </Typography>
+                <IconButton aria-label="Add" variant="outlined" size="small" className="rounded-32">
+                  <AddIcon />
+                </IconButton>
+              </div>
+              <div className="flex flex-col">
+                {profile.experiences.map((exp)=> (
+                  <div className="flex flex-row mb-20 ">
+                    <Avatar variant="square" classname="w-80 h-80" src={exp.employer.avatar}/>
+                    <div className="flex flex-col w-full mx-16 pb-20 border-b-1">
+                      <div>
+                        <Typography variant="body2" fontWeight={600}>
+                          {exp.employmentTitle}
+                        </Typography>
+                      </div>
+                      <Typography variant="body2">
+                        {exp.employer.name}
+                      </Typography>
+                      <Typography variant="body2" color={'text.secondary'}>
+                        {exp.city + ', ' + exp.country}
+                      </Typography>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="flex flex-row justify-between">
+                <Typography variant="h6" gutterBottom fontWeight={500} className="mb-20">
+                  Educations
+                </Typography>
+                <IconButton aria-label="Add" variant="outlined" size="small" className="rounded-32">
+                  <AddIcon />
+                </IconButton>
+              </div>
+              <div className="flex flex-col">
+                {profile.educations.map((edu)=> (
+                  <div className="flex flex-row mb-20 ">
+                    <Avatar variant="square" classname="w-80 h-80" src={edu.institute.avatar}/>
+                    <div className="flex flex-col w-full mx-16 pb-20 border-b-1">
+                      <div>
+                        <Typography variant="body2" fontWeight={600}>
+                          {edu.institute.name}
+                        </Typography>
+                      </div>
+                      <Typography variant="body2">
+                        {edu.degree + ' - '}
+                      </Typography>
+                      <Typography variant="body2" color={'text.secondary'}>
+                        {edu.city + ', ' + edu.country}
+                      </Typography>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Paper>
         </div>
       }
       rightSidebarContent={

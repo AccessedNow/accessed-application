@@ -2,7 +2,7 @@ import * as React from 'react';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import FuseLoading from '@fuse/core/FuseLoading';
 import PropTypes from 'prop-types';
-
+import clsx from 'clsx';
 import { styled } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import Avatar from '@mui/material/Avatar';
@@ -12,7 +12,10 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CheckIcon from '@mui/icons-material/Check';
+import Grid from '@mui/material/Grid';
+
 import IconButton from '@mui/material/IconButton';
+import LinearProgress from '@mui/material/LinearProgress';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
@@ -107,6 +110,7 @@ function ProfileDetail() {
   const [loading, setLoading] = useState(true);
   const [relationships, setRelationships] = useState();
   const [tabIndex, setTabIndex] = React.useState(0);
+  const user = useSelector(({ auth }) => auth.user);
   const profile = useSelector(({ profileDetail }) => profileDetail.profile);
 
 
@@ -177,16 +181,14 @@ function ProfileDetail() {
                       className="md:px-0 sm:text-24 md:text-24 lg:text-24 font-semibold tracking-tight">
                       {profile.name}
                     </Typography>
-                    {profile.jobTitle &&
-                      <Typography color="inherit"
-                        className="md:px-0 sm:text-14 md:text-16 lg:text-16 tracking-tight">
-                        {profile.jobTitle}
-                      </Typography>
-                    }
-                    {profile.headline &&
-                      <Typography color={'text.secondary'}
-                        className="md:px-0 sm:text-24 md:text-14 lg:text-14 tracking-tight">
+
+                    {profile.headline?
+                      <Typography color="inherit" className="md:px-0 sm:text-14 md:text-16 lg:text-16 tracking-tight">
                         {'The best way to predict the future is to create it'}
+                      </Typography>
+                      :
+                      <Typography color="inherit" className="md:px-0 sm:text-14 md:text-16 lg:text-16 tracking-tight">
+                        {profile.jobTitle} at {profile.experiences[0].employer.name}
                       </Typography>
                     }
 
@@ -207,20 +209,86 @@ function ProfileDetail() {
             </Card>
           </motion.div>
           <Paper variant="outlined" className="flex flex-col p-24 mb-16 rounded-6">
-            <div>
+            <div className="flex flex-row justify-between">
+              <Typography variant="h6" gutterBottom fontWeight={500} className="mb-20">
+                Profile Strength
+              </Typography>
+              <IconButton aria-label="Add" variant="outlined" size="small" className="rounded-32">
+                <AddIcon />
+              </IconButton>
+            </div>
+            <LinearProgress variant="determinate" value={65} />
+          </Paper>
+
+          {profile.about &&
+          <Paper variant="outlined" className="flex flex-col p-24 mb-16 rounded-6">
+            <Typography variant="h6" gutterBottom fontWeight={500} className="mb-20">
+              About
+            </Typography>
+            <Typography variant="p">
+              {profile.about}
+            </Typography>
+          </Paper>
+          }
+
+          {relationships && relationships.activities.length &&
+          <Paper variant="outlined" className="flex flex-col pt-24 mb-16 rounded-6">
+            <div className="flex flex-col px-24">
+              <Typography variant="h6" fontWeight={500}>
+                Activity
+              </Typography>
+              <Typography variant="caption" color={'text.secondary'} gutterBottom className="mb-20">
+                {relationships.relationships.noOfFollowers} followers
+              </Typography>
+            </div>
+            <Grid container justifyContent="flex-start" className="px-24 mb-20">
+              {relationships.activities.map((activity, index)=> (
+                <Grid item xs={6} className="mb-20">
+                  <div className="flex flex-row">
+                    <img className="w-64 h-64 rounded-6" src={activity.image}/>
+                    <div  className="flex flex-col w-full mx-24 pb-20">
+                      <div>
+                        <Typography variant="h6" fontWeight={600} className="text-14">
+                          {activity.name}
+                        </Typography>
+                      </div>
+                      <Typography variant="caption" className="text-12">
+                        {user.data.name} {activity.type==='POST?'? ' posted this':''}
+                      </Typography>
+                      <Typography variant="caption" className="text-12">
+                        {activity.reactions.like?`${activity.reactions.like} liked`:'' } - {activity.reactions.share?`${activity.reactions.share} shared`:'' }
+                      </Typography>
+
+                    </div>
+                  </div>
+                </Grid>
+              ))}
+            </Grid>
+            <div lassName="w-full border-t-1">
+              <Button className="w-full">
+                See all
+              </Button>
+            </div>
+          </Paper>
+          }
+
+
+
+          <Paper variant="outlined" className="flex flex-col py-24 mb-16 rounded-6">
+            <div className="border-b-1 px-24">
               <div className="flex flex-row justify-between">
                 <Typography variant="h6" gutterBottom fontWeight={500} className="mb-20">
                   Experiences
                 </Typography>
-                <IconButton aria-label="Add" variant="outlined" size="small" className="rounded-32">
+                <IconButton aria-label="Add" variant="contained" size="small" className="rounded-32 p-0">
                   <AddIcon />
                 </IconButton>
               </div>
               <div className="flex flex-col">
-                {profile.experiences.map((exp)=> (
-                  <div className="flex flex-row mb-20 ">
-                    <Avatar variant="square" classname="w-80 h-80" src={exp.employer.avatar}/>
-                    <div className="flex flex-col w-full mx-16 pb-20 border-b-1">
+                {profile.experiences.map((exp, index)=> (
+                  <div className="flex flex-row mb-20">
+                    <Avatar variant="square" className="w-64 h-64 rounded-6" src={exp.employer.avatar}/>
+                    <div  className={clsx('flex flex-col w-full mx-24 pb-20', index===(profile.experiences.length-1)?'':'border-b-1')} >
                       <div>
                         <Typography variant="body2" fontWeight={600}>
                           {exp.employmentTitle}
@@ -232,12 +300,17 @@ function ProfileDetail() {
                       <Typography variant="body2" color={'text.secondary'}>
                         {exp.city + ', ' + exp.country}
                       </Typography>
+                      {exp.description &&
+                      <Typography variant="body2" className="mt-14">
+                        {exp.description}
+                      </Typography>
+                      }
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div>
+            <div className="p-24">
               <div className="flex flex-row justify-between">
                 <Typography variant="h6" gutterBottom fontWeight={500} className="mb-20">
                   Educations
@@ -249,16 +322,18 @@ function ProfileDetail() {
               <div className="flex flex-col">
                 {profile.educations.map((edu)=> (
                   <div className="flex flex-row mb-20 ">
-                    <Avatar variant="square" classname="w-80 h-80" src={edu.institute.avatar}/>
-                    <div className="flex flex-col w-full mx-16 pb-20 border-b-1">
+                    <Avatar variant="square" className="w-64 h-64" src={edu.institute.avatar}/>
+                    <div className="flex flex-col w-full mx-24 pb-20 border-b-1">
                       <div>
                         <Typography variant="body2" fontWeight={600}>
                           {edu.institute.name}
                         </Typography>
                       </div>
+                      {edu.degree &&
                       <Typography variant="body2">
                         {edu.degree + ' - '}
                       </Typography>
+                      }
                       <Typography variant="body2" color={'text.secondary'}>
                         {edu.city + ', ' + edu.country}
                       </Typography>
@@ -268,6 +343,40 @@ function ProfileDetail() {
               </div>
             </div>
           </Paper>
+          {relationships && relationships.interests &&
+          <Paper variant="outlined" className="flex flex-col pt-24 mb-16 rounded-6">
+            <Typography variant="h6" gutterBottom fontWeight={500} className="px-24 mb-20">
+              Interests
+            </Typography>
+            <Grid container justifyContent="flex-start" className="px-24 mb-20">
+              {relationships.interests.map((interest, index)=> (
+                <Grid item xs={6} className="mb-20">
+                  <div className="flex flex-row">
+                    <Avatar variant="square" className="w-64 h-64 rounded-6" src={interest.avatar}/>
+                    <div  className="flex flex-col w-full mx-24 pb-20">
+                      <div>
+                        <Typography variant="body2" fontWeight={600}>
+                          {interest.name}
+                        </Typography>
+                      </div>
+                      {interest.noOfFollowers &&
+                      <Typography variant="body2">
+                        {interest.noOfFollowers} followers
+                      </Typography>
+                      }
+                    </div>
+                  </div>
+                </Grid>
+              ))}
+            </Grid>
+            <div lassName="w-full border-t-1">
+              <Button className="w-full">
+                See all
+              </Button>
+            </div>
+          </Paper>
+          }
+
         </div>
       }
       rightSidebarContent={

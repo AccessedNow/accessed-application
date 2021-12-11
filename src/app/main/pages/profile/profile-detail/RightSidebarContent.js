@@ -43,38 +43,30 @@ function MainSidebarContent() {
       <div className="mb-20">
         <MediaAd />
       </div>
-      <div className="flex flex-row  items-center justify-between rounded-8 mb-24 bg-white p-16 shadow-sm">
-        <Typography className="text-14">
-          Looking for talent
-        </Typography>
-        <Button variant="contained" size="medium" className="ml-10">
-          Post a Job
-        </Button>
-      </div>
-
-      <Card className="w-full mb-20">
-        <CardHeader title={<Typography className="text-14 font-medium">Affiliated pages</Typography>}/>
+      
+      <Card variant="outlined" className="w-full mb-20 rounded-6">
+        <CardHeader title={<Typography className="text-14 font-medium">People you may know</Typography>}/>
 
         <CardContent className="p-0">
           <List className="p-0">
-            {groups.map((group) => (
-              <ListItem key={group.id} className="px-8">
-                <Avatar variant="square" className="mx-8 w-52 h-52" alt={group.name}>
-                  {group.name[0]}
+            {friends.map((friend) => (
+              <ListItem key={friend.id} className="px-8">
+                <Avatar className="mx-8 w-52 h-52" alt={friend.name} src={friend.avatar}>
+                  {friend.name[0]}
                 </Avatar>
                 <ListItemText
                   primary={
                     <div className="flex">
-                      <Typography className="font-medium" color="secondary" paragraph={false}>
-                        {group.name}
+                      <Typography className="font-medium" color="inherit" paragraph={false}>
+                        {friend.name}
                       </Typography>
 
-                      <Typography className="mx-4 font-normal" paragraph={false}>
-                        {group.category}
-                      </Typography>
+                      {/*<Typography className="mx-4 font-normal" paragraph={false}>*/}
+                      {/*{friend.category}*/}
+                      {/*</Typography>*/}
                     </div>
                   }
-                  secondary={group.members}
+                  // secondary={friend.title}
                 />
               </ListItem>
             ))}

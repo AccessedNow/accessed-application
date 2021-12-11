@@ -12,13 +12,14 @@ const ProfilePageConfig = {
       component: lazy(() => import('./ProfilePage')),
     },
     {
-      path: '/user/:username',
-      component: lazy(() => import('./profile-detail/ProfileDetail')),
-    },
-    {
       path: '/user/:username/recent-activity',
       component: lazy(() => import('./recent-activity/RecentActivity')),
     },
+    {
+      path: '/user/:username',
+      component: lazy(() => import('./profile-detail/ProfileDetail')),
+    },
+
   ],
 };
 

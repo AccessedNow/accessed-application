@@ -13,6 +13,25 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import SidebarContent from './SidebarContent';
 
+const container = {
+  show: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+};
+
 const Root = styled(FusePageSimple)(({ theme }) => ({
 
   '& .FusePageSimple-header': {
@@ -46,15 +65,20 @@ function MyNetwork() {
       header={<></>}
       content={
         <Paper variant="outlined" m={2} className="m-16 p-16 rounded-6">
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between mb-10">
             <Typography variant="body" gutterBottom fontWeight={500}>
               Recommended pages for you
             </Typography>
             <Link href="">
               See All
             </Link>
-            <div className="w-full flex flex-row">
-              <div className={clsx('flex flex-col w-1/4 items-center justify-center rounded-0 lg:rounded-6 lg:shadow')}>
+          </div>
+          <div className="w-full flex flex-wrap">
+            <motion.div
+              variants={item}
+              className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-16"
+            >
+              <Paper variant="outlined" className={clsx('flex flex-col items-center justify-center rounded-0 lg:rounded-6')}>
                 <div className="cover w-full h-96"></div>
                 <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
                 <div className="px-16 pb-20 text-center">
@@ -65,8 +89,76 @@ function MyNetwork() {
                     @victordoan
                   </Typography>
                 </div>
-              </div>
-            </div>
+              </Paper>
+            </motion.div>
+            <motion.div
+              variants={item}
+              className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-16"
+            >
+              <Paper variant="outlined" className={clsx('flex flex-col items-center justify-center rounded-0 lg:rounded-6')}>
+                <div className="cover w-full h-96"></div>
+                <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
+                <div className="px-16 pb-20 text-center">
+                  <Typography fontWeight={600} className="text-12 md:text-16">
+                    Victor Doan
+                  </Typography>
+                  <Typography variant="subtitle2" color={'text.secondary'} className="mb-10">
+                    @victordoan
+                  </Typography>
+                </div>
+              </Paper>
+            </motion.div>
+            <motion.div
+              variants={item}
+              className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-16"
+            >
+              <Paper variant="outlined" className={clsx('flex flex-col items-center justify-center rounded-0 lg:rounded-6')}>
+                <div className="cover w-full h-96"></div>
+                <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
+                <div className="px-16 pb-20 text-center">
+                  <Typography fontWeight={600} className="text-12 md:text-16">
+                    Victor Doan
+                  </Typography>
+                  <Typography variant="subtitle2" color={'text.secondary'} className="mb-10">
+                    @victordoan
+                  </Typography>
+                </div>
+              </Paper>
+            </motion.div>
+            <motion.div
+              variants={item}
+              className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-16"
+            >
+              <Paper variant="outlined" className={clsx('flex flex-col items-center justify-center rounded-0 lg:rounded-6')}>
+                <div className="cover w-full h-96"></div>
+                <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
+                <div className="px-16 pb-20 text-center">
+                  <Typography fontWeight={600} className="text-12 md:text-16">
+                    Victor Doan
+                  </Typography>
+                  <Typography variant="subtitle2" color={'text.secondary'} className="mb-10">
+                    @victordoan
+                  </Typography>
+                </div>
+              </Paper>
+            </motion.div>
+            <motion.div
+              variants={item}
+              className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-16"
+            >
+              <Paper variant="outlined" className={clsx('flex flex-col items-center justify-center rounded-0 lg:rounded-6')}>
+                <div className="cover w-full h-96"></div>
+                <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
+                <div className="px-16 pb-20 text-center">
+                  <Typography fontWeight={600} className="text-12 md:text-16">
+                    Victor Doan
+                  </Typography>
+                  <Typography variant="subtitle2" color={'text.secondary'} className="mb-10">
+                    @victordoan
+                  </Typography>
+                </div>
+              </Paper>
+            </motion.div>
           </div>
 
         </Paper>

@@ -30,6 +30,7 @@ import HelpCenterConfig from './help-center/HelpCenterConfig';
 import HomeConfig from './home/HomeConfig';
 import RegisterConfirmationConfig from './confirmation/register-confirmation/RegisterConfirmationPageConfig';
 import SettingsConfig from './settings/SettingsConfig';
+import MyNetworkConfig from './mynetwork/MyNetworkConfig';
 
 import TermsConditionsConfig from './terms-conditions/TermsConditionsConfig';
 import NoConnectionPageConfig from './errors/no-connection/NoConnectionPageConfig';
@@ -43,6 +44,7 @@ const pagesConfigs = [
   SettingsConfig,
   TermsConditionsConfig,
   NoConnectionPageConfig,
+  MyNetworkConfig,
 
   LoginPageConfig,
   RegisterPageConfig,

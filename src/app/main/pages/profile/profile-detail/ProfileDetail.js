@@ -1,4 +1,7 @@
 import * as React from 'react';
+import qs from 'qs';
+
+import dateFormat from "dateformat";
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import FuseLoading from '@fuse/core/FuseLoading';
 import PropTypes from 'prop-types';
@@ -26,21 +29,59 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import withReducer from 'app/store/withReducer';
+import { withRouter } from 'react-router-dom';
 import reducer from "./store";
 import {getProfile, followUser, getUserRelationships} from "./store/profileSlice";
+
+import Image from '../../../components/Image';
+import Header from './Header';
+
+import ProfileHeader from './ProfileHeader';
 
 import RightSidebarContent from './RightSidebarContent';
 import {openNewMemberDialog} from "../../../apps/talent/store/membersSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
-  '& .FusePageSimple-header': {
-    minHeight: 0,
-    height: 0,
-    background: 'none',
-    [theme.breakpoints.up('lg')]: {
-      minHeight: 0,
-      height: 0,
+  '& .FusePageSimple-topBg': {
+    marginTop: '20px!important',
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+    background: 'url("assets/images/profile/morain-lake.jpg")!important',
+    backgroundSize: 'cover!important',
+    backgroundPosition: 'center center!important',
+    height: '240px!important',
+    minHeight: 240,
+    [theme.breakpoints.down('lg')]: {
+      height: '240px!important',
+      minHeight: 240,
     },
+  },
+  '& .FusePageSimple-header': {
+    background: 'none',
+    width: '100%',
+    maxWidth: 1120,
+    margin: 'auto',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    aliginItesm: 'flex-start',
+    height: 'auto',
+    minHeight: 'auto',
+    [theme.breakpoints.down('lg')]: {
+      height: 240,
+      minHeight: 240,
+    },
+  },
+  '& .FusePageSimple-toolbar': {
+    width: '100%',
+    maxWidth: 1120,
+    margin: 'auto',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: 'auto',
+    height: 'auto',
+    aliginItesm: 'flex-start',
   },
   '& .FusePageSimple-wrapper': {
 
@@ -77,6 +118,19 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
         minHeight: 240,
       },
     },
+    '& .activities': {
+      '& .activity-text': {
+        display: '-webkit-box',
+        '-webkit-line-clamp': '2',
+        '-webkit-box-orient': 'vertical',
+        overflow: 'hidden'
+      },
+      '& .activity-image': {
+        border: '1px solid #eee',
+        backgroundSize: 'cover!important',
+        backgroundPosition: 'center center!important',
+      }
+    }
   },
 
   '& .FusePageSimple-toolbar': {
@@ -102,38 +156,34 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   },
 }));
 
-function ProfileDetail() {
+function ProfileDetail(props) {
   const pageLayout = useRef(null);
   const dispatch = useDispatch();
   const routeParams = useParams();
-  const [selectedTab, setSelectedTab] = useState(0);
   const [loading, setLoading] = useState(true);
   const [relationships, setRelationships] = useState();
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const [selectedTab, setSelectedTab] = React.useState(0);
   const user = useSelector(({ auth }) => auth.user);
   const profile = useSelector(({ profileDetail }) => profileDetail.profile);
-
+  const params = qs.parse(props.location.search, { ignoreQueryPrefix: true });
 
   useDeepCompareEffect(() => {
     dispatch(getProfile(routeParams)).then((data) => {
-      setLoading(false);
+
       dispatch(getUserRelationships({id: data.payload.id})).then((response) => {
+        setLoading(false);
         setRelationships(response.payload)
       });
     });
 
   }, [dispatch, routeParams]);
 
+  function handleTabChange(event, value) {
+    setSelectedTab(value);
+  }
 
 
-  const handleFollow = (event) => {
-    dispatch(followUser({id: profile.id, follow: !relationships.relationships.hasFollowed})).then((data) => {
-      // setRelationships({
-      //   ...relationships,
-      //   hasFollowed: !relationships.relationships.hasFollowed
-      // });
-    });
-  };
+
 
   if (loading) {
     return <FuseLoading />;
@@ -141,72 +191,11 @@ function ProfileDetail() {
 
   return (
     <Root
-      header={<></>}
+      header={params.type==='1'?<Header selectedTab={selectedTab} handleTabChange={handleTabChange  } profile={profile} relationships={relationships}/>:<></>}
       content={
         <div>
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.1 } }}>
-            <Card variant="outlined"  className="mb-20 rounded-8 md:rounded-0 lg:rounded-0">
-              <CardMedia
-                component="img"
-                height="192"
-                image="assets/images/profile/morain-lake.jpg"
-                className="h-192"
-              />
-              <CardContent>
-                <div className="w-full px-8 flex flex-col md:flex-col flex-1">
-                  <div className="flex flex-row justify-between">
-                    <Avatar
-                    sx={{
-                      borderWidth: 1,
-                      borderStyle: 'solid',
-                      borderColor: 'background.default',
-                    }}
-                    className="w-128 h-128 -mt-96"
-                    src={profile.avatar}
-                  />
-                    <div className="flex">
-                      {relationships && relationships.hasFollowed ?
-                        <Button variant="outlined" size="small"  className="rounded-20 py-0" startIcon={<CheckIcon />}>
-                          Following
-                        </Button>
-                        :
-                        <Button variant="contained" size="small" className="rounded-20 py-0" startIcon={<AddIcon />} onClick={handleFollow}>
-                          Follow
-                        </Button>
-                      }
-                    </div>
-                  </div>
-                  <div className="flex flex-col md:flex-col flex-1 mt-16 mb-10">
-                    <Typography color="inherit"
-                      className="md:px-0 sm:text-24 md:text-24 lg:text-24 font-semibold tracking-tight">
-                      {profile.name}
-                    </Typography>
-
-                    {profile.headline?
-                      <Typography color="inherit" className="md:px-0 sm:text-14 md:text-16 lg:text-16 tracking-tight">
-                        {'The best way to predict the future is to create it'}
-                      </Typography>
-                      :
-                      <Typography color="inherit" className="md:px-0 sm:text-14 md:text-16 lg:text-16 tracking-tight">
-                        {profile.jobTitle} at {profile.experiences[0].employer.name}
-                      </Typography>
-                    }
-
-                    <Typography color={'text.secondary'} className="md:px-0 sm:text-24 md:text-14 lg:text-14 tracking-tight">
-                      {profile.primaryAddress.city + ', ' + profile.primaryAddress.country}
-                    </Typography>
-                    {relationships &&
-                      <Typography fontWeight={600} color={'text.secondary'} className="md:px-0 sm:text-24 md:text-14 lg:text-14 tracking-tight">
-                        {relationships.relationships.noOfFollowers + ' followers'}
-                      </Typography>
-                    }
-                  </div>
-
-                </div>
-              </CardContent>
-              <CardActions className="px-0 pb-0">
-              </CardActions>
-            </Card>
+            <ProfileHeader profile={profile} relationships={relationships}/>
           </motion.div>
           <Paper variant="outlined" className="flex flex-col p-24 mb-16 rounded-6">
             <div className="flex flex-row justify-between">
@@ -232,7 +221,7 @@ function ProfileDetail() {
           }
 
           {relationships && relationships.activities.length &&
-          <Paper variant="outlined" className="flex flex-col pt-24 mb-16 rounded-6">
+          <Paper variant="outlined" className="activities flex flex-col pt-24 mb-16 rounded-6">
             <div className="flex flex-col px-24">
               <Typography variant="h6" fontWeight={500}>
                 Activity
@@ -243,20 +232,23 @@ function ProfileDetail() {
             </div>
             <Grid container justifyContent="flex-start" className="px-24 mb-20">
               {relationships.activities.map((activity, index)=> (
-                <Grid item xs={6} className="mb-20">
+                <Grid item xs={6} className="activity-item mb-20">
                   <div className="flex flex-row">
-                    <img className="w-64 h-64 rounded-6" src={activity.image}/>
+
+                    <div className="activity-image w-64 h-64 rounded-6" style={{'background-image': "assets/images/cover/cover1.png"}}>
+                      <Image className="w-full h-64" src={activity.dataResource.resource.imageUrl} fallbackSrc="assets/images/cover/cover1.png" />
+                    </div>
                     <div  className="flex flex-col w-full mx-24 pb-20">
                       <div>
-                        <Typography variant="h6" fontWeight={600} className="text-14">
-                          {activity.name}
+                        <Typography variant="h6" fontWeight={600} className="activity-text text-14">
+                          {activity.dataResource.text}
                         </Typography>
                       </div>
                       <Typography variant="caption" className="text-12">
                         {user.data.name} {activity.type==='POST?'? ' posted this':''}
                       </Typography>
                       <Typography variant="caption" className="text-12">
-                        {activity.reactions.like?`${activity.reactions.like} liked`:'' } - {activity.reactions.share?`${activity.reactions.share} shared`:'' }
+                        {activity.dataResource.noOfComments?`${activity.dataResource.noOfComments} commented`:'' } - {activity.dataResource.noOfReactions?`${activity.dataResource.noOfReactions} reacted`:'' }
                       </Typography>
 
                     </div>
@@ -287,7 +279,7 @@ function ProfileDetail() {
               <div className="flex flex-col">
                 {profile.experiences.map((exp, index)=> (
                   <div className="flex flex-row mb-20">
-                    <Avatar variant="square" className="w-64 h-64 rounded-6" src={exp.employer.avatar}/>
+                    <Avatar variant="square" className="w-64 h-64 rounded-4" src={exp.employer.avatar}/>
                     <div  className={clsx('flex flex-col w-full mx-24 pb-20', index===(profile.experiences.length-1)?'':'border-b-1')} >
                       <div>
                         <Typography variant="body2" fontWeight={600}>
@@ -296,6 +288,9 @@ function ProfileDetail() {
                       </div>
                       <Typography variant="body2">
                         {exp.employer.name}
+                      </Typography>
+                      <Typography variant="body2">
+                        {exp.fromDate?dateFormat(new Date(exp.fromDate), "mmm yyyy"): ''} - {exp.thruDate?dateFormat(new Date(exp.thruDate), "mmm yyyy"):exp.isCurrent?'Present':''}
                       </Typography>
                       <Typography variant="body2" color={'text.secondary'}>
                         {exp.city + ', ' + exp.country}
@@ -322,7 +317,7 @@ function ProfileDetail() {
               <div className="flex flex-col">
                 {profile.educations.map((edu)=> (
                   <div className="flex flex-row mb-20 ">
-                    <Avatar variant="square" className="w-64 h-64" src={edu.institute.avatar}/>
+                    <Avatar alt={edu.institute.name} variant="square" className="w-64 h-64 rounded-4" src={edu.institute.avatar}/>
                     <div className="flex flex-col w-full mx-24 pb-20 border-b-1">
                       <div>
                         <Typography variant="body2" fontWeight={600}>
@@ -352,7 +347,7 @@ function ProfileDetail() {
               {relationships.interests.map((interest, index)=> (
                 <Grid item xs={6} className="mb-20">
                   <div className="flex flex-row">
-                    <Avatar variant="square" className="w-64 h-64 rounded-6" src={interest.avatar}/>
+                    <Avatar variant="square" className="w-64 h-64 rounded-4" src={interest.avatar}/>
                     <div  className="flex flex-col w-full mx-24 pb-20">
                       <div>
                         <Typography variant="body2" fontWeight={600}>
@@ -389,4 +384,4 @@ function ProfileDetail() {
   );
 }
 
-export default withReducer('profileDetail', reducer)(ProfileDetail);
+export default withReducer('profileDetail', reducer)(withRouter(ProfileDetail));

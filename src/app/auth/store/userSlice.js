@@ -18,13 +18,25 @@ import {
   resetNavigation,
 } from 'app/store/fuse/navigationSlice';
 
-
-export const getTalentUser = createAsyncThunk('user/talent', async (params) => {
-  const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/session?company=${params.company}`, {headers: {userId: params.id}} );
+export const getCurrentUser = createAsyncThunk('user/current', async (params) => {
+  let response = null;
+  if(params.appName==='TALENT') {
+    response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/session?company=${params.company}`, {headers: {userId: params.id}});
+  } else {
+    response = await axios.get(`http://localhost:5000/api/user/current`, null);
+  }
   const data = await response.data.data;
 
   return data === undefined ? null : data;
 });
+
+
+// export const getTalentUser = createAsyncThunk('user/talent', async (params) => {
+//   const response = await axios.get(`http://accessed-job-service.us-west-2.elasticbeanstalk.com/api/talent/session?company=${params.company}`, {headers: {userId: params.id}} );
+//   const data = await response.data.data;
+//
+//   return data === undefined ? null : data;
+// });
 
 export const setUserDataAuth0 = (tokenData) => async (dispatch) => {
   const user = {

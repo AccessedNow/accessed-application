@@ -112,7 +112,7 @@ class JwtService extends FuseUtils.EventEmitter {
     });
   };
 
-  signInWithEmailAndPassword = (username, password) => {
+  signInWithEmailAndPassword = (username, password, appName) => {
     return new Promise((resolve, reject) => {
       axios
         .post('http://accessed-auth.us-west-2.elasticbeanstalk.com/api/authenticate', {

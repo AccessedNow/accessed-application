@@ -53,7 +53,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 }));
 
 function ProfilePage() {
-  const [selectedTab, setSelectedTab] = useState(0);
+
 
   function handleTabChange(event, value) {
     setSelectedTab(value);

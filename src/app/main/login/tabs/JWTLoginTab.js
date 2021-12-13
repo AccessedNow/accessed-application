@@ -26,6 +26,7 @@ const schema = yup.object().shape({
 const defaultValues = {
   email: '',
   password: '',
+  appName: 'TALENT'
 };
 
 function JWTLoginTab(props) {

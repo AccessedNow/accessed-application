@@ -4,16 +4,16 @@ import { createSlice } from '@reduxjs/toolkit';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import firebaseService from 'app/services/firebaseService';
 import jwtService from 'app/services/jwtService';
-import {getTalentUser, setUserData} from './userSlice';
+import {getCurrentUser, getTalentUser, setUserData} from './userSlice';
 
 export const submitLogin =
-  ({ email, password }) =>
+  ({ email, password, appName}) =>
   async (dispatch) => {
     return jwtService
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(email, password, appName)
       .then((user) => {
-        if(user.role==='admin'){
-          dispatch(getTalentUser({id: 5, company: ''})).then(({payload}) => {
+        // if(user.role==='admin'){
+          dispatch(getCurrentUser({id: 5, company: '', appName: appName})).then(({payload}) => {
             user.data = _.merge(
               user.data,
               payload,
@@ -22,7 +22,7 @@ export const submitLogin =
             dispatch(setUserData(user));
           });
 
-        }
+        // }
 
         // dispatch(setUserData(user));
 

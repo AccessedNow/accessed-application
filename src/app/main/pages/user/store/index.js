@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import recommendations from './recommendationsSlice';
+import profile from './profileSlice';
 
 const reducer = combineReducers({
-  recommendations
+  profile
 });
 
 export default reducer;

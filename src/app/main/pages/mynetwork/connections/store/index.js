@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import profile from './profileSlice';
+import connections from './connectionsSlice';
 
 const reducer = combineReducers({
-  profile
+  connections
 });
 
 export default reducer;

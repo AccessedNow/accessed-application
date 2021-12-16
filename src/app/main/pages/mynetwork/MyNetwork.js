@@ -1,8 +1,11 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
+import FuseLoading from '@fuse/core/FuseLoading';
+
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-
+import withReducer from 'app/store/withReducer';
+import { withRouter } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
@@ -10,8 +13,17 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+
 import SidebarContent from './SidebarContent';
+import ProfileItem from '../../components/ProfileItem';
+import PartyCardItem from '../../components/PartyCardItem';
+
+import reducer from "./store";
+
+import {getRecommendations} from "./store/recommendationsSlice";
 
 const container = {
   show: {
@@ -59,113 +71,63 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 
 }));
 
+
+
 function MyNetwork() {
+  const dispatch = useDispatch();
+  const routeParams = useParams();
+  const recommendations = useSelector(({ myNetwork }) => myNetwork.recommendations);
+
+  useEffect(() => {
+    dispatch(getRecommendations(routeParams));
+
+  }, [dispatch, routeParams]);
+
+  if(!recommendations.data){
+    return <FuseLoading />
+  }
+
   return (
     <Root
       header={<></>}
       content={
-        <Paper variant="outlined" m={2} className="m-16 p-16 rounded-6">
-          <div className="flex flex-row justify-between mb-10">
-            <Typography variant="body" gutterBottom fontWeight={500}>
-              Recommended pages for you
-            </Typography>
-            <Link href="">
-              See All
-            </Link>
-          </div>
-          <div className="w-full flex flex-wrap">
-            <motion.div
-              variants={item}
-              className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-16"
-            >
-              <Paper variant="outlined" className={clsx('flex flex-col items-center justify-center rounded-0 lg:rounded-6')}>
-                <div className="cover w-full h-96"></div>
-                <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
-                <div className="px-16 pb-20 text-center">
-                  <Typography fontWeight={600} className="text-12 md:text-16">
-                    Victor Doan
+        <div>
+          <div className="m-16">
+            {recommendations.data.map((recommendation) => (
+              <div>
+                <div className="flex flex-row items-center justify-between p-16">
+                  <Typography variant="h6" fontWeight={500}>
+                    {recommendation.name}
                   </Typography>
-                  <Typography variant="subtitle2" color={'text.secondary'} className="mb-10">
-                    @victordoan
-                  </Typography>
+                  <Link href="">
+                    See All
+                  </Link>
                 </div>
-              </Paper>
-            </motion.div>
-            <motion.div
-              variants={item}
-              className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-16"
-            >
-              <Paper variant="outlined" className={clsx('flex flex-col items-center justify-center rounded-0 lg:rounded-6')}>
-                <div className="cover w-full h-96"></div>
-                <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
-                <div className="px-16 pb-20 text-center">
-                  <Typography fontWeight={600} className="text-12 md:text-16">
-                    Victor Doan
-                  </Typography>
-                  <Typography variant="subtitle2" color={'text.secondary'} className="mb-10">
-                    @victordoan
-                  </Typography>
-                </div>
-              </Paper>
-            </motion.div>
-            <motion.div
-              variants={item}
-              className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-16"
-            >
-              <Paper variant="outlined" className={clsx('flex flex-col items-center justify-center rounded-0 lg:rounded-6')}>
-                <div className="cover w-full h-96"></div>
-                <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
-                <div className="px-16 pb-20 text-center">
-                  <Typography fontWeight={600} className="text-12 md:text-16">
-                    Victor Doan
-                  </Typography>
-                  <Typography variant="subtitle2" color={'text.secondary'} className="mb-10">
-                    @victordoan
-                  </Typography>
-                </div>
-              </Paper>
-            </motion.div>
-            <motion.div
-              variants={item}
-              className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-16"
-            >
-              <Paper variant="outlined" className={clsx('flex flex-col items-center justify-center rounded-0 lg:rounded-6')}>
-                <div className="cover w-full h-96"></div>
-                <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
-                <div className="px-16 pb-20 text-center">
-                  <Typography fontWeight={600} className="text-12 md:text-16">
-                    Victor Doan
-                  </Typography>
-                  <Typography variant="subtitle2" color={'text.secondary'} className="mb-10">
-                    @victordoan
-                  </Typography>
-                </div>
-              </Paper>
-            </motion.div>
-            <motion.div
-              variants={item}
-              className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-16"
-            >
-              <Paper variant="outlined" className={clsx('flex flex-col items-center justify-center rounded-0 lg:rounded-6')}>
-                <div className="cover w-full h-96"></div>
-                <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
-                <div className="px-16 pb-20 text-center">
-                  <Typography fontWeight={600} className="text-12 md:text-16">
-                    Victor Doan
-                  </Typography>
-                  <Typography variant="subtitle2" color={'text.secondary'} className="mb-10">
-                    @victordoan
-                  </Typography>
-                </div>
-              </Paper>
-            </motion.div>
-          </div>
+                <div className="w-full flex flex-wrap">
+                  {recommendation.list.map((item) => (
+                    <motion.div
+                      variants={item}
+                      className="w-full pb-24 sm:w-1/2 lg:w-1/3 sm:p-8"
+                    >
+                      {item.partyType === 'PERSON'?
+                      < ProfileItem variant="" profile={item}/>
+                        :
+                        <PartyCardItem profile={item} />
+                      }
+                    </motion.div>
+                  ))}
 
-        </Paper>
-      }
+                </div>
+              </div>
+            ))}
+
+
+          </div>
+        </div>
+        }
       leftSidebarContent={<SidebarContent />}
     />
   );
 }
 
-export default MyNetwork;
+export default withReducer('myNetwork', reducer)(withRouter(MyNetwork));

@@ -1,4 +1,7 @@
 import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
+import FuseLoading from '@fuse/core/FuseLoading';
+import clsx from 'clsx';
+
 import { colors } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -24,10 +27,12 @@ import Typography from '@mui/material/Typography';
 import WorkIcon from '@mui/icons-material/Work';
 
 import { useTheme } from '@mui/material/styles';
-
-import clsx from 'clsx';
 import { motion } from 'framer-motion';
+import { useParams } from 'react-router-dom';
+
 import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import {getUserConnectionCounts} from "../user/store/userSlice";
 
 const Container = styled('div')(({ theme }) => ({
   paddingTop: 16,
@@ -60,6 +65,19 @@ const Container = styled('div')(({ theme }) => ({
 function SidebarContent(props) {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const [connections, setConnections] = useState(null);
+
+
+  useEffect(() => {
+    dispatch(getUserConnectionCounts()).then((data) => {
+      setConnections(data.payload);
+    });
+  }, [dispatch]);
+
+  if(!connections){
+    return null
+  }
+
 
   return (
       <Paper
@@ -78,29 +96,49 @@ function SidebarContent(props) {
             <ListItem disablePadding
               secondaryAction={
                 <Typography className="text-10 md:text-12">
-                 13
+                  {connections.connections.count?connections.connections.count:''}
                 </Typography>
               }>
-              <ListItemButton>
+              <ListItemButton component="a" href="/mynetwork/connections">
                 <ListItemText primary="Connections" className="text-14" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+            <ListItem disablePadding
+                secondaryAction={
+                  <Typography className="text-10 md:text-12">
+                    {connections.company.count?connections.company.count:''}
+                  </Typography>
+                }>
               <ListItemButton>
                 <ListItemText primary="People I follow" className="text-14" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+            <ListItem disablePadding
+                  secondaryAction={
+                    <Typography className="text-10 md:text-12">
+                      {connections.company.count?connections.company.count:''}
+                    </Typography>
+                  }>
               <ListItemButton>
                 <ListItemText primary="Company" className="text-14" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+            <ListItem disablePadding
+                secondaryAction={
+                  <Typography className="text-10 md:text-12">
+                    {connections.group.count?connections.group.count:''}
+                  </Typography>
+                }>
               <ListItemButton>
                 <ListItemText primary="Groups" className="text-14" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+            <ListItem disablePadding
+                  secondaryAction={
+                    <Typography className="text-10 md:text-12">
+                      {connections.page.count?connections.page.count:''}
+                    </Typography>
+                  }>
               <ListItemButton>
                 <ListItemText primary="Pages" className="text-14" />
               </ListItemButton>

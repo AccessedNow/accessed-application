@@ -19,6 +19,7 @@ import { useParams } from 'react-router-dom';
 
 import SidebarContent from './SidebarContent';
 import ProfileItem from '../../components/ProfileItem';
+import UserCardItem from '../../components/UserCardItem';
 import PartyCardItem from '../../components/PartyCardItem';
 
 import reducer from "./store";
@@ -107,10 +108,10 @@ function MyNetwork() {
                   {recommendation.list.map((item) => (
                     <motion.div
                       variants={item}
-                      className="w-full pb-24 sm:w-1/2 lg:w-1/3 sm:p-8"
+                      className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-8"
                     >
                       {item.partyType === 'PERSON'?
-                      < ProfileItem variant="" profile={item}/>
+                      <UserCardItem variant="" profile={item}/>
                         :
                         <PartyCardItem profile={item} />
                       }

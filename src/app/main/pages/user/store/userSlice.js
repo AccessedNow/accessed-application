@@ -43,6 +43,18 @@ export const getUserConnections = createAsyncThunk(
 );
 
 
+export const getUserFollowings = createAsyncThunk(
+  'user/following/search',
+  async (params, { getState }) => {
+    const user = getState().auth.user;
+    let response = await axios.get(`http://localhost:5000/api/user/${user.data.id}/following/search?${queryParams}`, {headers: {userId: user.data.id}});
+    const data = response?response.data.data:null;
+
+    return data;
+  }
+);
+
+
 export const followUser = createAsyncThunk(
   'user/follow',
   async (params, { dispatch, getState }) => {

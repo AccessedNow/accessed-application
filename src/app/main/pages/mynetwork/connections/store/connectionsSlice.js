@@ -39,6 +39,7 @@ export const cancelInvitation = createAsyncThunk(
 );
 
 
+
 const connectionsAdapter = createEntityAdapter({});
 
 const connectionsSlice = createSlice({

@@ -102,6 +102,8 @@ const jobsSlice = createSlice({
     searchText: '',
     searchLocation: null,
     noOfElements: 0,
+    totalElements: 0,
+    totalPage: 0,
     filter: {
       createdDate: "",
       distance: [],

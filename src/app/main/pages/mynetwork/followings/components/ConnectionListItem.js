@@ -10,7 +10,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import {cancelInvitation} from "../store/connectionsSlice";
 
 
 const StyledListItem = styled(ListItem)(({ theme, completed }) => ({
@@ -22,9 +21,9 @@ const StyledListItem = styled(ListItem)(({ theme, completed }) => ({
   }),
 }));
 
-function RequestListItem(props) {
+function ConnectionListItem(props) {
   const dispatch = useDispatch();
-  const { invitation } = props;
+  const { user } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -50,19 +49,19 @@ function RequestListItem(props) {
     >
       <div className="flex flex-row w-full">
         <div>
-          {invitation.user.avatar ? (
-            <Avatar className="md:mx-4 w-64 h-64" alt="user photo" src={invitation.user.avatar}/>
+          {user.avatar ? (
+            <Avatar className="md:mx-4 w-64 h-64" alt="user photo" src={user.avatar}/>
           ) : (
-            <Avatar className="md:mx-4 w-64 h-64">{invitation.user.firstName[0]}</Avatar>
+            <Avatar className="md:mx-4 w-64 h-64">{user.firstName[0]}</Avatar>
           )}
         </div>
         <div className="flex flex-1 flex-col relative overflow-hidden px-8">
           <Typography className="truncate text-14 font-medium">
-            {invitation.user.name}
+            {user.name}
           </Typography>
 
           <Typography color="textSecondary" className="todo-notes truncate">
-            {_.truncate(invitation.user.headline.replace(/<(?:.|\n)*?>/gm, ''), { length: 180 })}
+            {_.truncate(user.headline.replace(/<(?:.|\n)*?>/gm, ''), { length: 180 })}
           </Typography>
         </div>
       </div>
@@ -73,16 +72,36 @@ function RequestListItem(props) {
             ev.preventDefault();
             ev.stopPropagation();
             dispatch(
-              cancelInvitation({id: invitation.id})
+              // updateTodo({
+              //   ...props.todo,
+              //   important: !props.todo.important,
+              // })
             );
           }}
           size="large"
         >
-            <Icon>delete</Icon>
+            <Icon>chat_bubble_outline</Icon>
         </IconButton>
+        <IconButton
+          onClick={handleOpen}
+          size="large"
+        >
+          <Icon>more_vert</Icon>
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          <MenuItem onClick={handleClose}>Remove</MenuItem>
+        </Menu>
       </div>
     </StyledListItem>
   );
 }
 
-export default RequestListItem;
+export default ConnectionListItem;

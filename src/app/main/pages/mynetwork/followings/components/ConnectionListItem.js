@@ -61,7 +61,7 @@ function ConnectionListItem(props) {
           </Typography>
 
           <Typography color="textSecondary" className="todo-notes truncate">
-            {_.truncate(user.headline.replace(/<(?:.|\n)*?>/gm, ''), { length: 180 })}
+            {user.headline?_.truncate(user.headline.replace(/<(?:.|\n)*?>/gm, ''), { length: 180 }): ''}
           </Typography>
         </div>
       </div>

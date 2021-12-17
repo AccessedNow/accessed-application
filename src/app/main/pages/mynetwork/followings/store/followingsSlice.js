@@ -19,6 +19,7 @@ export const getPeopleRecommendations = createAsyncThunk(
 export const getUserFollowings = createAsyncThunk(
   'user/following/search',
   async (params, { getState }) => {
+    const user = getState().auth.user;
     const pagination = getState().followingsPage.followings.pagination;
     const searchText = getState().followingsPage.followings.searchText;
     const searchType = getState().followingsPage.followings.searchType;

@@ -67,16 +67,16 @@ function ProfileItem(props) {
         alt={profile.name}
         className="h-192 relative"
       />
-      <CardContent className="px-8 -mt-32 relative">
-        <div className="flex flex-col p-10 shadow border-1 rounded-4 bg-white">
+      <CardContent className="px-16 relative">
+        <div className="flex flex-col">
           <div className="text-right">
             <span className="bg-white">
-              <IconButton color="primary" variant="contained" onClick={handleClick} size="large" className="-mt-48 shadow p-0 bg-white">
+              <IconButton color="primary" variant="contained" onClick={handleClick} size="large" className=" -mt-48  shadow p-0 bg-white">
                 <AddCircle className="text-32" />
               </IconButton>
             </span>
           </div>
-          <div className="border-b-1 mb-10 -mt-6">
+          <div className="border-b-1 mb-10 -mt-10">
             <Typography fontWeight={600} className="text-14">
               {profile.firstName + ' ' + profile.lastName}
             </Typography>

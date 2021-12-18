@@ -68,7 +68,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   },
 }));
 
-function Followings(props) {
+function Following(props) {
   const pageLayout = useRef(null);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -87,45 +87,47 @@ function Followings(props) {
   return (
     <Root
       content={
-        <Paper variant="outlined" className="rounded-6 p-20">
-          <Tabs
-            value={selectedTab}
-            onChange={handleTabChange}
-            indicatorColor="primary"
-            textColor="inherit"
-            variant="scrollable"
-            scrollButtons={false}
-            className="w-full px-24 -mx-4 min-h-40"
-            classes={{ indicator: 'flex justify-center bg-transparent w-full h-full' }}
-            TabIndicatorProps={{
-              children: (
-                <Box
-                  sx={{ bgcolor: 'text.disabled' }}
-                  className="w-full h-full rounded-full opacity-20"
-                />
-              ),
-            }}
-          >
-            <Tab
-              className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-              disableRipple
-              label="All"
-            />
-            <Tab
-              className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-              disableRipple
-              label="Invitations"
-            />
-            <Tab
-              className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-              disableRipple
-              label="Requests"
-            />
-          </Tabs>
+        <div>
+          <Paper variant="outlined" className="rounded-6 p-20 mb-20">
+            <Tabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              indicatorColor="primary"
+              textColor="inherit"
+              variant="scrollable"
+              scrollButtons={false}
+              className="w-full px-24 -mx-4 min-h-40"
+              classes={{ indicator: 'flex justify-center bg-transparent w-full h-full' }}
+              TabIndicatorProps={{
+                children: (
+                  <Box
+                    sx={{ bgcolor: 'text.disabled' }}
+                    className="w-full h-full rounded-full opacity-20"
+                  />
+                ),
+              }}
+            >
+              <Tab
+                className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+                disableRipple
+                label="Recommendations"
+              />
+              <Tab
+                className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+                disableRipple
+                label="Followings"
+              />
+              <Tab
+                className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+                disableRipple
+                label="Followers"
+              />
+            </Tabs>
+          </Paper>
           {selectedTab === 0 && <RecommendationTab />}
           {selectedTab === 1 && <FollowingsTab />}
           {selectedTab === 2 && <div />}
-        </Paper>
+        </div>
       }
       sidebarInner
       ref={pageLayout}
@@ -134,4 +136,4 @@ function Followings(props) {
   );
 }
 
-export default withReducer('people', reducer)(withRouter(Followings));
+export default withReducer('followingPage', reducer)(withRouter(Following));

@@ -4,11 +4,20 @@ import queryString from 'query-string';
 import _ from 'lodash';
 
 
-export const getPeopleRecommendations = createAsyncThunk(
-  'user/people/recommendations',
+export const getRecommendationsPeople = createAsyncThunk(
+  'user/recommendations/people',
   async (params, { getState }) => {
     const user = getState().auth.user;
-    let queryParams = new URLSearchParams(params);
+    const pagination = getState().followingPage.following.pagination;
+    const searchText = getState().followingPage.following.searchText;
+    const searchType = getState().followingPage.following.searchType;
+
+    let queryParams = _.cloneDeep(pagination);
+    queryParams.type= searchType;
+    queryParams.query= searchText?searchText:'';
+    queryParams.page = queryParams.page==0?queryParams.page:queryParams.page--;
+    queryParams = new URLSearchParams(queryParams);
+    queryParams = new URLSearchParams(params);
     let response = await axios.get(`http://localhost:5000/api/suggestions/people?${queryParams}`, {headers: {userId: user.data.id}});
     const data = response?response.data.data:null;
 
@@ -16,13 +25,13 @@ export const getPeopleRecommendations = createAsyncThunk(
   }
 );
 
-export const getUserFollowings = createAsyncThunk(
-  'user/following/search',
+export const getFollowings = createAsyncThunk(
+  'user/following',
   async (params, { getState }) => {
     const user = getState().auth.user;
-    const pagination = getState().followingsPage.followings.pagination;
-    const searchText = getState().followingsPage.followings.searchText;
-    const searchType = getState().followingsPage.followings.searchType;
+    const pagination = getState().followingPage.following.pagination;
+    const searchText = getState().followingPage.following.searchText;
+    const searchType = getState().followingPage.following.searchType;
 
     let queryParams = _.cloneDeep(pagination);
     queryParams.type= searchType;
@@ -40,7 +49,7 @@ export const getUserFollowings = createAsyncThunk(
 const followingsAdapter = createEntityAdapter({});
 
 const followingsSlice = createSlice({
-  name: 'user/connections/all',
+  name: 'user/people/all',
   initialState: followingsAdapter.getInitialState({
     data: [],
     loading: true,
@@ -71,8 +80,12 @@ const followingsSlice = createSlice({
     },
   },
   extraReducers: {
-
-    [getUserFollowings.fulfilled]: (state, action) => {
+    [getRecommendationsPeople.fulfilled]: (state, action) => {
+      state.data = action.payload.content;
+      state.totalPages = action.payload.totalPages;
+      state.totalElements = action.payload.totalElements;
+    },
+    [getFollowings.fulfilled]: (state, action) => {
       state.data = action.payload.content;
       state.totalPages = action.payload.totalPages;
       state.totalElements = action.payload.totalElements;

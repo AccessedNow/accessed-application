@@ -9,35 +9,28 @@ import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {getPeopleRecommendations} from "../store/followingsSlice";
-import ConnectionListItem from "../components/ConnectionListItem";
+
+import {getFollowings} from "../store/followingsSlice";
+import FollowingCardItem from "../../../../components/FollowingCardItem";
 
 function FollowingsTab() {
   const dispatch = useDispatch();
-
-  const [people, setPeople] = useState();
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(20);
+  const following = useSelector(({ followingPage }) => followingPage.following);
 
   useEffect(() => {
-    dispatch(getPeopleRecommendations({page: page, size: size})).then((data) => {
-      setPeople(data.payload);
-    });
+    dispatch(getFollowings());
   }, []);
 
-  if (!people) {
+  if (!following) {
     return null;
   }
 
-  const { content } = people;
+  const { data } = following;
 
   const container = {
     show: {
@@ -56,17 +49,22 @@ function FollowingsTab() {
     <motion.div variants={container} initial="hidden" animate="show">
       <div className="md:flex max-w-2xl">
         <div className="w-full p-20 ">
-          {content && content.length ?
-            <List className="p-0">
+
+          {data && data.length ?
+            <div className="w-full flex flex-wrap">
               <motion.div variants={container} initial="hidden" animate="show">
-                {content.map((user) => (
-                  <motion.div variants={item} key={user.id} className="w-full">
-                    <ConnectionListItem user={user} className="w-full"/>
+                {data.map((user) => (
+                  <motion.div
+                    variants={item}
+                    key={user.id}
+                    className="w-full pb-24 sm:w-1/2 lg:w-1/4 sm:p-8"
+                  >
+                    <FollowingCardItem user={user} className="w-full"/>
                     <Divider />
                   </motion.div>
                 ))}
               </motion.div>
-            </List>
+            </div>
             :
             <div>No Connections</div>
           }

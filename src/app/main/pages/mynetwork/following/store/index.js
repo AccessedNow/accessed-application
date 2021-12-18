@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import followings from './followingsSlice';
+import following from './followingsSlice';
 
 const reducer = combineReducers({
-  followings
+  following
 });
 
 export default reducer;

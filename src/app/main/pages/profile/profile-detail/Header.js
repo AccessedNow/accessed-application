@@ -31,6 +31,8 @@ import MediaAd from "../../../components/MediaAd";
 import {followUser} from "./store/profileSlice";
 
 const Root = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+  color: theme.palette.getContrastText(theme.palette.background.default),
   borderTopLeftRadius: 0,
   borderTopRightRadius: 0,
   borderBottomLeftRadius: 6,

@@ -54,7 +54,7 @@ const followingsSlice = createSlice({
     data: [],
     loading: true,
     searchText: '',
-    searchType: 'PERSON',
+    searchType: '',
     noOfElements: 0,
     totalPage: 0,
     totalElements: 0,
@@ -69,6 +69,9 @@ const followingsSlice = createSlice({
   reducers: {
     setSearchText: (state, action) => {
       state.searchText = action.payload;
+    },
+    setSearchType: (state, action) => {
+      state.searchType = action.payload;
     },
     setPagination: (state, action) => {
       state.pagination.query = {
@@ -96,6 +99,7 @@ const followingsSlice = createSlice({
 export const {
   setLoading,
   setSearchText,
+  setSearchType,
   setPagination
 } = followingsSlice.actions;
 

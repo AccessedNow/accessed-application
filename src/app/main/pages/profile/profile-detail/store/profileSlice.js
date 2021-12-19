@@ -9,11 +9,11 @@ export const getProfile = createAsyncThunk(
   async (params, { getState }) => {
     const user = getState().auth.user;
     let response = null;
-    if(user.data.tagName===params.tagName){
-      response = await axios.get(`http://localhost:5000/api/user/current`, {headers: {userId: user.data.id}});
-    } else{
-      response = await axios.get(`http://localhost:5000/api/user/${params.username}`, {headers: {userId: user.data.id}});
-    }
+    // if(user.data.tagName===params.tagName){
+    //   response = await axios.get(`http://localhost:5000/api/user/current`, {headers: {userId: user.data.id}});
+    // } else{
+      response = await axios.get(`http://localhost:5000/api/user/tag/${params.username}`, {headers: {userId: user.data.id}});
+    // }
 
     const data = response?response.data.data:null;
 
@@ -32,6 +32,17 @@ export const getUserRelationships = createAsyncThunk(
   }
 );
 
+
+export const getUserTopSkills = createAsyncThunk(
+  'user/top-skills',
+  async (params, { getState }) => {
+    const user = getState().auth.user;
+    let response = await axios.get(`http://localhost:5000/api/user/${params.id}/skills/list`, {headers: {userId: user.data.id}});
+    const data = response?response.data.data:null;
+
+    return data;
+  }
+);
 
 export const followUser = createAsyncThunk(
   'user/follow',

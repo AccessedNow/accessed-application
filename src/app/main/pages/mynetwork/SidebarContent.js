@@ -109,7 +109,7 @@ function SidebarContent(props) {
                     {connections.company.count?connections.company.count:''}
                   </Typography>
                 }>
-              <ListItemButton component="a" href="/mynetwork/followings">
+              <ListItemButton component="a" href="/mynetwork/following">
                 <ListItemText primary="People I follow" className="text-14" />
               </ListItemButton>
             </ListItem>

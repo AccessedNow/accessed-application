@@ -22,7 +22,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {getRecommendationsPeople, resetData} from "../store/followingsSlice";
+import {getFollowers, resetData} from "../store/followingsSlice";
 import ProfileCardItem from "../../../../components/ProfileCardItem";
 
 
@@ -54,7 +54,7 @@ function listToMatrix(list, elementsPerSubArray) {
   return matrix;
 }
 
-function RecommendationTab() {
+function FollowersTab() {
   const dispatch = useDispatch();
   const following = useSelector(({ followingPage }) => followingPage.following);
   const noOfColumns = 5;
@@ -62,7 +62,7 @@ function RecommendationTab() {
 
   useEffect(() => {
     dispatch(resetData());
-    dispatch(getRecommendationsPeople());
+    dispatch(getFollowers());
   }, []);
 
 
@@ -79,6 +79,7 @@ function RecommendationTab() {
     hidden: { opacity: 0, y: 40 },
     show: { opacity: 1, y: 0 },
   };
+
 
 
   if (following.loading) {
@@ -107,7 +108,7 @@ function RecommendationTab() {
                 ))}
               </div>
               :
-              <div>No Connections</div>
+              <div>No Followers</div>
             }
           </div>
 
@@ -117,4 +118,4 @@ function RecommendationTab() {
   );
 }
 
-export default RecommendationTab;
+export default FollowersTab;

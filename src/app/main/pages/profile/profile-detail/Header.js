@@ -40,6 +40,11 @@ const Root = styled(Paper)(({ theme }) => ({
   [theme.breakpoints.down('lg')]: {
     borderRadius: 0
   },
+  '& .upload-cover': {
+    position: 'absolute',
+    top: 30,
+    right: 30
+  }
 }));
 
 function ProfileHeader(props) {
@@ -63,8 +68,8 @@ function ProfileHeader(props) {
 
   return (
     <Root variant='outlined' className="header-wrapper">
-      <div className="w-full px-24 pb-48 flex flex-col md:flex-row flex-1 items-center">
-        <IconButton aria-label="Upload">
+      <div className="w-full relative px-24 pb-48 flex flex-col md:flex-row flex-1 items-center">
+        <IconButton aria-label="Upload" className="upload-cover">
           <PhotoIcon />
         </IconButton>
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1, transition: { delay: 0.1 } }}>

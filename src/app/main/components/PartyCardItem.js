@@ -76,15 +76,15 @@ function ProfileItem(props) {
       <CardContent className="flex flex-col items-center justify-start">
         {/*<Avatar src={profile.avatar} className="w-96 h-96 rounded-6 -mt-72"/>*/}
         <Avatar imgProps={{ onError: onError }} alt="Remy Sharp" src={profile.avatar} fallbackSrc="assets/images/avatars/Abbot.jpg" className="w-96 h-96 rounded-6 -mt-72" />
-        <div className="w-full flex items-start border-b-1 py-16 mb-10 ">
+        <div className="w-full flex flex-col items-start justify-center py-16 text-center">
           <Typography fontWeight={600} className="text-14">
             {profile.name}
           </Typography>
+          <Typography variant="body2" fontWeight={500} className="flex items-start text-12">
+            {profile.noOfFollowers} followers
+          </Typography>
         </div>
-        <Typography variant="body2" fontWeight={500} className="flex items-start text-12">
-          {profile.noOfFollowers} followers
-        </Typography>
-        <Button variant="outlined">Follow</Button>
+        <Button variant="outlined" size="small" className="w-full p-0 rounded-4">Follow</Button>
       </CardContent>
     </StyledCardItem>
   );

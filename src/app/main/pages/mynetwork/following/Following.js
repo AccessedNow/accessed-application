@@ -38,6 +38,7 @@ import {setSearchText, setSearchType, getFollowings} from "./store/followingsSli
 
 import RecommendationTab from "./tabs/RecommendationTab";
 import FollowingsTab from "./tabs/FollowingsTab";
+import FollowersTab from "./tabs/FollowersTab";
 
 
 const container = {
@@ -93,7 +94,6 @@ function Following(props) {
   const dispatch = useDispatch();
   const searchType = useSelector(({ followingPage }) => followingPage.following.searchType);
 
-  const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = React.useState(0);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -110,22 +110,26 @@ function Following(props) {
 
   const handleFilterItem = (option) => {
     dispatch(setSearchType(option.value));
-    dispatch(getFollowings());
+    if(selectedTab==1) {
+      dispatch(getFollowings());
+    } else {
+      dispatch(getFollowers());
+    }
     setAnchorEl(null);
   };
 
   const handleSearch = (ev) => {
     dispatch(setSearchText(ev.target.value));
-    dispatch(getFollowings());
+    if(selectedTab==1) {
+      dispatch(getFollowings());
+    } else {
+      dispatch(getFollowers());
+    }
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  // if (!connections) {
-  //   return <FuseLoading />;
-  // }
 
   return (
     <Root
@@ -165,7 +169,7 @@ function Following(props) {
                 label="Followers"
               />
             </Tabs>
-            {selectedTab == 1 &&
+            {selectedTab != 0 &&
               <div className="flex flex-row justify-between w-full border-t-1">
                 <TextField
                   hiddenLabel
@@ -187,16 +191,18 @@ function Following(props) {
                     {/*</InputAdornment>*/}
                   {/*}*/}
                 {/*/>*/}
-                <IconButton
-                  id="basic-button"
-                  aria-controls="basic-menu"
-                  aria-haspopup="true"
-                  aria-expanded={open ? 'true' : undefined}
-                  onClick={handleFilter}
-                >
-                  <FilterIcon />
-                </IconButton>
-                <Menu
+                {selectedTab==1 &&
+                  <div>
+                    <IconButton
+                      id="basic-button"
+                      aria-controls="basic-menu"
+                      aria-haspopup="true"
+                      aria-expanded={open ? 'true' : undefined}
+                      onClick={handleFilter}
+                    >
+                      <FilterIcon />
+                    </IconButton>
+                    <Menu
                   id="basic-menu"
                   anchorEl={anchorEl}
                   open={open}
@@ -215,13 +221,15 @@ function Following(props) {
                     </MenuItem>
                   ))}
                 </Menu>
+                  </div>
+                  }
               </div>
 
             }
           </Paper>
           {selectedTab === 0 && <RecommendationTab />}
           {selectedTab === 1 && <FollowingsTab />}
-          {selectedTab === 2 && <div />}
+          {selectedTab === 2 && <FollowersTab />}
         </div>
       }
       sidebarInner

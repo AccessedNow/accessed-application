@@ -1,7 +1,6 @@
 import * as React from 'react';
 import qs from 'qs';
 
-import dateFormat from "dateformat";
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import FuseLoading from '@fuse/core/FuseLoading';
 import PropTypes from 'prop-types';
@@ -31,12 +30,13 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import withReducer from 'app/store/withReducer';
 import { withRouter } from 'react-router-dom';
 import reducer from "./store";
-import {getProfile, followUser, getUserRelationships} from "./store/profileSlice";
+import {getProfile, followUser, getUserRelationships, getUserTopSkills} from "./store/profileSlice";
 
 import Image from '../../../components/Image';
 import Header from './Header';
-
 import ProfileHeader from './ProfileHeader';
+import ExperiencesAndEducations from './components/ExperiencesAndEducations';
+import TopSkills from './components/TopSkills';
 
 import RightSidebarContent from './RightSidebarContent';
 import {openNewMemberDialog} from "../../../apps/talent/store/membersSlice";
@@ -162,6 +162,7 @@ function ProfileDetail(props) {
   const routeParams = useParams();
   const [loading, setLoading] = useState(true);
   const [relationships, setRelationships] = useState();
+  const [topSkills, setTopSkills] = useState([]);
   const [selectedTab, setSelectedTab] = React.useState(0);
   const user = useSelector(({ auth }) => auth.user);
   const profile = useSelector(({ profileDetail }) => profileDetail.profile);
@@ -174,7 +175,13 @@ function ProfileDetail(props) {
         setLoading(false);
         setRelationships(response.payload)
       });
+
+      dispatch(getUserTopSkills({id: data.payload.id})).then((response) => {
+        setTopSkills(response.payload)
+      });
     });
+
+
 
   }, [dispatch, routeParams]);
 
@@ -269,78 +276,11 @@ function ProfileDetail(props) {
 
 
 
-          <Paper variant="outlined" className="flex flex-col py-24 mb-16 rounded-6">
-            <div className="border-b-1 px-24">
-              <div className="flex flex-row justify-between">
-                <Typography variant="h6" gutterBottom fontWeight={500} className="mb-20">
-                  Experiences
-                </Typography>
-                <IconButton aria-label="Add" variant="contained" size="small" className="rounded-32 p-0">
-                  <AddIcon />
-                </IconButton>
-              </div>
-              <div className="flex flex-col">
-                {profile.experiences.map((exp, index)=> (
-                  <div className="flex flex-row mb-20">
-                    <Avatar variant="square" className="w-64 h-64 rounded-4" src={exp.employer.avatar}/>
-                    <div  className={clsx('flex flex-col w-full mx-24 pb-20', index===(profile.experiences.length-1)?'':'border-b-1')} >
-                      <div>
-                        <Typography variant="body2" fontWeight={600}>
-                          {exp.employmentTitle}
-                        </Typography>
-                      </div>
-                      <Typography variant="body2">
-                        {exp.employer.name}
-                      </Typography>
-                      <Typography variant="body2">
-                        {exp.fromDate?dateFormat(new Date(exp.fromDate), "mmm yyyy"): ''} - {exp.thruDate?dateFormat(new Date(exp.thruDate), "mmm yyyy"):exp.isCurrent?'Present':''}
-                      </Typography>
-                      <Typography variant="body2" color={'text.secondary'}>
-                        {exp.city + ', ' + exp.country}
-                      </Typography>
-                      {exp.description &&
-                      <Typography variant="body2" className="mt-14">
-                        {exp.description}
-                      </Typography>
-                      }
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="p-24">
-              <div className="flex flex-row justify-between">
-                <Typography variant="h6" gutterBottom fontWeight={500} className="mb-20">
-                  Educations
-                </Typography>
-                <IconButton aria-label="Add" variant="outlined" size="small" className="rounded-32">
-                  <AddIcon />
-                </IconButton>
-              </div>
-              <div className="flex flex-col">
-                {profile.educations.map((edu)=> (
-                  <div className="flex flex-row mb-20 ">
-                    <Avatar alt={edu.institute.name} variant="square" className="w-64 h-64 rounded-4" src={edu.institute.avatar}/>
-                    <div className="flex flex-col w-full mx-24 pb-20 border-b-1">
-                      <div>
-                        <Typography variant="body2" fontWeight={600}>
-                          {edu.institute.name}
-                        </Typography>
-                      </div>
-                      {edu.degree &&
-                      <Typography variant="body2">
-                        {edu.degree + ' - '}
-                      </Typography>
-                      }
-                      <Typography variant="body2" color={'text.secondary'}>
-                        {edu.city + ', ' + edu.country}
-                      </Typography>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Paper>
+          <ExperiencesAndEducations experiences={profile.experiences} educations={profile.educations} />
+
+          {topSkills && topSkills.length &&
+            <TopSkills list={topSkills}/>
+          }
           {relationships && relationships.interests &&
           <Paper variant="outlined" className="flex flex-col pt-24 mb-16 rounded-6">
             <Typography variant="h6" gutterBottom fontWeight={500} className="px-24 mb-20">

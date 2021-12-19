@@ -46,6 +46,27 @@ export const getFollowings = createAsyncThunk(
 );
 
 
+export const getFollowers = createAsyncThunk(
+  'user/following',
+  async (params, { getState }) => {
+    const user = getState().auth.user;
+    const pagination = getState().followingPage.following.pagination;
+    const searchText = getState().followingPage.following.searchText;
+    const searchType = getState().followingPage.following.searchType;
+
+    let queryParams = _.cloneDeep(pagination);
+    queryParams.type= searchType?searchType:'PERSON';
+    queryParams.query= searchText?searchText:'';
+    queryParams.page = queryParams.page==0?queryParams.page:queryParams.page--;
+    queryParams = new URLSearchParams(queryParams);
+    const response = await axios.get(`http://localhost:5000/api/user/${user.data.id}/follower/search?${queryParams}`, {headers: {userId: user.data.id}});
+    const data = await response.data.data;
+
+    return data;
+  }
+);
+
+
 const followingsAdapter = createEntityAdapter({});
 
 const followingsSlice = createSlice({
@@ -67,6 +88,9 @@ const followingsSlice = createSlice({
     routeParams: {}
   }),
   reducers: {
+    resetData: (state, action) => {
+      state.data = [];
+    },
     setSearchText: (state, action) => {
       state.searchText = action.payload;
     },
@@ -84,11 +108,19 @@ const followingsSlice = createSlice({
   },
   extraReducers: {
     [getRecommendationsPeople.fulfilled]: (state, action) => {
+      state.loading = false;
       state.data = action.payload.content;
       state.totalPages = action.payload.totalPages;
       state.totalElements = action.payload.totalElements;
     },
     [getFollowings.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.data = action.payload.content;
+      state.totalPages = action.payload.totalPages;
+      state.totalElements = action.payload.totalElements;
+    },
+    [getFollowers.fulfilled]: (state, action) => {
+      state.loading = false;
       state.data = action.payload.content;
       state.totalPages = action.payload.totalPages;
       state.totalElements = action.payload.totalElements;
@@ -97,6 +129,7 @@ const followingsSlice = createSlice({
 });
 
 export const {
+  resetData,
   setLoading,
   setSearchText,
   setSearchType,

@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { styled } from '@mui/material/styles';
+import FuseLoading from '@fuse/core/FuseLoading';
 
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
@@ -21,7 +22,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {getFollowings} from "../store/followingsSlice";
+import {getFollowings, resetData} from "../store/followingsSlice";
 import ProfileCardItem from "../../../../components/ProfileCardItem";
 
 
@@ -60,6 +61,7 @@ function FollowingsTab() {
   const data = listToMatrix(following.data, noOfColumns);
 
   useEffect(() => {
+    dispatch(resetData());
     dispatch(getFollowings());
   }, []);
 
@@ -80,8 +82,8 @@ function FollowingsTab() {
 
 
 
-  if (!following) {
-    return null;
+  if (following.loading) {
+    return <FuseLoading />;
   }
 
   return (

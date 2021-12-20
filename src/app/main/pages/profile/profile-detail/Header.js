@@ -31,14 +31,19 @@ import MediaAd from "../../../components/MediaAd";
 import {followUser} from "./store/profileSlice";
 
 const Root = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-  color: theme.palette.getContrastText(theme.palette.background.default),
-  borderTopLeftRadius: 0,
-  borderTopRightRadius: 0,
+  backgroundColor: '#ffffff',
+  color: theme.palette.getContrastText('#ffffff'),
+  borderTopLeftRadius: 6,
+  borderTopRightRadius: 6,
   borderBottomLeftRadius: 6,
   borderBottomRightRadius: 6,
+  borderWidth: 0,
   [theme.breakpoints.down('lg')]: {
     borderRadius: 0
+  },
+  '& .profile-cover': {
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
   },
   '& .upload-cover': {
     position: 'absolute',
@@ -68,6 +73,9 @@ function ProfileHeader(props) {
 
   return (
     <Root variant='outlined' className="header-wrapper">
+      <div className="profile-cover h-192 overflow-hidden">
+        <img src="assets/images/profile/morain-lake.jpg" />
+      </div>
       <div className="w-full relative px-24 pb-48 flex flex-col md:flex-row flex-1 items-center">
         <IconButton aria-label="Upload" className="upload-cover">
           <PhotoIcon />
@@ -77,7 +85,7 @@ function ProfileHeader(props) {
             sx={{
               borderWidth: 4,
               borderStyle: 'solid',
-              borderColor: 'background.default',
+              borderColor: 'background.main',
             }}
             className="-mt-64  w-128 h-128"
             src={profile.avatar}
@@ -91,25 +99,24 @@ function ProfileHeader(props) {
             <Typography
               className="md:px-16 text-24 md:text-32 font-semibold tracking-tight"
               variant="h4"
-              color="inherit"
             >
               {profile.firstName + ' ' + profile.lastName}
             </Typography>
             {profile.headline?
-              <Typography color="inherit" className="md:px-16 sm:text-14 md:text-16 lg:text-16 tracking-tight">
+              <Typography  className="md:px-16 sm:text-14 md:text-16 lg:text-16 tracking-tight">
                 {'The best way to predict the future is to create it'}
               </Typography>
               :
-              <Typography color="inherit" className="md:px-16 sm:text-14 md:text-16 lg:text-16 tracking-tight">
+              <Typography className="md:px-16 sm:text-14 md:text-16 lg:text-16 tracking-tight">
                 {profile.jobTitle} at {profile.experiences[0].employer.name}
               </Typography>
             }
 
-            <Typography color={'text.secondary'} className="md:px-16 sm:text-24 md:text-14 lg:text-14 tracking-tight">
+            <Typography className="md:px-16 sm:text-24 md:text-14 lg:text-14">
               {profile.primaryAddress.city + ', ' + profile.primaryAddress.country}
             </Typography>
             {relationships &&
-            <Typography fontWeight={600} color={'text.secondary'} className="md:px-16 sm:text-24 md:text-14 lg:text-14 tracking-tight">
+            <Typography fontWeight={600}  className="md:px-16 sm:text-24 md:text-14 lg:text-14">
               {relationships.relationships.noOfFollowers + ' followers'}
             </Typography>
             }

@@ -43,17 +43,17 @@ import {openNewMemberDialog} from "../../../apps/talent/store/membersSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-topBg': {
-    marginTop: '20px!important',
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 6,
-    background: 'url("assets/images/profile/morain-lake.jpg")!important',
-    backgroundSize: 'cover!important',
-    backgroundPosition: 'center center!important',
-    height: '240px!important',
-    minHeight: 240,
+    // marginTop: '20px!important',
+    // borderTopLeftRadius: 6,
+    // borderTopRightRadius: 6,
+    // background: 'url("assets/images/profile/morain-lake.jpg")!important',
+    // backgroundSize: 'cover!important',
+    // backgroundPosition: 'center center!important',
+    height: '0px!important',
+    minHeight: 0,
     [theme.breakpoints.down('lg')]: {
-      height: '240px!important',
-      minHeight: 240,
+      height: '0px!important',
+      minHeight: '0!important',
     },
   },
   '& .FusePageSimple-header': {
@@ -61,15 +61,17 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
     width: '100%',
     maxWidth: 1120,
     margin: 'auto',
+    marginTop: 20,
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    aliginItesm: 'flex-start',
+    alignItems: 'flex-start',
     height: 'auto',
     minHeight: 'auto',
     [theme.breakpoints.down('lg')]: {
       height: 240,
       minHeight: 240,
+      marginTop: 0
     },
   },
   '& .FusePageSimple-toolbar': {

@@ -26,6 +26,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import withReducer from 'app/store/withReducer';
 import reducer from "../store";
 import {getCompany, getCompanyRelationships, followCompany} from "../store/companySlice";
+import HomeTab from './tabs/HomeTab';
 import AboutTab from './tabs/AboutTab';
 import JobTab from './tabs/JobTab';
 import FeedTab from './tabs/FeedTab';
@@ -186,7 +187,7 @@ function CompanyDetail() {
                       borderStyle: 'solid',
                       borderColor: 'background.default',
                     }}
-                    className="w-72 h-72 rounded-6"
+                    className="w-96 h-96 rounded-6"
                     src={company.avatar}
                     variant="square"
                   />
@@ -219,7 +220,8 @@ function CompanyDetail() {
               <CardActions className="px-0 pb-0">
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <Tabs value={tabIndex} onChange={handleTabChange}>
-                    <Tab label="About" {...a11yProps(0)} />
+                    <Tab label="Home" {...a11yProps(0)} />
+                    <Tab label="About" {...a11yProps(1)} />
                     <Tab label="Posts" {...a11yProps(1)} />
                     <Tab label="Jobs" {...a11yProps(2)} />
                   </Tabs>
@@ -229,12 +231,15 @@ function CompanyDetail() {
           </motion.div>
           <div className="">
             <TabPanel value={tabIndex} index={0} className="px-0">
-              <AboutTab />
+              <HomeTab />
             </TabPanel>
             <TabPanel value={tabIndex} index={1}>
-              <FeedTab />
+              <AboutTab />
             </TabPanel>
             <TabPanel value={tabIndex} index={2}>
+              <FeedTab />
+            </TabPanel>
+            <TabPanel value={tabIndex} index={3}>
               <JobTab />
             </TabPanel>
 

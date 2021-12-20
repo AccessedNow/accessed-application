@@ -24,9 +24,11 @@ import Header from './Header';
 import SidebarContent from './SidebarContent';
 import FeedItem from '../../../components/FeedItem';
 import RightSidebarContent from './RightSidebarContent';
+import ArticleDialog from '../dialogs/article/ArticleDialog';
 
 import reducer from './store';
-import { getHomeFeeds } from './store/feedsSlice';
+import { getHomeFeeds } from './store/homeSlice';
+import {openNewArticleDialog} from "./store/homeSlice";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -74,16 +76,15 @@ const item = {
 };
 
 
-function HomeFeed(props) {
+function Home(props) {
   const dispatch = useDispatch();
-  const routeParams = useParams();
   const pageLayout = useRef(null);
   const user = useSelector(({ auth }) => auth.user);
-  const feeds = useSelector(({ homeFeed }) => homeFeed.feeds);
+  const home = useSelector(({ homePage }) => homePage.home);
 
   useEffect(() => {
-    dispatch(getHomeFeeds(routeParams));
-  }, [dispatch, routeParams]);
+    dispatch(getHomeFeeds());
+  }, [dispatch]);
 
   return (
     <>
@@ -107,12 +108,13 @@ function HomeFeed(props) {
                 rows="1"
                 margin="none"
                 disableUnderline
+                onClick={(ev) => dispatch(openNewArticleDialog())}
               />
               </div>
               <AppBar
                 className="card-footer flex flex-row border-t-1"
                 position="static"
-                color="default"
+                color="inherit"
                 elevation={0}
               >
                 <div className="flex-1 items-center">
@@ -135,7 +137,7 @@ function HomeFeed(props) {
               </AppBar>
             </PostFeed>
 
-            {feeds.data.map((post) => (
+            {home.data.map((post) => (
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1, transition: { delay: 0.1 } }}
@@ -144,17 +146,18 @@ function HomeFeed(props) {
                 <FeedItem post={post}/>
               </motion.div>
             ))}
+            <ArticleDialog />
           </div>
         }
         leftSidebarContent={<SidebarContent />}
         rightSidebarContent={
           <RightSidebarContent />
         }
-        innerScroll
+
         ref={pageLayout}
       />
     </>
   );
 }
 
-export default withReducer('homeFeed', reducer)(HomeFeed);
+export default withReducer('homePage', reducer)(Home);

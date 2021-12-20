@@ -4,7 +4,7 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import HomeLanding from './home-landing/HomeLanding';
-import HomeFeed from './home-feed/HomeFeed';
+import HomeFeed from './home/HomeFeed';
 
 
 function Home() {

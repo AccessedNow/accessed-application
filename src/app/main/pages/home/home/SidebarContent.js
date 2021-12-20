@@ -69,7 +69,7 @@ function SidebarContent(props) {
         animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
         className={clsx('flex flex-col items-center justify-center rounded-0 shadow-none lg:rounded-6 lg:shadow')}
       >
-        <div className="cover w-full h-96"></div>
+        <div className="cover w-full h-72"></div>
         <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>
         <div className="px-16 pb-20 text-center">
           <Typography fontWeight={600} className="text-12 md:text-16">
@@ -78,8 +78,36 @@ function SidebarContent(props) {
           <Typography variant="subtitle2" color={'text.secondary'} className="mb-10">
             @victordoan
           </Typography>
-          <Typography variant="subtitle2" className="italic">
-            “The best way to predict the future is to create it.”
+        </div>
+        <div className="flex flex-col w-full px-16 py-10 border-t-1">
+          <div className="flex flex-row justify-between">
+            <Typography variant="caption" fontWeight={600} color={"text.secondary"} className="">
+              Who viewed your profile
+            </Typography>
+            <Typography variant="caption" fontWeight={600} color={"text.secondary"} className="">
+              64
+            </Typography>
+          </div>
+          <div className="flex flex-row justify-between">
+            <Typography variant="caption" fontWeight={600} color={"text.secondary"} className="">
+              Views of your post
+            </Typography>
+            <Typography variant="caption" fontWeight={600} color={"text.secondary"} className="">
+              154
+            </Typography>
+          </div>
+        </div>
+        <div className="flex flex-col w-full px-16 py-10 border-t-1">
+          <Typography variant="caption" color={"text.secondary"} className="">
+            Accessed exclusive tools and insights
+          </Typography>
+          <Typography variant="caption" fontWeight={600} className="">
+            Try Premium Free for 1 Month
+          </Typography>
+        </div>
+        <div className="flex flex-col w-full px-16 py-10 border-t-1">
+          <Typography variant="caption" color={"text.secondary"} className="">
+            Saved items
           </Typography>
         </div>
       </Paper>

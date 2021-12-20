@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import feeds from './feedsSlice';
+import home from './homeSlice';
 
 const reducer = combineReducers({
-  feeds
+  home
 });
 
 export default reducer;

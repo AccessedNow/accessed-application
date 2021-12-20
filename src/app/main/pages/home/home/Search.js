@@ -7,11 +7,11 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/system';
-import { setSearchText } from './store/feedsSlice';
+import { setSearchText } from './store/homeSlice';
 
 function Search(props) {
   const dispatch = useDispatch();
-  const searchText = useSelector(({ homeFeed }) => homeFeed.feeds.searchText);
+  const searchText = useSelector(({ homePage }) => homePage.home.searchText);
 
   const [search, setSearch] = useState(false);
 

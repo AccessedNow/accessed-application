@@ -20,67 +20,71 @@ import Typography from '@mui/material/Typography';
 import Ad from "../../../components/Ad";
 import MediaAd from "../../../components/MediaAd";
 
+import LatestNews from "../components/LatestNews/LatestNews";
+
+
+const groups = [
+  {
+    id: '1',
+    name: 'Android',
+    category: 'Technology',
+    members: '1.856.546'
+  },
+  {
+    id: '2',
+    name: 'Google',
+    category: 'Web',
+    members: '1.226.121'
+  },
+  {
+    id: '3',
+    name: 'Fallout',
+    category: 'Games',
+    members: '526.142'
+  }
+];
+
+const friends = [
+  {
+    id: '1',
+    name: 'Garry Newman',
+    avatar: 'assets/images/avatars/garry.jpg'
+  },
+  {
+    id: '2',
+    name: 'Carl Henderson',
+    avatar: 'assets/images/avatars/carl.jpg'
+  },
+  {
+    id: '3',
+    name: 'Jane Dean',
+    avatar: 'assets/images/avatars/jane.jpg'
+  },
+  {
+    id: '4',
+    name: 'Garry Arnold',
+    avatar: 'assets/images/avatars/garry.jpg'
+  },
+  {
+    id: '5',
+    name: 'Vincent Munoz',
+    avatar: 'assets/images/avatars/vincent.jpg'
+  },
+  {
+    id: '6',
+    name: 'Alice Freeman',
+    avatar: 'assets/images/avatars/alice.jpg'
+  },
+  {
+    id: '7',
+    name: 'Andrew Green',
+    avatar: 'assets/images/avatars/andrew.jpg'
+  }
+];
+
+
 function RightSidebarContent() {
   const [data, setData] = useState(null);
-
-  const groups = [
-    {
-      id: '1',
-      name: 'Android',
-      category: 'Technology',
-      members: '1.856.546'
-    },
-    {
-      id: '2',
-      name: 'Google',
-      category: 'Web',
-      members: '1.226.121'
-    },
-    {
-      id: '3',
-      name: 'Fallout',
-      category: 'Games',
-      members: '526.142'
-    }
-  ];
-
-  const friends = [
-    {
-      id: '1',
-      name: 'Garry Newman',
-      avatar: 'assets/images/avatars/garry.jpg'
-    },
-    {
-      id: '2',
-      name: 'Carl Henderson',
-      avatar: 'assets/images/avatars/carl.jpg'
-    },
-    {
-      id: '3',
-      name: 'Jane Dean',
-      avatar: 'assets/images/avatars/jane.jpg'
-    },
-    {
-      id: '4',
-      name: 'Garry Arnold',
-      avatar: 'assets/images/avatars/garry.jpg'
-    },
-    {
-      id: '5',
-      name: 'Vincent Munoz',
-      avatar: 'assets/images/avatars/vincent.jpg'
-    },
-    {
-      id: '6',
-      name: 'Alice Freeman',
-      avatar: 'assets/images/avatars/alice.jpg'
-    },
-    {
-      id: '7',
-      name: 'Andrew Green',
-      avatar: 'assets/images/avatars/andrew.jpg'
-    }
-  ];
 
   useEffect(() => {
     axios.get('/api/profile/about').then((res) => {
@@ -99,6 +103,11 @@ function RightSidebarContent() {
       {/*<div className="mb-20">*/}
         {/*<Ad />*/}
       {/*</div>*/}
+
+      <div className="mb-20">
+        <LatestNews />
+      </div>
+
       <div className="mb-20">
         <MediaAd />
       </div>

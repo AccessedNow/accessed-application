@@ -237,19 +237,16 @@ function FeedItem(props) {
           )}
         </CardContent>
 
-        <CardActions disableSpacing className="card-actions flex flex-row justify-between ">
-          <Button color="inherit" size="small" aria-label="Like" className="text-10" startIcon={<FavoriteIcon />}>
+        <CardActions disableSpacing className="card-actions flex flex-row justify-between py-4">
+          <Button color="inherit" size="small" aria-label="Like" className="text-10 rounded-4" startIcon={<FavoriteIcon />}>
             <Typography className="text-12">Like</Typography>
             <Typography>{post.noOfLikes?post.noOfLikes:''}</Typography>
           </Button>
-          <Button color="inherit" size="small" aria-label="Comment" className="text-10"
-                  startIcon={<ChatIcon />}
-                  onClick={() => setShowInputComment(true)}
-          >
+          <Button color="inherit" size="small" aria-label="Comment" className="text-10 rounded-4" startIcon={<ChatIcon />} onClick={() => setShowInputComment(true)}  >
             <Typography className="text-12">Comment</Typography>
             <Typography color="inherit">{post.noOfComments?post.noOfComments:''}</Typography>
           </Button>
-          <Button color="inherit" size="small" aria-label="Share" className="text-10" startIcon={<ShareIcon />}>
+          <Button color="inherit" size="small" aria-label="Share" className="text-10 rounded-4" startIcon={<ShareIcon />}>
             <Typography className="text-12">Share</Typography>
             <Typography>{post.noOfShares?post.noOfShares:''}</Typography>
           </Button>

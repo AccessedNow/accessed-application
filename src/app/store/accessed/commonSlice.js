@@ -39,3 +39,13 @@ export const searchLocations = createAsyncThunk(
     return data;
   }
 );
+
+
+export const getUrlMeta = createAsyncThunk(
+  'url/meta',
+  async (url) => {
+    const response = await axios.get(`http://accessed-feed-service.us-west-2.elasticbeanstalk.com/api/feeds/url/meta?url=${url}`);
+    const data = await response.data.data;
+    return data;
+  }
+);

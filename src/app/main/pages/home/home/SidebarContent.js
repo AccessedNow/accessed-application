@@ -67,7 +67,7 @@ function SidebarContent(props) {
         component={motion.div}
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-        className={clsx('flex flex-col items-center justify-center rounded-0 shadow-none lg:rounded-6 lg:shadow')}
+        className={clsx('flex flex-col items-center justify-center rounded-0 shadow-none lg:rounded-6 lg:shadow sticky top-0')}
       >
         <div className="cover w-full h-72"></div>
         <Avatar className="user-avatar w-96 h-96 -mt-48 items-center justify-start" src="assets/images/avatars/Abbott.jpg"/>

@@ -39,7 +39,7 @@ function Categories(props) {
 
     <Grid container spacing={2}>
       {categories.map(category => (
-      <Grid item s={1} md={3}>
+      <Grid item s={1} md={3} key={category.id}>
         <Paper elevation={0} className="flex flex-row items-center justify-between rounded-4 p-14 border-1 grey">
           <div className="flex items-center justify-center">
             <IconButton size="small" aria-label="add to favorites" className="flex items-start justify-center">

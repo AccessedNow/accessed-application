@@ -117,23 +117,18 @@ function Home(props) {
                 color="inherit"
                 elevation={0}
               >
-                <div className="flex-1 items-center">
-                  <IconButton aria-label="Add photo" size="large">
-                    <Icon>photo</Icon>
-                  </IconButton>
-                  <IconButton aria-label="Mention somebody" size="large">
-                    <Icon>person</Icon>
-                  </IconButton>
-                  <IconButton aria-label="Add location" size="large">
-                    <Icon>location_on</Icon>
-                  </IconButton>
-                </div>
-
-                <div className="p-8">
-                  <Button variant="contained" color="primary" size="small" aria-label="post" className="rounded-6">
-                    Post
+                <div className="flex flex-row flex-1 items-center justify-between px-40">
+                  <Button size="large" variant="text" className="rounded-4"  startIcon={ <Icon color="primary">photo</Icon>}>
+                    <Typography fontWeight={600} color={"text.secondary"}>Photo</Typography>
+                  </Button>
+                  <Button size="large" variant="text" className="rounded-4" startIcon={ <Icon color="warning" >person</Icon>}>
+                    <Typography fontWeight={600} color={"text.secondary"}>Job</Typography>
+                  </Button>
+                  <Button size="large" variant="text" className="rounded-4" startIcon={ <Icon color="success" >location_on</Icon>}>
+                    <Typography fontWeight={600} color={"text.secondary"}>Feeling</Typography>
                   </Button>
                 </div>
+
               </AppBar>
             </PostFeed>
 
@@ -154,6 +149,7 @@ function Home(props) {
           <RightSidebarContent />
         }
 
+        sidebarInner
         ref={pageLayout}
       />
     </>

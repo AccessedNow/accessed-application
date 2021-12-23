@@ -45,6 +45,7 @@ import JobCardItem from '../../../components/JobCardItem';
 import JobLandingSidebarContent from './JobLandingSidebarContent';
 import Categories from './Categories';
 import JobLandingContent from './JobLandingContent';
+import Slideshow from '../../../components/Slideshow';
 
 import {buildPartyAvatarUrl} from 'app/utils/urlHelper';
 
@@ -60,7 +61,24 @@ const Root = styled('div')(({ theme }) => ({
     // background: 'url("assets/images/profile/morain-lake.jpg")!important',
     // backgroundSize: 'cover!important',
     // backgroundPosition: 'center center!important',
+    position: 'relative',
+
+    overflow: 'hidden',
     color: theme.palette.getContrastText(theme.palette.primary.main),
+
+    [theme.breakpoints.up('md')]: {
+      minHeight: '600px',
+    },
+
+    '& .slide-container': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '110%',
+      zIndex: 1,
+    },
+
     '& .header-banner': {
       position: 'absolute',
       top: -64,
@@ -79,15 +97,33 @@ const Root = styled('div')(({ theme }) => ({
 
     '& .header-search': {
       position: 'relative',
-      zIndex: 1,
+      zIndex: 30,
+      '& .search-form': {
+        background: 'rgba(255,255,255,0.2)'
+      },
       '& fieldset': {
         border: 0
       },
+      '& .search-field': {
+        padding: 0,
+        '& input': {
+          borderTopRightRadius:0,
+          borderBottomRightRadius: 0
+        },
+        '& fieldset': {
+          borderTopRightRadius:0,
+          borderBottomRightRadius: 0
+        }
+      },
+      '& .search-location': {
+        padding: 0,
+        borderRadius: 0
+
+      },
       '& .search-btn': {
-        // borderTopLeftRadius: 0,
-        // borderTopRightRadius: 8,
-        // borderBottomRightRadius: 8,
-        // borderBottomLeftRadius: 0,
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
+        lineHeight: 'normal',
         [theme.breakpoints.down('sm')]: {
           borderRadius: 0
         },
@@ -169,118 +205,83 @@ function JobLanding(props) {
 
   return (
     <Root className="flex flex-col flex-auto flex-shrink-0 w-full">
-      <div className="header relative overflow-hidden flex flex-shrink-0 items-start md:items-center justify-center h-120 sm:h-512">
-        <div className="header-search flex flex-col max-w-2xl mx-auto w-full px-0 sm:px-16 py-0 md:py-24 relative" style={{'z-index': 1}}>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0 } }}>
+      <div className="header flex flex-col items-center justify-center">
+        <Slideshow duration={2000}/>
+        <div className="header-search flex flex-col items-center justify-center max-w-2xl mx-auto w-full px-0 sm:px-16 py-0 md:py-24 relative" style={{'z-index': 1}}>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0 } }} className="w-full text-center">
             <Hidden smDown>
-              <Typography color="inherit" className="text-29 sm:text-40 font-500 tracking-tight mb-8" color="primary">
-                There Are <span className="text-blue-800" color="secondary">93,178</span> Postings Here <br /> For you!
+              <Typography fontWeight={800} className="text-29 sm:text-40 tracking-tight mb-8" color="inherit">
+                There Are <span className="text-blue-800" color="secondary">93,178</span> Postings Here
               </Typography>
-              <Typography color="inherit" className="text-14 sm:text-14 tracking-tight mb-10" color="primary">
+              <Typography className="w-full text-14 sm:text-14 tracking-tight mb-10" color="inherit">
                 Find Jobs, Employment & Career Opportunities
               </Typography>
             </Hidden>
           </motion.div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0.3 } }}>
-            <Paper
-              component="form" className="flex flex-col md:flex-row justify-between md:w-2/3 md:border-1 p-0 md:p-8 rounded-none shadow-none md:rounded-8 mb-10"
-            >
-              <FormControl className="w-full border-0">
-                {/*<InputLabel htmlFor="outlined-adornment-password">Search</InputLabel>*/}
-                {/*<Autocomplete*/}
-                  {/*freeSolo*/}
-                  {/*getOptionLabel={(option) =>*/}
-                    {/*typeof option === 'string' ? option : option.description*/}
-                  {/*}*/}
-                  {/*filterOptions={(x) => x}*/}
-                  {/*options={options}*/}
-                  {/*autoComplete*/}
-                  {/*includeInputInList*/}
-                  {/*filterSelectedOptions*/}
-                  {/*value={value}*/}
-                  {/*onChange={(event, newValue) => {*/}
-                    {/*setOptions(newValue ? [newValue, ...options] : options);*/}
-                    {/*setValue(newValue);*/}
-                  {/*}}*/}
-                  {/*onInputChange={(event, newInputValue) => {*/}
-                    {/*setInputValue(newInputValue);*/}
-                  {/*}}*/}
-                  {/*renderInput={(params) => (*/}
-                    {/*<TextField {...params} label="Search by title" fullWidth />*/}
-                  {/*)}*/}
-
-                {/*/>*/}
-                <Autocomplete
-                  sx={{
-                    '& input': {
-                      width: '100%',
-                      padding: '10px',
-                      bgcolor: 'background.paper',
-                      color: (theme) =>
-                        theme.palette.getContrastText(theme.palette.background.paper),
-                    },
-                  }}
-                  id="custom-input-demo"
-                  includeInputInList
-                  filterSelectedOptions
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setOptions(newValue ? [newValue, ...options] : options);
-                    setValue(newValue);
-                  }}
-                  options={options}
-                  onInputChange={(event, newInputValue) => {
+          <Paper component="form" className="search-form flex flex-col md:flex-row w-full items-center justify-between justify-center md:border-1 p-0 md:p-8 rounded-none shadow-none md:rounded-8 mb-10">
+            <FormControl className="w-full border-0 p-0">
+              <Autocomplete
+                sx={{
+                  '& input': {
+                    width: '100%',
+                    bgcolor: 'background.paper',
+                    color: (theme) =>
+                      theme.palette.getContrastText(theme.palette.background.paper),
+                  },
+                }}
+                id="custom-input-demo"
+                includeInputInList
+                filterSelectedOptions
+                value={value}
+                onChange={(event, newValue) => {
+                  setOptions(newValue ? [newValue, ...options] : options);
+                  setValue(newValue);
+                }}
+                options={options}
+                onInputChange={(event, newInputValue) => {
                   setInputValue(newInputValue);
-                  }}
-                  renderInput={(params) => (
-                    <div ref={params.InputProps.ref}>
-                      <input type="text" {...params.inputProps} />
-                    </div>
-                  )}
-                />
-              </FormControl>
-              <Hidden smDown>
-                <Divider orientation="vertical" variant="middle" flexItem  />
-              </Hidden>
-              <Hidden mdUp>
-                <Divider flexItem  />
-              </Hidden>
-              <FormControl className="w-full border-0 rounded-8">
-                {/*<InputLabel htmlFor="outlined-adornment-password">Search</InputLabel>*/}
-                <OutlinedInput
-                  id="outlined-adornment-password"
-                  className=""
-                  type="text"
-                  value={searchText}
-                  placeholder="Location"
-                  onChange={handleSearch}
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <PlaceIcon
-                        aria-label="toggle visibility"
-                        // onClick={handleClickShowPassword}
-                        // onMouseDown={handleMouseDownPassword}
-                        edge="start"
-                      >
-                        <Visibility />
-                      </PlaceIcon>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-              <Button variant="contained" className="search-btn rounded-6 px-32">Search</Button>
-            </Paper>
+                }}
+                renderInput={(params) => (
+                  <div ref={params.InputProps.ref}>
+                    <OutlinedInput
+                      {...params.inputProps}
+                      className="search-field w-full"
+                      type="text"
+                      value={searchText}
+                      placeholder="Jobtitle"
+                      onChange={handleSearch}
+                    />
+                  </div>
+                )}
+              />
+            </FormControl>
             <Hidden smDown>
-              <Typography color="inherit" className="text-12 sm:text-14 tracking-tight" color="primary">
-                Popular Searches : Designer, Developer, Web, IOS, PHP, Senior Engineer
-              </Typography>
+              <Divider orientation="vertical" variant="middle" flexItem  />
             </Hidden>
-          </motion.div>
+            <Hidden mdUp>
+              <Divider flexItem  />
+            </Hidden>
+            <FormControl className="w-full border-0">
+              {/*<InputLabel htmlFor="outlined-adornment-password">Search</InputLabel>*/}
+              <OutlinedInput
+                id="outlined-adornment-password"
+                className="search-location bg-white"
+                type="text"
+                value={searchText}
+                placeholder="Location"
+                onChange={handleSearch}
+              />
+            </FormControl>
+            <Button variant="contained" className="search-btn rounded-6 px-32 py-16">Search</Button>
+          </Paper>
+          <Hidden smDown>
+            <Typography color="inherit" className="text-12 sm:text-14 tracking-tight" color="primary">
+              Popular Searches : Designer, Developer, Web, IOS, PHP, Senior Engineer
+            </Typography>
+          </Hidden>
         </div>
-        <Hidden smDown>
-          <div className="header-banner lg:bg-transparent"></div>
-        </Hidden>
       </div>
+
       <div className="flex flex-row items-center justify-center w-full bg-white opacity-75 mb-40">
         <div className="flex flex-row items-center justify-between w-full max-w-2xl">
           <div className="flex items-center px-16 py-20">

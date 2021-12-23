@@ -20,6 +20,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useDispatch, useSelector } from 'react-redux';
 import { dateDifference, dateDiff } from '../../utils/helper';
+import CompanyAvatar from './CompanyAvatar';
 
 
 
@@ -64,7 +65,7 @@ function JobCardItem(props) {
       <CardHeader
         avatar={
           avatar?
-          <Avatar
+          <CompanyAvatar
             sx={{
               borderWidth: 1,
               borderStyle: 'solid',

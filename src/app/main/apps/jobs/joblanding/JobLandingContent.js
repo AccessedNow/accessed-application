@@ -56,8 +56,9 @@ function JobLandingContent(props) {
         <Divider />
         <Box sx={{ flexGrow: 1 }} className="mt-20">
           <Grid container spacing={3}  className="mt-20">
-            {jobLanding.popularCompanies.map(company => (
-              <Grid item s={1} md={3}>
+            {jobLanding.popularCompanies.map((company, index) => (
+              index < 8 && (
+              <Grid item s={1} md={3} key={company.id}>
                 <Card className="rounded-8 border-1">
                   <CardMedia
                     component="img"
@@ -74,10 +75,10 @@ function JobLandingContent(props) {
                         borderColor: 'background.default',
                       }}
                       className="flex -mt-48  w-80 h-80 items-center mb-14 rounded-8"
-                      src="assets/images/company/nbc.png"
+                      src={company.avatar}
                     />
                     <Typography color="inherit" className="flex text-24 sm:text-14 text-gray-900 mb-6">
-                      NBC
+                      {company.name}
                     </Typography>
                     <Rating name="read-only" value={4.5} size="small" readOnly />
                     <div className="flex items-center justify-center">
@@ -91,7 +92,8 @@ function JobLandingContent(props) {
                   </CardContent>
                 </Card>
               </Grid>
-            ))}
+
+              )))}
           </Grid>
         </Box>
 
@@ -102,11 +104,12 @@ function JobLandingContent(props) {
           <Typography className="font-semibold mb-4 text-20">HIGHLIGHT JOBS</Typography>
           <Divider />
           <Grid container spacing={3}  className="mt-20">
-            {jobLanding.highlightJobs.map(job => (
-              <Grid item xs={3}>
+            {jobLanding.highlightJobs.map((job, index) => (
+              index < 8 && (
+              <Grid item xs={3} key={job._id}>
                 <JobCardItem job={job}/>
               </Grid>
-            ))}
+              )))}
           </Grid>
 
         </div>
@@ -117,11 +120,12 @@ function JobLandingContent(props) {
           <Typography className="font-semibold mb-4 text-20">POPULAR JOBS</Typography>
           <Divider />
           <Grid container spacing={3}  className="mt-20">
-            {jobLanding.popularJobs.map(job => (
-              <Grid item xs={3}>
+            {jobLanding.popularJobs.map((job, index) => (
+              index < 8 && (
+              <Grid item xs={3} key={job._id}>
                 <JobCardItem job={job}/>
               </Grid>
-            ))}
+              )))}
           </Grid>
 
         </div>
@@ -132,11 +136,12 @@ function JobLandingContent(props) {
           <Typography className="font-semibold mb-4 text-20">NEW JOBS</Typography>
           <Divider />
           <Grid container spacing={3}  className="mt-20">
-            {jobLanding.newJobs.map(job => (
-              <Grid item xs={3}>
+            {jobLanding.newJobs.map((job, index) => (
+              index < 8 && (
+              <Grid item xs={3} key={job._id}>
                 <JobCardItem job={job}/>
               </Grid>
-            ))}
+              )))}
           </Grid>
 
         </div>

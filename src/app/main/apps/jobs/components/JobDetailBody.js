@@ -8,11 +8,24 @@ import { selectMainThemeDark } from 'app/store/fuse/settingsSlice';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
-import format from 'date-fns/format';
-import {saveJob} from "../jobdetail/store/jobSlice";
+import { useDispatch } from 'react-redux';
 
+import format from 'date-fns/format';
+import {openDialog, saveJob} from "../jobdetail/store/jobSlice";
+
+
+const Root = styled('div')(({ theme }) => ({
+  '& .minimal': {
+    display: '-webkit-box',
+    maxWidth: '100%',
+    '-webkit-line-clamp': '4',
+    '-webkit-box-orient': 'vertical',
+    overflow: 'hidden'
+  }
+}));
 
 function JobDetailBody(props) {
+  const dispatch = useDispatch();
   const mainThemeDark = useSelector(selectMainThemeDark);
 
   let salary='';
@@ -28,10 +41,14 @@ function JobDetailBody(props) {
     salary = '--';
   }
 
+  function handleApplyJob() {
+    dispatch(openDialog(props.job));
+  }
+
+
   return (
-    <div className="w-full items-center justify-between px-32 py-40">
+    <Root className="w-full items-center justify-between px-32 py-40">
       <div className="flex flex-1 w-full items-center justify-between mt-20">
-        <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
           {!props.job.title?
           <Typography className="text-16 sm:text-20 truncate font-semibold gray text-gray-500 italic">
             Enter job title
@@ -41,13 +58,8 @@ function JobDetailBody(props) {
             {props.job.title}
           </Typography>
           }
-        </motion.div>
         {!props.preview &&
-        <motion.div
-          className="flex"
-          initial={{opacity: 0, x: 20}}
-          animate={{opacity: 1, x: 0, transition: {delay: 0.3}}}
-        >
+        <div className="flex">
           <IconButton aria-label="Apply" onClick={props.handleApplyJob} size="large">
             <FontDownload fontSize="inherit"/>
           </IconButton>
@@ -55,11 +67,11 @@ function JobDetailBody(props) {
             aria-label="Save"
             onClick={(ev) => {
               ev.stopPropagation();
-              dispatch(saveJob(job));
+              dispatch(saveJob(props.job));
             }} size="large">
             <Favorite fontSize="inherit"/>
           </IconButton>
-        </motion.div>
+        </div>
         }
       </div>
       <div className="flex flex-1 w-full items-center justify-between mb-40">
@@ -107,7 +119,7 @@ function JobDetailBody(props) {
         </div>
       </div>
 
-      <div className="w-full items-center justify-between">
+      <div className={clsx("w-full items-center justify-between", props.showDetail?'': 'minimal')}>
         <Typography variant="h6" className="mb-10 text-14 mb-30">
           Description
         </Typography>
@@ -169,7 +181,7 @@ function JobDetailBody(props) {
         </div>
 
       </div>
-    </div>
+    </Root>
   );
 }
 

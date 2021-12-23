@@ -1,5 +1,6 @@
 import _ from '@lodash';
 import history from '@history';
+import { Link } from 'react-router-dom';
 import { emphasize, styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -9,8 +10,6 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
@@ -18,14 +17,19 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Typography from '@mui/material/Paper';
+import Paper from '@mui/material/Typography';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { dateDifference, dateDiff } from '../../utils/helper';
 import CompanyAvatar from './CompanyAvatar';
 
 
 
-const StyledCardItem = styled(Card)(({ theme }) => ({
+const StyledCardItem = styled(Paper)(({ theme }) => ({
   background: 'white',
+  borderWidth: 1,
+  borderColor: theme.palette.background.paper,
   textDecoration: 'none!important',
   '&:hover': {
     color: '#40a9ff',
@@ -61,46 +65,28 @@ function JobCardItem(props) {
   };
 
   return  (
-    <StyledCardItem variant="outlined" sx={{ maxWidth: 345 }} className="job-item rounded-8 cursor-pointer" onClick={handleClick}>
-      <CardHeader
-        avatar={
-          avatar?
-          <CompanyAvatar
+    <StyledCardItem role="button" component={Link} variant="outlined"
+      to={`/jobs/view/${props.job.jobId}`}
+      sx={{ maxWidth: 345 }}
+      className="flex flex-col job-item rounded-6 p-16 cursor-pointer">
+      <div className="flex flex-row justify-between items-start justify-start mb-16">
+        <CompanyAvatar
             sx={{
               borderWidth: 1,
               borderStyle: 'solid',
               borderColor: 'background.default',
             }}
-            className="flex items-center justify-center talign-center mb-16 w-64 h-64 rounded-6"
             src={avatar}
             variant="square"
+            className="w-64 h-64 rounded-4"
           />
-            :
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">{props.job && props.job.company?props.job.company.name.substr(0,1).toUpperCase():''}</Avatar>
-        }
-        action={
-          <div className="flex">
-            <IconButton size="small" aria-label="add to favorites">
-              <FavoriteIcon fontSize="inherit"/>
-            </IconButton>
+        <IconButton size="small" aria-label="add to favorites">
+          <FavoriteIcon fontSize="inherit"/>
+        </IconButton>
+      </div>
 
-          </div>
-        }
-        title=""
-        subheader=""
-        className="flex pb-0"
-      />
-      <CardContent className="flex flex-col flex-auto items-start justify-start m-0  h-160" >
-        {/*<Avatar*/}
-          {/*sx={{*/}
-            {/*borderWidth: 1,*/}
-            {/*borderStyle: 'solid',*/}
-            {/*borderColor: 'background.default',*/}
-          {/*}}*/}
-          {/*className="flex items-center justify-center talign-center mb-16 w-64 h-64 rounded-4"*/}
-          {/*src={avatar}*/}
-          {/*variant="square"*/}
-        {/*/>*/}
+
+      <div className="flex flex-col flex-auto items-start justify-start m-0  h-160" >
         <div>
           <Typography variant="h3" className="text-14 font-500 plain-text">
             {props.job.title}
@@ -122,22 +108,19 @@ function JobCardItem(props) {
           </Typography>
         </div>
         }
-      </CardContent>
-      <CardActions disableSpacing>
-        <div className="flex flex-row items-center justify-between w-full">
-          <div className="flex">
-            <Typography variant="body2" color="text.secondary" className="flex items-start">
-              2d ago
-            </Typography>
-          </div>
-          <div className="flex">
-            <IconButton size="small" aria-label="more">
-              <MoreVertIcon fontSize="inherit" />
-            </IconButton>
-          </div>
+      </div>
+      <div className="flex flex-row items-center justify-between w-full">
+        <div className="flex">
+          <Typography variant="body2" color="text.secondary" className="flex items-start">
+            2d ago
+          </Typography>
         </div>
-      </CardActions>
-
+        <div className="flex">
+          <IconButton size="small" aria-label="more">
+            <MoreVertIcon fontSize="inherit" />
+          </IconButton>
+        </div>
+      </div>
 
     </StyledCardItem>
   );

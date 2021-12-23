@@ -50,7 +50,7 @@ function JobTab() {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show">
-      <Paper className="flex flex-row items-start justify-start justify-between w-full border-1 shadow-none   rounded-6 p-20 mb-20">
+      <Paper variant="outlined" className="flex flex-row items-start justify-start justify-between w-full rounded-6 p-20 mb-20">
         <div className="flex flex-row">
           <Icon className="">access_time</Icon>
           <div className="flex ml-10 flex-col ">
@@ -60,9 +60,14 @@ function JobTab() {
         </div>
         <Button variant="outlined" onClick={handleJobAlertDialog}>Create Job Alert</Button>
       </Paper>
-      <Paper className="rounded-6 shadow-none border-1 p-20">
-        <Typography className="text-14 font-600 mb-12" color="inherit">Recent Jobs</Typography>
-        <JobGrid jobs={jobs}/>
+      <Paper variant="outlined" className="rounded-6 shadow-none">
+        <Typography className="p-20 text-14 font-600 mb-12" color="inherit">Recent Jobs</Typography>
+        <div className="px-20">
+          <JobGrid jobs={jobs}/>
+        </div>
+        <Button className="w-full border-t-1">
+          See all jobs
+        </Button>
       </Paper>
       <JobAlertDialog open={jobAlert} handleClose={handleJobAlertDialog}/>
     </motion.div>

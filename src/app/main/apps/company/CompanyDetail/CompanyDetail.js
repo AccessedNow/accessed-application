@@ -35,8 +35,8 @@ import CompanySidebarContent from './CompanySidebarContent';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
-    minHeight: 36,
-    height: 36,
+    minHeight: 0,
+    height: 20,
     background: 'none',
     [theme.breakpoints.up('lg')]: {
       minHeight: 36,

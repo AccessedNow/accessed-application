@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {getContacts} from "../../contacts/store/contactsSlice";
 
 export const getMails = createAsyncThunk(
   'mailApp/mails/getMails',
@@ -13,6 +14,19 @@ export const getMails = createAsyncThunk(
     return { data, routeParams };
   }
 );
+
+export const sendMail = createAsyncThunk(
+  'mailApp/mails/sendMail',
+  async (contact, { dispatch, getState }) => {
+    const response = await axios.post('/api/mail-app/send-mail', { contact });
+    const data = await response.data;
+
+    // dispatch(getContacts());
+
+    return data;
+  }
+);
+
 
 export const setFolderOnSelectedMails = createAsyncThunk(
   'mailApp/mails/setFolderOnSelectedMails',

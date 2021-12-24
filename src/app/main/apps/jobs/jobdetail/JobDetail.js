@@ -20,6 +20,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { withRouter, useParams } from 'react-router-dom';
 import JobDetailHeader from '../components/JobDetailHeader';
 import JobDetailBody from '../components/JobDetailBody';
+import EmailDialog from './dialogs/email/EmailDialog';
 
 import {getJob, saveJob, applyJob, openDialog, closeDialog, updateStep} from "./store/jobSlice";
 import reducer from './store';
@@ -31,7 +32,7 @@ import MediaAd from "../../../components/MediaAd";
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
     minHeight: 0,
-    height: 20,
+    height: 0,
     background: 'none',
     [theme.breakpoints.up('lg')]: {
       minHeight: 36,
@@ -136,7 +137,7 @@ function JobDetail() {
             <Card
               component={motion.div}
               variant="outlined"
-              className="w-full overflow-hidden rounded-8 mb-20 "
+              className="w-full overflow-hidden rounded-none md:rounded-6 mb-10 md:mb-20 "
             >
               <JobDetailHeader company={job.company}/>
               <JobDetailBody job={job} showDetail={showDetail}/>
@@ -151,8 +152,7 @@ function JobDetail() {
 
             </Card>
             {!alertChecked &&
-              <Paper variant="outlined"
-                     className="flex flex-row items-start justify-start justify-between w-full rounded-6 p-20 mb-20">
+              <Paper variant="outlined" className="flex flex-row items-start justify-start justify-between w-full rounded-none md:rounded-6 p-20 mb-10 md:mb-20">
                 <div className="flex flex-row">
                   <Icon className="">access_time</Icon>
                   <div className="flex ml-10 flex-col ">
@@ -166,7 +166,7 @@ function JobDetail() {
                 <Switch onChange={handleJobAlert}/>
               </Paper>
             }
-            <Card variant="outlined" className="mb-20 rounded-8">
+            <Card variant="outlined" className="mb-10 md:mb-20 rounded-none md:rounded-6">
               <CardHeader
 
                 title={<Typography className="text-14 font-medium">
@@ -224,6 +224,7 @@ function JobDetail() {
         sidebarInner
         ref={pageLayout}
       />
+      <EmailDialog />
       </>
   );
 }

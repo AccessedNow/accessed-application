@@ -106,7 +106,7 @@ function JobDetailHeader(props) {
     <ThemeProvider theme={mainThemeDark}>
       <Root
         className={clsx(
-          'w-full flex h-200 min-h-200 relative',
+          'w-full flex h-128 md:h-200 md:min-h-200 relative',
           format(new Date(currentDate?.start || null), 'MMM')
         )}
       >
@@ -123,7 +123,7 @@ function JobDetailHeader(props) {
                   borderStyle: 'solid',
                   borderColor: 'background.default',
                 }}
-                className="flex items-center justify-center w-96 h-96 -mb-52 rounded-6"
+                className="flex items-center justify-center w-72 h-72 -mb-40 md:w-96 md:h-96 md:-mb-52 rounded-6"
                 src={props.company.avatar}
                 variant="square"
               />

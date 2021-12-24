@@ -59,6 +59,10 @@ const jobSlice = createSlice({
       data: null,
       dialogOpen: false
     },
+    emailDialog: {
+      data: null,
+      dialogOpen: false
+    },
   },
   reducers: {
     openDialog: (state, action) => {
@@ -67,6 +71,14 @@ const jobSlice = createSlice({
     },
     closeDialog: (state, action) => {
       state.applicationDialog.dialogOpen = false;
+      state.data = null;
+    },
+    openEmailDialog: (state, action) => {
+      state.emailDialog.dialogOpen = true;
+      state.data = action.payload;
+    },
+    closeEmailDialog: (state, action) => {
+      state.emailDialog.dialogOpen = false;
       state.data = null;
     },
     updateStep: (state, action) => {
@@ -89,6 +101,6 @@ const jobSlice = createSlice({
   },
 });
 
-export const { updateStep, openDialog, closeDialog } = jobSlice.actions;
+export const { updateStep, openDialog, closeDialog, openEmailDialog, closeEmailDialog } = jobSlice.actions;
 
 export default jobSlice.reducer;

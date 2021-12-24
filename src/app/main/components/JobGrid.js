@@ -17,7 +17,7 @@ function JobList(props) {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         {props.jobs.map((job) => (
-          <Grid key={job._id} item xs={4} md={4}>
+          <Grid key={job._id} item xs={12} md={4}>
             {/*<Link href={`jobs/view/${job.jobId}`}>*/}
               <JobCardItem job={job}/>
             {/*</Link>*/}

@@ -1,14 +1,25 @@
 import Icon from '@mui/material/Icon';
 import { styled, ThemeProvider } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Favorite from '@mui/icons-material/Favorite';
 import FontDownload from '@mui/icons-material/FontDownload';
 import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import TextField from '@mui/material/TextField';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+
 import Typography from '@mui/material/Typography';
 import { selectMainThemeDark } from 'app/store/fuse/settingsSlice';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {useState} from 'react';
 
 import format from 'date-fns/format';
 import {openDialog, saveJob} from "../jobdetail/store/jobSlice";
@@ -21,12 +32,22 @@ const Root = styled('div')(({ theme }) => ({
     '-webkit-line-clamp': '4',
     '-webkit-box-orient': 'vertical',
     overflow: 'hidden'
+  },
+  '& .creator': {
+    borderWidth: 1,
+    borderColor: '#eee',
+
+    '& .premium': {
+      letterSpacing: 2
+    }
   }
+
 }));
 
 function JobDetailBody(props) {
   const dispatch = useDispatch();
   const mainThemeDark = useSelector(selectMainThemeDark);
+  const [open, setOpen] = useState(false);
 
   let salary='';
   if(props.job.salaryFixed){
@@ -41,13 +62,21 @@ function JobDetailBody(props) {
     salary = '--';
   }
 
-  function handleApplyJob() {
+  const handleApplyJob =() => {
     dispatch(openDialog(props.job));
   }
 
+  const handleOpenEmail = () => {
+    setOpen(true);
+  };
+
+  const handleCloseEmail = () => {
+    setOpen(false);
+  };
+
 
   return (
-    <Root className="w-full items-center justify-between px-32 py-40">
+    <Root className="w-full items-center justify-between px-10 md:px-32 py-40">
       <div className="flex flex-1 w-full items-center justify-between mt-20">
           {!props.job.title?
           <Typography className="text-16 sm:text-20 truncate font-semibold gray text-gray-500 italic">
@@ -74,15 +103,37 @@ function JobDetailBody(props) {
         </div>
         }
       </div>
-      <div className="flex flex-1 w-full items-center justify-between mb-40">
+      <div className="flex flex-col md:flex-row justify-between flex-1 w-full items-start  mb-40">
         <Typography className="truncate">
           {props.job.company? `${props.job.company.name} - ${props.job.country}`:''}
         </Typography>
         {!props.preview &&
         <Typography className="truncate">
-          Posted 1 week ago - 12 Applicants
+          Posted 1 week ago - {props.job.noApplied} Applicants
         </Typography>
         }
+      </div>
+      <div className="creator flex flex-col md:flex-row lg:flex-row flex-1 justify-between w-full items-start justify-between mb-20 p-12 rounded-6">
+        <div className="flex flex-row items-center justify-center">
+          <Avatar className="w-48 h-48" src={props.job.createdBy.avatar} />
+          <div className="flex flex-col ml-10">
+            <Typography variant="h6" fontWeight={600} className="text-14">
+              {props.job.createdBy.firstName + ' ' + props.job.createdBy.lastName}
+            </Typography>
+            <Typography variant="caption" className="text-12">
+              {props.job.createdBy.jobTitle}
+            </Typography>
+          </div>
+        </div>
+        <div className="flex flex-row md:flex-col items-center justify-center">
+          <div className="flex flex-row items-start justify-center">
+            <img src="assets/icons/shield_gold_2.png" className="w-16 h-16 mr-4" />
+            <Typography variant="caption" className="premium">
+              PREMIUM
+            </Typography>
+          </div>
+          <Button type="link" onClick={handleOpenEmail}>Send Email</Button>
+        </div>
       </div>
       <div className="flex flex-1 w-full items-start justify-between mb-20">
         <div className="flex flex-col items-center justify-start">
@@ -118,6 +169,7 @@ function JobDetailBody(props) {
           </Typography>
         </div>
       </div>
+
 
       <div className={clsx("w-full items-center justify-between", props.showDetail?'': 'minimal')}>
         <Typography variant="h6" className="mb-10 text-14 mb-30">
@@ -181,6 +233,34 @@ function JobDetailBody(props) {
         </div>
 
       </div>
+      <Dialog fullWidth={true} maxWidth="sm" open={open} onClose={handleCloseEmail}>
+        <DialogTitle className="border-b-1">
+          <div className="flex flex-row items-center w-full ">
+            <Avatar className="w-48 h-48" src={props.job.createdBy.avatar} />
+            <div className="flex flex-col ml-10">
+              <Typography variant="h6" fontWeight={600} className="text-14">
+                {props.job.createdBy.firstName + ' ' + props.job.createdBy.lastName}
+              </Typography>
+              <Typography variant="caption" className="text-12">
+                {props.job.createdBy.jobTitle}
+              </Typography>
+            </div>
+          </div>
+        </DialogTitle>
+        <DialogContent className="flex flex-col p-0">
+          <Input defaultValue={`I’m interested in your ${props.job.title}`} inputProps={{ 'aria-label': 'Enter Subject' }} className="p-16" />
+          <TextareaAutosize
+            aria-label="Enter Message"
+            minRows={6}
+            placeholder="Enter Message"
+            className="w-full p-16"
+          />
+        </DialogContent>
+        <DialogActions className="p-16 border-t-1">
+          <Button onClick={handleCloseEmail}>Cancel</Button>
+          <Button onClick={handleCloseEmail}>Send</Button>
+        </DialogActions>
+      </Dialog>
     </Root>
   );
 }
